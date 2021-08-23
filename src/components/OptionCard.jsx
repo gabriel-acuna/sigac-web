@@ -1,26 +1,26 @@
 import { Link } from "react-router-dom";
-let OptionCard = ({ title, icon, content, url }) => {
+let OptionCard = ({ title, icon, content, url, size }) => {
 
     return (
-        <div className="column is-half">
+        <div className={`column ${size}`}>
             <Link to={url}>
                 <div className="card">
                     <header className="card-header">
-                        <p className="card-header-title">
+                        <p className="card-header-title has-text-info">
                             {title}
                            
                         </p>
-                        <div className="card-header-icon" aria-label="more options">
-                            <span className="icon">
-                                {icon}
-                            </span>
-                        </div>
+                       
                     </header>
                     <div className="card-content">
                         <div className="content">
-                            {content}
-
-
+                           <p style={{fontSize:'.9rem', fontWeight:'600'}}> {content} </p>
+                           <p className="has-text-centered is-text-centered is-size-1">
+                           <span className="icon">
+                                {icon}
+                            </span>
+                           </p>
+                           
 
                         </div>
                     </div>
