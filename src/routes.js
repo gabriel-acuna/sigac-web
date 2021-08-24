@@ -2,74 +2,98 @@ import Login from "./components/auth/Login";
 import Home from "./components/Home";
 import NotImplemented from "./components/NotImplemted";
 import Admin from "./components/admin";
+import DTH from "./components/dth";
+import Profesores from "./components/dth/profesores";
+import Funcionarios from "./components/dth/funcionarios";
+import RegistarFuncionario from "./components/dth/funcionarios/nuevo";
+import ContratoFuncionario from "./components/dth/funcionarios/contrato";
 
 export const routes = [
     {
-        path:"/login",
+        path: "/login",
         component: Login
     },
     {
-        path:"/",
-        component:Home
-    },{
-        path:"/reset-password",
-        component:NotImplemented
-    },{
-        path:"/admin",
-        component:Admin
-    },
-    {
-        path:'/change-password',
+        path: "/",
+        component: Home
+    }, {
+        path: "/reset-password",
         component: NotImplemented
+    }, {
+        path: "/admin",
+        component: Admin
     },
     {
-        path:'/admin/usuarios-roles',
+        path: '/change-password',
         component: NotImplemented
     },
     {
-        path:'/admin/paises',
-        component: NotImplemented
-    },{
-        path:'/admin/provincias-cantones',
+        path: '/admin/usuarios-roles',
         component: NotImplemented
     },
     {
-        path:'/admin/dicapacidades',
+        path: '/admin/paises',
         component: NotImplemented
     }, {
-        path:'/admin/etnias',
-        component: NotImplemented
-    }, {
-        path:'/admin/nacionalidades',
-        component: NotImplemented
-    }, {
-        path:'/admin/tipos-documentos',
-        component: NotImplemented
-    }, {
-        path:'/admin/relación-ies',
-        component: NotImplemented
-    },{
-        path:'/admin/tipo-escalafon',
-        component: NotImplemented
-    }, {
-        path:'/admin/categoria-contrato',
-        component: NotImplemented
-    }, 
-    {
-        path:'/admin/tiempo-dedicacion',
-        component: NotImplemented
-    }, {
-        path:'/admin/nivel-educativo',
-        component: NotImplemented
-    }, {
-        path:'/admin/tipo-funcionario',
+        path: '/admin/provincias-cantones',
         component: NotImplemented
     },
     {
-        path:'/admin/tipo-docente',
+        path: '/admin/dicapacidades',
         component: NotImplemented
     }, {
-        path:'/admin/categoria-docente',
+        path: '/admin/etnias',
         component: NotImplemented
+    }, {
+        path: '/admin/nacionalidades',
+        component: NotImplemented
+    }, {
+        path: '/admin/tipos-documentos',
+        component: NotImplemented
+    }, {
+        path: '/admin/relacion-ies',
+        component: NotImplemented
+    }, {
+        path: '/admin/tipo-escalafon',
+        component: NotImplemented
+    }, {
+        path: '/admin/categoria-contrato',
+        component: NotImplemented
+    },
+    {
+        path: '/admin/tiempo-dedicacion',
+        component: NotImplemented
+    }, {
+        path: '/admin/nivel-educativo',
+        component: NotImplemented
+    }, {
+        path: '/admin/tipo-funcionario',
+        component: NotImplemented
+    },
+    {
+        path: '/admin/tipo-docente',
+        component: NotImplemented
+    }, {
+        path: '/admin/categoria-docente',
+        component: NotImplemented
+    },
+    {
+        path: '/dth',
+        component: DTH
+    }, {
+        path: '/dth/profesores',
+        component: Profesores
+    },
+    {
+        path: '/dth/funcionarios',
+        component: Funcionarios
+    },
+    {
+        path: '/dth/funcionarios/nuevo',
+        component: RegistarFuncionario
+    },
+    {
+        path: '/dth/funcionario-contrato/:id',
+        component: ContratoFuncionario
     }
 ];
