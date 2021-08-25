@@ -7,10 +7,11 @@ let NavBar = (props) => {
     return (
         <nav className="navbar is-primary" style={{ background: 'linear-gradient(-90deg, #888,#48c78e)' }}>
             <div className="navbar-brand">
-                <Link className="navbar-item" to="/home">
-                    <span>
+                <Link className="navbar-item" to="/">
+                    <span className="mr-2">
                         <FcHome />
                     </span>
+                    Inicio
                 </Link>
             </div>
 

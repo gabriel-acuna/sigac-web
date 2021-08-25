@@ -5,12 +5,10 @@ import { useNavigate, Link } from 'react-router-dom'
 let Funcionarios = (props) => { 
 
     const navigate = useNavigate();
-    let goBack = ()=>{
-        navigate.goBack()
-    }
+    
     return (
         <div className="container">
-            <button  className="button is-small is-info mt-4" onClick={event => goBack(event)}>Regresar</button>
+            <button  className="button is-small is-info mt-4" onClick={event => navigate(-1)}>Regresar</button>
             <Link  className="button is-small is-primary mt-4 mx-2" to="/dth/funcionarios/nuevo">Registar funcionario</Link>
             <div className="mt-2 table-container">
                 <table className="table is-bordered is-striped is-hoverable is-size-7">

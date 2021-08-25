@@ -9,14 +9,15 @@ import { useRoutes } from 'react-router-dom'
 let Layout = (props) => {
     let element = useRoutes(routes);
     let user = useSelector(state => state.user.user)
-    console.table(user);
+    console.log(user);
+   
     return (
 
         <Fragment>
             
 
             {props.child}
-             <NavBar />
+            {user && <NavBar />}
              {element}
 
             <Footer />

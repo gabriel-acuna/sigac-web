@@ -1,6 +1,6 @@
 import OptionCard from '../OptionCard'
 import { options } from './options'
-import { Outlet } from 'react-router-dom'
+
 let Admin = (props) => {
     const size = 'is-3'
 

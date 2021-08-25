@@ -22,6 +22,7 @@ let Login = () => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm()
 
     let onSubmit = (data) => {
+        console.log(data);
         distpach(
             signIn({
                 credentials: data
@@ -44,12 +45,12 @@ let Login = () => {
                     <form onSubmit={handleSubmit(onSubmit)} className="field">
                         <label className="label">Usuario</label>
                         <div className="control">
-                            <input  {...register("correo", { required: true })} className="input" />
+                            <input  {...register("email", { required: true })} className="input" />
                             {errors.uauario && <span>¡Por favor, Ingrese su correo electrónico</span>}
                         </div>
                         <label className="label">Contraseña</label>
                         <div className="control">
-                            <input type="password" {...register("clave", { required: true })} className="input" />
+                            <input type="password" {...register("password", { required: true })} className="input" />
 
                             {errors.clave && <span>¡Por favor, Ingrese su contraseña</span>}
                         </div>

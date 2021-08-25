@@ -6,7 +6,7 @@ let OptionCard = ({ title, icon, content, url, size }) => {
             <Link to={url}>
                 <div className="card">
                     <header className="card-header">
-                        <p className="card-header-title has-text-info">
+                        <p className="card-header-title has-text-dark">
                             {title}
                            
                         </p>

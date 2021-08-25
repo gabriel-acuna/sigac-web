@@ -10,10 +10,11 @@ import Axios from 'axios';
 
 export const signIn = createAsyncThunk(
     'user/signIn', async ({ credentials }) => {
-        let response = await Axios.post(`${config.URL_API}:${config.API_PORT}/api/login`,
-         ...credentials
+        let response = await Axios.post(
+            `${config.URL_API}:${config.API_PORT}/api/login`,
+            credentials
         );
-    
+        
         return response.data.user;
     }
 );

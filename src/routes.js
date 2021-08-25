@@ -105,7 +105,7 @@ export const routes = [
                         element: <Profesores/>
                     },
                     {
-                        path: '/dth/profesores/nuevo',
+                        path: '/nuevo',
                         element: <RegistarProfesor/>
                     }
                    
@@ -119,7 +119,10 @@ export const routes = [
                 path: '/funcionarios',
                 element: <Outlet/>,
                 children: [
-
+                    {
+                        path:'/',
+                        element: <Funcionarios/>
+                    },
                     {
                         path: '/nuevo',
                         element: <RegistarFuncionario/>
