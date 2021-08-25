@@ -11,7 +11,7 @@ export const options = [
         title: 'Usuarios y Roles',
         icon: <FaUsersCog />,
         content: 'Administre cuentas de usuarios del sistema y asigne roles a usuarios.',
-        url: '/admin/roles-usuarios'
+        url: '/admin/usuarios-roles'
     },
     {
         title: 'Paises',
@@ -86,7 +86,7 @@ export const options = [
         title: 'Tipo funcionario',
         icon: <VscOrganization />,
         content: 'Gestione el tiempo de dedicación del profesorado de la IES.',
-        url: '/admin/tipo/funcionario'
+        url: '/admin/tipo-funcionario'
     },
     {
         title: 'Tipo docente LOES',

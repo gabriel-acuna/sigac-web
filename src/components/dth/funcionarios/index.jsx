@@ -1,12 +1,12 @@
 import React from 'react'; 
-import { useHistory, Link } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 
 let Funcionarios = (props) => { 
 
-    const history = useHistory();
+    const navigate = useNavigate();
     let goBack = ()=>{
-        history.goBack()
+        navigate.goBack()
     }
     return (
         <div className="container">

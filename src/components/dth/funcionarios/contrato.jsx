@@ -1,20 +1,18 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useHistory, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 let ContratoFuncionario = (props) => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    const {id} = useParams();
-    const history = useHistory();
-    let goBack = () => {
-        history.goBack()
-    }
+    const { id } = useParams();
+    const navigate = useNavigate();
+
     return (
         <div className="conatiner">
 
             <div className="columns is-multiline is-centered">
                 <div className="column is-6 mb-6">
-                    <button className="button is-small is-info mt-4" onClick={event => goBack(event)}>Regresar</button>
+                    <button className="button is-small is-info mt-4" onClick={event => navigate(-1)}>Regresar</button>
                     <form className="mt-4 px-2">
 
                         <div className="field is-grouped">
@@ -37,6 +35,18 @@ let ContratoFuncionario = (props) => {
                             </p>
                         </div>
                         <div className="field is-grouped">
+                            <p className="control">
+                                <label className="label is-small">TIPO DOCUMENTO</label>
+                                <div select="control">
+                                    <select  {...register("tipo_documento", { required: true })} className="input is-small" >
+                                        <options>CONTRATO</options>
+                                        <option>ACCION DE PERSONAL</option>
+                                        <option>NOMBRAMIENTO</option>
+
+                                    </select>
+                                    {errors.tipo_documento && <span>¡Por favor, Seleccione el tipo de documento!</span>}
+                                </div>
+                            </p>
                             <p className="control">
                                 <label className="label is-small">RELACION IES</label>
                                 <div className="select">
@@ -71,7 +81,7 @@ let ContratoFuncionario = (props) => {
 
                             <p className="control">
                                 <label className="label is-small">INGRESO POR CONCURSO</label>
-                                <div class="select">
+                                <div className="select">
                                     <select {...register("ingreso_concurso", { required: true })} className="input is-small">
                                         <option value="SI">SI</option>
                                         <option value="NO">NO</option>
@@ -93,7 +103,7 @@ let ContratoFuncionario = (props) => {
                             </p>
                             <p className="control">
                                 <label className="label is-small">TIPO FUNCIONARIO</label>
-                                <div class="select">
+                                <div className="select">
                                     <select {...register("tipo_funcionario", { required: true })} className="input is-small">
                                         <option value="ADMNISTARTIVO">ADMNISTARTIVO</option>
                                         <option value="TRABAJADOR">TRABAJADOR</option>
@@ -117,7 +127,7 @@ let ContratoFuncionario = (props) => {
                             </p>
                             <p className="control">
                                 <label className="label is-small">TIPO DECENTE LOES</label>
-                                <div class="select">
+                                <div className="select">
                                     <select {...register("tipo_docente", { required: true })} className="input is-small">
                                         <option value="TECNICO DOCENTE">TECNICO DOCENTE</option>
                                         <option value="TECNICO LABORATORIO">TECNICO LABORATORIO</option>
@@ -132,10 +142,10 @@ let ContratoFuncionario = (props) => {
                             </p>
                         </div>
                         <div className="field is-grouped">
-                            
+
                             <p className="control">
                                 <label className="label is-small">CATEGORIA DOCENTE</label>
-                                <div class="select">
+                                <div className="select">
                                     <select {...register("catagoria_docente", { required: true })} className="input is-small">
                                         <option value="CATGORIA 1">CATGORIA 1</option>
                                         <option value="CATGORIA 2">CATGORIA 2</option>
@@ -159,14 +169,14 @@ let ContratoFuncionario = (props) => {
                             </p>
                         </div>
                         <div className="field is-grouped">
-                            
+
                             <p className="control">
                                 <label className="label is-small">PUESTO JERARQUICO SUPERIOR</label>
-                                <div class="select">
+                                <div className="select">
                                     <select {...register("catagoria_docente", { required: true })} className="input is-small">
                                         <option value="SI">SI</option>
                                         <option value="NO">NO</option>
-                                        
+
                                     </select>
 
 

@@ -7,93 +7,132 @@ import Profesores from "./components/dth/profesores";
 import Funcionarios from "./components/dth/funcionarios";
 import RegistarFuncionario from "./components/dth/funcionarios/nuevo";
 import ContratoFuncionario from "./components/dth/funcionarios/contrato";
+import ContratoProfesor from "./components/dth/profesores/contrato";
+import RegistarProfesor from "./components/dth/profesores/nuevo";
+import { Outlet } from "react-router";
 
 export const routes = [
     {
         path: "/login",
-        component: Login
+        element: <Login/>
     },
     {
         path: "/",
-        component: Home
+        element: <Home/>
     }, {
         path: "/reset-password",
-        component: NotImplemented
+        element: <NotImplemented/>
     }, {
         path: "/admin",
-        component: Admin
+        element: <Outlet/>,
+        children: [
+            {
+                path:'/',
+                element: <Admin/>
+            },
+            {
+                path: '/usuarios-roles',
+                element: <NotImplemented/>
+            },
+            {
+                path: '/paises',
+                element: <NotImplemented/>
+            }, {
+                path: '/provincias-cantones',
+                element: <NotImplemented/>
+            },
+            {
+                path: '/discapacidades',
+                element: <NotImplemented/>
+            }, {
+                path: '/etnias',
+                element: <NotImplemented/>
+            }, {
+                path: '/nacionalidades',
+                element: <NotImplemented/>
+            }, {
+                path: '/tipos-documentos',
+                element: <NotImplemented/>
+            }, {
+                path: '/relacion-ies',
+                element: <NotImplemented/>
+            }, {
+                path: '/tipo-escalafon',
+                element: <NotImplemented/>
+            }, {
+                path: '/categoria-contrato',
+                element: <NotImplemented/>
+            },
+            {
+                path: '/tiempo-dedicacion',
+                element: <NotImplemented/>
+            }, {
+                path: '/nivel-educativo',
+                element: <NotImplemented/>
+            }, {
+                path: '/tipo-funcionario',
+                element: <NotImplemented/>
+            },
+            {
+                path: '/tipo-docente',
+                element: <NotImplemented/>
+            }, {
+                path: '/categoria-docente',
+                element: <NotImplemented/>
+            }
+
+        ]
     },
     {
         path: '/change-password',
-        component: NotImplemented
+        element: <NotImplemented/>
     },
-    {
-        path: '/admin/usuarios-roles',
-        component: NotImplemented
-    },
-    {
-        path: '/admin/paises',
-        component: NotImplemented
-    }, {
-        path: '/admin/provincias-cantones',
-        component: NotImplemented
-    },
-    {
-        path: '/admin/dicapacidades',
-        component: NotImplemented
-    }, {
-        path: '/admin/etnias',
-        component: NotImplemented
-    }, {
-        path: '/admin/nacionalidades',
-        component: NotImplemented
-    }, {
-        path: '/admin/tipos-documentos',
-        component: NotImplemented
-    }, {
-        path: '/admin/relacion-ies',
-        component: NotImplemented
-    }, {
-        path: '/admin/tipo-escalafon',
-        component: NotImplemented
-    }, {
-        path: '/admin/categoria-contrato',
-        component: NotImplemented
-    },
-    {
-        path: '/admin/tiempo-dedicacion',
-        component: NotImplemented
-    }, {
-        path: '/admin/nivel-educativo',
-        component: NotImplemented
-    }, {
-        path: '/admin/tipo-funcionario',
-        component: NotImplemented
-    },
-    {
-        path: '/admin/tipo-docente',
-        component: NotImplemented
-    }, {
-        path: '/admin/categoria-docente',
-        component: NotImplemented
-    },
+   
     {
         path: '/dth',
-        component: DTH
-    }, {
-        path: '/dth/profesores',
-        component: Profesores
+        element: <Outlet/>,
+        children: [
+            {
+                path: '/',
+                element: <DTH/>
+            },
+            {
+                path: '/profesores',
+                element: <Outlet/>,
+                children: [
+                    {
+                        path: '/',
+                        element: <Profesores/>
+                    },
+                    {
+                        path: '/dth/profesores/nuevo',
+                        element: <RegistarProfesor/>
+                    }
+                   
+                ]
+            },
+            {
+                path: '/profesor-contrato/:id',
+                element: <ContratoProfesor/>
+            },
+            {
+                path: '/funcionarios',
+                element: <Outlet/>,
+                children: [
+
+                    {
+                        path: '/nuevo',
+                        element: <RegistarFuncionario/>
+                    }
+                   
+                ]
+            },
+            {
+                path: '/funcionario-contrato/:id',
+                element: <ContratoFuncionario/>
+            }
+            
+           
+        ]
     },
-    {
-        path: '/dth/funcionarios',
-        component: Funcionarios
-    },
-    {
-        path: '/dth/funcionarios/nuevo',
-        component: RegistarFuncionario
-    },
-    {
-        path: '/dth/funcionario-contrato/:id',
-        component: ContratoFuncionario
-    }
 ];

@@ -1,24 +1,28 @@
 import { Fragment } from "react";
-import { Switch, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Footer from "./Footer";
 import { routes } from './../routes';
 import NavBar from "./Navbar";
+import { useDispatch, useSelector } from 'react-redux';
+import { useRoutes } from 'react-router-dom'
 
 let Layout = (props) => {
+    let element = useRoutes(routes);
+    let user = useSelector(state => state.user.user)
+    console.table(user);
     return (
-        <Fragment>
 
+        <Fragment>
+            
 
             {props.child}
-            <NavBar/>
+             <NavBar />
+             {element}
 
-            <Switch>
-                {routes.map((r, i) => (
-                    <Route component={r.component} exact path={r.path} key={i} />
-                ))}
-            </Switch>
             <Footer />
         </Fragment>
+
+
     )
 
 }

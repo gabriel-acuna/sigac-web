@@ -3,19 +3,16 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom'
 
 
-let RegistarFuncionario = (props) => {
+let RegistarProfesor = (props) => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const navigate = useNavigate();
-    let goBack = () => {
-        navigate.goBack(-1)
-    }
 
     return (
         <div className="conatiner">
 
             <div className="columns is-multiline is-centered">
                 <div className="column is-6 mb-6">
-                    <button className="button is-small is-info mt-4" onClick={event => goBack(event)}>Regresar</button>
+                    <button className="button is-small is-info mt-4" onClick={event => navigate(-1)}>Regresar</button>
                     <form className="mt-4 px-2">
                         <div className="field is-grouped">
                             <p className="control">
@@ -26,10 +23,11 @@ let RegistarFuncionario = (props) => {
                                 </div>
                             </p>
                             <p className="control">
-                                <label className="label is-small">CODIGO MATRIZ</label>
+                                <label className="label is-small">FECHA INGRESO IES</label>
                                 <div className="control">
-                                    <input  {...register("codigo_matriz", { required: true })} className="input is-small" />
-                                    {errors.codigo_matriz && <span>¡Por favor, Ingrese el código de matriz</span>}
+                                    <input type="date" {...register("fecha_ingreso_ies", { required: true })} className="input is-small" />
+
+                                    {errors.fecha_ingreso_ies && <span>¡Por favor, Ingrese la fecha de ingreso del profesor a la IES!</span>}
                                 </div>
                             </p>
                         </div>
@@ -183,14 +181,14 @@ let RegistarFuncionario = (props) => {
                             <p className="control">
                                 <label className="label is-small">EMAIL PERSONAL</label>
                                 <div className="control">
-                                    <input  {...register("email_personal", { required: true })} className="input is-small" value="1025" />
+                                    <input  {...register("email_personal", { required: true })} className="input is-small"/>
                                     {errors.codigo_ies && <span>¡Por favor, Ingrese el email personal</span>}
                                 </div>
                             </p>
                             <p className="control">
                                 <label className="label is-small">EMAIL INSTITUCIONAL</label>
                                 <div className="control">
-                                    <input  {...register("email_institucional", { required: true })} className="input is-small" />
+                                    <input  {...register("email_institucional", { required: true })} className="input is-small" value="@unesum.edu.ec"/>
                                     {errors.codigo_matriz && <span>¡Por favor, Ingrese el email institucional</span>}
                                 </div>
                             </p>
@@ -206,4 +204,4 @@ let RegistarFuncionario = (props) => {
     )
 }
 
-export default RegistarFuncionario
+export default RegistarProfesor

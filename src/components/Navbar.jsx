@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 let NavBar = (props) => {
 
     return (
-        <nav className="navbar is-primary" style={{ background: 'linear-gradient(-90deg, #888,#019c67)' }}>
+        <nav className="navbar is-primary" style={{ background: 'linear-gradient(-90deg, #888,#48c78e)' }}>
             <div className="navbar-brand">
                 <Link className="navbar-item" to="/home">
                     <span>
