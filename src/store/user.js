@@ -16,7 +16,8 @@ export const signIn = createAsyncThunk(
                 `${API}/login`,
                 credentials
             );
-            if (response.statusText === 'ok'){
+            
+            if (response.statusText === 'OK'){
                 return response.data
             }
            

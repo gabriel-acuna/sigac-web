@@ -4,18 +4,19 @@ import {
 } from '@reduxjs/toolkit';
 
 import userReducer from './user';
+import paisesReducer from './core/pais';
 
 
 import {
     persistStore,
-    persistReducer,
-    REGISTER
+    persistReducer
 } from 'redux-persist';
 
 import storage from 'redux-persist/lib/storage'
 
 const reducer = combineReducers({
-    user: userReducer
+    user: userReducer,
+    paises: paisesReducer
 
 });
 

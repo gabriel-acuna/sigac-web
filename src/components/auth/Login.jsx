@@ -33,7 +33,10 @@ let Login = () => {
                 credentials: data
             })
         ).unwrap()
-            .catch((error) => setError(error.message))
+        .then(
+            navigate('/')
+        )
+        .catch((error) => setError(error.message))
 
 
 
