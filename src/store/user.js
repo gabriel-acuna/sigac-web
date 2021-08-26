@@ -4,19 +4,30 @@ import {
     createSlice
 
 } from '@reduxjs/toolkit'
-import config from 'react-dotenv'
+import { API } from '../http.common';
 import Axios from 'axios';
+
 
 
 export const signIn = createAsyncThunk(
     'user/signIn', async ({ credentials }) => {
-        let response = await Axios.post(
-            `${config.URL_API}:${config.API_PORT}/api/login`,
-            credentials
-        );
+        try{
+            let response = await Axios.post(
+                `${API}/login`,
+                credentials
+            );
+            if (response.statusText === 'ok'){
+                return response.data
+            }
+           
+        }catch(err){
+
+            throw err.response.data.detail
+            
+        }
+    }, 
         
-        return response.data.user;
-    }
+    
 );
 
 let userSlice = createSlice({
@@ -24,9 +35,10 @@ let userSlice = createSlice({
     initialState: {
         user: null,
         status: ''
+       
     },
     reducers: {
-    
+
         logOut: (state) => {
             state.user = null
         }
@@ -36,7 +48,7 @@ let userSlice = createSlice({
             state.status = 'loading'
         },
         [signIn.fulfilled]: (state, action) => {
-            state.user = action.payload;
+            state.user = action.payload
             state.status = 'success'
         },
         [signIn.rejected]: (state, action) => {
@@ -46,5 +58,5 @@ let userSlice = createSlice({
     }
 })
 
-export const {  logOut } = userSlice.actions;
+export const { logOut } = userSlice.actions;
 export default userSlice.reducer;

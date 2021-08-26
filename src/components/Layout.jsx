@@ -9,7 +9,6 @@ import { useRoutes } from 'react-router-dom'
 let Layout = (props) => {
     let element = useRoutes(routes);
     let user = useSelector(state => state.user.user)
-    console.log(user);
    
     return (
 

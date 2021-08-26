@@ -1,9 +1,11 @@
 import { useForm } from "react-hook-form";
 import logo from '../../logo-ies.png';
 import cp_logo from '../../assets/undraw_control_panel1_20gm.png';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, selectError } from 'react-redux';
 import { signIn } from '../../store/user';
 import { useNavigate } from 'react-router';
+import { useState } from "react";
+import Alert from "../Alert";
 
 
 let Login = () => {
@@ -21,15 +23,21 @@ let Login = () => {
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm()
 
+    const [error, setError] = useState(null);
+
     let onSubmit = (data) => {
-        console.log(data);
+
+
         distpach(
             signIn({
                 credentials: data
             })
+        ).unwrap()
+            .catch((error) => setError(error.message))
 
-        )
-        navigate("/")
+
+
+
     };
 
     return (
@@ -43,19 +51,26 @@ let Login = () => {
                         </figure>
                     </div>
                     <form onSubmit={handleSubmit(onSubmit)} className="field">
-                        <label className="label">Usuario</label>
+                        <label className="label">Email</label>
                         <div className="control">
                             <input  {...register("email", { required: true })} className="input" />
-                            {errors.uauario && <span>¡Por favor, Ingrese su correo electrónico</span>}
+                            {errors.email && <span className="has-text-danger">¡Por favor, Ingrese su correo electrónico</span>}
                         </div>
                         <label className="label">Contraseña</label>
                         <div className="control">
                             <input type="password" {...register("password", { required: true })} className="input" />
 
-                            {errors.clave && <span>¡Por favor, Ingrese su contraseña</span>}
+                            {errors.password && <span className="has-text-danger">¡Por favor, Ingrese su contraseña</span>}
                         </div>
 
                         <button type="submit" className="button is-success">Send</button>
+                        {
+                            error && <Alert type={'is-danger is-light'}
+                                content={error}
+                            >
+                                <button className="delete" onClick={event => setError(null)}></button>
+                            </Alert>
+                        }
                     </form>
 
 
