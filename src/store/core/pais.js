@@ -6,20 +6,22 @@ import {
 } from '@reduxjs/toolkit'
 
 import Axios from 'axios';
-import { API } from '../../http.common';
+import { API } from '../../http-common';
 
-export const loadVideos = createAsyncThunk(
+export const loadPaises = createAsyncThunk(
     'paises/load',
-    async (thunkAPI) => {
+    async (_, { getState }) => {
         let token;
 
         try {
-            token = thunkAPI.getState().user.user.jwtToken;
-        } catch {
-            return Promise.reject('There is not token')
+            token = getState().user.user.jwt.token;
+
+        } catch (e) {
+            throw e;
         }
         if (!token) return Promise.reject('There is not token')
         try {
+
             let response = await Axios.get(
                 `${API}/paises`, {
                 headers: {
@@ -29,7 +31,7 @@ export const loadVideos = createAsyncThunk(
             )
             return response.data
         } catch (error) {
-           throw error.response.detail
+            throw error.response.detail
         }
     }
 );
@@ -37,15 +39,15 @@ export const loadVideos = createAsyncThunk(
 
 
 let paisesSilce = createSlice({
-    name: 'videos',
+    name: 'paises',
     initialState: {
         status: 'not loaded',
         data: {
-            videos: []
+            paises: []
         }
     }, reducers: {},
     extraReducers: {
-        [loadVideos.fulfilled]: (state, action) => {
+        [loadPaises.fulfilled]: (state, action) => {
             state.status = 'success'
             state.data = {
 

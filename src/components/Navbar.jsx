@@ -1,9 +1,18 @@
 import { FcSettings, FcHome, FcRight } from 'react-icons/fc'
 import { Link } from 'react-router-dom'
-
+import {  useDispatch , useSelector} from 'react-redux'
+import { logOut} from '../store/user'
 
 let NavBar = (props) => {
 
+    let distpach = useDispatch();
+    let user = useSelector(state => state.user.user.userInfo)
+    
+    let doLogOut = ()=>{
+        distpach(
+            logOut()
+        )
+    }
     return (
         <nav className="navbar is-primary" style={{ background: 'linear-gradient(-90deg, #888,#48c78e)' }}>
             <div className="navbar-brand">
@@ -19,7 +28,7 @@ let NavBar = (props) => {
 
             <div className="navbar-item has-dropdown is-hoverable">
                 <span className="navbar-link has-text-weight-bold">
-                    Hola,
+                    Hola, { user.nombre} { user.apellido}
 
                 </span>
                 <div className="navbar-dropdown is-boxed">
@@ -29,10 +38,10 @@ let NavBar = (props) => {
                         </span>
                         Cambiar contraseña
                     </Link>
-                    <Link className="navbar-item"  to="/">
+                    <a className="navbar-item"  onClick={ event=>doLogOut()}>
                         <span className="mr-2"> <FcRight /></span>
                         Cerrar sesión
-                    </Link>
+                    </a>
 
                 </div>
 

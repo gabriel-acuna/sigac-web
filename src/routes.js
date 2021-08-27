@@ -9,22 +9,23 @@ import RegistarFuncionario from "./components/dth/funcionarios/nuevo";
 import ContratoFuncionario from "./components/dth/funcionarios/contrato";
 import ContratoProfesor from "./components/dth/profesores/contrato";
 import RegistarProfesor from "./components/dth/profesores/nuevo";
-import { Outlet } from "react-router";
+import { Outlet, Navigate } from "react-router";
+import ListadoPaises from "./components/admin/options/paises";
 
-export const routes = [
+const routes = (user)=> [
     {
         path: "/login",
-        element: <Login/>
+        element: !user ? <Login/>: <Navigate to='/'/>
     },
     {
         path: "/",
-        element: <Home/>
+        element: user ? <Home roles= {user.userInfo.roles}/> : <Navigate to="/login"></Navigate>
     }, {
         path: "/reset-password",
         element: <NotImplemented/>
     }, {
         path: "/admin",
-        element: <Outlet/>,
+        element: user ? <Outlet/> : <Navigate to="/login"></Navigate>,
         children: [
             {
                 path:'/',
@@ -36,7 +37,13 @@ export const routes = [
             },
             {
                 path: '/paises',
-                element: <NotImplemented/>
+                element: <Outlet/>,
+                children: [
+                    {
+                        path: '/',
+                        element: <ListadoPaises/>
+                    }
+                ]
             }, {
                 path: '/provincias-cantones',
                 element: <NotImplemented/>
@@ -139,3 +146,4 @@ export const routes = [
         ]
     },
 ];
+export default routes;
