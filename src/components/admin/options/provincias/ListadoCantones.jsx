@@ -1,49 +1,39 @@
 import ReactDatatable from '@yun548/bulma-react-datatable';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { loadProvincias, clearData } from '../../../../store/core/provincias';
+import { loadCantonesProvincia, clearData } from '../../../../store/core/provincias';
 
-
-let ListadoProvincias = (props) => {
+let ListadoCantonesProvincias = (props) => {
 
     let navigate = useNavigate()
     let distpatch = useDispatch()
-
+    const { id } = useParams();
 
     useEffect(
         () => {
             distpatch(
-                loadProvincias()
+                loadCantonesProvincia(id)
 
             ).unwrap()
                 .catch(
                     (err) => console.error(err)
                 )
-        }, [distpatch]
+        }, [id, distpatch]
     )
 
     const columns = [
-        { key: 'provincia', text: 'Provincia', sortable: true },
+        { key: 'canton', text: 'Cantón', sortable: true },
         { key: 'opciones', text: ' Opciones' }
 
     ]
+    let cantonesProvinciasState = useSelector(state => state.provincias.data.cantonesProvincia);
+    console.log(cantonesProvinciasState)
 
-
-    let provinciasState = useSelector(state => state.provincias.data.provincias);
-   
-    let rows = provinciasState.map(
-        (prov) => {
-            return {
-                provincia: prov.provincia,
-                opciones:[
-                    <Link to={ `${prov.id}`}  key={prov.id}>Ver cantones</Link>
-                ]
-            };
-        }
-    )
     return (
-        <div className="conatiner">
+
+
+        < div className="conatiner" >
             <button className="button is-small is-info mt-4" onClick={event => {
                 navigate(-1);
                 distpatch(clearData())
@@ -63,9 +53,9 @@ let ListadoProvincias = (props) => {
                                 print: false
                             },
                             language: {
-                                length_menu: "Mostrar _MENU_ provincias por página",
+                                length_menu: "Mostrar _MENU_ cantones por página",
                                 filter: "Buscar en registros ...",
-                                info: "Mostrando _START_ a _END_ de _TOTAL_ provincias",
+                                info: "Mostrando _START_ a _END_ de _TOTAL_ cantones",
                                 pagination: {
                                     first: "Primera",
                                     previous: "Anterior",
@@ -74,13 +64,14 @@ let ListadoProvincias = (props) => {
                                 }
                             }
                         }}
-                        records={rows}
+                        records={  cantonesProvinciasState }
                         columns={columns}
                     />
                 </div>
             </div>
-        </div>
+        </div >
     )
+
 }
 
-export default ListadoProvincias;
+export default ListadoCantonesProvincias;

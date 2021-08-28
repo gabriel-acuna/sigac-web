@@ -12,6 +12,7 @@ import RegistarProfesor from "./components/dth/profesores/nuevo";
 import { Outlet, Navigate } from "react-router";
 import ListadoPaises from "./components/admin/options/paises";
 import ListadoProvincias from "./components/admin/options/provincias";
+import ListadoCantonesProvincias from "./components/admin/options/provincias/ListadoCantones";
 
 const routes = (user)=> [
     {
@@ -52,6 +53,9 @@ const routes = (user)=> [
                     {
                         path:'/',
                         element: <ListadoProvincias/>
+                    },{
+                        path:'/:id',
+                        element:<ListadoCantonesProvincias/>
                     }
                 ]
             },

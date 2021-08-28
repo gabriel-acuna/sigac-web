@@ -10,7 +10,7 @@ import { API } from '../../services/api';
 
 export const loadProvincias = createAsyncThunk(
     'provincias/load',
-    async (_, { getState }) => {
+    async ( _,{ getState }) => {
         let token;
 
         try {
@@ -36,6 +36,35 @@ export const loadProvincias = createAsyncThunk(
     }
 );
 
+export const loadCantonesProvincia = createAsyncThunk(
+    'provincias-cantones/load',
+    async ( id, { getState}) => {
+        console.log(id);
+        let token;
+
+        try {
+            token = getState().user.user.jwt.token;
+
+        } catch (e) {
+            throw e;
+        }
+        if (!token) return Promise.reject('There is not token')
+        try {
+
+            let response = await Axios.get(
+                `${API}/provincias/${id}/cantones`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            )
+            return response.data
+        } catch (error) {
+            throw error.response.detail
+        }
+    }
+);
+
 
 
 let provinciasSilce = createSlice({
@@ -43,15 +72,33 @@ let provinciasSilce = createSlice({
     initialState: {
         status: 'not loaded',
         data: {
-            provincias: []
+            provincias: [],
+            cantonesProvincia: []
         }
-    }, reducers: {},
+    }, reducers: {
+        clearData: (state) => {
+            state.data = {
+                provincias: [],
+                cantonesProvincia: []
+            }
+            
+        }
+    },
     extraReducers: {
         [loadProvincias.fulfilled]: (state, action) => {
             state.status = 'success'
             state.data = {
-
                 provincias: action.payload
+               
+            }
+
+
+        },
+        [loadCantonesProvincia.fulfilled]: (state, action) => {
+            state.status = 'success'
+            state.data = {
+
+                cantonesProvincia: action.payload
             }
 
 
@@ -60,5 +107,5 @@ let provinciasSilce = createSlice({
     }
 
 })
-
+export const { clearData } = provinciasSilce.actions;
 export default provinciasSilce.reducer;

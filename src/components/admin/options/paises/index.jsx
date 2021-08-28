@@ -36,9 +36,11 @@ let ListadoPaises = (props) => {
 
     return (
         <div className="conatiner">
-            <button className="button is-small is-info mt-4" onClick={event => {
-                 navigate(-1);
-                 distpatch(clearData()) }}>Regresar</button>
+            <button className="button is-small is-info mt-4"
+                onClick={event => {
+                    navigate(-1);
+                    distpatch(clearData())
+                }}>Regresar</button>
             <div className="columns is-centered">
                 <div className="column is-half">
                     <ReactDatatable style={{ justifyContent: 'center' }}

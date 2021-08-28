@@ -22,7 +22,7 @@ let Home = (props) => {
                    
 
                     <div className="field mt-4">
-                        <labal className="label">Roles asignados</labal>
+                        <label className="label">Roles asignados</label>
                         <div className="select" onChange={ event=> redirigir(event.target.value)}>
                             <select>
                                 <option></option>
@@ -37,7 +37,7 @@ let Home = (props) => {
                                 }
                             </select>
                         </div>
-                        <p class="help">Seleccione el rol con el que desea interactuar</p>
+                        <p className="help">Seleccione el rol con el que desea interactuar</p>
                     </div>
                 </div>
 
