@@ -4,7 +4,9 @@ import {
 } from '@reduxjs/toolkit';
 
 import userReducer from './user';
-import paisesReducer from './core/pais';
+import paisesReducer from './core/paises';
+import provinciasReducer from './core/provincias';
+
 
 
 import {
@@ -16,7 +18,8 @@ import storage from 'redux-persist/lib/storage'
 
 const reducer = combineReducers({
     user: userReducer,
-    paises: paisesReducer
+    paises: paisesReducer,
+    provincias: provinciasReducer
 
 });
 

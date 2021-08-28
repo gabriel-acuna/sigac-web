@@ -6,10 +6,10 @@ import {
 } from '@reduxjs/toolkit'
 
 import Axios from 'axios';
-import { API } from '../../http-common';
+import { API } from '../../services/api';
 
-export const loadPaises = createAsyncThunk(
-    'paises/load',
+export const loadProvincias = createAsyncThunk(
+    'provincias/load',
     async (_, { getState }) => {
         let token;
 
@@ -23,7 +23,7 @@ export const loadPaises = createAsyncThunk(
         try {
 
             let response = await Axios.get(
-                `${API}/paises`, {
+                `${API}/provincias`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -38,20 +38,20 @@ export const loadPaises = createAsyncThunk(
 
 
 
-let paisesSilce = createSlice({
-    name: 'paises',
+let provinciasSilce = createSlice({
+    name: 'provincias',
     initialState: {
         status: 'not loaded',
         data: {
-            paises: []
+            provincias: []
         }
     }, reducers: {},
     extraReducers: {
-        [loadPaises.fulfilled]: (state, action) => {
+        [loadProvincias.fulfilled]: (state, action) => {
             state.status = 'success'
             state.data = {
 
-                videos: action.payload
+                provincias: action.payload
             }
 
 
@@ -61,4 +61,4 @@ let paisesSilce = createSlice({
 
 })
 
-export default paisesSilce.reducer;
+export default provinciasSilce.reducer;

@@ -1,10 +1,9 @@
 import {
-
     createAsyncThunk,
     createSlice
+} from '@reduxjs/toolkit';
 
-} from '@reduxjs/toolkit'
-import { API } from '../http-common';
+import { API } from '../services/api';
 import Axios from 'axios';
 import jwtDecode from 'jwt-decode';
 

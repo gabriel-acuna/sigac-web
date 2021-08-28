@@ -2,20 +2,19 @@ import ReactDatatable from '@yun548/bulma-react-datatable';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { loadPaises, clearData } from '../../../../store/core/paises';
+import { loadProvincias } from '../../../../store/core/provincias';
 
 
-let ListadoPaises = (props) => {
+let ListadoProvincias = (props) => {
 
     let navigate = useNavigate()
     let distpatch = useDispatch()
 
 
-
     useEffect(
         () => {
             distpatch(
-                loadPaises()
+                loadProvincias()
 
             ).unwrap()
                 .catch(
@@ -25,25 +24,23 @@ let ListadoPaises = (props) => {
     )
 
     const columns = [
-        { key: 'pais', text: 'Nombre', sortable: true },
-        { key: 'nacionalidad', text: 'Nacionalidad', sortable: true }
-
+        { key: 'provincia', text: 'Provincia', sortable: true },
+        { key: 'registrado_en', text: ' Registrado en'}
+       
     ]
 
 
-    let paisesState = useSelector(state => state.paises.data.paises);
+    let provinciasState = useSelector(state => state.provincias.data.provincias);
 
-
+    
     return (
         <div className="conatiner">
-            <button className="button is-small is-info mt-4" onClick={event => {
-                 navigate(-1);
-                 distpatch(clearData()) }}>Regresar</button>
+            <button className="button is-small is-info mt-4" onClick={event => navigate(-1)}>Regresar</button>
             <div className="columns is-centered">
                 <div className="column is-half">
-                    <ReactDatatable style={{ justifyContent: 'center' }}
-                        className="table is-bordered is-striped"
-                        tHeadClassName="is-info"
+                    <ReactDatatable  style={{ justifyContent:'center'}}
+                        className="table is-bordered is-striped is-fullwidth"
+                        tHeadClassName="has-background-success-light"
                         config={{
                             page_size: 10,
                             length_menu: [10, 20, 50],
@@ -54,9 +51,9 @@ let ListadoPaises = (props) => {
                                 print: false
                             },
                             language: {
-                                length_menu: "Mostrar _MENU_ paises por página",
+                                length_menu: "Mostrar _MENU_ provincias por página",
                                 filter: "Buscar en registros ...",
-                                info: "Mostrando _START_ a _END_ de _TOTAL_ paises",
+                                info: "Mostrando _START_ a _END_ de _TOTAL_ provincias",
                                 pagination: {
                                     first: "Primera",
                                     previous: "Anterior",
@@ -65,7 +62,7 @@ let ListadoPaises = (props) => {
                                 }
                             }
                         }}
-                        records={paisesState}
+                        records={provinciasState}
                         columns={columns}
                     />
                 </div>
@@ -74,4 +71,4 @@ let ListadoPaises = (props) => {
     )
 }
 
-export default ListadoPaises;
+export default ListadoProvincias;

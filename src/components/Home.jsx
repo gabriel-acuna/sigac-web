@@ -4,7 +4,7 @@ import Spinner from './Spinner'
 import { useNavigate} from 'react-router-dom'
 
 let Home = (props) => {
-    const [rol, setRol] = useState('');
+    
     const navigate = useNavigate()
     let redirigir = (rol)=>{
         if (rol)

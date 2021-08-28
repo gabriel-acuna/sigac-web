@@ -11,6 +11,7 @@ import ContratoProfesor from "./components/dth/profesores/contrato";
 import RegistarProfesor from "./components/dth/profesores/nuevo";
 import { Outlet, Navigate } from "react-router";
 import ListadoPaises from "./components/admin/options/paises";
+import ListadoProvincias from "./components/admin/options/provincias";
 
 const routes = (user)=> [
     {
@@ -46,7 +47,13 @@ const routes = (user)=> [
                 ]
             }, {
                 path: '/provincias-cantones',
-                element: <NotImplemented/>
+                element: <Outlet/>,
+                children:[
+                    {
+                        path:'/',
+                        element: <ListadoProvincias/>
+                    }
+                ]
             },
             {
                 path: '/discapacidades',
