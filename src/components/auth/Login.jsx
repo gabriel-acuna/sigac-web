@@ -1,9 +1,8 @@
 import { useForm } from "react-hook-form";
 import logo from '../../logo-ies.png';
 import cp_logo from '../../assets/undraw_control_panel1_20gm.png';
-import { useDispatch, useSelector, selectError } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { signIn } from '../../store/user';
-import { useNavigate } from 'react-router';
 import { useState } from "react";
 import Alert from "../Alert";
 
@@ -19,7 +18,6 @@ let Login = () => {
 
     let distpach = useDispatch()
 
-    let navigate = useNavigate()
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm()
 
@@ -33,10 +31,7 @@ let Login = () => {
                 credentials: data
             })
         ).unwrap()
-        .then(
-            navigate('/')
-        )
-        .catch((error) => setError(error.message))
+        .catch((err) => setError(err.message))
 
 
 

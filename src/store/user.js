@@ -22,7 +22,7 @@ export const signIn = createAsyncThunk(
             }
 
         } catch (err) {
-
+            
             throw err.response.data.detail
 
         }

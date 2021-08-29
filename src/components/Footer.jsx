@@ -8,7 +8,7 @@ let Footer = (props) => {
     }
     return (
         <footer className="has-background-dark has-text-primary-light has-text-centered" style={estilos}>
-            <p className="p-3">Aseguramiento de la Calidad UNESUM &copy;</p>
+            <p className="p-3">&copy; {new Date().getFullYear()} DAC UNESUM</p>
         </footer>
     )
 }

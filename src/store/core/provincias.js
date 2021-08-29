@@ -10,7 +10,7 @@ import { API } from '../../services/api';
 
 export const loadProvincias = createAsyncThunk(
     'provincias/load',
-    async ( _,{ getState }) => {
+    async (_, { getState }) => {
         let token;
 
         try {
@@ -38,8 +38,8 @@ export const loadProvincias = createAsyncThunk(
 
 export const loadCantonesProvincia = createAsyncThunk(
     'provincias-cantones/load',
-    async ( id, { getState}) => {
-        console.log(id);
+    async (id, { getState }) => {
+
         let token;
 
         try {
@@ -81,7 +81,7 @@ let provinciasSilce = createSlice({
                 provincias: [],
                 cantonesProvincia: []
             }
-            
+
         }
     },
     extraReducers: {
@@ -89,7 +89,7 @@ let provinciasSilce = createSlice({
             state.status = 'success'
             state.data = {
                 provincias: action.payload
-               
+
             }
 
 

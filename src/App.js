@@ -1,7 +1,8 @@
 import Layout from './components/Layout';
+
 import {
 
-  BrowserRouter,
+  BrowserRouter
 
 } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -15,7 +16,7 @@ function App() {
       <BrowserRouter>
       <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-        <Layout />
+        <Layout/>
         </PersistGate>
         </Provider>
       </BrowserRouter>

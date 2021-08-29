@@ -38,7 +38,7 @@ let NavBar = (props) => {
                         </span>
                         Cambiar contraseña
                     </Link>
-                    <a className="navbar-item"  onClick={ event=>doLogOut()}>
+                    <a className="navbar-item" onClick={ event=>doLogOut()}>
                         <span className="mr-2"> <FcRight /></span>
                         Cerrar sesión
                     </a>
