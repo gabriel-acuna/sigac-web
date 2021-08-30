@@ -1,10 +1,12 @@
 import { useForm } from "react-hook-form";
 import logo from '../../logo-ies.png';
 import cp_logo from '../../assets/undraw_control_panel1_20gm.png';
-import { useDispatch } from 'react-redux';
-import { signIn } from '../../store/user';
+import { useDispatch, useSelector } from 'react-redux';
+import { signIn, logOut } from '../../store/user';
 import { useState } from "react";
 import Alert from "../Alert";
+import isValid  from "../../services/auth";
+import { useEffect } from "react"
 
 
 let Login = () => {
@@ -16,17 +18,30 @@ let Login = () => {
         margin: "100px auto auto",
     }
 
-    let distpach = useDispatch()
+    let dispatch = useDispatch()
 
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm()
 
     const [error, setError] = useState(null);
+    let  user = useSelector(state => state.user.user)
+
+    useEffect(
+        () => {
+            if (user)
+               if(! isValid(user.jwt))
+                    dispatch(
+                        logOut()
+                    )
+                   
+
+        },[user, dispatch]
+    )
 
     let onSubmit = (data) => {
 
 
-        distpach(
+        dispatch(
             signIn({
                 credentials: data
             })

@@ -13,21 +13,22 @@ import { Outlet, Navigate } from "react-router";
 import ListadoPaises from "./components/admin/options/paises";
 import ListadoProvincias from "./components/admin/options/provincias";
 import ListadoCantonesProvincias from "./components/admin/options/provincias/ListadoCantones";
+import isValid from "./services/auth";
 
 const routes = (user)=> [
     {
         path: "/login",
-        element: !user ? <Login/>: <Navigate to='/'/>
+        element: !user  || !isValid(user.jwt)? <Login/>: <Navigate to='/'/>
     },
     {
         path: "/",
-        element: user ? <Home roles= {user.userInfo.roles}/> : <Navigate to="/login"></Navigate>
+        element: user && isValid(user.jwt)? <Home roles= {user.userInfo.roles}/> : <Navigate to="/login" ></Navigate>
     }, {
         path: "/reset-password",
         element: <NotImplemented/>
     }, {
         path: "/admin",
-        element: user ? <Outlet/> : <Navigate to="/login"></Navigate>,
+        element: user && user && isValid ? <Outlet/> : <Navigate to="/login"></Navigate>,
         children: [
             {
                 path:'/',
