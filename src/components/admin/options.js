@@ -56,7 +56,7 @@ export const options = [
         title: 'Relación IES',
         icon: <GrWorkshop />,
         content: 'Gestione los tipos de relaciones entre profesores y la Intitución de Educaión Superior.',
-        url: '/admin/relacion-ies'
+        url: '/admin/relaciones-ies'
 
     },
     {

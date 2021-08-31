@@ -7,34 +7,34 @@ import Alert from '../../../Alert'
 import { useEffect } from 'react'
 
 let EditarTipoDocumento = (props) => {
-    
+
     let navigate = useNavigate()
     let dispatch = useDispatch()
     const [error, setError] = useState(null)
     const { id } = useParams();
     const { register, handleSubmit, reset, formState: { errors } } = useForm()
     const [response, setResponse] = useState(null)
-    
-    
 
-    
+
+
+
     useEffect(
-        ()=>{
+        () => {
             dispatch(
-                loadTipoDocumento(id)  
+                loadTipoDocumento(id)
             )
-            .then((resp) => {
-                
-                reset({
-                    tipoDocumento: resp.payload.tipo_documento
+                .then((resp) => {
+
+                    reset({
+                        tipoDocumento: resp.payload.tipo_documento
+                    })
                 })
-            })
-            .catch(err=>console.log(err))
-        },[id, dispatch, reset]
+                .catch(err => console.log(err))
+        }, [id, dispatch, reset]
     )
 
     let onSubmit = (data) => {
-        
+
         console.log(data);
         dispatch(
             putTiposDocumentos(
@@ -48,9 +48,16 @@ let EditarTipoDocumento = (props) => {
                 setResponse(resp);
             })
             .catch(
-                (err) => { setError(err); }
+                (err) => {
+                    if (err.meessage === "Cannot read property 'data' of undefined") {
+                        console.error("No hay conexión con el backend");
+                        
+                    }
+
+                    else { setError(err) }
+                }
             )
-       
+
     }
     return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -61,12 +68,16 @@ let EditarTipoDocumento = (props) => {
                     <div className="field">
                         <label className="label is-small">Tipo documento</label>
                         <div className="control">
-                           
-                            
+
+
                             <input type="text" {...register("tipoDocumento", { required: true })} className="input is-samll is-uppercase" />
 
                             {errors.tipoDocumento && <span className="has-text-danger">¡Por favor, Ingrese el tipo documento!</span>}
-                            {error && <span className="has-text-danger">{error.message}</span>}
+                            {
+                                error && <Alert type={'is-danger is-light'} content={error.message}>
+                                    <button className="delete" onClick={event => setError(null)}></button>
+                                </Alert>
+                            }
                             {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
                                 <button className="delete" onClick={event => setResponse(null)}></button>
                             </Alert>}

@@ -26,6 +26,9 @@ import EditarNacionalidad from "./components/admin/options/nacionalidades/Editar
 import ListadoTiposDocumentos from "./components/admin/options/tipos-documentos";
 import RegistrarTipoDocumento from "./components/admin/options/tipos-documentos/RegistarTipoDocumento";
 import EditarTipoDocumento from "./components/admin/options/tipos-documentos/EditarTipoDocumento";
+import ListadorelacionesIES from "./components/admin/options/relaciones-ies";
+import RegistrarRelacion from "./components/admin/options/relaciones-ies/RegistarRelacion";
+import EditarRelacionIES from "./components/admin/options/relaciones-ies/EditarRelacion";
 
 const routes = (user)=> [
     {
@@ -138,8 +141,21 @@ const routes = (user)=> [
                     }
                 ]
             }, {
-                path: '/relacion-ies',
-                element: <NotImplemented/>
+                path: '/relaciones-ies',
+                element: <Outlet/>,
+                children: [
+                    {
+                        path:'/',
+                        element: <ListadorelacionesIES/>
+                    },
+                    {
+                        path: '/registrar',
+                        element: <RegistrarRelacion/>
+                    },{
+                        path:'/editar/:id',
+                        element: <EditarRelacionIES/>
+                    }
+                ]
             }, {
                 path: '/tipo-escalafon',
                 element: <NotImplemented/>

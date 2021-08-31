@@ -27,10 +27,13 @@ let RegistrarTipoDocumento = (props) => {
             })
             .catch(
                 (err) => { 
-                    if (err.meessage ==="Cannot read property 'data' of undefined")
+                    if (err.meessage === "Cannot read property 'data' of undefined") {
                         console.error("No hay conexión con el backend");
-                    else setError(err)
-                 }
+                        
+                    }
+
+                    else { setError(err) }
+                }
             )
 
     }
@@ -47,7 +50,11 @@ let RegistrarTipoDocumento = (props) => {
                         <div className="control">
                             <input type="text" {...register("tipoDocumento", { required: true })} className="input is-samll is-uppercase" />
                             {errors.tipoDocumento && <span className="has-text-danger">¡Por favor, Ingrese la tipo documento!</span>}
-                            {error && <span className="has-text-danger">{error.message}</span>}
+                            {
+                                error && <Alert type={'is-danger is-light'} content={error.message}>
+                                    <button className="delete" onClick={event => setError(null)}></button>
+                                </Alert>
+                            }
                             {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
                                 <button className="delete" onClick={event => setResponse(null)}></button>
                             </Alert>}

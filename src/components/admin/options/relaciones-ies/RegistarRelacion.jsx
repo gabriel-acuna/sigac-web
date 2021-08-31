@@ -2,11 +2,11 @@ import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useState } from 'react'
-import { postNacionalidades } from '../../../../store/core/nacionalidades'
+import { postRelacionesIES } from '../../../../store/core/relacionesIES'
 import Alert from '../../../Alert'
 
 
-let RegistrarNacionalidad = (props) => {
+let RegistrarRelacion = (props) => {
 
     let navigate = useNavigate()
     let dispatch = useDispatch()
@@ -18,22 +18,23 @@ let RegistrarNacionalidad = (props) => {
     let onSubmit = (data) => {
 
         dispatch(
-            postNacionalidades(
-                { nacionalidad: data.nacionalidad.toUpperCase() }
+            postRelacionesIES(
+                { relacion: data.relacionIES.toUpperCase() }
             )
         ).unwrap()
             .then((resp) => {
                 setResponse(resp);
             })
             .catch(
-                (err) => { 
+                (err) => {
                     if (err.meessage === "Cannot read property 'data' of undefined") {
                         console.error("No hay conexión con el backend");
                         
                     }
 
                     else { setError(err) }
-                 }
+                }
+
             )
 
     }
@@ -46,10 +47,10 @@ let RegistrarNacionalidad = (props) => {
 
                 <form className="mt-4" onSubmit={handleSubmit(onSubmit)}>
                     <div className="field">
-                        <label className="label is-small">Nacionalidad</label>
+                        <label className="label is-small">Relación IES</label>
                         <div className="control">
-                            <input type="text" {...register("nacionalidad", { required: true })} className="input is-samll is-uppercase" />
-                            {errors.nacionalidad && <span className="has-text-danger">¡Por favor, Ingrese la nacionalidad!</span>}
+                            <input type="text" {...register("relacionIES", { required: true })} className="input is-samll is-uppercase" />
+                            {errors.relacionIES && <span className="has-text-danger">¡Por favor, Ingrese la relación!</span>}
                             {
                                 error && <Alert type={'is-danger is-light'} content={error.message}>
                                     <button className="delete" onClick={event => setError(null)}></button>
@@ -73,4 +74,4 @@ let RegistrarNacionalidad = (props) => {
     )
 }
 
-export default RegistrarNacionalidad;
+export default RegistrarRelacion;

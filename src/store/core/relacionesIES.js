@@ -77,7 +77,12 @@ export const postRelacionesIES = createAsyncThunk(
             return response.data
 
         } catch (error) {
-            throw error.response
+            let err;
+            if (error.response.data.detail[0].msg)
+                err =error.response.data.detail[0].msg
+            if(error.response.data.type)
+                err = `${error.response.data.type}, ${error.response.data.type.content}`
+            throw  err
         }
 
     }
@@ -105,7 +110,12 @@ export const putRelacionesIES = createAsyncThunk(
             return response.data
 
         } catch (error) {
-            throw error.response
+            let err;
+            if (error.response.data.detail[0].msg)
+                err =error.response.data.detail[0].msg
+            if(error.response.data.type)
+                err = `${error.response.data.type}, ${error.response.data.type.content}`
+            throw  err
         }
 
     }
@@ -139,11 +149,11 @@ export const deleteRelacionesIES = createAsyncThunk(
 )
 
 let RelacionesIESSlice = createSlice({
-    name: 'RelacionesIES',
+    name: 'relacionesIES',
     initialState: {
         data: {
-            relacionesIES: [],
-            relacionIES: null
+            relacionesIES: []
+
         },
         status: ''
 
@@ -152,8 +162,8 @@ let RelacionesIESSlice = createSlice({
 
         clearData: (state) => {
             state.data = {
-                relacionesIES: [],
-                relacionIES: null
+                relacionesIES: []
+               
             }
         }
 
@@ -165,15 +175,7 @@ let RelacionesIESSlice = createSlice({
                 relacionesIES: action.payload
             }
 
-        },
-        [loadRelacionIES.fulfilled]: (state, action) => {
-            state.status = 'success'
-            state.data = {
-                relacionIES: action.payload
-            }
-
         }
-
 
     }
 }

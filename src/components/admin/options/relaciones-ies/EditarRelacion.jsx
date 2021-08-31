@@ -1,44 +1,57 @@
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useState } from 'react'
-import { postNacionalidades } from '../../../../store/core/nacionalidades'
+import { putRelacionesIES, loadRelacionIES } from '../../../../store/core/relacionesIES'
 import Alert from '../../../Alert'
+import { useEffect } from 'react'
 
-
-let RegistrarNacionalidad = (props) => {
-
+let EditarRelacionIES = (props) => {
+    
     let navigate = useNavigate()
     let dispatch = useDispatch()
     const [error, setError] = useState(null)
-    const { register, handleSubmit, formState: { errors } } = useForm()
+    const { id } = useParams();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm()
     const [response, setResponse] = useState(null)
+    
+    
 
+    
+    useEffect(
+        ()=>{
+            dispatch(
+                loadRelacionIES(id)  
+            )
+            .then((resp) => {
+                
+                reset({
+                    relacionIES: resp.payload.relacion
+                })
+            })
+            .catch(err=>console.log(err))
+        },[id, dispatch, reset]
+    )
 
     let onSubmit = (data) => {
-
+        
+        console.log(data);
         dispatch(
-            postNacionalidades(
-                { nacionalidad: data.nacionalidad.toUpperCase() }
+            putRelacionesIES(
+                {
+                    id,
+                    relacion: data.relacionIES.toUpperCase()
+                }
             )
         ).unwrap()
             .then((resp) => {
                 setResponse(resp);
             })
             .catch(
-                (err) => { 
-                    if (err.meessage === "Cannot read property 'data' of undefined") {
-                        console.error("No hay conexión con el backend");
-                        
-                    }
-
-                    else { setError(err) }
-                 }
+                (err) => { setError(err); }
             )
-
+       
     }
-
-
     return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
             <div className="box mt-4 px-2">
@@ -46,15 +59,18 @@ let RegistrarNacionalidad = (props) => {
 
                 <form className="mt-4" onSubmit={handleSubmit(onSubmit)}>
                     <div className="field">
-                        <label className="label is-small">Nacionalidad</label>
+                        <label className="label is-small">Relación IES</label>
                         <div className="control">
-                            <input type="text" {...register("nacionalidad", { required: true })} className="input is-samll is-uppercase" />
-                            {errors.nacionalidad && <span className="has-text-danger">¡Por favor, Ingrese la nacionalidad!</span>}
+                           
+                            
+                            <input type="text" {...register("relacionIES", { required: true })} className="input is-samll is-uppercase" />
+
+                            {errors.relacionIES && <span className="has-text-danger">¡Por favor, Ingrese la relación!</span>}
                             {
                                 error && <Alert type={'is-danger is-light'} content={error.message}>
                                     <button className="delete" onClick={event => setError(null)}></button>
                                 </Alert>
-                            }
+                            } 
                             {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
                                 <button className="delete" onClick={event => setResponse(null)}></button>
                             </Alert>}
@@ -73,4 +89,4 @@ let RegistrarNacionalidad = (props) => {
     )
 }
 
-export default RegistrarNacionalidad;
+export default EditarRelacionIES;
