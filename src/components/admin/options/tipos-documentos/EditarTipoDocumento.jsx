@@ -2,11 +2,11 @@ import { useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useState } from 'react'
-import { putNacionalidades, loadNacionalidad } from '../../../../store/core/nacionalidades'
+import { putTiposDocumentos, loadTipoDocumento } from '../../../../store/core/tiposDocumentos'
 import Alert from '../../../Alert'
 import { useEffect } from 'react'
 
-let EditarNacionalidad = (props) => {
+let EditarTipoDocumento = (props) => {
     
     let navigate = useNavigate()
     let dispatch = useDispatch()
@@ -21,12 +21,12 @@ let EditarNacionalidad = (props) => {
     useEffect(
         ()=>{
             dispatch(
-                loadNacionalidad(id)  
+                loadTipoDocumento(id)  
             )
             .then((resp) => {
                 
                 reset({
-                    nacionalidad: resp.payload.nacionalidad
+                    tipoDocumento: resp.payload.tipo_documento
                 })
             })
             .catch(err=>console.log(err))
@@ -37,10 +37,10 @@ let EditarNacionalidad = (props) => {
         
         console.log(data);
         dispatch(
-            putNacionalidades(
+            putTiposDocumentos(
                 {
                     id,
-                    nacionalidad: data.nacionalidad.toUpperCase()
+                    tipo_documento: data.tipoDocumento.toUpperCase()
                 }
             )
         ).unwrap()
@@ -59,13 +59,13 @@ let EditarNacionalidad = (props) => {
 
                 <form className="mt-4" onSubmit={handleSubmit(onSubmit)}>
                     <div className="field">
-                        <label className="label is-small">Nacionalidad</label>
+                        <label className="label is-small">Tipo documento</label>
                         <div className="control">
                            
                             
-                            <input type="text" {...register("nacionalidad", { required: true })} className="input is-samll is-uppercase" />
+                            <input type="text" {...register("tipoDocumento", { required: true })} className="input is-samll is-uppercase" />
 
-                            {errors.nacionalidad && <span className="has-text-danger">¡Por favor, Ingrese la nacionalidad!</span>}
+                            {errors.tipoDocumento && <span className="has-text-danger">¡Por favor, Ingrese el tipo documento!</span>}
                             {error && <span className="has-text-danger">{error.message}</span>}
                             {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
                                 <button className="delete" onClick={event => setResponse(null)}></button>
@@ -85,4 +85,4 @@ let EditarNacionalidad = (props) => {
     )
 }
 
-export default EditarNacionalidad;
+export default EditarTipoDocumento;

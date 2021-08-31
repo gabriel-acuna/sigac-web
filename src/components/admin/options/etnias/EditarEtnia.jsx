@@ -65,7 +65,7 @@ let EditarEtnia = (props) => {
 
                             {errors.etnia && <span className="has-text-danger">¡Por favor, Ingrese la etnia!</span>}
                             {error && <span className="has-text-danger">{error.message}</span>}
-                            {response && response.type == 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                            {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
                                 <button className="delete" onClick={event => setResponse(null)}></button>
                             </Alert>}
                             {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>

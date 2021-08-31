@@ -77,7 +77,12 @@ export const postTiposDocumentos = createAsyncThunk(
             return response.data
 
         } catch (error) {
-            throw error.response
+            let err;
+            if (error.response.data.detail[0].msg)
+                err = error.response.data.detail[0].msg
+            if (error.response.data.type)
+                err = `${error.response.data.type}, ${error.response.data.type.content}`
+            throw err
         }
 
     }
@@ -105,7 +110,12 @@ export const putTiposDocumentos = createAsyncThunk(
             return response.data
 
         } catch (error) {
-            throw error.response
+            let err;
+            if (error.response.data.detail[0].msg)
+                err = error.response.data.detail[0].msg
+            if (error.response.data.type)
+                err = `${error.response.data.type}, ${error.response.data.type.content}`
+            throw err
         }
 
     }
@@ -142,8 +152,8 @@ let tiposDocumentosSlice = createSlice({
     name: 'tiposDocumentos',
     initialState: {
         data: {
-            tiposDocumentos: [],
-            tipoDocumento: null
+            tiposDocumentos: []
+
         },
         status: ''
 
@@ -152,8 +162,8 @@ let tiposDocumentosSlice = createSlice({
 
         clearData: (state) => {
             state.data = {
-                tiposDocumentos: [],
-                tipoDocumento: null
+                tiposDocumentos: []
+
             }
         }
 
@@ -162,18 +172,10 @@ let tiposDocumentosSlice = createSlice({
         [loadTiposDocumentos.fulfilled]: (state, action) => {
             state.status = 'success'
             state.data = {
-                    tiposDocumentos: action.payload
-                }
-
-        },
-        [loadTipoDocumento.fulfilled]: (state, action) => {
-            state.status = 'success'
-            state.data = {
-                    tipoDocumento: action.payload
-                }
+                tiposDocumentos: action.payload
+            }
 
         }
-
 
     }
 }

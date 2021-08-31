@@ -23,6 +23,9 @@ import EditarEtnia from "./components/admin/options/etnias/EditarEtnia";
 import ListadoNacionalidades from "./components/admin/options/nacionalidades";
 import RegistrarNacionalidad from "./components/admin/options/nacionalidades/RegistarNacionalidad";
 import EditarNacionalidad from "./components/admin/options/nacionalidades/EditarNacionalidad";
+import ListadoTiposDocumentos from "./components/admin/options/tipos-documentos";
+import RegistrarTipoDocumento from "./components/admin/options/tipos-documentos/RegistarTipoDocumento";
+import EditarTipoDocumento from "./components/admin/options/tipos-documentos/EditarTipoDocumento";
 
 const routes = (user)=> [
     {
@@ -120,7 +123,20 @@ const routes = (user)=> [
                 ]
             }, {
                 path: '/tipos-documentos',
-                element: <NotImplemented/>
+                element: <Outlet/>,
+                children: [
+                    {
+                        path:'/',
+                        element: <ListadoTiposDocumentos/>
+                    },
+                    {
+                        path: '/registrar',
+                        element: <RegistrarTipoDocumento/>
+                    },{
+                        path:'/editar/:id',
+                        element: <EditarTipoDocumento/>
+                    }
+                ]
             }, {
                 path: '/relacion-ies',
                 element: <NotImplemented/>

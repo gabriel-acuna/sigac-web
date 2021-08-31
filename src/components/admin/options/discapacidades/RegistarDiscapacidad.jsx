@@ -11,7 +11,7 @@ let RegistrarDiscapacidad = (props) => {
     let navigate = useNavigate()
     let dispatch = useDispatch()
     const [error, setError] = useState(null)
-    const { register, handleSubmit, watch, formState: { errors } } = useForm()
+    const { register, handleSubmit, formState: { errors } } = useForm()
     const [response, setResponse] = useState(null)
     
     let onSubmit = (data) => {

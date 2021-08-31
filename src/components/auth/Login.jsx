@@ -21,7 +21,7 @@ let Login = () => {
     let dispatch = useDispatch()
 
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm()
+    const { register, handleSubmit, formState: { errors } } = useForm()
 
     const [error, setError] = useState(null);
     let  user = useSelector(state => state.user.user)
@@ -47,7 +47,7 @@ let Login = () => {
             })
         ).unwrap()
         .catch((err) => {
-            if (err.meessage ="Cannot read property 'data' of undefined")
+            if (err.meessage ==="Cannot read property 'data' of undefined")
                 console.error("No hay conexión con el backend");
             else setError(err)
 
