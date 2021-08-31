@@ -2,13 +2,13 @@ import ReactDatatable from '@yun548/bulma-react-datatable'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
-import { loadDiscapacidades, clearData, deleteDiscapacidades } from '../../../../store/core/discapacidades'
+import { loadNacionalidades, clearData, deleteNacionalidades } from '../../../../store/core/nacionalidades'
 import ConfirmDialog from '../../../ConfirmDialog'
 import Alert from '../../../Alert'
 
 
 
-let ListadoDiscapacidades = (props) => {
+let ListadoNacionalidades = (props) => {
     
     let navigate = useNavigate()
     let dispatch = useDispatch()
@@ -16,7 +16,7 @@ let ListadoDiscapacidades = (props) => {
     useEffect(
         () => {
             dispatch(
-                loadDiscapacidades()
+                loadNacionalidades()
             ).unwrap()
                 .catch(
                     (err) => console.log(err)
@@ -25,14 +25,13 @@ let ListadoDiscapacidades = (props) => {
     )
 
     const columns = [
-        { key: 'discapacidad', text: 'Discapacidad', sortable: true },
+        { key: 'nacionalidad', text: 'Nacionalidad', sortable: true },
         { key: 'opciones', text: 'Opciones', sortable: true }
     ]
-    let discapacidadesState = useSelector(state => state.discapacidades.data.discapacidades)
+    let nacionalidadesState = useSelector(state => state.nacionalidades.data.nacionalidades)
 
     const [response, setResponse] = useState(null)
     const [showModal, setShowModal] = useState(false)
-   
     const [id, setId] = useState(null)
 
     let deleteHandler = (id) => {
@@ -43,26 +42,25 @@ let ListadoDiscapacidades = (props) => {
 
     let doDelete = () =>{
         dispatch(
-            deleteDiscapacidades(id)
+            deleteNacionalidades(id)
 
         ).unwrap()
             .then(resp => {
                 setResponse(resp)
                 dispatch(
-                    loadDiscapacidades()
+                    loadNacionalidades()
                 )
-
             }).catch(
                 (err) => console.error(err)
             )
     }
 
-    let rows = discapacidadesState.map(
+    let rows = nacionalidadesState.map(
         (row, index) => {
             return {
-                discapacidad: row.discapacidad,
+                nacionalidad: row.nacionalidad,
                 opciones: [
-                    <Link className="button is-small is-primary mx-2" to={`/admin/discapacidades/editar/${row.id}`} key={`${row.id}0`}>Editar</Link>,
+                    <Link className="button is-small is-primary mx-2" to={`/admin/nacionalidades/editar/${row.id}`} key={`${row.id}0`}>Editar</Link>,
                     <button className="button is-small is-danger mx-2" onClick={event => {
                         deleteHandler(row.id)
                     }}>Eliminar</button>
@@ -84,7 +82,7 @@ let ListadoDiscapacidades = (props) => {
                         }}>Regresar</button>
 
                     <Link className="button is-small is-success mt-4"
-                        to="/admin/discapacidades/registrar">Registar discapacidad</Link>
+                        to="/admin/nacionalidades/registrar">Registar nacionalidad</Link>
                 </div>
                 {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
                                 <button className="delete" onClick={event => setResponse(null)}></button>
@@ -107,10 +105,10 @@ let ListadoDiscapacidades = (props) => {
                                 print: false
                             },
                             language: {
-                                length_menu: "Mostrar _MENU_ discapacidades por página",
+                                length_menu: "Mostrar _MENU_ nacionalidades por página",
                                 filter: "Buscar en registros ...",
-                                no_data_text: "No hay discapacidades registradas",
-                                info: "Mostrando _START_ a _END_ de _TOTAL_ discapacidades",
+                                no_data_text: "No hay nacionalidades registradas",
+                                info: "Mostrando _START_ a _END_ de _TOTAL_ nacionalidades",
                                 pagination: {
                                     first: "Primera",
                                     previous: "Anterior",
@@ -126,7 +124,7 @@ let ListadoDiscapacidades = (props) => {
             </div>
             {
                 showModal &&
-                <ConfirmDialog info="la discapacidad" title="Eliminar discapacidad">
+                <ConfirmDialog info="la nacionalidad" title="Eliminar nacionalidad">
 
                     <button className="button is-small is-danger is-pulled-left" onClick={event => setShowModal(false)}> Cancelar</button>
                     <button className="button is-small is-success is-pulled-rigth" onClick={event => {
@@ -138,4 +136,4 @@ let ListadoDiscapacidades = (props) => {
     )
 }
 
-export default ListadoDiscapacidades;
+export default ListadoNacionalidades;

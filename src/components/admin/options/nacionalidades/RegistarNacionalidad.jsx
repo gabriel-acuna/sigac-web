@@ -2,23 +2,24 @@ import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useState } from 'react'
-import { postDiscapacidades } from '../../../../store/core/discapacidades'
+import { postNacionalidades } from '../../../../store/core/nacionalidades'
 import Alert from '../../../Alert'
 
 
-let RegistrarDiscapacidad = (props) => {
+let RegistrarNacionalidad = (props) => {
 
     let navigate = useNavigate()
     let dispatch = useDispatch()
     const [error, setError] = useState(null)
     const { register, handleSubmit, watch, formState: { errors } } = useForm()
     const [response, setResponse] = useState(null)
-    
+
+
     let onSubmit = (data) => {
 
         dispatch(
-            postDiscapacidades(
-                { discapacidad: data.discapacidad.toUpperCase() }
+            postNacionalidades(
+                { nacionalidad: data.nacionalidad.toUpperCase() }
             )
         ).unwrap()
             .then((resp) => {
@@ -38,10 +39,10 @@ let RegistrarDiscapacidad = (props) => {
 
                 <form className="mt-4" onSubmit={handleSubmit(onSubmit)}>
                     <div className="field">
-                        <label className="label is-small">Discapacidad</label>
+                        <label className="label is-small">Nacionalidad</label>
                         <div className="control">
-                            <input type="text" {...register("discapacidad", { required: true })} className="input is-samll is-uppercase" />
-                            {errors.discapacidad && <span className="has-text-danger">¡Por favor, Ingrese la discapacidad!</span>}
+                            <input type="text" {...register("nacionalidad", { required: true })} className="input is-samll is-uppercase" />
+                            {errors.nacionalidad && <span className="has-text-danger">¡Por favor, Ingrese la nacionalidad!</span>}
                             {error && <span className="has-text-danger">{error.message}</span>}
                             {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
                                 <button className="delete" onClick={event => setResponse(null)}></button>
@@ -61,4 +62,4 @@ let RegistrarDiscapacidad = (props) => {
     )
 }
 
-export default RegistrarDiscapacidad;
+export default RegistrarNacionalidad;

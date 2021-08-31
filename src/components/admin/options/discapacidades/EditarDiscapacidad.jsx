@@ -5,7 +5,9 @@ import { useState } from 'react'
 import { putDiscapacidades, loadDiscapacidad } from '../../../../store/core/discapacidades'
 import Alert from '../../../Alert'
 import { useEffect } from 'react'
+
 let EditarDiscapacidad = (props) => {
+    
     let navigate = useNavigate()
     let dispatch = useDispatch()
     const [error, setError] = useState(null)

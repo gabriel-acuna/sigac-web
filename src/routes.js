@@ -20,6 +20,9 @@ import EditarDiscapacidad from "./components/admin/options/discapacidades/Editar
 import ListadoEtnias from "./components/admin/options/etnias";
 import RegistrarEtnia from "./components/admin/options/etnias/RegistarEtnia";
 import EditarEtnia from "./components/admin/options/etnias/EditarEtnia";
+import ListadoNacionalidades from "./components/admin/options/nacionalidades";
+import RegistrarNacionalidad from "./components/admin/options/nacionalidades/RegistarNacionalidad";
+import EditarNacionalidad from "./components/admin/options/nacionalidades/EditarNacionalidad";
 
 const routes = (user)=> [
     {
@@ -101,7 +104,20 @@ const routes = (user)=> [
                 ]
             }, {
                 path: '/nacionalidades',
-                element: <NotImplemented/>
+                element: <Outlet/>,
+                children: [
+                    {
+                        path:'/',
+                        element: <ListadoNacionalidades/>
+                    },
+                    {
+                        path: '/registrar',
+                        element: <RegistrarNacionalidad/>
+                    },{
+                        path:'/editar/:id',
+                        element: <EditarNacionalidad/>
+                    }
+                ]
             }, {
                 path: '/tipos-documentos',
                 element: <NotImplemented/>

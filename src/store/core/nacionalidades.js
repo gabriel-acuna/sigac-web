@@ -77,7 +77,12 @@ export const postNacionalidades = createAsyncThunk(
             return response.data
 
         } catch (error) {
-            throw error.response
+            let err;
+            if (error.response.data.detail[0].msg)
+                err =error.response.data.detail[0].msg
+            if(error.response.data.type)
+                err = `${error.response.data.type}, ${error.response.data.type.content}`
+            throw  err
         }
 
     }
@@ -105,7 +110,12 @@ export const putNacionalidades = createAsyncThunk(
             return response.data
 
         } catch (error) {
-            throw error.response
+            let err;
+            if (error.response.data.detail[0].msg)
+                err =error.response.data.detail[0].msg
+            if(error.response.data.type)
+                err = `${error.response.data.type}, ${error.response.data.type.content}`
+            throw  err
         }
 
     }
@@ -142,8 +152,8 @@ let nacionalidadesSlice = createSlice({
     name: 'nacionalidades',
     initialState: {
         data: {
-            nacionalidades: [],
-            nacionalidad: null
+            nacionalidades: []
+            
         },
         status: ''
 
@@ -152,8 +162,8 @@ let nacionalidadesSlice = createSlice({
 
         clearData: (state) => {
             state.data = {
-                nacionalidades: [],
-                nacionalidad: null
+                nacionalidades: []
+               
             }
         }
 
@@ -163,12 +173,6 @@ let nacionalidadesSlice = createSlice({
             state.status = 'success'
             state.data = {
                 nacionalidades: action.payload
-            }
-                
-        }, [loadNacionalidad.fulfilled]: (state, action) => {
-            state.status = 'success'
-            state.data = {
-                nacionalidad: action.payload
             }
                 
         }
