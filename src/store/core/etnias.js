@@ -6,8 +6,8 @@ import {
 import Axios from 'axios'
 import { API } from '../../services/api'
 
-export const loadEtinas = createAsyncThunk(
-    'etinas/load',
+export const loadEtnias = createAsyncThunk(
+    'etnias/load',
     async (_, { getState }) => {
         let token;
         try {
@@ -17,7 +17,7 @@ export const loadEtinas = createAsyncThunk(
         }
 
         try {
-            let response = await Axios.get(`${API}/etinas`,
+            let response = await Axios.get(`${API}/etnias`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -42,7 +42,7 @@ export const loadEtnia = createAsyncThunk(
         }
 
         try {
-            let response = await Axios.get(`${API}/etinas/${id}`,
+            let response = await Axios.get(`${API}/etnias/${id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -56,8 +56,8 @@ export const loadEtnia = createAsyncThunk(
     }
 )
 
-export const postEtinas = createAsyncThunk(
-    'etinas/post',
+export const postEtnias = createAsyncThunk(
+    'etnias/post',
     async (etnia, { getState }) => {
         let token;
         try {
@@ -68,7 +68,7 @@ export const postEtinas = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.post(`${API}/etinas`, etnia,
+            let response = await Axios.post(`${API}/etnias`, etnia,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -77,15 +77,20 @@ export const postEtinas = createAsyncThunk(
             return response.data
 
         } catch (error) {
-            throw error.response
+            let err;
+            if (error.response.data.detail[0].msg)
+                err =error.response.data.detail[0].msg
+            if(error.response.data.type)
+                err = `${error.response.data.type}, ${error.response.data.type.content}`
+            throw  err
         }
 
     }
 
 )
 
-export const putEtinas = createAsyncThunk(
-    'etinas/put',
+export const putEtnias = createAsyncThunk(
+    'etnias/put',
     async (etnia, { getState }) => {
         let token;
         try {
@@ -96,7 +101,7 @@ export const putEtinas = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.put(`${API}/etinas`, etnia,
+            let response = await Axios.put(`${API}/etnias`, etnia,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -105,14 +110,19 @@ export const putEtinas = createAsyncThunk(
             return response.data
 
         } catch (error) {
-            throw error.response
+            let err;
+            if (error.response.data.detail[0].msg)
+                err =error.response.data.detail[0].msg
+            if(error.response.data.type)
+                err = `${error.response.data.type}, ${error.response.data.type.content}`
+            throw  err
         }
 
     }
 )
 
-export const deleteEtinas = createAsyncThunk(
-    'etinas/delete',
+export const deleteEtnias = createAsyncThunk(
+    'etnias/delete',
     async (id, { getState }) => {
         let token;
         try {
@@ -123,7 +133,7 @@ export const deleteEtinas = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.delete(`${API}/etinas/${id}`,
+            let response = await Axios.delete(`${API}/etnias/${id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -139,7 +149,7 @@ export const deleteEtinas = createAsyncThunk(
 )
 
 let etniasSlice = createSlice({
-    name: 'etinas',
+    name: 'etnias',
     initialState: {
         data: {
             etnias: [],
@@ -152,25 +162,17 @@ let etniasSlice = createSlice({
 
         clearData: (state) => {
             state.data = {
-                etnias: [],
-                etnia: null
+                etnias: []
+               
             }
         }
 
     },
     extraReducers: {
-        [loadEtinas.fulfilled]: (state, action) => {
+        [loadEtnias.fulfilled]: (state, action) => {
             state.status = 'success'
             state.data = {
                     etnias: action.payload
-                }
-
-        },
-        [loadEtnia.fulfilled]: (state, action) => {
-            state.status = 'success'
-            state.data = {
-                   
-                    etnia: action.payload
                 }
 
         }

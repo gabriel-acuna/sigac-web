@@ -2,11 +2,11 @@ import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useState } from 'react'
-import { postDiscapacidades } from '../../../../store/core/discapacidades'
+import { postEtnias } from '../../../../store/core/etnias'
 import Alert from '../../../Alert'
 
 
-let RegistrarDiscapacidad = (props) => {
+let RegistrarEtnia = (props) => {
 
     let navigate = useNavigate()
     let dispatch = useDispatch()
@@ -16,8 +16,8 @@ let RegistrarDiscapacidad = (props) => {
     let onSubmit = (data) => {
 
         dispatch(
-            postDiscapacidades(
-                { discapacidad: data.discapacidad.toUpperCase() }
+            postEtnias(
+                { etnia: data.etnia.toUpperCase() }
             )
         ).unwrap()
             .then((resp) => {
@@ -37,10 +37,10 @@ let RegistrarDiscapacidad = (props) => {
 
                 <form className="mt-4" onSubmit={handleSubmit(onSubmit)}>
                     <div className="field">
-                        <label className="label is-small">Discapacidad</label>
+                        <label className="label is-small">Etnia</label>
                         <div className="control">
-                            <input type="text" {...register("discapacidad", { required: true })} className="input is-samll is-uppercase" />
-                            {errors.discapacidad && <span className="has-text-danger">¡Por favor, Ingrese la discapacidad!</span>}
+                            <input type="text" {...register("etnia", { required: true })} className="input is-samll is-uppercase" />
+                            {errors.etnia && <span className="has-text-danger">¡Por favor, Ingrese la etnia!</span>}
                             {error && <span className="has-text-danger">{error.message}</span>}
                             {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
                                 <button className="delete" onClick={event => setResponse(null)}></button>
@@ -60,4 +60,4 @@ let RegistrarDiscapacidad = (props) => {
     )
 }
 
-export default RegistrarDiscapacidad;
+export default RegistrarEtnia;

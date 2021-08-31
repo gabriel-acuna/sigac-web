@@ -25,7 +25,7 @@ let Home = (props) => {
                             <select>
                                 <option></option>
                                 {
-                                    props.roles.map(
+                                   props.roles && props.roles.map(
                                         (rol, index) =>
                                         (
                                             <option value={rol} key={index+1}>{rol}</option>

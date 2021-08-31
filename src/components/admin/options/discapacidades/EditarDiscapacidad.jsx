@@ -12,7 +12,7 @@ let EditarDiscapacidad = (props) => {
     const { id } = useParams();
     const { register, handleSubmit, reset, formState: { errors } } = useForm()
     const [response, setResponse] = useState(null)
-    const [discapacidadResp, setDiscapacidadResp] = useState(null)
+   
     
 
     
@@ -65,10 +65,10 @@ let EditarDiscapacidad = (props) => {
 
                             {errors.discapacidad && <span className="has-text-danger">¡Por favor, Ingrese la discapacidad!</span>}
                             {error && <span className="has-text-danger">{error.message}</span>}
-                            {response && response.type == 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                            {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
                                 <button className="delete" onClick={event => setResponse(null)}></button>
                             </Alert>}
-                            {response && response.type == 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                            {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
                                 <button className="delete" onClick={event => setResponse(null)}></button>
                             </Alert>}
 
