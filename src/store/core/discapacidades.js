@@ -5,7 +5,7 @@ import {
 
 import Axios from 'axios'
 import { API } from '../../services/api'
-import provincias from './provincias';
+
 
 export const loadDiscapacidades = createAsyncThunk(
     'discapacidades/load',
@@ -78,7 +78,13 @@ export const postDiscapacidades = createAsyncThunk(
             return response.data
 
         } catch (error) {
-            throw error.response
+    
+            let err;
+            if (error.response.data.detail[0].msg)
+                err =error.response.data.detail[0].msg
+            if(error.response.data.type)
+                err = `${error.response.data.type}, ${error.response.data.type.content}`
+            throw  err
         }
 
     }
@@ -106,7 +112,12 @@ export const putDiscapacidades = createAsyncThunk(
             return response.data
 
         } catch (error) {
-            throw error.response
+            let err;
+            if (error.response.data.detail[0].msg)
+                err =error.response.data.detail[0].msg
+            if(error.response.data.type)
+                err = `${error.response.data.type}, ${error.response.data.type.content}`
+            throw  err
         }
 
     }
@@ -143,8 +154,8 @@ let discapacidadSlice = createSlice({
     name: 'discapacidades',
     initialState: {
         data: {
-            discapacidades: [],
-            discapcidad: null
+            discapacidades: []
+            
         },
         status: ''
 
@@ -154,7 +165,7 @@ let discapacidadSlice = createSlice({
         clearData: (state) => {
             state.data = {
                 discapacidades: [],
-                discapacidad: null,
+                
             }
         }
 
@@ -163,11 +174,8 @@ let discapacidadSlice = createSlice({
         [loadDiscapacidades.fulfilled]: (state, action) => {
             state.status = 'success'
             state.data = { discapacidades: action.payload }
-        },
-        [loadDiscapacidad.fulfilled]: (state, action) => {
-            state.status = 'success'
-            state.data = {discapcidad: action.payload }
         }
+       
 
     }
 })

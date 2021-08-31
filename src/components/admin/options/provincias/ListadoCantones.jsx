@@ -33,11 +33,15 @@ let ListadoCantonesProvincias = (props) => {
     return (
 
 
-        < div className="conatiner" >
-            <button className="button is-small is-info mt-4" onClick={event => {
-                navigate(-1);
-                distpatch(clearData())
-            }}>Regresar</button>
+        <div className="conatiner" >
+            <div className="columns is-centered">
+                <div className="column is-half">
+                    <button className="button is-small is-info mt-4 mx-3" onClick={event => {
+                        navigate(-1);
+                        distpatch(clearData())
+                    }}>Regresar</button>
+                </div>
+            </div>
             <div className="columns is-centered">
                 <div className="column is-half">
                     <ReactDatatable style={{ justifyContent: 'center' }}
@@ -64,7 +68,7 @@ let ListadoCantonesProvincias = (props) => {
                                 }
                             }
                         }}
-                        records={  cantonesProvinciasState }
+                        records={cantonesProvinciasState}
                         columns={columns}
                     />
                 </div>

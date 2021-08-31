@@ -8,20 +8,20 @@ import { loadPaises, clearData } from '../../../../store/core/paises';
 let ListadoPaises = (props) => {
 
     let navigate = useNavigate()
-    let distpatch = useDispatch()
+    let dispatch = useDispatch()
 
 
 
     useEffect(
         () => {
-            distpatch(
+            dispatch(
                 loadPaises()
 
             ).unwrap()
                 .catch(
                     (err) => console.error(err)
                 )
-        }, [distpatch]
+        }, [dispatch]
     )
 
     const columns = [
@@ -36,11 +36,15 @@ let ListadoPaises = (props) => {
 
     return (
         <div className="conatiner">
-            <button className="button is-small is-info mt-4"
-                onClick={event => {
-                    navigate(-1);
-                    distpatch(clearData())
-                }}>Regresar</button>
+            <div className="columns is-centered">
+                <div className="column is-half">
+                    <button className="button is-small is-info mt-4 mx-3"
+                        onClick={event => {
+                            navigate(-1);
+                            dispatch(clearData())
+                        }}>Regresar</button>
+                </div>
+            </div>
             <div className="columns is-centered">
                 <div className="column is-half">
                     <ReactDatatable style={{ justifyContent: 'center' }}

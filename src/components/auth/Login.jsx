@@ -46,7 +46,13 @@ let Login = () => {
                 credentials: data
             })
         ).unwrap()
-        .catch((err) => setError(err.message))
+        .catch((err) => {
+            if (err.meessage ="Cannot read property 'data' of undefined")
+                console.error("No hay conexión con el backend");
+            else setError(err)
+
+            
+        })
 
 
 

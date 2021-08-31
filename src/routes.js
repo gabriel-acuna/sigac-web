@@ -14,6 +14,9 @@ import ListadoPaises from "./components/admin/options/paises";
 import ListadoProvincias from "./components/admin/options/provincias";
 import ListadoCantonesProvincias from "./components/admin/options/provincias/ListadoCantones";
 import isValid from "./services/auth";
+import ListadoDiscapacidades from "./components/admin/options/discapacidades";
+import RegistrarDiscapacidad from "./components/admin/options/discapacidades/RegistarDiscapacidad";
+import EditarDiscapacidad from "./components/admin/options/discapacidades/EditarDiscapacidad";
 
 const routes = (user)=> [
     {
@@ -62,7 +65,21 @@ const routes = (user)=> [
             },
             {
                 path: '/discapacidades',
-                element: <NotImplemented/>
+                element: <Outlet/>,
+                children: [
+                    {
+                        path:'/',
+                        element: <ListadoDiscapacidades/>
+                    },
+                    {
+                        path:'/registrar',
+                        element:<RegistrarDiscapacidad/>
+                    },
+                    {
+                        path:'/editar/:id',
+                        element:<EditarDiscapacidad/>
+                    }
+                ]
             }, {
                 path: '/etnias',
                 element: <NotImplemented/>

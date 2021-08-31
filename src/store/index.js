@@ -38,7 +38,7 @@ const reducer = combineReducers({
     user: userReducer,
     paises: paisesReducer,
     provincias: provinciasReducer,
-    discpacidades: discapacidadesReducer,
+    discapacidades: discapacidadesReducer,
     etnias: etniasReducer,
     nacionalidades: nacionalidadesReducer,
     tiposDocumentos: tiposDocumentosReducer,
