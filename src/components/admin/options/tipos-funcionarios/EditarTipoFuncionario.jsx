@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { putTiposFuncionarios, loadTipoFuncionario } from '../../../../store/core/tiposFuncionarios'
 import Alert from '../../../Alert'
 import { useEffect } from 'react'
+import { logOut } from '../../../../store/user'
 
 let EditarTipoFuncionario = (props) => {
 
@@ -52,6 +53,11 @@ let EditarTipoFuncionario = (props) => {
                     if (err.messsage === "Cannot read property 'data' of undefined") {
                         console.error("No hay conexión con el backend");
                         
+                    }else if(err.message==="Rejected"){
+                        dispatch(
+                            logOut()
+                
+                        )
                     }
 
                     else { setError(err) }

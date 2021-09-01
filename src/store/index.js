@@ -48,7 +48,7 @@ const reducer = combineReducers({
     tiemposDedicaciones: tiemposDedicacionesReducer,
     nivelesEducativos: nivelesEdutativosReducer,
     tiposFuncionarios: tiposFuncionariosReducer,
-    tiposDocentesLOESReducer: tiposDocentesLOESReducer,
+    tiposDocentesLOES: tiposDocentesLOESReducer,
     categoriasDocentesLOSEP: categoriasDocentesLOSEPReducer
 
 

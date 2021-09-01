@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { putEtnias, loadEtnia } from '../../../../store/core/etnias'
 import Alert from '../../../Alert'
 import { useEffect } from 'react'
+import { logOut } from '../../../../store/user'
 let EditarEtnia = (props) => {
     let navigate = useNavigate()
     let dispatch = useDispatch()
@@ -50,6 +51,10 @@ let EditarEtnia = (props) => {
                     if (err.messsage === "Cannot read property 'data' of undefined") {
                         console.error("No hay conexión con el backend");
                         
+                    }else if(err.message==="Rejected"){
+                        dispatch(
+                            logOut()
+                        )
                     }
 
                     else { setError(err) }

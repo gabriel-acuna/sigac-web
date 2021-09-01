@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { useState } from 'react'
 import { postTiposDocumentos } from '../../../../store/core/tiposDocumentos'
 import Alert from '../../../Alert'
+import { logOut } from '../../../../store/user'
 
 
 let RegistrarTipoDocumento = (props) => {
@@ -30,6 +31,11 @@ let RegistrarTipoDocumento = (props) => {
                     if (err.messsage === "Cannot read property 'data' of undefined") {
                         console.error("No hay conexión con el backend");
                         
+                    }else if(err.message==="Rejected"){
+                        dispatch(
+                            logOut()
+                
+                        )
                     }
 
                     else { setError(err) }

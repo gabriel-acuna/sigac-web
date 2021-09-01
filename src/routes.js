@@ -44,6 +44,9 @@ import EditarNivelEducativo from "./components/admin/options/niveles-educativos/
 import ListadoTiposFuncionarios from "./components/admin/options/tipos-funcionarios";
 import RegistrarTipoFuncionario from "./components/admin/options/tipos-funcionarios/RegistrarTipoFuncionario";
 import EditarTipoFuncionario from "./components/admin/options/tipos-funcionarios/EditarTipoFuncionario";
+import ListadoTiposDocentes from "./components/admin/options/tipos-docentes";
+import RegistrarTipoDocente from "./components/admin/options/tipos-docentes/RegistrarTipoDocente";
+import EditarTipoDocente from "./components/admin/options/tipos-docentes/EditarTipoDocente";
 
 const routes = (user)=> [
     {
@@ -254,8 +257,21 @@ const routes = (user)=> [
                 ]
             },
             {
-                path: '/tipo-docente',
-                element: <NotImplemented/>
+                path: '/tipos-docentes',
+                element: <Outlet/>,
+                children:[
+                    {
+                        path: '/',
+                        element: <ListadoTiposDocentes/>
+                    },{
+                        path:'/registrar',
+                        element: <RegistrarTipoDocente/>
+                    },
+                    {
+                        path: '/editar/:id',
+                        element:<EditarTipoDocente/>
+                    }
+                ]
             }, {
                 path: '/categoria-docente',
                 element: <NotImplemented/>

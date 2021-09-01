@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { useState } from 'react'
 import { postTiposFuncionarios } from '../../../../store/core/tiposFuncionarios'
 import Alert from '../../../Alert'
+import { logOut } from '../../../../store/user'
 
 
 let RegistrarTipoFuncionario = (props) => {
@@ -29,7 +30,12 @@ let RegistrarTipoFuncionario = (props) => {
                 (err) => {
                     if (err.messsage === "Cannot read property 'data' of undefined") {
                         console.error("No hay conexión con el backend");
-
+                        
+                    }else if(err.message==="Rejected"){
+                        dispatch(
+                            logOut()
+                
+                        )
                     }
 
                     else { setError(err) }

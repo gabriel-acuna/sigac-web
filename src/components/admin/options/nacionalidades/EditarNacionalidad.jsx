@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { putNacionalidades, loadNacionalidad } from '../../../../store/core/nacionalidades'
 import Alert from '../../../Alert'
 import { useEffect } from 'react'
+import { logOut } from '../../../../store/user'
 
 let EditarNacionalidad = (props) => {
     
@@ -52,6 +53,10 @@ let EditarNacionalidad = (props) => {
                     if (err.messsage === "Cannot read property 'data' of undefined") {
                         console.error("No hay conexión con el backend");
                         
+                    }else if(err.message==="Rejected"){
+                        dispatch(
+                            logOut()
+                        )
                     }
 
                     else { setError(err) }

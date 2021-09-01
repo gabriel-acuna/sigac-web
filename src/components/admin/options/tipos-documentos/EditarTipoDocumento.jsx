@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { putTiposDocumentos, loadTipoDocumento } from '../../../../store/core/tiposDocumentos'
 import Alert from '../../../Alert'
 import { useEffect } from 'react'
+import { logOut } from '../../../../store/user'
 
 let EditarTipoDocumento = (props) => {
 
@@ -52,6 +53,11 @@ let EditarTipoDocumento = (props) => {
                     if (err.messsage === "Cannot read property 'data' of undefined") {
                         console.error("No hay conexión con el backend");
                         
+                    }else if(err.message==="Rejected"){
+                        dispatch(
+                            logOut()
+                
+                        )
                     }
 
                     else { setError(err) }

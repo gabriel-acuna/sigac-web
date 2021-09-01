@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { putTiemposDedicacionesProfesores, loadTiempoDedicacionProfesores } from '../../../../store/core/tiemposDedicaciones'
 import Alert from '../../../Alert'
 import { useEffect } from 'react'
+import { logOut } from '../../../../store/user'
 
 let EditarTiempoDedicacion = (props) => {
 
@@ -52,6 +53,11 @@ let EditarTiempoDedicacion = (props) => {
                     if (err.messsage === "Cannot read property 'data' of undefined") {
                         console.error("No hay conexión con el backend");
                         
+                    }else if(err.message==="Rejected"){
+                        dispatch(
+                            logOut()
+                
+                        )
                     }
 
                     else { setError(err) }

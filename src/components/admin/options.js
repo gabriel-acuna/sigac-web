@@ -92,7 +92,7 @@ export const options = [
         title: 'Tipo docente LOES',
         icon: <GiOrganigram />,
         content: 'Gestione el tiempo de dedicación del profesorado de la IES.',
-        url: '/admin/tipo-docente'
+        url: '/admin/tipos-docentes'
     }, {
         title: 'Categoría docente LOSEP',
         icon: < GiPlayerTime />,

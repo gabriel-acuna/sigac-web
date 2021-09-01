@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { useState } from 'react'
 import { postEtnias } from '../../../../store/core/etnias'
 import Alert from '../../../Alert'
+import { logOut } from '../../../../store/user'
 
 
 let RegistrarEtnia = (props) => {
@@ -28,6 +29,10 @@ let RegistrarEtnia = (props) => {
                     if (err.messsage === "Cannot read property 'data' of undefined") {
                         console.error("No hay conexión con el backend");
                         
+                    }else if(err.message==="Rejected"){
+                        dispatch(
+                            logOut()
+                        )
                     }
 
                     else { setError(err) }
