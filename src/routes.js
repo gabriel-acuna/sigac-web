@@ -41,6 +41,9 @@ import EditarTiempoDedicacion from './components/admin/options/tiempos-dedicacio
 import ListadoNivelesEducativos from './components/admin/options/niveles-educativos/index'
 import RegistrarNivelEducativo from "./components/admin/options/niveles-educativos/RegistrarNivelEducativo";
 import EditarNivelEducativo from "./components/admin/options/niveles-educativos/EditarNivelEducativo";
+import ListadoTiposFuncionarios from "./components/admin/options/tipos-funcionarios";
+import RegistrarTipoFuncionario from "./components/admin/options/tipos-funcionarios/RegistrarTipoFuncionario";
+import EditarTipoFuncionario from "./components/admin/options/tipos-funcionarios/EditarTipoFuncionario";
 
 const routes = (user)=> [
     {
@@ -234,8 +237,21 @@ const routes = (user)=> [
                     }
                 ]
             }, {
-                path: '/tipo-funcionario',
-                element: <NotImplemented/>
+                path: '/tipos-funcionarios',
+                element: <Outlet/>,
+                children:[
+                    {
+                        path: '/',
+                        element: <ListadoTiposFuncionarios/>
+                    },{
+                        path:'/registrar',
+                        element: <RegistrarTipoFuncionario/>
+                    },
+                    {
+                        path: '/editar/:id',
+                        element:<EditarTipoFuncionario/>
+                    }
+                ]
             },
             {
                 path: '/tipo-docente',

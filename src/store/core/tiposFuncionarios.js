@@ -77,7 +77,12 @@ export const postTiposFuncionarios = createAsyncThunk(
             return response.data
 
         } catch (error) {
-            throw error.response
+            let err;
+            if (error.response.data.detail[0].msg)
+                err = error.response.data.detail[0].msg
+            if (error.response.data.type)
+                err = `${error.response.data.type}, ${error.response.data.type.content}`
+            throw err
         }
 
     }
@@ -105,7 +110,12 @@ export const putTiposFuncionarios = createAsyncThunk(
             return response.data
 
         } catch (error) {
-            throw error.response
+            let err;
+            if (error.response.data.detail[0].msg)
+                err = error.response.data.detail[0].msg
+            if (error.response.data.type)
+                err = `${error.response.data.type}, ${error.response.data.type.content}`
+            throw err
         }
 
     }
@@ -142,8 +152,7 @@ let tiposFuncionariosSlice = createSlice({
     name: 'tiposFuncionarios',
     initialState: {
         data: {
-            tiposFuncionarios: [],
-            tipoFuncionario: null
+            tiposFuncionarios: []
         },
         status: ''
 
@@ -152,8 +161,7 @@ let tiposFuncionariosSlice = createSlice({
 
         clearData: (state) => {
             state.data = {
-                tiposFuncionarios: [],
-                tipoFuncionario: null
+                tiposFuncionarios: []
             }
         }
 
@@ -165,15 +173,7 @@ let tiposFuncionariosSlice = createSlice({
                 tiposFuncionarios: action.payload
             }
 
-        },
-        [loadTipoFuncionario.fulfilled]: (state, action) => {
-            state.status = 'success'
-            state.data = {
-                tipoFuncionario: action.payload
-            }
-
         }
-
 
     }
 }

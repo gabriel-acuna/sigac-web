@@ -86,7 +86,7 @@ export const options = [
         title: 'Tipo funcionario',
         icon: <VscOrganization />,
         content: 'Gestione el tiempo de dedicación del profesorado de la IES.',
-        url: '/admin/tipo-funcionario'
+        url: '/admin/tipos-funcionarios'
     },
     {
         title: 'Tipo docente LOES',
