@@ -26,7 +26,7 @@ let ListadoDiscapacidades = (props) => {
 
     const columns = [
         { key: 'discapacidad', text: 'Discapacidad', sortable: true },
-        { key: 'opciones', text: 'Opciones', sortable: true }
+        { key: 'opciones', text: 'Opciones', sortable: false }
     ]
     let discapacidadesState = useSelector(state => state.discapacidades.data.discapacidades)
 

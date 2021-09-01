@@ -63,7 +63,7 @@ export const options = [
         title: 'Tipo escalafón nombramiento',
         icon: <GiTeamUpgrade />,
         content: 'Gestione los tipos de escalafones asociados a los nombramientos de los profesores.',
-        url: '/admin/tipo-escalafon'
+        url: '/admin/tipos-escalafones'
     },
     {
         title: 'Categoría contrato profesor',

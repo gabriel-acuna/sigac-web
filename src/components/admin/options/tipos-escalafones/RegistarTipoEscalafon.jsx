@@ -2,23 +2,24 @@ import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useState } from 'react'
-import { postDiscapacidades } from '../../../../store/core/discapacidades'
+import { postTiposEscalafonesNombramientos } from '../../../../store/core/tiposEscalafones'
 import Alert from '../../../Alert'
 
 
-let RegistrarDiscapacidad = (props) => {
+let RegistrarTipoEscalafon = (props) => {
 
     let navigate = useNavigate()
     let dispatch = useDispatch()
     const [error, setError] = useState(null)
     const { register, handleSubmit, formState: { errors } } = useForm()
     const [response, setResponse] = useState(null)
-    
+
+
     let onSubmit = (data) => {
 
         dispatch(
-            postDiscapacidades(
-                { discapacidad: data.discapacidad.toUpperCase() }
+            postTiposEscalafonesNombramientos(
+                { escalafon_nombramiento: data.tipoEscalafon.toUpperCase() }
             )
         ).unwrap()
             .then((resp) => {
@@ -26,13 +27,15 @@ let RegistrarDiscapacidad = (props) => {
             })
             .catch(
                 (err) => {
+                    
                     if (err.messsage === "Cannot read property 'data' of undefined") {
                         console.error("No hay conexión con el backend");
-                        
+
                     }
 
                     else { setError(err) }
-                 }
+                    
+                }
             )
 
     }
@@ -45,10 +48,10 @@ let RegistrarDiscapacidad = (props) => {
 
                 <form className="mt-4" onSubmit={handleSubmit(onSubmit)}>
                     <div className="field">
-                        <label className="label is-small">Discapacidad</label>
+                        <label className="label is-small">Tipo escalafón</label>
                         <div className="control">
-                            <input type="text" {...register("discapacidad", { required: true })} className="input is-samll is-uppercase" />
-                            {errors.discapacidad && <span className="has-text-danger">¡Por favor, Ingrese la discapacidad!</span>}
+                            <input type="text" {...register("tipoEscalafon", { required: true })} className="input is-samll is-uppercase" />
+                            {errors.tipoEs && <span className="has-text-danger">¡Por favor, Ingrese la tipo escalafón!</span>}
                             {
                                 error && <Alert type={'is-danger is-light'} content={error.message}>
                                     <button className="delete" onClick={event => setError(null)}></button>
@@ -72,4 +75,4 @@ let RegistrarDiscapacidad = (props) => {
     )
 }
 
-export default RegistrarDiscapacidad;
+export default RegistrarTipoEscalafon;

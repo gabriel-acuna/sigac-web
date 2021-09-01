@@ -77,7 +77,13 @@ export const postTiposEscalafonesNombramientos = createAsyncThunk(
             return response.data
 
         } catch (error) {
-            throw error.response
+           
+            let err;
+            if (error.response.data.detail[0].msg)
+                err = error.response.data.detail[0].msg
+            if (error.response.data.type)
+                err = `${error.response.data.type}, ${error.response.data.type.content}`
+            throw err
         }
 
     }
@@ -105,7 +111,12 @@ export const putTiposEscalafonesNombramientos = createAsyncThunk(
             return response.data
 
         } catch (error) {
-            throw error.response
+            let err;
+            if (error.response.data.detail[0].msg)
+                err = error.response.data.detail[0].msg
+            if (error.response.data.type)
+                err = `${error.response.data.type}, ${error.response.data.type.content}`
+            throw err
         }
 
     }
@@ -142,8 +153,8 @@ let TiposEscalafonesNombramientosSlice = createSlice({
     name: 'tiposEscalafonesNombramientos',
     initialState: {
         data: {
-            tipoEscalafones: [],
-            tipoEscalafon: null
+            tipoEscalafones: []
+           
         },
         status: ''
 
@@ -152,8 +163,8 @@ let TiposEscalafonesNombramientosSlice = createSlice({
 
         clearData: (state) => {
             state.data = {
-                tipoEscalafones: [],
-                tipoEscalafon: null
+                tipoEscalafones: []
+            
             }
         }
 
@@ -163,13 +174,6 @@ let TiposEscalafonesNombramientosSlice = createSlice({
             state.status = 'success'
             state.data = {
                 tipoEscalafones: action.payload
-            }
-
-        },
-        [loadTipoEscalafon.fulfilled]: (state, action) => {
-            state.status = 'success'
-            state.data = {
-                tipoEscalafon: action.payload
             }
 
         }

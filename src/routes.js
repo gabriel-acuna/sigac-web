@@ -26,9 +26,12 @@ import EditarNacionalidad from "./components/admin/options/nacionalidades/Editar
 import ListadoTiposDocumentos from "./components/admin/options/tipos-documentos";
 import RegistrarTipoDocumento from "./components/admin/options/tipos-documentos/RegistarTipoDocumento";
 import EditarTipoDocumento from "./components/admin/options/tipos-documentos/EditarTipoDocumento";
-import ListadorelacionesIES from "./components/admin/options/relaciones-ies";
+import ListadoRelacionesIES from "./components/admin/options/relaciones-ies";
 import RegistrarRelacion from "./components/admin/options/relaciones-ies/RegistarRelacion";
 import EditarRelacionIES from "./components/admin/options/relaciones-ies/EditarRelacion";
+import ListadoTiposEscalafones from './components/admin/options/tipos-escalafones/index';
+import RegistrarTipoEscalafon from './components/admin/options/tipos-escalafones/RegistarTipoEscalafon'
+import EditarTipoEscalafon from './components/admin/options/tipos-escalafones/EditarTipoEscalafon'
 
 const routes = (user)=> [
     {
@@ -146,7 +149,7 @@ const routes = (user)=> [
                 children: [
                     {
                         path:'/',
-                        element: <ListadorelacionesIES/>
+                        element: <ListadoRelacionesIES/>
                     },
                     {
                         path: '/registrar',
@@ -157,8 +160,21 @@ const routes = (user)=> [
                     }
                 ]
             }, {
-                path: '/tipo-escalafon',
-                element: <NotImplemented/>
+                path: '/tipos-escalafones',
+                element: <Outlet/>,
+                children: [
+                    {
+                        path:'/',
+                        element: <ListadoTiposEscalafones/>
+                    },
+                    {
+                        path: '/registrar',
+                        element: <RegistrarTipoEscalafon/>
+                    },{
+                        path:'/editar/:id',
+                        element: <EditarTipoEscalafon/>
+                    }
+                ]
             }, {
                 path: '/categoria-contrato',
                 element: <NotImplemented/>

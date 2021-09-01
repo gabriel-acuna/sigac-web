@@ -2,21 +2,21 @@ import ReactDatatable from '@yun548/bulma-react-datatable'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
-import { loadRelacionesIES, clearData, deleteRelacionesIES } from '../../../../store/core/relacionesIES'
+import { loadTiposEscalafonesNombramientos, clearData, deleteTiposEscalafonesNombramientos } from '../../../../store/core/tiposEscalafones'
 import ConfirmDialog from '../../../ConfirmDialog'
 import Alert from '../../../Alert'
 
 
 
-let ListadoRelacionesIES = (props) => {
-
+let ListadoTiposEscalafones = (props) => {
+    
     let navigate = useNavigate()
     let dispatch = useDispatch()
 
     useEffect(
         () => {
             dispatch(
-                loadRelacionesIES()
+                loadTiposEscalafonesNombramientos()
             ).unwrap()
                 .catch(
                     (err) => console.log(err)
@@ -25,11 +25,10 @@ let ListadoRelacionesIES = (props) => {
     )
 
     const columns = [
-        { key: 'relacion', text: 'Relación', sortable: true },
+        { key: 'escalafonNombramiento', text: 'Escalafón nombramiento', sortable: true },
         { key: 'opciones', text: 'Opciones', sortable: false }
     ]
-
-    let relacionesIESState = useSelector(state => state.relacionesIES.data.relacionesIES)
+    let tiposEscalafonesState = useSelector(state => state.tipoEscalafones.data.tipoEscalafones)
 
     const [response, setResponse] = useState(null)
     const [showModal, setShowModal] = useState(false)
@@ -37,32 +36,32 @@ let ListadoRelacionesIES = (props) => {
 
     let deleteHandler = (id) => {
         setShowModal(true)
-        setId(id)
+        setId(id)      
 
     }
 
-    let doDelete = () => {
+    let doDelete = () =>{
         dispatch(
-            deleteRelacionesIES(id)
+            deleteTiposEscalafonesNombramientos(id)
 
         ).unwrap()
             .then(resp => {
                 setResponse(resp)
                 dispatch(
-                    loadRelacionesIES()
+                    loadTiposEscalafonesNombramientos()
                 )
             }).catch(
                 (err) => console.error(err)
             )
     }
 
-    let rows = relacionesIESState.map(
+    let rows = tiposEscalafonesState.map(
         (row, index) => {
             return {
-                relacion: row.relacion,
+                escalafonNombramiento: row.escalafon_nombramiento,
                 opciones: [
-                    <Link className="button is-small is-primary mx-2" to={`/admin/relaciones-ies/editar/${row.id}`} key={`${row.id}0`}>Editar</Link>,
-                    <button className="button is-small is-danger mx-2" onClick={event => {
+                    <Link className="button is-small is-primary mx-2" to={`/admin/tipos-escalafones/editar/${row.id}`} key={`${row.id}0`}>Editar</Link>,
+                    <button className="button is-small is-danger mx-2"  onClick={event => {
                         deleteHandler(row.id)
                     }}>Eliminar</button>
                 ]
@@ -83,11 +82,11 @@ let ListadoRelacionesIES = (props) => {
                         }}>Regresar</button>
 
                     <Link className="button is-small is-success mt-4"
-                        to="/admin/relaciones-ies/registrar">Registar relación</Link>
+                        to="/admin/tipos-escalafones/registrar">Registar escalafón nombramiento</Link>
                 </div>
                 {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                    <button className="delete" onClick={event => setResponse(null)}></button>
-                </Alert>}
+                                <button className="delete" onClick={event => setResponse(null)}></button>
+                            </Alert>}
             </div>
             <div className="columns is-centered">
 
@@ -106,10 +105,10 @@ let ListadoRelacionesIES = (props) => {
                                 print: false
                             },
                             language: {
-                                length_menu: "Mostrar _MENU_ relaciones IES por página",
+                                length_menu: "Mostrar _MENU_ escalafones nombramientos por página",
                                 filter: "Buscar en registros ...",
-                                no_data_text: "No hay relaciones IES registradas",
-                                info: "Mostrando _START_ a _END_ de _TOTAL_ relaciones IES",
+                                no_data_text: "No hay escalafones nombramientos registrados",
+                                info: "Mostrando _START_ a _END_ de _TOTAL_ escalafones nombramientos",
                                 pagination: {
                                     first: "Primera",
                                     previous: "Anterior",
@@ -125,7 +124,7 @@ let ListadoRelacionesIES = (props) => {
             </div>
             {
                 showModal &&
-                <ConfirmDialog info="la relación" title="Eliminar relación">
+                <ConfirmDialog info="el escalafón nombramiento" title="Eliminar escalafón">
 
                     <button className="button is-small is-danger is-pulled-left" onClick={event => setShowModal(false)}> Cancelar</button>
                     <button className="button is-small is-success is-pulled-rigth" onClick={event => {
@@ -137,4 +136,4 @@ let ListadoRelacionesIES = (props) => {
     )
 }
 
-export default ListadoRelacionesIES;
+export default ListadoTiposEscalafones;

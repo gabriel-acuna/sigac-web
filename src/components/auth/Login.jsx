@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { signIn, logOut } from '../../store/user';
 import { useState } from "react";
 import Alert from "../Alert";
-import isValid  from "../../services/auth";
+import isValid from "../../services/auth";
 import { useEffect } from "react"
 
 
@@ -24,18 +24,18 @@ let Login = () => {
     const { register, handleSubmit, formState: { errors } } = useForm()
 
     const [error, setError] = useState(null);
-    let  user = useSelector(state => state.user.user)
+    let user = useSelector(state => state.user.user)
 
     useEffect(
         () => {
             if (user)
-               if(! isValid(user.jwt))
+                if (!isValid(user.jwt))
                     dispatch(
                         logOut()
                     )
-                   
 
-        },[user, dispatch]
+
+        }, [user, dispatch]
     )
 
     let onSubmit = (data) => {
@@ -46,13 +46,13 @@ let Login = () => {
                 credentials: data
             })
         ).unwrap()
-        .catch((err) => {
-            if (err.meessage ==="Cannot read property 'data' of undefined")
-                console.error("No hay conexión con el backend");
-            else setError(err)
+            .catch((err) => {
+                if ( err.message === "Cannot read property 'data' of undefined") 
+                { console.error("No hay conexión con el backend"); }
+                else { setError(err) }
 
-            
-        })
+
+            })
 
 
 
@@ -85,7 +85,7 @@ let Login = () => {
                         <button type="submit" className="button is-success">Send</button>
                         {
                             error && <Alert type={'is-danger is-light'}
-                                content={error}
+                                content={error.message}
                             >
                                 <button className="delete" onClick={event => setError(null)}></button>
                             </Alert>

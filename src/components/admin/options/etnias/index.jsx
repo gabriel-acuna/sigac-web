@@ -25,7 +25,7 @@ let ListadoEtnias = (props) => {
 
     const columns = [
         { key: 'etnia', text: 'Etnia', sortable: true },
-        { key: 'opciones', text: 'Opciones', sortable: true }
+        { key: 'opciones', text: 'Opciones', sortable: false }
     ]
     let etniasState = useSelector(state => state.etnias.data.etnias)
 

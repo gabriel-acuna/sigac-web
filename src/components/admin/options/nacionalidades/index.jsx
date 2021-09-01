@@ -26,7 +26,7 @@ let ListadoNacionalidades = (props) => {
 
     const columns = [
         { key: 'nacionalidad', text: 'Nacionalidad', sortable: true },
-        { key: 'opciones', text: 'Opciones', sortable: true }
+        { key: 'opciones', text: 'Opciones', sortable: false }
     ]
     let nacionalidadesState = useSelector(state => state.nacionalidades.data.nacionalidades)
 

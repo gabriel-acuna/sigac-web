@@ -26,7 +26,7 @@ let ListadoTiposDocumentos = (props) => {
 
     const columns = [
         { key: 'tipoDocumento', text: 'Tipos documentos', sortable: true },
-        { key: 'opciones', text: 'Opciones', sortable: true }
+        { key: 'opciones', text: 'Opciones', sortable: false }
     ]
     let tiposDocumentosState = useSelector(state => state.tiposDocumentos.data.tiposDocumentos)
 

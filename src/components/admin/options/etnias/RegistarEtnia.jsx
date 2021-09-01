@@ -25,7 +25,7 @@ let RegistrarEtnia = (props) => {
             })
             .catch(
                 (err) => { 
-                    if (err.meessage === "Cannot read property 'data' of undefined") {
+                    if (err.messsage === "Cannot read property 'data' of undefined") {
                         console.error("No hay conexión con el backend");
                         
                     }
