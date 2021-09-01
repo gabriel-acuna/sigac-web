@@ -6,7 +6,7 @@ import {
 import Axios from 'axios'
 import { API } from '../../services/api'
 
-export const loadTiemposDedicaionesProfesores = createAsyncThunk(
+export const loadTiemposDedicacionesProfesores = createAsyncThunk(
     'tiempos-dedicaciones/load',
     async (_, { getState }) => {
         let token;
@@ -77,7 +77,12 @@ export const postTiemposDedicacionesProfesores = createAsyncThunk(
             return response.data
 
         } catch (error) {
-            throw error.response
+            let err;
+            if (error.response.data.detail[0].msg)
+                err = error.response.data.detail[0].msg
+            if (error.response.data.type)
+                err = `${error.response.data.type}, ${error.response.data.type.content}`
+            throw err
         }
 
     }
@@ -105,7 +110,12 @@ export const putTiemposDedicacionesProfesores = createAsyncThunk(
             return response.data
 
         } catch (error) {
-            throw error.response
+            let err;
+            if (error.response.data.detail[0].msg)
+                err = error.response.data.detail[0].msg
+            if (error.response.data.type)
+                err = `${error.response.data.type}, ${error.response.data.type.content}`
+            throw err
         }
 
     }
@@ -142,8 +152,7 @@ let tiemposDedicacionesProfesoresSlice = createSlice({
     name: 'tiemposDedicaciones',
     initialState: {
         data: {
-            tiemposDedicaciones: [],
-            tiempoDedicacion: null
+            tiemposDedicaciones: []
         },
         status: ''
 
@@ -152,28 +161,19 @@ let tiemposDedicacionesProfesoresSlice = createSlice({
 
         clearData: (state) => {
             state.data = {
-                tiemposDedicaciones: [],
-                tiempoDedicacion: null
+                tiemposDedicaciones: []
             }
         }
 
     },
     extraReducers: {
-        [loadTiemposDedicaionesProfesores.fulfilled]: (state, action) => {
+        [loadTiemposDedicacionesProfesores.fulfilled]: (state, action) => {
             state.status = 'success'
             state.data = {
                 tiemposDedicaciones: action.payload
             }
 
-        },
-        [loadTiempoDedicacionProfesores.fulfilled]: (state, action) => {
-            state.status = 'success'
-            state.data = {
-                tiempoDedicacion: action.payload
-            }
-
         }
-
 
     }
 }

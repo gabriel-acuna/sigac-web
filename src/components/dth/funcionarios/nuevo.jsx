@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom'
 
 
-let RegistarFuncionario = (props) => {
+let RegistrarFuncionario = (props) => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const navigate = useNavigate();
 
@@ -203,4 +203,4 @@ let RegistarFuncionario = (props) => {
     )
 }
 
-export default RegistarFuncionario
+export default RegistrarFuncionario

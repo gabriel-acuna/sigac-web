@@ -82,7 +82,7 @@ let ListadoNacionalidades = (props) => {
                         }}>Regresar</button>
 
                     <Link className="button is-small is-success mt-4"
-                        to="/admin/nacionalidades/registrar">Registar nacionalidad</Link>
+                        to="/admin/nacionalidades/registrar">Registrar nacionalidad</Link>
                 </div>
                 {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
                                 <button className="delete" onClick={event => setResponse(null)}></button>

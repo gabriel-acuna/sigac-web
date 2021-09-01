@@ -85,7 +85,7 @@ let ListadoCategoriasContratos = (props) => {
                         }}>Regresar</button>
 
                     <Link className="button is-small is-success mt-4"
-                        to="/admin/categorias-contratos/registrar">Registar categoria contrato</Link>
+                        to="/admin/categorias-contratos/registrar">Registrar categoria contrato</Link>
                 </div>
                 {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
                                 <button className="delete" onClick={event => setResponse(null)}></button>
@@ -127,7 +127,7 @@ let ListadoCategoriasContratos = (props) => {
             </div>
             {
                 showModal &&
-                <ConfirmDialog info="la categoría" title="Eliminar categoría">
+                <ConfirmDialog info="la categoríagit" title="Eliminar categoría">
 
                     <button className="button is-small is-danger is-pulled-left" onClick={event => setShowModal(false)}> Cancelar</button>
                     <button className="button is-small is-success is-pulled-rigth" onClick={event => {

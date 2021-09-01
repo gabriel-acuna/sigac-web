@@ -5,36 +5,39 @@ import Admin from "./components/admin";
 import DTH from "./components/dth";
 import Profesores from "./components/dth/profesores";
 import Funcionarios from "./components/dth/funcionarios";
-import RegistarFuncionario from "./components/dth/funcionarios/nuevo";
+import RegistrarFuncionario from "./components/dth/funcionarios/nuevo";
 import ContratoFuncionario from "./components/dth/funcionarios/contrato";
 import ContratoProfesor from "./components/dth/profesores/contrato";
-import RegistarProfesor from "./components/dth/profesores/nuevo";
+import RegistrarProfesor from "./components/dth/profesores/nuevo";
 import { Outlet, Navigate } from "react-router";
 import ListadoPaises from "./components/admin/options/paises";
 import ListadoProvincias from "./components/admin/options/provincias";
 import ListadoCantonesProvincias from "./components/admin/options/provincias/ListadoCantones";
 import isValid from "./services/auth";
 import ListadoDiscapacidades from "./components/admin/options/discapacidades";
-import RegistrarDiscapacidad from "./components/admin/options/discapacidades/RegistarDiscapacidad";
+import RegistrarDiscapacidad from "./components/admin/options/discapacidades/RegistrarDiscapacidad";
 import EditarDiscapacidad from "./components/admin/options/discapacidades/EditarDiscapacidad";
 import ListadoEtnias from "./components/admin/options/etnias";
-import RegistrarEtnia from "./components/admin/options/etnias/RegistarEtnia";
+import RegistrarEtnia from "./components/admin/options/etnias/RegistrarEtnia";
 import EditarEtnia from "./components/admin/options/etnias/EditarEtnia";
 import ListadoNacionalidades from "./components/admin/options/nacionalidades";
-import RegistrarNacionalidad from "./components/admin/options/nacionalidades/RegistarNacionalidad";
+import RegistrarNacionalidad from "./components/admin/options/nacionalidades/RegistrarNacionalidad";
 import EditarNacionalidad from "./components/admin/options/nacionalidades/EditarNacionalidad";
 import ListadoTiposDocumentos from "./components/admin/options/tipos-documentos";
-import RegistrarTipoDocumento from "./components/admin/options/tipos-documentos/RegistarTipoDocumento";
+import RegistrarTipoDocumento from "./components/admin/options/tipos-documentos/RegistrarTipoDocumento";
 import EditarTipoDocumento from "./components/admin/options/tipos-documentos/EditarTipoDocumento";
 import ListadoRelacionesIES from "./components/admin/options/relaciones-ies";
-import RegistrarRelacion from "./components/admin/options/relaciones-ies/RegistarRelacion";
+import RegistrarRelacion from "./components/admin/options/relaciones-ies/RegistrarRelacion";
 import EditarRelacionIES from "./components/admin/options/relaciones-ies/EditarRelacion";
 import ListadoTiposEscalafones from './components/admin/options/tipos-escalafones/index';
-import RegistrarTipoEscalafon from './components/admin/options/tipos-escalafones/RegistarTipoEscalafon'
+import RegistrarTipoEscalafon from './components/admin/options/tipos-escalafones/RegistrarTipoEscalafon'
 import EditarTipoEscalafon from './components/admin/options/tipos-escalafones/EditarTipoEscalafon'
 import ListadoCategoriasContratos from "./components/admin/options/categorias-contratos";
-import RegistrarCategoriaContrato from "./components/admin/options/categorias-contratos/RegistarCategoriaContrato";
+import RegistrarCategoriaContrato from "./components/admin/options/categorias-contratos/RegistrarCategoriaContrato";
 import EditarCategoriaContrato from "./components/admin/options/categorias-contratos/EditarCategoriaContrato";
+import  ListadoTiemposDedicaciones from './components/admin/options/tiempos-dedicaciones/index'
+import RegistrarTiempoDedicacion from './components/admin/options/tiempos-dedicaciones/RegistrarTiempoDedicacion'
+import EditarTiempoDedicacion from './components/admin/options/tiempos-dedicaciones/EditarTiempoDedicacion'
 
 const routes = (user)=> [
     {
@@ -196,8 +199,21 @@ const routes = (user)=> [
                 ]
             },
             {
-                path: '/tiempo-dedicacion',
-                element: <NotImplemented/>
+                path: '/tiempos-dedicaciones',
+                element: <Outlet/>,
+                children: [
+                    {
+                        path:'/',
+                        element: <ListadoTiemposDedicaciones/>
+                    },
+                    {
+                        path: '/registrar',
+                        element: <RegistrarTiempoDedicacion/>
+                    },{
+                        path:'/editar/:id',
+                        element: <EditarTiempoDedicacion/>
+                    }
+                ]
             }, {
                 path: '/nivel-educativo',
                 element: <NotImplemented/>
@@ -238,7 +254,7 @@ const routes = (user)=> [
                     },
                     {
                         path: '/nuevo',
-                        element: <RegistarProfesor/>
+                        element: <RegistrarProfesor/>
                     }
                    
                 ]
@@ -257,7 +273,7 @@ const routes = (user)=> [
                     },
                     {
                         path: '/nuevo',
-                        element: <RegistarFuncionario/>
+                        element: <RegistrarFuncionario/>
                     }
                    
                 ]

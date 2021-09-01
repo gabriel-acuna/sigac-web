@@ -75,7 +75,7 @@ export const options = [
         title: 'Tiempo dedicación profesor',
         icon: <GiPlayerTime />,
         content: 'Gestione el tiempo de dedicación del profesorado de la IES.',
-        url: '/admin/tiempo-dedicacion'
+        url: '/admin/tiempos-dedicaciones'
     }, {
         title: 'Nivel educativo',
         icon: <GiTeacher />,

@@ -10,7 +10,7 @@ let Profesores = (props) => {
     
         <div className="container">
             <button  className="button is-small is-info mt-4" onClick={event => navigate(-1)}>Regresar</button>
-            <Link  className="button is-small is-primary mt-4 mx-2" to="/dth/profesores/nuevo">Registar profesor</Link>
+            <Link  className="button is-small is-primary mt-4 mx-2" to="/dth/profesores/nuevo">Registrar profesor</Link>
             <div className="mt-2 table-container">
                 <table className="table is-bordered is-striped is-hoverable is-size-7">
                     <thead>

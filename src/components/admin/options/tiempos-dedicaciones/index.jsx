@@ -2,20 +2,21 @@ import ReactDatatable from '@yun548/bulma-react-datatable'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
-import { loadEtnias, clearData, deleteEtnias } from '../../../../store/core/etnias'
+import { loadTiemposDedicacionesProfesores, clearData, deleteTiemposDedicacionesProfesores } from '../../../../store/core/tiemposDedicaciones'
 import ConfirmDialog from '../../../ConfirmDialog'
 import Alert from '../../../Alert'
 
 
 
-let ListadoEtnias = (props) => {
+let ListadoTiemposDedicaciones = (props) => {
+    
     let navigate = useNavigate()
     let dispatch = useDispatch()
 
     useEffect(
         () => {
             dispatch(
-                loadEtnias()
+                loadTiemposDedicacionesProfesores()
             ).unwrap()
                 .catch(
                     (err) => console.log(err)
@@ -24,10 +25,10 @@ let ListadoEtnias = (props) => {
     )
 
     const columns = [
-        { key: 'etnia', text: 'Etnia', sortable: true },
+        { key: 'dedicacion', text: 'Tiempo dedicación', sortable: true },
         { key: 'opciones', text: 'Opciones', sortable: false }
     ]
-    let etniasState = useSelector(state => state.etnias.data.etnias)
+    let tiemposDedicaionesState = useSelector(state => state.tiemposDedicaciones.data.tiemposDedicaciones)
 
     const [response, setResponse] = useState(null)
     const [showModal, setShowModal] = useState(false)
@@ -41,26 +42,26 @@ let ListadoEtnias = (props) => {
 
     let doDelete = () =>{
         dispatch(
-            deleteEtnias(id)
+            deleteTiemposDedicacionesProfesores(id)
 
         ).unwrap()
             .then(resp => {
                 setResponse(resp)
                 dispatch(
-                    loadEtnias()
+                    loadTiemposDedicacionesProfesores()
                 )
             }).catch(
                 (err) => console.error(err)
             )
     }
 
-    let rows = etniasState.map(
+    let rows = tiemposDedicaionesState.map(
         (row, index) => {
             return {
-                etnia: row.etnia,
+                dedicacion: row.tiempo_dedicacion,
                 opciones: [
-                    <Link className="button is-small is-primary mx-2" to={`/admin/etnias/editar/${row.id}`} key={`${row.id}0`}>Editar</Link>,
-                    <button className="button is-small is-danger mx-2" onClick={event => {
+                    <Link className="button is-small is-primary mx-2" to={`/admin/tiempos-dedicaciones/editar/${row.id}`} key={`${row.id}0`}>Editar</Link>,
+                    <button className="button is-small is-danger mx-2"  onClick={event => {
                         deleteHandler(row.id)
                     }}>Eliminar</button>
                 ]
@@ -81,7 +82,7 @@ let ListadoEtnias = (props) => {
                         }}>Regresar</button>
 
                     <Link className="button is-small is-success mt-4"
-                        to="/admin/etnias/registrar">Registrar etnia</Link>
+                        to="/admin/tiempos-dedicaciones/registrar">Registrar tiempo dedicación</Link>
                 </div>
                 {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
                                 <button className="delete" onClick={event => setResponse(null)}></button>
@@ -104,10 +105,10 @@ let ListadoEtnias = (props) => {
                                 print: false
                             },
                             language: {
-                                length_menu: "Mostrar _MENU_ etnias por página",
+                                length_menu: "Mostrar _MENU_ tiempos dedicaciones por página",
                                 filter: "Buscar en registros ...",
-                                no_data_text: "No hay etnias registradas",
-                                info: "Mostrando _START_ a _END_ de _TOTAL_ etnias",
+                                no_data_text: "No hay tiempos dedicaciones registrados",
+                                info: "Mostrando _START_ a _END_ de _TOTAL_ tiempos dedicaciones",
                                 pagination: {
                                     first: "Primera",
                                     previous: "Anterior",
@@ -123,7 +124,7 @@ let ListadoEtnias = (props) => {
             </div>
             {
                 showModal &&
-                <ConfirmDialog info="la etnia" title="Eliminar etnia">
+                <ConfirmDialog info="el tiempo dedicación" title="Eliminar dedicación">
 
                     <button className="button is-small is-danger is-pulled-left" onClick={event => setShowModal(false)}> Cancelar</button>
                     <button className="button is-small is-success is-pulled-rigth" onClick={event => {
@@ -135,4 +136,4 @@ let ListadoEtnias = (props) => {
     )
 }
 
-export default ListadoEtnias;
+export default ListadoTiemposDedicaciones;

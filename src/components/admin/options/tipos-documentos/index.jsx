@@ -82,7 +82,7 @@ let ListadoTiposDocumentos = (props) => {
                         }}>Regresar</button>
 
                     <Link className="button is-small is-success mt-4"
-                        to="/admin/tipos-documentos/registrar">Registar tipo documento</Link>
+                        to="/admin/tipos-documentos/registrar">Registrar tipo documento</Link>
                 </div>
                 {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
                                 <button className="delete" onClick={event => setResponse(null)}></button>

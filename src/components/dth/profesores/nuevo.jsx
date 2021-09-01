@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom'
 
 
-let RegistarProfesor = (props) => {
+let RegistrarProfesor = (props) => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const navigate = useNavigate();
 
@@ -204,4 +204,4 @@ let RegistarProfesor = (props) => {
     )
 }
 
-export default RegistarProfesor
+export default RegistrarProfesor

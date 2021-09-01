@@ -51,7 +51,7 @@ let RegistrarTipoEscalafon = (props) => {
                         <label className="label is-small">Tipo escalafón</label>
                         <div className="control">
                             <input type="text" {...register("tipoEscalafon", { required: true })} className="input is-samll is-uppercase" />
-                            {errors.tipoEs && <span className="has-text-danger">¡Por favor, Ingrese la tipo escalafón!</span>}
+                            {errors.tipoEscalafon && <span className="has-text-danger">¡Por favor, Ingrese el tipo escalafón!</span>}
                             {
                                 error && <Alert type={'is-danger is-light'} content={error.message}>
                                     <button className="delete" onClick={event => setError(null)}></button>
