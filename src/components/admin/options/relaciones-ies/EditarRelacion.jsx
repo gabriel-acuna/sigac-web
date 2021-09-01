@@ -35,7 +35,7 @@ let EditarRelacionIES = (props) => {
 
     let onSubmit = (data) => {
         
-        console.log(data);
+        
         dispatch(
             putRelacionesIES(
                 {

@@ -2,11 +2,11 @@ import { useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useState } from 'react'
-import { putNacionalidades, loadNacionalidad } from '../../../../store/core/nacionalidades'
+import { putCategoriasContratoProfesores, loadCategoriaContratoProfesores } from '../../../../store/core/categoriasContratos'
 import Alert from '../../../Alert'
 import { useEffect } from 'react'
 
-let EditarNacionalidad = (props) => {
+let EditarCategoriaContrato = (props) => {
     
     let navigate = useNavigate()
     let dispatch = useDispatch()
@@ -14,19 +14,19 @@ let EditarNacionalidad = (props) => {
     const { id } = useParams();
     const { register, handleSubmit, reset, formState: { errors } } = useForm()
     const [response, setResponse] = useState(null)
-    
+   
     
 
     
     useEffect(
         ()=>{
             dispatch(
-                loadNacionalidad(id)  
+                loadCategoriaContratoProfesores(id)  
             )
             .then((resp) => {
                 
                 reset({
-                    nacionalidad: resp.payload.nacionalidad
+                    categoria: resp.payload.categoria_contrato
                 })
             })
             .catch(err=>console.log(err))
@@ -37,10 +37,10 @@ let EditarNacionalidad = (props) => {
         
         
         dispatch(
-            putNacionalidades(
+            putCategoriasContratoProfesores(
                 {
                     id,
-                    nacionalidad: data.nacionalidad.toUpperCase()
+                    categoria_contrato: data.categoria.toUpperCase()
                 }
             )
         ).unwrap()
@@ -48,7 +48,7 @@ let EditarNacionalidad = (props) => {
                 setResponse(resp);
             })
             .catch(
-                (err) => { 
+                (err) => {
                     if (err.messsage === "Cannot read property 'data' of undefined") {
                         console.error("No hay conexión con el backend");
                         
@@ -66,13 +66,13 @@ let EditarNacionalidad = (props) => {
 
                 <form className="mt-4" onSubmit={handleSubmit(onSubmit)}>
                     <div className="field">
-                        <label className="label is-small">Nacionalidad</label>
+                        <label className="label is-small">Categoria contrato</label>
                         <div className="control">
                            
                             
-                            <input type="text" {...register("nacionalidad", { required: true })} className="input is-samll is-uppercase" />
+                            <input type="text" {...register("categoria", { required: true })} className="input is-samll is-uppercase" />
 
-                            {errors.nacionalidad && <span className="has-text-danger">¡Por favor, Ingrese la nacionalidad!</span>}
+                            {errors.categoria && <span className="has-text-danger">¡Por favor, Ingrese la categoria!</span>}
                             {
                                 error && <Alert type={'is-danger is-light'} content={error.message}>
                                     <button className="delete" onClick={event => setError(null)}></button>
@@ -96,4 +96,4 @@ let EditarNacionalidad = (props) => {
     )
 }
 
-export default EditarNacionalidad;
+export default EditarCategoriaContrato;

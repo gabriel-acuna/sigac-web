@@ -35,7 +35,7 @@ let EditarDiscapacidad = (props) => {
 
     let onSubmit = (data) => {
         
-        console.log(data);
+        
         dispatch(
             putDiscapacidades(
                 {

@@ -69,7 +69,7 @@ export const options = [
         title: 'Categoría contrato profesor',
         icon: <BsPersonCheck />,
         content: 'Gestione las categorías de contratación del profesorado de la IES.',
-        url: '/admin/categoria-contrato'
+        url: '/admin/categorias-contratos'
     },
     {
         title: 'Tiempo dedicación profesor',

@@ -33,7 +33,7 @@ let EditarEtnia = (props) => {
 
     let onSubmit = (data) => {
         
-        console.log(data);
+        
         dispatch(
             putEtnias(
                 {

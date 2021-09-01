@@ -32,6 +32,9 @@ import EditarRelacionIES from "./components/admin/options/relaciones-ies/EditarR
 import ListadoTiposEscalafones from './components/admin/options/tipos-escalafones/index';
 import RegistrarTipoEscalafon from './components/admin/options/tipos-escalafones/RegistarTipoEscalafon'
 import EditarTipoEscalafon from './components/admin/options/tipos-escalafones/EditarTipoEscalafon'
+import ListadoCategoriasContratos from "./components/admin/options/categorias-contratos";
+import RegistrarCategoriaContrato from "./components/admin/options/categorias-contratos/RegistarCategoriaContrato";
+import EditarCategoriaContrato from "./components/admin/options/categorias-contratos/EditarCategoriaContrato";
 
 const routes = (user)=> [
     {
@@ -176,8 +179,21 @@ const routes = (user)=> [
                     }
                 ]
             }, {
-                path: '/categoria-contrato',
-                element: <NotImplemented/>
+                path: '/categorias-contratos',
+                element: <Outlet/>,
+                children: [
+                    {
+                        path:'/',
+                        element: <ListadoCategoriasContratos/>
+                    },
+                    {
+                        path: '/registrar',
+                        element: <RegistrarCategoriaContrato/>
+                    },{
+                        path:'/editar/:id',
+                        element: <EditarCategoriaContrato/>
+                    }
+                ]
             },
             {
                 path: '/tiempo-dedicacion',

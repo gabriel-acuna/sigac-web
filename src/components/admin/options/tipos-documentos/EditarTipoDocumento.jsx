@@ -35,7 +35,7 @@ let EditarTipoDocumento = (props) => {
 
     let onSubmit = (data) => {
 
-        console.log(data);
+        
         dispatch(
             putTiposDocumentos(
                 {

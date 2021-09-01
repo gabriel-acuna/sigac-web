@@ -77,7 +77,12 @@ export const postCategoriasContratoProfesores = createAsyncThunk(
             return response.data
 
         } catch (error) {
-            throw error.response
+            let err;
+            if (error.response.data.detail[0].msg)
+                err = error.response.data.detail[0].msg
+            if (error.response.data.type)
+                err = `${error.response.data.type}, ${error.response.data.type.content}`
+            throw err
         }
 
     }
@@ -105,7 +110,12 @@ export const putCategoriasContratoProfesores = createAsyncThunk(
             return response.data
 
         } catch (error) {
-            throw error.response
+            let err;
+            if (error.response.data.detail[0].msg)
+                err = error.response.data.detail[0].msg
+            if (error.response.data.type)
+                err = `${error.response.data.type}, ${error.response.data.type.content}`
+            throw err
         }
 
     }
@@ -142,8 +152,7 @@ let categoriasContratoProfesoresSlice = createSlice({
     name: 'categoriasContrato',
     initialState: {
         data: {
-            categoriasContrato: [],
-            categoriaContrato: null
+            categoriasContrato: []  
         },
         status: ''
 
@@ -152,8 +161,7 @@ let categoriasContratoProfesoresSlice = createSlice({
 
         clearData: (state) => {
             state.data = {
-                categoriasContrato: [],
-                categoriaContrato: null
+                categoriasContrato: []
             }
         }
 
@@ -164,14 +172,6 @@ let categoriasContratoProfesoresSlice = createSlice({
             state.data = {
                 categoriasContrato: action.payload
             }
-
-        },
-        [loadCategoriaContratoProfesores.fulfilled]: (state, action) => {
-            state.status = 'success'
-            state.data = {
-                categoriaContrato: action.payload
-            }
-
         }
 
 
