@@ -80,7 +80,7 @@ export const options = [
         title: 'Nivel educativo',
         icon: <GiTeacher />,
         content: 'Gestione el tiempo de dedicación del profesorado de la IES.',
-        url: '/admin/nivel-educativo'
+        url: '/admin/niveles-educativos'
     },
     {
         title: 'Tipo funcionario',

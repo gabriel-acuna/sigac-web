@@ -38,6 +38,9 @@ import EditarCategoriaContrato from "./components/admin/options/categorias-contr
 import  ListadoTiemposDedicaciones from './components/admin/options/tiempos-dedicaciones/index'
 import RegistrarTiempoDedicacion from './components/admin/options/tiempos-dedicaciones/RegistrarTiempoDedicacion'
 import EditarTiempoDedicacion from './components/admin/options/tiempos-dedicaciones/EditarTiempoDedicacion'
+import ListadoNivelesEducativos from './components/admin/options/niveles-educativos/index'
+import RegistrarNivelEducativo from "./components/admin/options/niveles-educativos/RegistrarNivelEducativo";
+import EditarNivelEducativo from "./components/admin/options/niveles-educativos/EditarNivelEducativo";
 
 const routes = (user)=> [
     {
@@ -215,8 +218,21 @@ const routes = (user)=> [
                     }
                 ]
             }, {
-                path: '/nivel-educativo',
-                element: <NotImplemented/>
+                path: '/niveles-educativos',
+                element: <Outlet/>,
+                children: [
+                    {
+                        path: '/',
+                        element: <ListadoNivelesEducativos/>
+                    },{
+                        path:'/registrar',
+                        element: <RegistrarNivelEducativo/>
+                    },
+                    {
+                        path: '/editar/:id',
+                        element:<EditarNivelEducativo/>
+                    }
+                ]
             }, {
                 path: '/tipo-funcionario',
                 element: <NotImplemented/>

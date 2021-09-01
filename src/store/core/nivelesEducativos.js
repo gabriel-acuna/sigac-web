@@ -77,7 +77,12 @@ export const postNivelesEducativos = createAsyncThunk(
             return response.data
 
         } catch (error) {
-            throw error.response
+            let err;
+            if (error.response.data.detail[0].msg)
+                err = error.response.data.detail[0].msg
+            if (error.response.data.type)
+                err = `${error.response.data.type}, ${error.response.data.type.content}`
+            throw err
         }
 
     }
@@ -105,7 +110,12 @@ export const putNivelesEducativos = createAsyncThunk(
             return response.data
 
         } catch (error) {
-            throw error.response
+            let err;
+            if (error.response.data.detail[0].msg)
+                err = error.response.data.detail[0].msg
+            if (error.response.data.type)
+                err = `${error.response.data.type}, ${error.response.data.type.content}`
+            throw err
         }
 
     }
@@ -142,8 +152,8 @@ let nivelesEducativosSlice = createSlice({
     name: 'nivelesEducativos',
     initialState: {
         data: {
-            nivelesEducativos: [],
-            nivelEducativo: null
+            nivelesEducativos: []
+
         },
         status: ''
 
@@ -152,8 +162,7 @@ let nivelesEducativosSlice = createSlice({
 
         clearData: (state) => {
             state.data = {
-                nivelesEducativos: [],
-                nivelEducativo: null
+                nivelesEducativos: []
             }
         }
 
@@ -165,18 +174,14 @@ let nivelesEducativosSlice = createSlice({
                 nivelesEducativos: action.payload
             }
 
-        },
-        [loadNivelEducativo.fulfilled]: (state, action) => {
-            state.status = 'success'
-            state.data = {
-                nivelEducativo: action.payload
-            }
-
         }
 
 
     }
+
+
 }
+
 )
 
 export const { clearData } = nivelesEducativosSlice.actions;
