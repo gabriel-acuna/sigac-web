@@ -77,7 +77,12 @@ export const postCategoriasDocentesLOSEP = createAsyncThunk(
             return response.data
 
         } catch (error) {
-            throw error.response
+            let err;
+            if (error.response.data.detail[0].msg)
+                err = error.response.data.detail[0].msg
+            if (error.response.data.type)
+                err = `${error.response.data.type}, ${error.response.data.type.content}`
+            throw err
         }
 
     }
@@ -105,7 +110,12 @@ export const putCategoriasDocentesLOSEP = createAsyncThunk(
             return response.data
 
         } catch (error) {
-            throw error.response
+            let err;
+            if (error.response.data.detail[0].msg)
+                err = error.response.data.detail[0].msg
+            if (error.response.data.type)
+                err = `${error.response.data.type}, ${error.response.data.type.content}`
+            throw err
         }
 
     }
@@ -142,8 +152,8 @@ let categoriasDocentesLOSEPSlice = createSlice({
     name: 'categoriasDocentes',
     initialState: {
         data: {
-            categoriasDocentes: [],
-            categoriaDocente: null
+            categoriasDocentes: []
+           
         },
         status: ''
 
@@ -152,8 +162,8 @@ let categoriasDocentesLOSEPSlice = createSlice({
 
         clearData: (state) => {
             state.data = {
-                categoriasDocentes: [],
-                categoriaDocente: null
+                categoriasDocentes: []
+                
             }
         }
 
@@ -163,13 +173,6 @@ let categoriasDocentesLOSEPSlice = createSlice({
             state.status = 'success'
             state.data = {
                 categoriasDocentes: action.payload
-            }
-
-        },
-        [loadCategoriaDocenteLOSEP.fulfilled]: (state, action) => {
-            state.status = 'success'
-            state.data = {
-                categoriaDocente: action.payload
             }
 
         }

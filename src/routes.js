@@ -47,6 +47,9 @@ import EditarTipoFuncionario from "./components/admin/options/tipos-funcionarios
 import ListadoTiposDocentes from "./components/admin/options/tipos-docentes";
 import RegistrarTipoDocente from "./components/admin/options/tipos-docentes/RegistrarTipoDocente";
 import EditarTipoDocente from "./components/admin/options/tipos-docentes/EditarTipoDocente";
+import ListadoCategoriasDocentes from "./components/admin/options/categorias-docentes";
+import RegistrarCategoriaDocente from "./components/admin/options/categorias-docentes/RegistrarCategoriaDocente";
+import EditarCategoriaDocente from "./components/admin/options/categorias-docentes/EditarCategoriaDocente";
 
 const routes = (user)=> [
     {
@@ -273,8 +276,20 @@ const routes = (user)=> [
                     }
                 ]
             }, {
-                path: '/categoria-docente',
-                element: <NotImplemented/>
+                path: '/categorias-docentes',
+                element: <Outlet/>,
+                children: [
+                    {
+                        path:'/',
+                        element: <ListadoCategoriasDocentes/>
+                    },{
+                        path: '/registrar',
+                        element: <RegistrarCategoriaDocente/>
+                    }, {
+                        path: '/editar/:id',
+                        element: <EditarCategoriaDocente/>
+                    }
+                ]
             }
 
         ]

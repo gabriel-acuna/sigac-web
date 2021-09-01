@@ -2,25 +2,24 @@ import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useState } from 'react'
-import { postNivelesEducativos } from '../../../../store/core/nivelesEducativos'
+import { postCategoriasDocentesLOSEP } from '../../../../store/core/categoriasDocentes'
 import Alert from '../../../Alert'
 import { logOut } from '../../../../store/user'
 
 
-let RegistrarNivelEducativo = (props) => {
+let RegistrarCategoriaDocente = (props) => {
 
     let navigate = useNavigate()
     let dispatch = useDispatch()
     const [error, setError] = useState(null)
     const { register, handleSubmit, formState: { errors } } = useForm()
     const [response, setResponse] = useState(null)
-
-
+    
     let onSubmit = (data) => {
 
         dispatch(
-            postNivelesEducativos(
-                { nivel: data.nivel.toUpperCase() }
+            postCategoriasDocentesLOSEP(
+                { categoria_docente: data.categoriaDocente.toUpperCase() }
             )
         ).unwrap()
             .then((resp) => {
@@ -28,13 +27,13 @@ let RegistrarNivelEducativo = (props) => {
             })
             .catch(
                 (err) => {
+                    console.log(err);
                     if (err.messsage === "Cannot read property 'data' of undefined") {
                         console.error("No hay conexión con el backend");
                         
                     }else if(err.message==="Rejected"){
                         dispatch(
                             logOut()
-                
                         )
                     }
 
@@ -52,10 +51,10 @@ let RegistrarNivelEducativo = (props) => {
 
                 <form className="mt-4" onSubmit={handleSubmit(onSubmit)}>
                     <div className="field">
-                        <label className="label is-small">Nivel</label>
+                        <label className="label is-small">Categoria docente</label>
                         <div className="control">
-                            <input type="text" {...register("nivel", { required: true })} className="input is-samll is-uppercase" />
-                            {errors.nivel && <span className="has-text-danger">¡Por favor, Ingrese el nivel educativo!</span>}
+                            <input type="text" {...register("categoriaDocente", { required: true })} className="input is-samll is-uppercase" />
+                            {errors.categoriaDocente && <span className="has-text-danger">¡Por favor, Ingrese la categoria!</span>}
                             {
                                 error && <Alert type={'is-danger is-light'} content={error.message}>
                                     <button className="delete" onClick={event => setError(null)}></button>
@@ -79,4 +78,4 @@ let RegistrarNivelEducativo = (props) => {
     )
 }
 
-export default RegistrarNivelEducativo;
+export default RegistrarCategoriaDocente;

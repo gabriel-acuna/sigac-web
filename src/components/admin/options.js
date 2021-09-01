@@ -97,7 +97,7 @@ export const options = [
         title: 'Categoría docente LOSEP',
         icon: < GiPlayerTime />,
         content: 'Gestione el tiempo de dedicación del profesorado de la IES.',
-        url: '/admin/categoria-docente'
+        url: '/admin/categorias-docentes'
     }
 
 ]

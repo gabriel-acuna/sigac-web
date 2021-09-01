@@ -2,13 +2,13 @@ import ReactDatatable from '@yun548/bulma-react-datatable'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
-import { loadCategoriasContratoProfesores, clearData, deleteCategoriasContratoProfesores } from '../../../../store/core/categoriasContratos'
+import { loadCategoriasDocentesLOSEP, clearData, deleteCategoriasDocentesLOSEP } from '../../../../store/core/categoriasDocentes'
 import ConfirmDialog from '../../../ConfirmDialog'
 import Alert from '../../../Alert'
 
 
 
-let ListadoCategoriasContratos = (props) => {
+let ListadoCategoriasDocentes = (props) => {
     
     let navigate = useNavigate()
     let dispatch = useDispatch()
@@ -16,7 +16,7 @@ let ListadoCategoriasContratos = (props) => {
     useEffect(
         () => {
             dispatch(
-                loadCategoriasContratoProfesores()
+                loadCategoriasDocentesLOSEP()
             ).unwrap()
                 .catch(
                     (err) => console.log(err)
@@ -29,7 +29,7 @@ let ListadoCategoriasContratos = (props) => {
         { key: 'opciones', text: 'Opciones', sortable: false }
     ]
 
-    let categoriasContratosState = useSelector(state => state.categoriasContratos.data.categoriasContrato)
+    let categoriasDocentesState = useSelector(state => state.categoriasDocentesLOSEP.data.categoriasDocentes)
 
     const [response, setResponse] = useState(null)
     const [showModal, setShowModal] = useState(false)
@@ -44,13 +44,13 @@ let ListadoCategoriasContratos = (props) => {
 
     let doDelete = () =>{
         dispatch(
-            deleteCategoriasContratoProfesores(id)
+            deleteCategoriasDocentesLOSEP(id)
 
         ).unwrap()
             .then(resp => {
                 setResponse(resp)
                 dispatch(
-                    loadCategoriasContratoProfesores()
+                    loadCategoriasDocentesLOSEP()
                 )
 
             }).catch(
@@ -58,12 +58,12 @@ let ListadoCategoriasContratos = (props) => {
             )
     }
 
-    let rows = categoriasContratosState.map(
+    let rows = categoriasDocentesState.map(
         (row, index) => {
             return {
-                categoria: row.categoria_contrato,
+                categoria: row.categoria_docente,
                 opciones: [
-                    <Link className="button is-small is-primary mx-2" to={`/admin/categorias-contratos/editar/${row.id}`} key={`${row.id}0`}>Editar</Link>,
+                    <Link className="button is-small is-primary mx-2" to={`/admin/categorias-docentes/editar/${row.id}`} key={`${row.id}0`}>Editar</Link>,
                     <button className="button is-small is-danger mx-2" onClick={event => {
                         deleteHandler(row.id)
                     }}>Eliminar</button>
@@ -85,7 +85,7 @@ let ListadoCategoriasContratos = (props) => {
                         }}>Regresar</button>
 
                     <Link className="button is-small is-success mt-4"
-                        to="/admin/categorias-contratos/registrar">Registrar categoria contrato</Link>
+                        to="/admin/categorias-docentes/registrar">Registrar categoria docente</Link>
                 </div>
                 {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
                                 <button className="delete" onClick={event => setResponse(null)}></button>
@@ -108,10 +108,10 @@ let ListadoCategoriasContratos = (props) => {
                                 print: false
                             },
                             language: {
-                                length_menu: "Mostrar _MENU_ categorías contratos por página",
+                                length_menu: "Mostrar _MENU_ categorías docentes por página",
                                 filter: "Buscar en registros ...",
-                                no_data_text: "No hay categorías contratos registradas",
-                                info: "Mostrando _START_ a _END_ de _TOTAL_ categorías contratos",
+                                no_data_text: "No hay categorías docentes registradas",
+                                info: "Mostrando _START_ a _END_ de _TOTAL_ categorías docentes",
                                 pagination: {
                                     first: "Primera",
                                     previous: "Anterior",
@@ -139,4 +139,4 @@ let ListadoCategoriasContratos = (props) => {
     )
 }
 
-export default ListadoCategoriasContratos;
+export default ListadoCategoriasDocentes;
