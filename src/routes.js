@@ -301,7 +301,7 @@ const routes = (user)=> [
    
     {
         path: '/dth',
-        element: <Outlet/>,
+        element: user && isValid(user.jwt)? <Outlet/> : <Navigate to="/login"></Navigate>,
         children: [
             {
                 path: '/',

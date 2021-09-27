@@ -18,7 +18,11 @@ import nivelesEdutativosReducer from './core/nivelesEducativos'
 import tiposFuncionariosReducer from './core/tiposFuncionarios'
 import tiposDocentesLOESReducer from './core/tiposDocentes'
 import categoriasDocentesLOSEPReducer from './core/categoriasDocentes'
-
+import estadosCivilesReducer from './core/estado_civil';
+import informacionPersonalReducer from './dth/informacion_personal'
+import expedienteLaboralReducer from './dth/expediente_laboral'
+import capacitacionReducer from './cv/capacitacion';
+import referenciaReducer from './cv/referencia';
 
 import {
     persistStore,
@@ -49,7 +53,12 @@ const reducer = combineReducers({
     nivelesEducativos: nivelesEdutativosReducer,
     tiposFuncionarios: tiposFuncionariosReducer,
     tiposDocentesLOES: tiposDocentesLOESReducer,
-    categoriasDocentesLOSEP: categoriasDocentesLOSEPReducer
+    categoriasDocentesLOSEP: categoriasDocentesLOSEPReducer,
+    estadosCiviles: estadosCivilesReducer,
+    informacionPersonal: informacionPersonalReducer,
+    expediente:expedienteLaboralReducer,
+    capacitaciones: capacitacionReducer,
+    referencias: referenciaReducer
 
 
 });

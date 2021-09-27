@@ -1,19 +1,21 @@
 import { useForm } from "react-hook-form";
 import logo from '../../logo-ies.png';
-import cp_logo from '../../assets/undraw_control_panel1_20gm.png';
+import fondo from '../../assets/fondo.png';
+import cp_logo from '../../assets/undraw_control_panel1_20gm.png'
 import { useDispatch, useSelector } from 'react-redux';
 import { signIn, logOut } from '../../store/user';
 import { useState } from "react";
 import Alert from "../Alert";
 import isValid from "../../services/auth";
 import { useEffect } from "react"
+import { HiOutlineMail, HiOutlineKey } from "react-icons/hi"
 
 
 let Login = () => {
 
     const estilos = {
 
-        width: '300px',
+        width: '320px',
         height: 'auto',
         margin: "100px auto auto",
     }
@@ -47,8 +49,7 @@ let Login = () => {
             })
         ).unwrap()
             .catch((err) => {
-                if ( err.message === "Cannot read property 'data' of undefined") 
-                { console.error("No hay conexión con el backend"); }
+                if (err.message === "Cannot read property 'data' of undefined") { console.error("No hay conexión con el backend"); }
                 else { setError(err) }
 
 
@@ -62,27 +63,38 @@ let Login = () => {
     return (
         <div className="columns">
 
-            <div className="column" style={{ background: 'linear-gradient(-90deg, #019c67, #888)' }}>
-                <div className="box is-primary" style={estilos}>
+            <div className="column" style={{
+            backgroundImage:`url(${fondo})`,
+            backgroundPosition:'center',
+            backgroundSize:'cover',
+            backgroundRpeat: 'no-repeat',
+           }}>
+                <div className="box" style={estilos}>
                     <div className="has-text-centered">
                         <figure>
                             <img src={logo} style={{ height: '150px' }} alt="logo UNESUM"></img>
                         </figure>
                     </div>
-                    <form onSubmit={handleSubmit(onSubmit)} className="field">
+                    <form onSubmit={handleSubmit(onSubmit)} className="field mb-6">
                         <label className="label">Email</label>
-                        <div className="control">
-                            <input  {...register("email", { required: true })} className="input" />
+                        <div className="control has-icons-left">
+                            <span className="icon is-left">
+                                <HiOutlineMail />
+                            </span>
+                            <input  {...register("email", { required: true })} className="input" placeholder="example@unesum.edu.ec" />
                             {errors.email && <span className="has-text-danger">¡Por favor, Ingrese su correo electrónico</span>}
                         </div>
                         <label className="label">Contraseña</label>
-                        <div className="control">
+                        <div className="control has-icons-left">
+                            <span className="icon is-left">
+                                <HiOutlineKey/>
+                            </span>
                             <input type="password" {...register("password", { required: true })} className="input" />
 
                             {errors.password && <span className="has-text-danger">¡Por favor, Ingrese su contraseña</span>}
                         </div>
 
-                        <button type="submit" className="button is-success">Send</button>
+                        <button type="submit" className="button is-success mt-2 is-pulled-right">Iniciar sesión</button>
                         {
                             error && <Alert type={'is-danger is-light'}
                                 content={error.message}
