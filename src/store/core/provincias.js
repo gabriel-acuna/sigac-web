@@ -72,14 +72,13 @@ let provinciasSilce = createSlice({
     initialState: {
         status: 'not loaded',
         data: {
-            provincias: [],
-            cantonesProvincia: []
+            provincias: []
         }
     }, reducers: {
         clearData: (state) => {
             state.data = {
-                provincias: [],
-                cantonesProvincia: []
+                provincias: []
+            
             }
 
         }
@@ -92,17 +91,8 @@ let provinciasSilce = createSlice({
 
             }
 
-
-        },
-        [loadCantonesProvincia.fulfilled]: (state, action) => {
-            state.status = 'success'
-            state.data = {
-
-                cantonesProvincia: action.payload
-            }
-
-
         }
+       
 
     }
 
