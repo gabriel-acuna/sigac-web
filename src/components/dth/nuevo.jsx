@@ -6,12 +6,12 @@ import { loadPaises } from '../../store/core/paises';
 import { loadDiscapacidades } from '../../store/core/discapacidades';
 import { loadEtnias } from '../../store/core/etnias'
 import { loadEstadosCiviles } from '../../store/core/estado_civil'
-import  { loadNacionalidades } from '../../store/core/nacionalidades'
-import { loadCantonesProvincia , loadProvincias} from '../../store/core/provincias'
+import { loadNacionalidades } from '../../store/core/nacionalidades'
+import { loadCantonesProvincia, loadProvincias } from '../../store/core/provincias'
 
 let RegistrarPersona = (props) => {
-    const { register, handleSubmit, watch , getValues, formState: { errors } } = useForm();
-    
+    const { register, handleSubmit, watch, getValues, formState: { errors } } = useForm();
+
     const navigate = useNavigate();
     let dispatch = useDispatch()
     useEffect(
@@ -105,17 +105,17 @@ let RegistrarPersona = (props) => {
     }
 
 
-    let cargarCantones = (provincia) =>{
+    let cargarCantones = (provincia) => {
         console.log(provincia)
-        if (provincia !== null){
+        if (provincia !== null) {
             dispatch(
                 loadCantonesProvincia(provincia)
-                
+
             ).unwrap()
-            .then(
-                resp => setCantones(resp)
-            )
-        } 
+                .then(
+                    resp => setCantones(resp)
+                )
+        }
     }
 
     return (
@@ -354,17 +354,17 @@ let RegistrarPersona = (props) => {
                                         <label className="label is-small">
                                             PROVINCIA
                                         </label>
-                                        <input  className="input is-small" onChange={ev=>filtrarProvincias(ev.target.value)}/>
+                                        <input className="input is-small" onChange={ev => filtrarProvincias(ev.target.value)} />
                                     </div>
                                     <div className="select">
-                                        <select {...register("id_provincia", { required: true })} className="input is-small"  onChange={ev=>cargarCantones(ev.target.value)}>
-                                        {
-                                            provincias.map(
-                                                (row) => (
-                                                    <option value={row.id} key={row.id}>{row.provincia}</option>
+                                        <select {...register("id_provincia", { required: true })} className="input is-small" onChange={ev => cargarCantones(ev.target.value)}>
+                                            {
+                                                provincias.map(
+                                                    (row) => (
+                                                        <option value={row.id} key={row.id}>{row.provincia}</option>
+                                                    )
                                                 )
-                                            )
-                                        }
+                                            }
                                         </select>
                                         {errors.id_provincia}
                                     </div>
