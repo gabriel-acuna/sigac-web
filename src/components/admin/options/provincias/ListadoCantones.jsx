@@ -1,14 +1,15 @@
 import ReactDatatable from '@yun548/bulma-react-datatable';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { loadCantonesProvincia, clearData } from '../../../../store/core/provincias';
 
 let ListadoCantonesProvincias = (props) => {
 
     let navigate = useNavigate()
     let distpatch = useDispatch()
-    const { id } = useParams();
+    const { id } = useParams()
+    const [cantonesProvincia, setCantonesProvincia] = useState([])
 
     useEffect(
         () => {
@@ -16,10 +17,13 @@ let ListadoCantonesProvincias = (props) => {
                 loadCantonesProvincia(id)
 
             ).unwrap()
+                .then(
+                    resp=>setCantonesProvincia(resp)
+                )
                 .catch(
                     (err) => console.error(err)
                 )
-        }, [id, distpatch]
+        }, [id, distpatch, cantonesProvincia]
     )
 
     const columns = [
@@ -27,8 +31,8 @@ let ListadoCantonesProvincias = (props) => {
         { key: 'opciones', text: ' Opciones' }
 
     ]
-    let cantonesProvinciasState = useSelector(state => state.provincias.data.cantonesProvincia);
-    console.log(cantonesProvinciasState)
+    
+    console.log(cantonesProvincia);
 
     return (
 
@@ -38,7 +42,7 @@ let ListadoCantonesProvincias = (props) => {
                 <div className="column is-half">
                     <button className="button is-small is-info mt-4 mx-3" onClick={event => {
                         navigate(-1);
-                        distpatch(clearData())
+                        
                     }}>Regresar</button>
                 </div>
             </div>
@@ -68,7 +72,7 @@ let ListadoCantonesProvincias = (props) => {
                                 }
                             }
                         }}
-                        records={cantonesProvinciasState}
+                        records={cantonesProvincia}
                         columns={columns}
                     />
                 </div>

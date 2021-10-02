@@ -7,45 +7,49 @@ import { BsPersonCheck } from 'react-icons/bs'
 import { VscOrganization } from 'react-icons/vsc'
 
 export const options = [
-    {
+    /*{
         title: 'Usuarios y Roles',
         icon: <FaUsersCog />,
         content: 'Administre cuentas de usuarios del sistema y asigne roles a usuarios.',
         url: '/admin/usuarios-roles'
-    },
+    },*/
     {
-        title: 'Paises',
-        icon: <GiSouthAmerica />,
-        content: 'Gestione el lsitado de paises de origen para funcionarios, docentes y alumnos.',
-        url: '/admin/paises'
+        title: 'Información demográfica',
+        options: [{
+            title: 'Paises',
+            icon: <GiSouthAmerica />,
+            content: 'Gestione el lsitado de paises de origen para funcionarios, docentes y alumnos.',
+            url: '/admin/paises'
 
+        },
+        {
+            title: 'Provincias y Cantones',
+            icon: <FaCity />,
+            content: 'Gestione el listado de provincias y cantones.',
+            url: '/admin/provincias-cantones'
+
+        }, {
+            title: 'Discapacidades',
+            icon: <FaBlind />,
+            content: 'Gestione las opciones de tipo de discapcidades.',
+            url: '/admin/discapacidades'
+
+        }, {
+            title: 'Etnias',
+            icon: <IoIosPeople />,
+            content: 'Gestione las opciones de autoidentifiación étnica.',
+            url: '/admin/etnias'
+
+        }, {
+            title: 'Nacionalidades',
+            icon: <GiFarmer />,
+            content: 'Gestione el listado de nacionalidades vinculadas a la autoidentifiación étnica.',
+            url: '/admin/nacionalidades'
+
+        }]
     },
-    {
-        title: 'Provincias y Cantones',
-        icon: <FaCity />,
-        content: 'Gestione el listado de provincias y cantones.',
-        url: '/admin/provincias-cantones'
-
-    }, {
-        title: 'Discapacidades',
-        icon: <FaBlind />,
-        content: 'Gestione las opciones de tipo de discapcidades.',
-        url: '/admin/discapacidades'
-
-    }, {
-        title: 'Etnias',
-        icon: <IoIosPeople />,
-        content: 'Gestione las opciones de autoidentifiación étnica.',
-        url: '/admin/etnias'
-
-    }, {
-        title: 'Nacionalidades',
-        icon: <GiFarmer />,
-        content: 'Gestione el listado de nacionalidades vinculadas a la autoidentifiación étnica.',
-        url: '/admin/nacionalidades'
-
-    },
-    {
+   {    title: 'Información Laboral',
+        options:[ {
         title: 'Tipos Documentos',
         icon: <IoDocumentTextOutline />,
         content: 'Gestione de tipos de documentos de realaciones laborales asignados a profesores.',
@@ -98,6 +102,6 @@ export const options = [
         icon: < GiPlayerTime />,
         content: 'Gestione el tiempo de dedicación del profesorado de la IES.',
         url: '/admin/categorias-docentes'
-    }
+    }]}
 
 ]
