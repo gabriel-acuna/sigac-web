@@ -1,36 +1,43 @@
 import { useEffect, useState } from 'react';
-import { options } from './options'
-import OptionCard from '../OptionCard'
 import { Link } from 'react-router-dom'
 import ReactDatatable from '@yun548/bulma-react-datatable'
 import { useDispatch, useSelector } from 'react-redux';
-import { loadInformacionPersonal } from '../../store/dth/informacion_personal'
+import { loadInformacionPersonal, loadPersona, postInformacionPersonal } from '../../store/dth/informacion_personal'
 import { IoPersonAddOutline } from 'react-icons/io5'
+import { FaRegEdit } from 'react-icons/fa'
+import { VscFileSubmodule } from 'react-icons/vsc'
 import RegistarPersona from './nuevo'
+import Alert from '../Alert';
+import { logOut} from '../../store/user'
+import { reset } from 'react-hook-form' 
+
 
 let DTH = (props) => {
 
-    let distpatch = useDispatch()
+    let dispatch = useDispatch()
 
     const [showRegistarPersona, setShowRegistrarPersona] = useState(false)
+    const [response, setResponse] = useState(null)
+    const [error, setError] = useState(null)
+
 
     useEffect(
         () => {
-            distpatch(
+            dispatch(
                 loadInformacionPersonal()
             ).unwrap()
                 .catch(
                     (err) => console.error(err)
                 )
 
-        }, [distpatch]
+        }, [dispatch]
     )
     let informacionPersonalState = useSelector(
         state => state.informacionPersonal.data.personal
     )
     const columns = [
         { key: 'identificacion', text: 'Doc. Id.', sortable: true },
-        { key: 'apellidos', text: 'Apellido', sortable: true },
+        { key: 'apellidos', text: 'Apellidos', sortable: true },
         { key: 'nombres', text: 'Nombres', sortable: true },
         { key: 'correo_institucional', text: 'Correo institucional', sortable: true },
         { key: 'opciones', text: 'Opciones', sortable: false }
@@ -43,21 +50,52 @@ let DTH = (props) => {
                 nombres: `${row.primer_nombre} ${row.segundo_nombre}`,
                 correo_institucional: row.correo_institucional,
                 opciones: [
-                    <button>Editar</button>,
-                    <buton>Expediente Laboral</buton>
+                    <button className="button is-primary is-outlined  mx-2" key={`${row.id}0`}>
+                        <span className="icon is-small">
+                            <FaRegEdit/>
+                        </span>
+                    </button>,
+                    <button className="button is-info is-outlined mx-2" key={`${row.id}1`}> 
+                        <span className="icon is-small">
+                            <VscFileSubmodule/>
+                        </span>
+                    </button>
 
                 ]
             }
         }
     )
+    const postHandler = (data) => {
+        dispatch(
+            postInformacionPersonal(data)
+        ).unwrap()
+            .then(
+                resp => {
+                    setResponse(resp)
+                }
+            ).catch(
+                (err) => {
+                    if (err.messsage === "Cannot read property 'data' of undefined") {
+                        console.error("No hay conexión con el backend");
 
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+    };
     return (
         <>
             <div className="container">
 
                 <div className="columns is-centered">
                     <div className="column is-half mt-4">
-                        <button className="button is-primary is-outlined" onClick={ev => setShowRegistrarPersona(true)}>
+                        <button className="button is-primary is-outlined mx-3" onClick={ev => setShowRegistrarPersona(true)}>
                             <span className="icon is-small">
                                 <IoPersonAddOutline />
                             </span>
@@ -98,11 +136,25 @@ let DTH = (props) => {
                 </div>
             </div>
             {showRegistarPersona &&
-                <RegistarPersona title="Registrar personal">
-                    
+                <RegistarPersona title="Registrar personal" handler={postHandler}>
+                    {error && <Alert type={'is-danger is-light'} content={error.message}>
+                        <button className="delete" onClick={event => setError(null)}></button>
+                    </Alert>}
+                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                        <button className="delete" onClick={event => setResponse(null)}></button>
+                    </Alert>}
+                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                        <button className="delete" onClick={event => {
+                            setResponse(null)
+                            setShowRegistrarPersona(false)
+                            dispatch(
+                                loadInformacionPersonal()
+                            )
+                            }}></button>
+                    </Alert>}
 
                     <button className="button is-small is-danger mx-3" onClick={ev => setShowRegistrarPersona(false)}>Cancelar</button>
-                    <button type="submit" className="button is-success is-small mx-3">Guardar</button>
+
                 </RegistarPersona>}
         </>
     )

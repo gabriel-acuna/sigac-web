@@ -55,7 +55,7 @@ let RegistrarRelacion = (props) => {
                     <div className="field">
                         <label className="label is-small">Relación IES</label>
                         <div className="control">
-                            <input type="text" {...register("relacionIES", { required: true })} className="input is-samll is-uppercase" />
+                            <input type="text" {...register("relacionIES", { required: true })} className="input is-small is-uppercase" />
                             {errors.relacionIES && <span className="has-text-danger">¡Por favor, Ingrese la relación!</span>}
                             {
                                 error && <Alert type={'is-danger is-light'} content={error.message}>

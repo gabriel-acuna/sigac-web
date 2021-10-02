@@ -58,7 +58,7 @@ export const loadPersona = createAsyncThunk(
 
 export const postInformacionPersonal = createAsyncThunk(
     'informacion-personal/post',
-    async ( datosPersonales, { getState }) => {
+    async (datosPersonales, { getState }) => {
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -68,7 +68,40 @@ export const postInformacionPersonal = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.post(`${API}/personal`, datosPersonales,
+            let data =
+            {
+                tipo_identificacion: datosPersonales.tipo_identificacion,
+                identificacion: datosPersonales.identificacion,
+                primer_nombre: datosPersonales.primer_nombre.toUpperCase(),
+                segundo_nombre: datosPersonales.segundo_nombre.toUpperCase(),
+                primer_apellido: datosPersonales.primer_apellido.toUpperCase(),
+                segundo_apellido: datosPersonales.segundo_apellido.toUpperCase(),
+                sexo: datosPersonales.sexo,
+                fecha_nacimiento: datosPersonales.fecha_nacimiento,
+                pais_origen: datosPersonales.pais_origen,
+                estado_civil: datosPersonales.estado_civil,
+                discapacidad: datosPersonales.discapacidad,
+                carnet_conadis: datosPersonales.numero_conadis !==null ? datosPersonales.numero_conadis.toUpperCase() : datosPersonales.numero_conadis,
+                porcentaje_discapacidad: datosPersonales.porcentaje_discapacidad,
+                etnia: datosPersonales.etnia,
+                nacionalidad: datosPersonales.nacionalidad,
+                correo_institucional: datosPersonales.email_institucional,
+                correo_personal: datosPersonales.email_institucional,
+                telefono_domicilio: datosPersonales.telefono_domicilio,
+                telefono_movil: datosPersonales.telefono_movil,
+                direccion_domicilio: {
+                    id_provincia: datosPersonales.id_provincia,
+                    id_canton: datosPersonales.id_canton,
+                    parroquia: datosPersonales.parroquia.toUpperCase(),
+                    calle1: datosPersonales.calle1.toUpperCase(),
+                    calle2: datosPersonales.calle2.toUpperCase(),
+                    referencia: datosPersonales.referencia.toUpperCase()
+                },
+                tipo_sangre: datosPersonales.tipo_sangre,
+                licencia_conduccion: datosPersonales.licencia_conduccion,
+                fecha_ingreso: datosPersonales.fecha_ingreso_ies
+            }
+            let response = await Axios.post(`${API}/personal`, data,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -91,7 +124,7 @@ export const postInformacionPersonal = createAsyncThunk(
 
 export const putInformacionPersonal = createAsyncThunk(
     'informacion-personal/put',
-    async (datosPersonales, { getState }) => {
+    async (id, datosPersonales, { getState }) => {
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -101,7 +134,39 @@ export const putInformacionPersonal = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.put(`${API}/personal`, datosPersonales,
+            let data =
+            {
+                tipo_identificacion: datosPersonales.tipo_identificacion,
+                primer_nombre: datosPersonales.primer_nombre.toUpperCase(),
+                segundo_nombre: datosPersonales.segundo_nombre.toUpperCase(),
+                primer_apellido: datosPersonales.primer_apellido.toUpperCase(),
+                segundo_apellido: datosPersonales.segundo_apellido.toUpperCase(),
+                sexo: datosPersonales.sexo,
+                fecha_nacimiento: datosPersonales.fecha_nacimiento,
+                pais_origen: datosPersonales.pais_origen,
+                estado_civil: datosPersonales.estado_civil,
+                discapacidad: datosPersonales.discapacidad,
+                carnet_conadis: datosPersonales.numero_conadis !==null ? datosPersonales.numero_conadis.toUpperCase() : datosPersonales.numero_conadis,
+                porcentaje_discapacidad: datosPersonales.porcentaje_discapacidad,
+                etnia: datosPersonales.etnia,
+                nacionalidad: datosPersonales.nacionalidad,
+                correo_institucional: datosPersonales.email_institucional,
+                correo_personal: datosPersonales.email_institucional,
+                telefono_domicilio: datosPersonales.telefono_domicilio,
+                telefono_movil: datosPersonales.telefono_movil,
+                direccion_domicilio: {
+                    id_provincia: datosPersonales.id_provincia,
+                    id_canton: datosPersonales.id_canton,
+                    parroquia: datosPersonales.parroquia.toUpperCase(),
+                    calle1: datosPersonales.calle1.toUpperCase(),
+                    calle2: datosPersonales.calle2 !== null ? datosPersonales.calle2.toUpperCase():datosPersonales.calle2,
+                    referencia:  datosPersonales.referencia !==null?datosPersonales.referencia.toUpperCase() : datosPersonales.referencia
+                },
+                tipo_sangre: datosPersonales.tipo_sangre.toUpperCase(),
+                licencia_conduccion: datosPersonales.licencia_conduccion !==null ? datosPersonales.licencia_conduccion.toUpperCase() : datosPersonales.licencia_conduccion,
+                fecha_ingreso: datosPersonales.fecha_ingreso_ies
+            }
+            let response = await Axios.put(`${API}/personal/${id}`, data,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -152,7 +217,7 @@ let informacionPersonalSlice = createSlice({
     name: 'informacionPersonal',
     initialState: {
         data: {
-            personal: []  
+            personal: []
         },
         status: ''
 

@@ -50,6 +50,7 @@ import EditarTipoDocente from "./components/admin/options/tipos-docentes/EditarT
 import ListadoCategoriasDocentes from "./components/admin/options/categorias-docentes";
 import RegistrarCategoriaDocente from "./components/admin/options/categorias-docentes/RegistrarCategoriaDocente";
 import EditarCategoriaDocente from "./components/admin/options/categorias-docentes/EditarCategoriaDocente";
+import RegistrarPersona from './components/dth/nuevo';
 
 const routes = (user)=> [
     {
@@ -306,6 +307,9 @@ const routes = (user)=> [
             {
                 path: '/',
                 element: <DTH/>
+            },{
+                path:'/registrar',
+                element:<RegistrarPersona/>
             },
             {
                 path: '/profesores',
