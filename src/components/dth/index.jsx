@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 import ReactDatatable from '@yun548/bulma-react-datatable'
 import { useDispatch, useSelector } from 'react-redux';
-import { loadInformacionPersonal, loadPersona, postInformacionPersonal } from '../../store/dth/informacion_personal'
+import { loadInformacionPersonal, loadPersona, postInformacionPersonal , putInformacionPersonal} from '../../store/dth/informacion_personal'
 import { IoPersonAddOutline } from 'react-icons/io5'
 import { FaRegEdit } from 'react-icons/fa'
 import { VscFileSubmodule } from 'react-icons/vsc'
@@ -50,7 +50,10 @@ let DTH = (props) => {
                 nombres: `${row.primer_nombre} ${row.segundo_nombre}`,
                 correo_institucional: row.correo_institucional,
                 opciones: [
-                    <button className="button is-primary is-outlined  mx-2" key={`${row.id}0`}>
+                    <button className="button is-primary is-outlined  mx-2" key={`${row.id}0`} onClick={ev=>{
+                        setPersona(row)
+                        setShowRegistrarPersona(true)
+                    }}>
                         <span className="icon is-small">
                             <FaRegEdit/>
                         </span>
@@ -89,6 +92,37 @@ let DTH = (props) => {
                 }
             )
     };
+    const putHandler = (data) => {
+        let params = {
+            id: persona.identificacion,
+            datosPersonales: data
+        }
+        dispatch(
+            putInformacionPersonal( params)
+        ).unwrap()
+            .then(
+                resp => {
+                    setResponse(resp)
+                }
+            ).catch(
+                (err) => {
+                    if (err.messsage === "Cannot read property 'data' of undefined") {
+                        console.error("No hay conexión con el backend");
+
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+    };
+    const [persona, setPersona] = useState(null);
+    
+    
     return (
         <>
             <div className="container">
@@ -136,7 +170,7 @@ let DTH = (props) => {
                 </div>
             </div>
             {showRegistarPersona &&
-                <RegistarPersona title="Registrar personal" handler={postHandler}>
+                <RegistarPersona title={ persona !== null ? "Editar personal":"Registrar personal"} handler={persona !== null? putHandler:postHandler} person={persona}>
                     {error && <Alert type={'is-danger is-light'} content={error.message}>
                         <button className="delete" onClick={event => setError(null)}></button>
                     </Alert>}

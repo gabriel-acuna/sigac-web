@@ -124,7 +124,7 @@ export const postInformacionPersonal = createAsyncThunk(
 
 export const putInformacionPersonal = createAsyncThunk(
     'informacion-personal/put',
-    async (id, datosPersonales, { getState }) => {
+    async ({id,datosPersonales}, { getState }) => {
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -133,7 +133,9 @@ export const putInformacionPersonal = createAsyncThunk(
             throw e;
         }
         if (!token) return Promise.reject('There is not token')
+
         try {
+            console.log(datosPersonales);
             let data =
             {
                 tipo_identificacion: datosPersonales.tipo_identificacion,
@@ -175,6 +177,7 @@ export const putInformacionPersonal = createAsyncThunk(
             return response.data
 
         } catch (error) {
+            console.log(error);
             let err;
             if (error.response.data.detail[0].msg)
                 err = error.response.data.detail[0].msg
