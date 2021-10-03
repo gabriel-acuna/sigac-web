@@ -2,16 +2,24 @@ import ReactDatatable from '@yun548/bulma-react-datatable'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
-import { loadDiscapacidades, clearData, deleteDiscapacidades } from '../../../../store/core/discapacidades'
+import { loadDiscapacidades, clearData, deleteDiscapacidades, postDiscapacidades, putDiscapacidades } from '../../../../store/core/discapacidades'
 import ConfirmDialog from '../../../ConfirmDialog'
 import Alert from '../../../Alert'
-
-
+import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
+import RegistrarDiscapacidad from './RegistrarDiscapacidad'
+import { logOut } from '../../../../store/user'
+import { FaRegEdit } from 'react-icons/fa'
+import { AiOutlineDelete} from 'react-icons/ai'
 
 let ListadoDiscapacidades = (props) => {
-    
+
     let navigate = useNavigate()
     let dispatch = useDispatch()
+    const [error, setError] = useState(null)
+
+    const [response, setResponse] = useState(null)
+    const [ objeto, setObjeto] = useState(null)
+
 
     useEffect(
         () => {
@@ -30,18 +38,19 @@ let ListadoDiscapacidades = (props) => {
     ]
     let discapacidadesState = useSelector(state => state.discapacidades.data.discapacidades)
 
-    const [response, setResponse] = useState(null)
-    const [showModal, setShowModal] = useState(false)
    
+    const [showModal, setShowModal] = useState(false)
+    const [showModalForm, setShowModalForm] = useState(false)
+
     const [id, setId] = useState(null)
 
     let deleteHandler = (id) => {
         setShowModal(true)
-        setId(id)      
+        setId(id)
 
     }
 
-    let doDelete = () =>{
+    let doDelete = () => {
         dispatch(
             deleteDiscapacidades(id)
 
@@ -62,33 +71,108 @@ let ListadoDiscapacidades = (props) => {
             return {
                 discapacidad: row.discapacidad,
                 opciones: [
-                    <Link className="button is-small is-primary mx-2" to={`/admin/discapacidades/editar/${row.id}`} key={`${row.id}0`}>Editar</Link>,
-                    <button className="button is-small is-danger mx-2" onClick={event => {
+                    <button className="button is-small is-primary is-outlined mx-2" onClick={ ev=>{ 
+                        setObjeto(row)
+                        setShowModalForm(true)
+                    }} key={`${row.id}0`}>
+                        <span className="icon">
+                            <FaRegEdit/>
+                        </span>
+                    </button>,
+                    <button className="button is-small is-danger mx-2 is-outlined" onClick={event => {
                         deleteHandler(row.id)
-                    }}>Eliminar</button>
+                    }}>
+                        <span className="icon">
+                            <AiOutlineDelete/>
+                        </span>
+                    </button>
                 ]
             }
         }
     )
 
+    let postHandler = (data) => {
 
+        dispatch(
+            postDiscapacidades(
+                { discapacidad: data.discapacidad.toUpperCase() }
+            )
+        ).unwrap()
+            .then((resp) => {
+                setResponse(resp);
+            })
+            .catch(
+                (err) => {
+                    if (err.messsage === "Cannot read property 'data' of undefined") {
+                        console.error("No hay conexión con el backend");
+
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+
+    }
+
+    let putHandler = (data) => {
+        
+        
+        dispatch(
+            putDiscapacidades(
+                {
+                    id: objeto.id,
+                    discapacidad: data.discapacidad.toUpperCase()
+                }
+            )
+        ).unwrap()
+            .then((resp) => {
+                setResponse(resp);
+            })
+            .catch(
+                (err) => {
+                    if (err.messsage === "Cannot read property 'data' of undefined") {
+                        console.error("No hay conexión con el backend");
+                        
+                    }
+                    else if(err.message==="Rejected"){
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                 }
+            )
+       
+    }
     return (
 
         <div className="conatiner">
             <div className="columns is-centered">
                 <div className="column is-half">
-                    <button className="button is-small is-info mt-4 mx-3"
+                    <button className="button is-info is-outlined mt-4 mx-3"
                         onClick={event => {
                             navigate(-1);
                             dispatch(clearData())
-                        }}>Regresar</button>
+                        }}>
+                            <span className="icon">
+                                <IoIosArrowBack/>
+                            </span>
+                        </button>
 
-                    <Link className="button is-small is-success mt-4"
-                        to="/admin/discapacidades/registrar">Registrar discapacidad</Link>
+                    <button className="button is-success is-outlined mt-4" onClick={ev => setShowModalForm(true)}>
+                        <span className="icon">
+                            <IoIosAddCircleOutline />
+                        </span>
+                    </button>
                 </div>
                 {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                                <button className="delete" onClick={event => setResponse(null)}></button>
-                            </Alert>}
+                    <button className="delete" onClick={event => setResponse(null)}></button>
+                </Alert>}
             </div>
             <div className="columns is-centered">
 
@@ -133,6 +217,30 @@ let ListadoDiscapacidades = (props) => {
                         setShowModal(false); doDelete();
                     }}>Confirmar</button>
                 </ConfirmDialog>
+            }
+            {
+                showModalForm && <RegistrarDiscapacidad title={ objeto!== null ? "Editar discapacidad": "Registrar discapacidad"} objeto={objeto} handler={objeto!==null ? putHandler:postHandler}>
+                    {
+                        error && <Alert type={'is-danger is-light'} content={error.message}>
+                            <button className="delete" onClick={event => setError(null)}></button>
+                        </Alert>
+                    }
+                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                        <button className="delete" onClick={event => setResponse(null)}></button>
+                    </Alert>}
+                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                        <button className="delete" onClick={event =>{ 
+                            setResponse(null)
+                            setShowModalForm(false)
+                            dispatch(
+                                loadDiscapacidades()
+                            )}}></button>
+                    </Alert>}
+                    <button className="button is-small is-danger mx-3" onClick={ev =>{ 
+                        setShowModalForm(false)
+                        setObjeto(null)
+                        }}>Cancelar</button>
+                </RegistrarDiscapacidad>
             }
         </div >
     )

@@ -187,7 +187,10 @@ let DTH = (props) => {
                             }}></button>
                     </Alert>}
 
-                    <button className="button is-small is-danger mx-3" onClick={ev => setShowRegistrarPersona(false)}>Cancelar</button>
+                    <button className="button is-small is-danger mx-3" onClick={ev => {
+                        setShowRegistrarPersona(false)
+                        setPersona(null)
+                        }}>Cancelar</button>
 
                 </RegistarPersona>}
         </>

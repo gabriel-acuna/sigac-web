@@ -1,77 +1,58 @@
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { useState } from 'react'
-import { postDiscapacidades } from '../../../../store/core/discapacidades'
-import Alert from '../../../Alert'
-import { logOut } from '../../../../store/user'
+import { Fragment, useEffect} from 'react'
 
 
-let RegistrarDiscapacidad = (props) => {
 
-    let navigate = useNavigate()
-    let dispatch = useDispatch()
-    const [error, setError] = useState(null)
-    const { register, handleSubmit, formState: { errors } } = useForm()
-    const [response, setResponse] = useState(null)
+
+let RegistrarDiscapacidad = ({title, handler, children, objeto}) => {
+
     
-    let onSubmit = (data) => {
+    const { register,reset, handleSubmit, formState: { errors } } = useForm()
+    useEffect(
+        ()=>{
+            if(objeto !== null){
+                reset({
+                    discapacidad: objeto.discapacidad
+                })
+            }
+        },[]
+    )
 
-        dispatch(
-            postDiscapacidades(
-                { discapacidad: data.discapacidad.toUpperCase() }
-            )
-        ).unwrap()
-            .then((resp) => {
-                setResponse(resp);
-            })
-            .catch(
-                (err) => {
-                    if (err.messsage === "Cannot read property 'data' of undefined") {
-                        console.error("No hay conexión con el backend");
-                        
-                    }else if(err.message==="Rejected"){
-                        dispatch(
-                            logOut()
-                        )
-                    }
-
-                    else { setError(err) }
-                 }
-            )
-
-    }
+ 
 
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <div className="box mt-4 px-2">
-                <button className="button is-small is-info mt-2 ml-3" onClick={event => navigate(-1)}>Regresar</button>
+        <div className="modal is-active">
+            <div className="modal-background"></div>
+            <div className="modal-card">
+                <header className="modal-card-head">
+                    <span className="modal-card-title">{title}</span>
 
-                <form className="mt-4" onSubmit={handleSubmit(onSubmit)}>
-                    <div className="field">
-                        <label className="label is-small">Discapacidad</label>
-                        <div className="control">
-                            <input type="text" {...register("discapacidad", { required: true })} className="input is-samll is-uppercase" />
-                            {errors.discapacidad && <span className="has-text-danger">¡Por favor, Ingrese la discapacidad!</span>}
-                            {
-                                error && <Alert type={'is-danger is-light'} content={error.message}>
-                                    <button className="delete" onClick={event => setError(null)}></button>
-                                </Alert>
-                            }
-                            {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                                <button className="delete" onClick={event => setResponse(null)}></button>
-                            </Alert>}
-                            {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                                <button className="delete" onClick={event => setResponse(null)}></button>
-                            </Alert>}
+                </header>
+                <section className="modal-card-body" style={{ display: 'flex', justifyContent: 'center' }}>
+
+                    <form className="mt-4" onSubmit={handleSubmit(handler)}>
+                        <div className="field">
+                            <label className="label is-small">Discapacidad</label>
+                            <div className="control">
+                                <input type="text" {...register("discapacidad", { required: true })} className="input is-samll is-uppercase" />
+                                {errors.discapacidad && <span className="has-text-danger">¡Por favor, Ingrese la discapacidad!</span>}
+                               
+
+                            </div>
+                        </div>
+                        <div className="field is-grouped" style={{ display: 'flex', justifyContent: 'center' }}>
+                        <div className="control has-text-centered">
+                            <Fragment>
+                                {children}
+                            </Fragment>
+
+                            <button type="submit" className="button is-success is-small mx-3">Guardar</button>
 
                         </div>
                     </div>
-                    <div className="control is-pulled-right">
-                        <button type="submit" className="button is-success is-small"> Guardar</button>
-                    </div>
-                </form>
+                    </form>
+                </section>
             </div>
         </div>
     )

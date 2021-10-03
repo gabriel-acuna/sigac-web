@@ -15,11 +15,8 @@ import ListadoProvincias from "./components/admin/options/provincias";
 import ListadoCantonesProvincias from "./components/admin/options/provincias/ListadoCantones";
 import isValid from "./services/auth";
 import ListadoDiscapacidades from "./components/admin/options/discapacidades";
-import RegistrarDiscapacidad from "./components/admin/options/discapacidades/RegistrarDiscapacidad";
-import EditarDiscapacidad from "./components/admin/options/discapacidades/EditarDiscapacidad";
 import ListadoEtnias from "./components/admin/options/etnias";
 import RegistrarEtnia from "./components/admin/options/etnias/RegistrarEtnia";
-import EditarEtnia from "./components/admin/options/etnias/EditarEtnia";
 import ListadoNacionalidades from "./components/admin/options/nacionalidades";
 import RegistrarNacionalidad from "./components/admin/options/nacionalidades/RegistrarNacionalidad";
 import EditarNacionalidad from "./components/admin/options/nacionalidades/EditarNacionalidad";
@@ -104,15 +101,8 @@ const routes = (user)=> [
                     {
                         path:'/',
                         element: <ListadoDiscapacidades/>
-                    },
-                    {
-                        path:'/registrar',
-                        element:<RegistrarDiscapacidad/>
-                    },
-                    {
-                        path:'/editar/:id',
-                        element:<EditarDiscapacidad/>
                     }
+                    
                 ]
             }, {
                 path: '/etnias',
@@ -125,9 +115,6 @@ const routes = (user)=> [
                     {
                         path: '/registrar',
                         element: <RegistrarEtnia/>
-                    },{
-                        path:'/editar/:id',
-                        element: <EditarEtnia/>
                     }
                 ]
             }, {

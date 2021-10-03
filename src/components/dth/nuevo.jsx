@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loadPaises } from '../../store/core/paises';
 import { loadDiscapacidades } from '../../store/core/discapacidades';
 import { loadEtnias } from '../../store/core/etnias'
-import estado_civil, { loadEstadosCiviles } from '../../store/core/estado_civil'
+import  { loadEstadosCiviles } from '../../store/core/estado_civil'
 import { loadNacionalidades } from '../../store/core/nacionalidades'
 import { loadCantonesProvincia, loadProvincias } from '../../store/core/provincias'
 
