@@ -7,7 +7,7 @@ import Axios from 'axios'
 import { API } from '../../services/api'
 
 export const loadEstadosCiviles = createAsyncThunk(
-    'estados-civiles/load',
+    'areas-institucionales/load',
     async (_, { getState }) => {
         let token;
         try {
@@ -17,7 +17,7 @@ export const loadEstadosCiviles = createAsyncThunk(
         }
 
         try {
-            let response = await Axios.get(`${API}/estados-civiles`,
+            let response = await Axios.get(`${API}/areas-institucionales`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -31,7 +31,7 @@ export const loadEstadosCiviles = createAsyncThunk(
     }
 )
 
-export const loadEstadoCivil = createAsyncThunk(
+export const loadArea = createAsyncThunk(
     'estado-civil/load',
     async (id, { getState }) => {
         let token;
@@ -42,7 +42,7 @@ export const loadEstadoCivil = createAsyncThunk(
         }
 
         try {
-            let response = await Axios.get(`${API}/estados-civiles/${id}`,
+            let response = await Axios.get(`${API}/areas-institucionales/${id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -56,9 +56,34 @@ export const loadEstadoCivil = createAsyncThunk(
     }
 )
 
-export const postEstadoCivil = createAsyncThunk(
-    'estados-civiles/post',
-    async (estadoCivil, { getState }) => {
+export const loadArea = createAsyncThunk(
+    'estado-civil/load',
+    async ({estructura, area}, { getState }) => {
+        let token;
+        try {
+            token = getState().user.user.jwt.token;
+        } catch (e) {
+            throw e;
+        }
+
+        try {
+            let response = await Axios.get(`${API}/areas-institucionales/${estructura}/${area}/areas`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+            return response.data
+
+        } catch (error) {
+            throw error.response.detail
+        }
+    }
+)
+
+export const postArea = createAsyncThunk(
+    'areas-institucionales/post',
+    async (area, { getState }) => {
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -68,7 +93,7 @@ export const postEstadoCivil = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.post(`${API}/estados-civiles`, estadoCivil,
+            let response = await Axios.post(`${API}/areas-institucionales`, area,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -89,9 +114,9 @@ export const postEstadoCivil = createAsyncThunk(
 
 )
 
-export const putEstadosCiviles = createAsyncThunk(
-    'estados-civiles/put',
-    async (estadoCivil, { getState }) => {
+export const putArea = createAsyncThunk(
+    'areas-institucionales/put',
+    async (area, { getState }) => {
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -101,7 +126,7 @@ export const putEstadosCiviles = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.put(`${API}/estados-civiles`, estadoCivil,
+            let response = await Axios.put(`${API}/areas-institucionales`, area,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -121,8 +146,8 @@ export const putEstadosCiviles = createAsyncThunk(
     }
 )
 
-export const deleteEstadosCiviles = createAsyncThunk(
-    'estados-civiles/delete',
+export const deleteArea = createAsyncThunk(
+    'areas-institucionales/delete',
     async (id, { getState }) => {
         let token;
         try {
@@ -133,7 +158,7 @@ export const deleteEstadosCiviles = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.delete(`${API}/estados-civiles/${id}`,
+            let response = await Axios.delete(`${API}/areas-institucionales/${id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -148,11 +173,11 @@ export const deleteEstadosCiviles = createAsyncThunk(
     }
 )
 
-let estadosCivilesSlice = createSlice({
-    name: 'estadosCiviles',
+let areasIntitucionalesSlice = createSlice({
+    name: 'areas',
     initialState: {
         data: {
-            estadosCiviles: []
+            areas: []
             
         },
         status: ''
@@ -162,7 +187,7 @@ let estadosCivilesSlice = createSlice({
 
         clearData: (state) => {
             state.data = {
-                estadosCiviles: []
+                areas: []
                
             }
         }
@@ -172,7 +197,7 @@ let estadosCivilesSlice = createSlice({
         [loadEstadosCiviles.fulfilled]: (state, action) => {
             state.status = 'success'
             state.data = {
-                    estadosCiviles: action.payload
+                    areas: action.payload
                 }
 
         }
@@ -182,5 +207,5 @@ let estadosCivilesSlice = createSlice({
 }
 )
 
-export const { clearData } = estadosCivilesSlice.actions;
-export default estadosCivilesSlice.reducer;
+export const { clearData } = areasIntitucionalesSlice.actions;
+export default areasIntitucionalesSlice.reducer;

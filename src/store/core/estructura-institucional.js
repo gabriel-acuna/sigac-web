@@ -6,8 +6,8 @@ import {
 import Axios from 'axios'
 import { API } from '../../services/api'
 
-export const loadEstadosCiviles = createAsyncThunk(
-    'estados-civiles/load',
+export const loadEstructurasInstitucionales = createAsyncThunk(
+    'estructura-institucional/load',
     async (_, { getState }) => {
         let token;
         try {
@@ -17,7 +17,7 @@ export const loadEstadosCiviles = createAsyncThunk(
         }
 
         try {
-            let response = await Axios.get(`${API}/estados-civiles`,
+            let response = await Axios.get(`${API}/estructura-institucional`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -31,8 +31,8 @@ export const loadEstadosCiviles = createAsyncThunk(
     }
 )
 
-export const loadEstadoCivil = createAsyncThunk(
-    'estado-civil/load',
+export const loadEstructura = createAsyncThunk(
+    'estructura/load',
     async (id, { getState }) => {
         let token;
         try {
@@ -42,7 +42,7 @@ export const loadEstadoCivil = createAsyncThunk(
         }
 
         try {
-            let response = await Axios.get(`${API}/estados-civiles/${id}`,
+            let response = await Axios.get(`${API}/estructura-institucional/${id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -56,9 +56,9 @@ export const loadEstadoCivil = createAsyncThunk(
     }
 )
 
-export const postEstadoCivil = createAsyncThunk(
-    'estados-civiles/post',
-    async (estadoCivil, { getState }) => {
+export const postEstructuraInstitucional = createAsyncThunk(
+    'estructura-institucional/post',
+    async (estructura, { getState }) => {
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -68,7 +68,7 @@ export const postEstadoCivil = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.post(`${API}/estados-civiles`, estadoCivil,
+            let response = await Axios.post(`${API}/estructura-institucional`, estructura,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -89,9 +89,9 @@ export const postEstadoCivil = createAsyncThunk(
 
 )
 
-export const putEstadosCiviles = createAsyncThunk(
-    'estados-civiles/put',
-    async (estadoCivil, { getState }) => {
+export const putEstructuraInstitucional = createAsyncThunk(
+    'estructura-institucional/put',
+    async (estructura, { getState }) => {
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -101,7 +101,7 @@ export const putEstadosCiviles = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.put(`${API}/estados-civiles`, estadoCivil,
+            let response = await Axios.put(`${API}/estructura-institucional`, estructura,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -121,8 +121,8 @@ export const putEstadosCiviles = createAsyncThunk(
     }
 )
 
-export const deleteEstadosCiviles = createAsyncThunk(
-    'estados-civiles/delete',
+export const deleteEstructura = createAsyncThunk(
+    'estructura-institucional/delete',
     async (id, { getState }) => {
         let token;
         try {
@@ -133,7 +133,7 @@ export const deleteEstadosCiviles = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.delete(`${API}/estados-civiles/${id}`,
+            let response = await Axios.delete(`${API}/estructura-institucional/${id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -148,11 +148,11 @@ export const deleteEstadosCiviles = createAsyncThunk(
     }
 )
 
-let estadosCivilesSlice = createSlice({
-    name: 'estadosCiviles',
+let estructuraInstitucionalSlice = createSlice({
+    name: 'estructuras',
     initialState: {
         data: {
-            estadosCiviles: []
+            estructuras: []
             
         },
         status: ''
@@ -162,17 +162,17 @@ let estadosCivilesSlice = createSlice({
 
         clearData: (state) => {
             state.data = {
-                estadosCiviles: []
+                estructuras: []
                
             }
         }
 
     },
     extraReducers: {
-        [loadEstadosCiviles.fulfilled]: (state, action) => {
+        [loadEstructurasInstitucionales.fulfilled]: (state, action) => {
             state.status = 'success'
             state.data = {
-                    estadosCiviles: action.payload
+                    estructuras: action.payload
                 }
 
         }
@@ -182,5 +182,5 @@ let estadosCivilesSlice = createSlice({
 }
 )
 
-export const { clearData } = estadosCivilesSlice.actions;
-export default estadosCivilesSlice.reducer;
+export const { clearData } = estructuraInstitucionalSlice.actions;
+export default estructuraInstitucionalSlice.reducer;

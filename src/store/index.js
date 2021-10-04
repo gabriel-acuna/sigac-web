@@ -23,6 +23,7 @@ import informacionPersonalReducer from './dth/informacion_personal'
 import expedienteLaboralReducer from './dth/expediente_laboral'
 import capacitacionReducer from './cv/capacitacion';
 import referenciaReducer from './cv/referencia';
+import estructuraInstitucionalReducer from './core/estructura-institucional';
 
 import {
     persistStore,
@@ -58,7 +59,8 @@ const reducer = combineReducers({
     informacionPersonal: informacionPersonalReducer,
     expediente:expedienteLaboralReducer,
     capacitaciones: capacitacionReducer,
-    referencias: referenciaReducer
+    referencias: referenciaReducer,
+    estructuraInstitucional: estructuraInstitucionalReducer
 
 
 });

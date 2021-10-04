@@ -6,6 +6,7 @@ import { GrWorkshop } from 'react-icons/gr'
 import { BsPersonCheck } from 'react-icons/bs'
 import { VscOrganization } from 'react-icons/vsc'
 import { MdPeople } from 'react-icons/md'
+import { ImOffice} from 'react-icons/im'
 
 export const options = [
     /*{
@@ -50,67 +51,85 @@ export const options = [
         },
         {
             title: 'Estados civiles',
-            icon: <MdPeople/>,
+            icon: <MdPeople />,
             content: 'Gestione el listado de nacionalidades vinculadas a la autoidentifiación étnica.',
             url: '/admin/estados-civiles'
 
         }
+        ]
+    },
+    {
+        title: 'Información Laboral',
+        options: [{
+            title: 'Tipos Documentos',
+            icon: <IoDocumentTextOutline />,
+            content: 'Gestione de tipos de documentos de realaciones laborales asignados a profesores.',
+            url: '/admin/tipos-documentos'
+
+        },
+        {
+            title: 'Relación IES',
+            icon: <GrWorkshop />,
+            content: 'Gestione los tipos de relaciones entre profesores y la Intitución de Educaión Superior.',
+            url: '/admin/relaciones-ies'
+
+        },
+        {
+            title: 'Tipo escalafón nombramiento',
+            icon: <GiTeamUpgrade />,
+            content: 'Gestione los tipos de escalafones asociados a los nombramientos de los profesores.',
+            url: '/admin/tipos-escalafones'
+        },
+        {
+            title: 'Categoría contrato profesor',
+            icon: <BsPersonCheck />,
+            content: 'Gestione las categorías de contratación del profesorado de la IES.',
+            url: '/admin/categorias-contratos'
+        },
+        {
+            title: 'Tiempo dedicación profesor',
+            icon: <GiPlayerTime />,
+            content: 'Gestione el tiempo de dedicación del profesorado de la IES.',
+            url: '/admin/tiempos-dedicaciones'
+        }, {
+            title: 'Nivel educativo',
+            icon: <GiTeacher />,
+            content: 'Gestione el tiempo de dedicación del profesorado de la IES.',
+            url: '/admin/niveles-educativos'
+        },
+        {
+            title: 'Tipo funcionario',
+            icon: <VscOrganization />,
+            content: 'Gestione el tiempo de dedicación del profesorado de la IES.',
+            url: '/admin/tipos-funcionarios'
+        },
+        {
+            title: 'Tipo docente LOES',
+            icon: <GiOrganigram />,
+            content: 'Gestione el tiempo de dedicación del profesorado de la IES.',
+            url: '/admin/tipos-docentes'
+        }, {
+            title: 'Categoría docente LOSEP',
+            icon: < GiPlayerTime />,
+            content: 'Gestione el tiempo de dedicación del profesorado de la IES.',
+            url: '/admin/categorias-docentes'
+        }
     ]
-    },
-   {    title: 'Información Laboral',
-        options:[ {
-        title: 'Tipos Documentos',
-        icon: <IoDocumentTextOutline />,
-        content: 'Gestione de tipos de documentos de realaciones laborales asignados a profesores.',
-        url: '/admin/tipos-documentos'
-
-    },
-    {
-        title: 'Relación IES',
-        icon: <GrWorkshop />,
-        content: 'Gestione los tipos de relaciones entre profesores y la Intitución de Educaión Superior.',
-        url: '/admin/relaciones-ies'
-
-    },
-    {
-        title: 'Tipo escalafón nombramiento',
-        icon: <GiTeamUpgrade />,
-        content: 'Gestione los tipos de escalafones asociados a los nombramientos de los profesores.',
-        url: '/admin/tipos-escalafones'
-    },
-    {
-        title: 'Categoría contrato profesor',
-        icon: <BsPersonCheck />,
-        content: 'Gestione las categorías de contratación del profesorado de la IES.',
-        url: '/admin/categorias-contratos'
-    },
-    {
-        title: 'Tiempo dedicación profesor',
-        icon: <GiPlayerTime />,
-        content: 'Gestione el tiempo de dedicación del profesorado de la IES.',
-        url: '/admin/tiempos-dedicaciones'
     }, {
-        title: 'Nivel educativo',
-        icon: <GiTeacher />,
-        content: 'Gestione el tiempo de dedicación del profesorado de la IES.',
-        url: '/admin/niveles-educativos'
-    },
-    {
-        title: 'Tipo funcionario',
-        icon: <VscOrganization />,
-        content: 'Gestione el tiempo de dedicación del profesorado de la IES.',
-        url: '/admin/tipos-funcionarios'
-    },
-    {
-        title: 'Tipo docente LOES',
-        icon: <GiOrganigram />,
-        content: 'Gestione el tiempo de dedicación del profesorado de la IES.',
-        url: '/admin/tipos-docentes'
-    }, {
-        title: 'Categoría docente LOSEP',
-        icon: < GiPlayerTime />,
-        content: 'Gestione el tiempo de dedicación del profesorado de la IES.',
-        url: '/admin/categorias-docentes'
-    }]}
+        title: 'Información Institucional',
+        options:[
+            {
+                title: 'Estructura orgánica',
+                icon: <GiOrganigram />,
+                content: '',
+                url: '/admin/estructuras-institucionales'
+            }, {
+                title: 'Areas institucionales',
+                icon: <ImOffice />,
+                content: '',
+                url: ''
+            }
+        ]
+    }
 
 ]
