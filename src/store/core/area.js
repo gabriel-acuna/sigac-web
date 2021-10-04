@@ -6,7 +6,7 @@ import {
 import Axios from 'axios'
 import { API } from '../../services/api'
 
-export const loadEstadosCiviles = createAsyncThunk(
+export const loadAreasInstitucionales = createAsyncThunk(
     'areas-institucionales/load',
     async (_, { getState }) => {
         let token;
@@ -56,9 +56,9 @@ export const loadArea = createAsyncThunk(
     }
 )
 
-export const loadArea = createAsyncThunk(
+export const loadAreas = createAsyncThunk(
     'estado-civil/load',
-    async ({estructura, area}, { getState }) => {
+    async ({ estructura, area }, { getState }) => {
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -83,7 +83,8 @@ export const loadArea = createAsyncThunk(
 
 export const postArea = createAsyncThunk(
     'areas-institucionales/post',
-    async (area, { getState }) => {
+    async (data, { getState }) => {
+       
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -93,7 +94,12 @@ export const postArea = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.post(`${API}/areas-institucionales`, area,
+            let response = await Axios.post(`${API}/areas-institucionales`, {
+
+                nombre: data.nombre.toUpperCase(),
+                codigo: data.codigo.toUpperCase()
+
+            },
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -103,11 +109,12 @@ export const postArea = createAsyncThunk(
 
         } catch (error) {
             let err;
+            console.log(error);
             if (error.response.data.detail[0].msg)
-                err =error.response.data.detail[0].msg
-            if(error.response.data.type)
+                err = error.response.data.detail[0].msg
+            if (error.response.data.type)
                 err = `${error.response.data.type}, ${error.response.data.type.content}`
-            throw  err
+            throw err
         }
 
     }
@@ -137,10 +144,10 @@ export const putArea = createAsyncThunk(
         } catch (error) {
             let err;
             if (error.response.data.detail[0].msg)
-                err =error.response.data.detail[0].msg
-            if(error.response.data.type)
+                err = error.response.data.detail[0].msg
+            if (error.response.data.type)
                 err = `${error.response.data.type}, ${error.response.data.type.content}`
-            throw  err
+            throw err
         }
 
     }
@@ -173,12 +180,12 @@ export const deleteArea = createAsyncThunk(
     }
 )
 
-let areasIntitucionalesSlice = createSlice({
+let areasInstitucionalesSlice = createSlice({
     name: 'areas',
     initialState: {
         data: {
             areas: []
-            
+
         },
         status: ''
 
@@ -188,17 +195,17 @@ let areasIntitucionalesSlice = createSlice({
         clearData: (state) => {
             state.data = {
                 areas: []
-               
+
             }
         }
 
     },
     extraReducers: {
-        [loadEstadosCiviles.fulfilled]: (state, action) => {
+        [loadAreasInstitucionales.fulfilled]: (state, action) => {
             state.status = 'success'
             state.data = {
-                    areas: action.payload
-                }
+                areas: action.payload
+            }
 
         }
 
@@ -207,5 +214,5 @@ let areasIntitucionalesSlice = createSlice({
 }
 )
 
-export const { clearData } = areasIntitucionalesSlice.actions;
-export default areasIntitucionalesSlice.reducer;
+export const { clearData } = areasInstitucionalesSlice.actions;
+export default areasInstitucionalesSlice.reducer;

@@ -82,7 +82,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                 })
             }
 
-        }, [person]
+        }, [person, reset]
     )
     let paisesState = useSelector(
         state => state.paises.data.paises
@@ -168,7 +168,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
     }
 
 
-    , [])
+    , [person, provinciasState, paisesState, cantones, nacionalidadesState])
 return (
 
     <div className="modal is-active">

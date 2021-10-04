@@ -14,7 +14,7 @@ let ModalForm = ({ title, handler, children, objeto }) => {
                     estadoCivil: objeto.estado_civil
                 })
             }
-        },[]
+        },[objeto, reset]
     )
 
 

@@ -35,6 +35,7 @@ let ListadoProvincias = (props) => {
     let rows = provinciasState.map(
         (prov) => {
             return {
+                id: prov.id,
                 provincia: prov.provincia,
                 opciones: [
                     <Link to={`${prov.id}`} key={prov.id}>Ver cantones</Link>

@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom'
 import ReactDatatable from '@yun548/bulma-react-datatable'
 import { useDispatch, useSelector } from 'react-redux';
-import { loadInformacionPersonal, loadPersona, postInformacionPersonal , putInformacionPersonal} from '../../store/dth/informacion_personal'
+import { loadInformacionPersonal, postInformacionPersonal , putInformacionPersonal} from '../../store/dth/informacion_personal'
 import { IoPersonAddOutline } from 'react-icons/io5'
 import { FaRegEdit } from 'react-icons/fa'
 import { VscFileSubmodule } from 'react-icons/vsc'
 import RegistarPersona from './nuevo'
 import Alert from '../Alert';
 import { logOut} from '../../store/user'
-import { reset } from 'react-hook-form' 
+
 
 
 let DTH = (props) => {
@@ -36,7 +35,7 @@ let DTH = (props) => {
         state => state.informacionPersonal.data.personal
     )
     const columns = [
-        { key: 'identificacion', text: 'Doc. Id.', sortable: true },
+        { key: 'id', text: 'Doc. Id.', sortable: true },
         { key: 'apellidos', text: 'Apellidos', sortable: true },
         { key: 'nombres', text: 'Nombres', sortable: true },
         { key: 'correo_institucional', text: 'Correo institucional', sortable: true },
@@ -45,12 +44,12 @@ let DTH = (props) => {
     let rows = informacionPersonalState.map(
         (row, index) => {
             return {
-                identificacion: row.identificacion,
+                id: row.identificacion,
                 apellidos: `${row.primer_apellido} ${row.segundo_apellido}`,
                 nombres: `${row.primer_nombre} ${row.segundo_nombre}`,
                 correo_institucional: row.correo_institucional,
                 opciones: [
-                    <button className="button is-primary is-outlined  mx-2" key={`${row.id}0`} onClick={ev=>{
+                    <button className="button is-primary is-outlined  mx-2" key={`${row.identificacion}0`} onClick={ev=>{
                         setPersona(row)
                         setShowRegistrarPersona(true)
                     }}>
@@ -58,7 +57,7 @@ let DTH = (props) => {
                             <FaRegEdit/>
                         </span>
                     </button>,
-                    <button className="button is-info is-outlined mx-2" key={`${row.id}1`}> 
+                    <button className="button is-info is-outlined mx-2" key={`${row.identificacion}1`}> 
                         <span className="icon is-small">
                             <VscFileSubmodule/>
                         </span>

@@ -1,5 +1,5 @@
 import ReactDatatable from '@yun548/bulma-react-datatable'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { loadTiposDocumentos, clearData, deleteTiposDocumentos, putTiposDocumentos, postTiposDocumentos } from '../../../../store/core/tiposDocumentos'

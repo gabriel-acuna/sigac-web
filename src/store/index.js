@@ -24,6 +24,7 @@ import expedienteLaboralReducer from './dth/expediente_laboral'
 import capacitacionReducer from './cv/capacitacion';
 import referenciaReducer from './cv/referencia';
 import estructuraInstitucionalReducer from './core/estructura-institucional';
+import areaIstitucionalReducer from './core/area'
 
 import {
     persistStore,
@@ -60,7 +61,8 @@ const reducer = combineReducers({
     expediente:expedienteLaboralReducer,
     capacitaciones: capacitacionReducer,
     referencias: referenciaReducer,
-    estructuraInstitucional: estructuraInstitucionalReducer
+    estructuraInstitucional: estructuraInstitucionalReducer,
+    areasInstitucionales: areaIstitucionalReducer
 
 
 });

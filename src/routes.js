@@ -45,6 +45,7 @@ import EditarCategoriaDocente from "./components/admin/options/categorias-docent
 import RegistrarPersona from './components/dth/nuevo';
 import ListadoEstadosCiviles from "./components/admin/options/estados-civiles";
 import ListadoEstructurasInstitucionales from "./components/admin/options/estructura-institucional";
+import ListadoAreasInstitucionales from "./components/admin/options/areas-institucionales";
 
 const routes = (user)=> [
     {
@@ -275,6 +276,16 @@ const routes = (user)=> [
                     {
                         path:'/',
                         element: <ListadoEstructurasInstitucionales/>
+                    }
+                ]
+            },
+            {
+                path: 'areas-institucionales',
+                element: <Outlet/>,
+                children:[
+                    {
+                        path:'/',
+                        element: <ListadoAreasInstitucionales/>
                     }
                 ]
             }

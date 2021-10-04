@@ -71,7 +71,7 @@ let ListadoPaises = (props) => {
                                 }
                             }
                         }}
-                        records={paisesState}
+                        records={ paisesState}
                         columns={columns}
                     />
                 </div>

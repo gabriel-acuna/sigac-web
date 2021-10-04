@@ -1,4 +1,4 @@
-import { FaUsersCog, FaCity, FaBlind } from 'react-icons/fa';
+import { FaCity, FaBlind } from 'react-icons/fa';
 import { IoIosPeople } from 'react-icons/io'
 import { IoDocumentTextOutline } from 'react-icons/io5'
 import { GiSouthAmerica, GiFarmer, GiPlayerTime, GiOrganigram, GiTeamUpgrade, GiTeacher } from 'react-icons/gi'
@@ -127,7 +127,8 @@ export const options = [
                 title: 'Areas institucionales',
                 icon: <ImOffice />,
                 content: '',
-                url: ''
+                url: '/admin/areas-institucionales',
+            
             }
         ]
     }

@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form'
 import { Fragment, useEffect } from 'react'
 
 
-let RegistrarEtnia = ({ title, handler, children, objeto }) => {
+let ModalForm = ({ title, handler, children, objeto }) => {
 
 
     const { register,reset, handleSubmit, formState: { errors } } = useForm()
@@ -11,7 +11,8 @@ let RegistrarEtnia = ({ title, handler, children, objeto }) => {
         ()=>{
             if(objeto!==null){
                 reset({
-                    etnia: objeto.etnia
+                    nombre: objeto.nombre,
+                    codigo: objeto.codigo
                 })
             }
         },[objeto, reset]
@@ -30,12 +31,17 @@ let RegistrarEtnia = ({ title, handler, children, objeto }) => {
 
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
                         <div className="field">
-                            <label className="label is-small">Etnia</label>
+                            <label className="label is-small">Nombre</label>
                             <div className="control">
-                                <input type="text" {...register("etnia", { required: true })} className="input is-samll is-uppercase" />
-                                {errors.etnia && <span className="has-text-danger">¡Por favor, Ingrese la etnia!</span>}
-                               
-                                
+                                <input type="text" {...register("nombre", { required: true })} className="input is-samll is-uppercase" />
+                                {errors.etnia && <span className="has-text-danger">¡Por favor, Ingrese el nombre del area institucional!</span>}
+
+                            </div>
+                        </div>
+                        <div className="field">
+                            <label className="label is-small">Código</label>
+                            <div className="control">
+                                <input type="text" {...register("codigo")} className="input is-samll is-uppercase" />
 
                             </div>
                         </div>
@@ -56,4 +62,4 @@ let RegistrarEtnia = ({ title, handler, children, objeto }) => {
     )
 }
 
-export default RegistrarEtnia;
+export default ModalForm;

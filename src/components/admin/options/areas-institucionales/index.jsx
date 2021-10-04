@@ -2,7 +2,7 @@ import ReactDatatable from '@yun548/bulma-react-datatable'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
-import { loadEstructurasInstitucionales, clearData, deleteEstructura, postEstructuraInstitucional, putEstructuraInstitucional } from '../../../../store/core/estructura-institucional'
+import { loadAreasInstitucionales, clearData, deleteArea, postArea, putArea } from '../../../../store/core/area'
 import ConfirmDialog from '../../../ConfirmDialog'
 import Alert from '../../../Alert'
 import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
@@ -12,14 +12,14 @@ import { AiOutlineDelete } from 'react-icons/ai'
 import ModalForm from './modalForm'
 
 
-let ListadoEstructurasInstitucionales = (props) => {
+let ListadoAreasInstitucionales = (props) => {
     let navigate = useNavigate()
     let dispatch = useDispatch()
 
     useEffect(
         () => {
             dispatch(
-                loadEstructurasInstitucionales()
+                loadAreasInstitucionales()
             ).unwrap()
                 .catch(
                     (err) => console.log(err)
@@ -28,12 +28,11 @@ let ListadoEstructurasInstitucionales = (props) => {
     )
 
     const columns = [
-        { key: 'documentoAprobacion', text: 'Doc. aprobación', sortable: true },
-        { key: 'fechaAprobacion', text: 'Fecha aprobación', sortable: true },
+        { key: 'nombre', text: 'Nombre', sortable: true },
         { key: 'opciones', text: 'Opciones', sortable: false }
     ]
-    
-    let estructurasState = useSelector(state => state.estructuraInstitucional.data.estructuras)
+
+    let areasState = useSelector(state => state.areasInstitucionales.data.areas)
 
     const [response, setResponse] = useState(null)
     const [error, setError] = useState(null)
@@ -50,37 +49,36 @@ let ListadoEstructurasInstitucionales = (props) => {
 
     let doDelete = () => {
         dispatch(
-            deleteEstructura(id)
+            deleteArea(id)
 
         ).unwrap()
             .then(resp => {
                 setResponse(resp)
                 dispatch(
-                    loadEstructurasInstitucionales()
+                    loadAreasInstitucionales()
                 )
             }).catch(
                 (err) => console.error(err)
             )
     }
 
-    let rows = estructurasState.map(
+    let rows = areasState.map(
         (row, index) => {
             return {
                 id: row.id,
-                documentoAprobacion: row.documento_aprobacion,
-                fechaAprobacion: row.fecha_aprobacion,
+                nombre: row.nombre,
                 opciones: [
-                    <button className="button is-small is-primary mx-2 is-outlined" onClick={ev => {
+                    <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}.`} onClick={ev => {
                         setObjeto(row)
                         setShowModalForm(true)
-                    }} key={`${row.id}.`}>
+                    }}>
                         <span className="icon">
                             <FaRegEdit />
                         </span>
                     </button>,
-                    <button className="button is-small is-danger mx-2 is-outlined"  onClick={event => {
+                    <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}+`}  onClick={event => {
                         deleteHandler(row.id)
-                    }} key={`${row.identificacion}+`}>
+                    }}>
                         <span className="icon">
                             <AiOutlineDelete />
                         </span>
@@ -90,14 +88,12 @@ let ListadoEstructurasInstitucionales = (props) => {
         }
     )
 
+    console.log(rows);
     let postHandler = (data) => {
 
         dispatch(
-            postEstructuraInstitucional(
-                {
-                    documento_aprobacion: data.documentoAprobacion.toUpperCase(),
-                    fecha_aprobacion: data.fechaAprobacion
-                }
+            postArea(
+                data
             )
         ).unwrap()
             .then((resp) => {
@@ -125,11 +121,12 @@ let ListadoEstructurasInstitucionales = (props) => {
 
 
         dispatch(
-            putEstructuraInstitucional(
+            putArea(
+                
                 {
                     id: objeto.id,
-                    documento_aprobacion: data.documentoAprobacion.toUpperCase(),
-                    fecha_aprobacion: data.fechaAprobacion
+                    nombre: data.nombre.toUpperCase(),
+                    codigo: data.codigo !== null ? data.codigo.toUpperCase() : data.codigo
                 }
             )
         ).unwrap()
@@ -194,10 +191,10 @@ let ListadoEstructurasInstitucionales = (props) => {
                                 print: false
                             },
                             language: {
-                                length_menu: "Mostrar _MENU_ estructuras  por página",
+                                length_menu: "Mostrar _MENU_ areas institucionales por página",
                                 filter: "Buscar en registros ...",
-                                no_data_text: "No hay estructuras registradas",
-                                info: "Mostrando _START_ a _END_ de _TOTAL_ estructuras",
+                                no_data_text: "No hay areas institucionales registradas",
+                                info: "Mostrando _START_ a _END_ de _TOTAL_ areas institucionales",
                                 pagination: {
                                     first: "Primera",
                                     previous: "Anterior",
@@ -213,7 +210,7 @@ let ListadoEstructurasInstitucionales = (props) => {
             </div>
             {
                 showModal &&
-                <ConfirmDialog info="la etnia" title="Eliminar estructura institucional">
+                <ConfirmDialog info="el área" title="Eliminar área institucional">
 
                     <button className="button is-small is-danger is-pulled-left" onClick={event => setShowModal(false)}> Cancelar</button>
                     <button className="button is-small is-success is-pulled-rigth" onClick={event => {
@@ -222,7 +219,7 @@ let ListadoEstructurasInstitucionales = (props) => {
                 </ConfirmDialog>
             }
             {
-                showModalForm && <ModalForm title={objeto !== null ? 'Editar estructura institucional' : 'Registrar estructura institucional'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
+                showModalForm && <ModalForm title={objeto !== null ? 'Editar área institucional' : 'Registrar área institucional'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
                     {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
                         <button className="delete" onClick={event => setResponse(null)}></button>
                     </Alert>}
@@ -232,7 +229,7 @@ let ListadoEstructurasInstitucionales = (props) => {
                             setShowModalForm(false)
                             setObjeto(null)
                             dispatch(
-                                loadEstructurasInstitucionales()
+                                loadAreasInstitucionales()
                             )
                         }}></button>
                     </Alert>}
@@ -249,4 +246,4 @@ let ListadoEstructurasInstitucionales = (props) => {
     )
 }
 
-export default ListadoEstructurasInstitucionales;
+export default ListadoAreasInstitucionales;
