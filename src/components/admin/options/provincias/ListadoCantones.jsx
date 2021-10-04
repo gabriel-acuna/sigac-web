@@ -1,8 +1,8 @@
 import ReactDatatable from '@yun548/bulma-react-datatable';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { loadCantonesProvincia, clearData } from '../../../../store/core/provincias';
+import { loadCantonesProvincia } from '../../../../store/core/provincias';
 
 let ListadoCantonesProvincias = (props) => {
 

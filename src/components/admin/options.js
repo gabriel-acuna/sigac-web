@@ -5,6 +5,7 @@ import { GiSouthAmerica, GiFarmer, GiPlayerTime, GiOrganigram, GiTeamUpgrade, Gi
 import { GrWorkshop } from 'react-icons/gr'
 import { BsPersonCheck } from 'react-icons/bs'
 import { VscOrganization } from 'react-icons/vsc'
+import { MdPeople } from 'react-icons/md'
 
 export const options = [
     /*{
@@ -46,7 +47,15 @@ export const options = [
             content: 'Gestione el listado de nacionalidades vinculadas a la autoidentifiación étnica.',
             url: '/admin/nacionalidades'
 
-        }]
+        },
+        {
+            title: 'Estados civiles',
+            icon: <MdPeople/>,
+            content: 'Gestione el listado de nacionalidades vinculadas a la autoidentifiación étnica.',
+            url: '/admin/estados-civiles'
+
+        }
+    ]
     },
    {    title: 'Información Laboral',
         options:[ {

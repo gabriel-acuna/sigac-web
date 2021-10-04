@@ -6,12 +6,12 @@ const Accordion = ({ title, options }) => {
     const [expanded, setExpanded] = useState(false)
     return (
         <div className="card">
-            <header class="card-header" onClick={() => setExpanded(!expanded)}>
-                <p class="card-header-title">
+            <header className="card-header" onClick={() => setExpanded(!expanded)}>
+                <p className="card-header-title">
                     {title}
                 </p>
-                <button class="card-header-icon" aria-label="more options">
-                    <span class="icon">
+                <button className="card-header-icon" aria-label="more options">
+                    <span className="icon">
                         {expanded ? <AiOutlineMinus /> : <AiOutlinePlus />}
                     </span>
                 </button>

@@ -89,7 +89,7 @@ export const postEstadoCivil = createAsyncThunk(
 
 )
 
-export const putEtnias = createAsyncThunk(
+export const putEstadosCiviles = createAsyncThunk(
     'estados-civiles/put',
     async (estadoCivil, { getState }) => {
         let token;

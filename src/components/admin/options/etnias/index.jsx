@@ -1,5 +1,5 @@
 import ReactDatatable from '@yun548/bulma-react-datatable'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { loadEtnias, clearData, deleteEtnias, postEtnias, putEtnias } from '../../../../store/core/etnias'
@@ -221,6 +221,7 @@ let ListadoEtnias = (props) => {
                         <button className="delete" onClick={event => {
                             setResponse(null)
                             setShowModalForm(false)
+                            setObjeto(null)
                             dispatch(
                                 loadEtnias()
                             )

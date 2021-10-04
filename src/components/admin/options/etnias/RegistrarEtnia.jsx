@@ -1,10 +1,5 @@
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { useState, Fragment, useEffect } from 'react'
-import { postEtnias } from '../../../../store/core/etnias'
-import Alert from '../../../Alert'
-import { logOut } from '../../../../store/user'
+import { Fragment, useEffect } from 'react'
 
 
 let RegistrarEtnia = ({ title, handler, children, objeto }) => {

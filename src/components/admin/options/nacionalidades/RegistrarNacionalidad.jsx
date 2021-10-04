@@ -1,10 +1,7 @@
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { useState, Fragment, useEffect } from 'react'
-import { postNacionalidades } from '../../../../store/core/nacionalidades'
-import Alert from '../../../Alert'
-import { logOut } from '../../../../store/user'
+
+import { Fragment, useEffect } from 'react'
+
 
 
 let RegistrarNacionalidad = ({title, handler, children, objeto}) => {
@@ -18,7 +15,7 @@ let RegistrarNacionalidad = ({title, handler, children, objeto}) => {
                     nacionalidad: objeto.nacionalidad
                 })
             }
-        },[]
+        },[objeto, reset]
     )
 
 

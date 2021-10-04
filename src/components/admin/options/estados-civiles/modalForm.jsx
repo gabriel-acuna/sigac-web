@@ -1,24 +1,21 @@
 import { useForm } from 'react-hook-form'
-import { Fragment, useEffect} from 'react'
+import { Fragment, useEffect } from 'react'
 
 
+let ModalForm = ({ title, handler, children, objeto }) => {
 
 
-let RegistrarDiscapacidad = ({title, handler, children, objeto}) => {
-
-    
     const { register,reset, handleSubmit, formState: { errors } } = useForm()
+
     useEffect(
         ()=>{
-            if(objeto !== null){
+            if(objeto!==null){
                 reset({
-                    discapacidad: objeto.discapacidad
+                    estadoCivil: objeto.estado_civil
                 })
             }
-        },[objeto, reset]
+        },[]
     )
-
- 
 
 
     return (
@@ -33,24 +30,25 @@ let RegistrarDiscapacidad = ({title, handler, children, objeto}) => {
 
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
                         <div className="field">
-                            <label className="label is-small">Discapacidad</label>
+                            <label className="label is-small">Estado Civil</label>
                             <div className="control">
-                                <input type="text" {...register("discapacidad", { required: true })} className="input is-samll is-uppercase" />
-                                {errors.discapacidad && <span className="has-text-danger">¡Por favor, Ingrese la discapacidad!</span>}
+                                <input type="text" {...register("estadoCivil", { required: true })} className="input is-samll is-uppercase" />
+                                {errors.etnia && <span className="has-text-danger">¡Por favor, Ingrese el estado civil!</span>}
                                
+                                
 
                             </div>
                         </div>
                         <div className="field is-grouped" style={{ display: 'flex', justifyContent: 'center' }}>
-                        <div className="control has-text-centered">
-                            <Fragment>
-                                {children}
-                            </Fragment>
+                            <div className="control has-text-centered">
+                                <Fragment>
+                                    {children}
+                                </Fragment>
 
-                            <button type="submit" className="button is-success is-small mx-3">Guardar</button>
+                                <button type="submit" className="button is-success is-small mx-3">Guardar</button>
 
+                            </div>
                         </div>
-                    </div>
                     </form>
                 </section>
             </div>
@@ -58,4 +56,4 @@ let RegistrarDiscapacidad = ({title, handler, children, objeto}) => {
     )
 }
 
-export default RegistrarDiscapacidad;
+export default ModalForm;

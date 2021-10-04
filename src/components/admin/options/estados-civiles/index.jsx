@@ -2,27 +2,24 @@ import ReactDatatable from '@yun548/bulma-react-datatable'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
-import { loadRelacionesIES, clearData, deleteRelacionesIES, postRelacionesIES, putRelacionesIES } from '../../../../store/core/relacionesIES'
+import { loadEstadosCiviles, clearData, deleteEstadosCiviles, postEstadoCivil, putEstadosCiviles } from '../../../../store/core/estado_civil'
 import ConfirmDialog from '../../../ConfirmDialog'
 import Alert from '../../../Alert'
-
 import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
 import { logOut } from '../../../../store/user'
 import { FaRegEdit } from 'react-icons/fa'
 import { AiOutlineDelete } from 'react-icons/ai'
+import ModalForm from './modalForm'
 
-import RegistrarRelacion from './RegistrarRelacion'
 
-
-let ListadoRelacionesIES = (props) => {
-
+let ListadoEstadosCiviles = (props) => {
     let navigate = useNavigate()
     let dispatch = useDispatch()
 
     useEffect(
         () => {
             dispatch(
-                loadRelacionesIES()
+                loadEstadosCiviles()
             ).unwrap()
                 .catch(
                     (err) => console.log(err)
@@ -31,18 +28,17 @@ let ListadoRelacionesIES = (props) => {
     )
 
     const columns = [
-        { key: 'relacion', text: 'Relación', sortable: true },
+        { key: 'estado_civil', text: 'Estado civil', sortable: true },
         { key: 'opciones', text: 'Opciones', sortable: false }
     ]
-
-    let relacionesIESState = useSelector(state => state.relacionesIES.data.relacionesIES)
+    let eatdosCivilesState = useSelector(state => state.estadosCiviles.data.estadosCiviles)
 
     const [response, setResponse] = useState(null)
     const [error, setError] = useState(null)
-    const [objeto, setObjeto] = useState(null)
     const [showModalForm, setShowModalForm] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [id, setId] = useState(null)
+    const [objeto, setObjeto] = useState(null)
 
     let deleteHandler = (id) => {
         setShowModal(true)
@@ -52,28 +48,27 @@ let ListadoRelacionesIES = (props) => {
 
     let doDelete = () => {
         dispatch(
-            deleteRelacionesIES(id)
+            deleteEstadosCiviles(id)
 
         ).unwrap()
             .then(resp => {
                 setResponse(resp)
                 dispatch(
-                    loadRelacionesIES()
+                    loadEstadosCiviles()
                 )
             }).catch(
                 (err) => console.error(err)
             )
     }
 
-    let rows = relacionesIESState.map(
+    let rows = eatdosCivilesState.map(
         (row, index) => {
             return {
-                relacion: row.relacion,
+                estado_civil: row.estado_civil,
                 opciones: [
-                    <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
+                    <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev=>{
                         setObjeto(row)
-                        setShowModalForm(true)
-                    }}>
+                        setShowModalForm(true)}}>
                         <span className="icon">
                             <FaRegEdit />
                         </span>
@@ -90,12 +85,11 @@ let ListadoRelacionesIES = (props) => {
         }
     )
 
-
     let postHandler = (data) => {
 
         dispatch(
-            postRelacionesIES(
-                { relacion: data.relacionIES.toUpperCase() }
+            postEstadoCivil(
+                { estado_civil: data.estadoCivil.toUpperCase() }
             )
         ).unwrap()
             .then((resp) => {
@@ -109,25 +103,24 @@ let ListadoRelacionesIES = (props) => {
                     } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
-
                         )
                     }
 
                     else { setError(err) }
                 }
-
             )
 
     }
+
 
     let putHandler = (data) => {
 
 
         dispatch(
-            putRelacionesIES(
+            putEstadosCiviles(
                 {
                     id: objeto.id,
-                    relacion: data.relacionIES.toUpperCase()
+                    estado_civil: data.estadoCivil.toUpperCase()
                 }
             )
         ).unwrap()
@@ -142,7 +135,6 @@ let ListadoRelacionesIES = (props) => {
                     } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
-
                         )
                     }
 
@@ -151,7 +143,6 @@ let ListadoRelacionesIES = (props) => {
             )
 
     }
-
     return (
 
         <div className="conatiner">
@@ -167,7 +158,7 @@ let ListadoRelacionesIES = (props) => {
                         </span>
                     </button>
 
-                    <button className="button  is-success mt-4 is-outlined" onClick={ev => setShowModalForm(true)}>
+                    <button className="button  is-success mt-4 is-outlined" onClick={ev=>setShowModalForm(true)}>
                         <span className="icon">
                             <IoIosAddCircleOutline />
                         </span>
@@ -194,10 +185,10 @@ let ListadoRelacionesIES = (props) => {
                                 print: false
                             },
                             language: {
-                                length_menu: "Mostrar _MENU_ relaciones IES por página",
+                                length_menu: "Mostrar _MENU_ estados civiles por página",
                                 filter: "Buscar en registros ...",
-                                no_data_text: "No hay relaciones IES registradas",
-                                info: "Mostrando _START_ a _END_ de _TOTAL_ relaciones IES",
+                                no_data_text: "No hay estados civiles registradas",
+                                info: "Mostrando _START_ a _END_ de _TOTAL_ estados civiles",
                                 pagination: {
                                     first: "Primera",
                                     previous: "Anterior",
@@ -213,7 +204,7 @@ let ListadoRelacionesIES = (props) => {
             </div>
             {
                 showModal &&
-                <ConfirmDialog info="la relación" title="Eliminar relación">
+                <ConfirmDialog info="la etnia" title="Eliminar estado civil">
 
                     <button className="button is-small is-danger is-pulled-left" onClick={event => setShowModal(false)}> Cancelar</button>
                     <button className="button is-small is-success is-pulled-rigth" onClick={event => {
@@ -221,8 +212,8 @@ let ListadoRelacionesIES = (props) => {
                     }}>Confirmar</button>
                 </ConfirmDialog>
             }
-             {
-                showModalForm && <RegistrarRelacion title={objeto !== null ? 'Editar realación IES' : 'Registrar realación IES'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
+            {
+                showModalForm && <ModalForm title={objeto !== null ? 'Editar estado civil' : 'Registrar estado civil'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
                     {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
                         <button className="delete" onClick={event => setResponse(null)}></button>
                     </Alert>}
@@ -232,7 +223,7 @@ let ListadoRelacionesIES = (props) => {
                             setShowModalForm(false)
                             setObjeto(null)
                             dispatch(
-                                loadRelacionesIES()
+                                loadEstadosCiviles()
                             )
                             }}></button>
                     </Alert>}
@@ -243,10 +234,10 @@ let ListadoRelacionesIES = (props) => {
                         setShowModalForm(false)
                         setObjeto(null)
                         }}>Cancelar</button>
-                </RegistrarRelacion>
+                </ModalForm>
             }
         </div >
     )
 }
 
-export default ListadoRelacionesIES;
+export default ListadoEstadosCiviles;

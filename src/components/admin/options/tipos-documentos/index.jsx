@@ -2,14 +2,18 @@ import ReactDatatable from '@yun548/bulma-react-datatable'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
-import { loadTiposDocumentos, clearData, deleteTiposDocumentos } from '../../../../store/core/tiposDocumentos'
+import { loadTiposDocumentos, clearData, deleteTiposDocumentos, putTiposDocumentos, postTiposDocumentos } from '../../../../store/core/tiposDocumentos'
 import ConfirmDialog from '../../../ConfirmDialog'
 import Alert from '../../../Alert'
-
+import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
+import { logOut } from '../../../../store/user'
+import { FaRegEdit } from 'react-icons/fa'
+import { AiOutlineDelete } from 'react-icons/ai'
+import RegistrarTipoDocumento from './RegistrarTipoDocumento'
 
 
 let ListadoTiposDocumentos = (props) => {
-    
+
     let navigate = useNavigate()
     let dispatch = useDispatch()
 
@@ -31,16 +35,19 @@ let ListadoTiposDocumentos = (props) => {
     let tiposDocumentosState = useSelector(state => state.tiposDocumentos.data.tiposDocumentos)
 
     const [response, setResponse] = useState(null)
+    const [error, setError] = useState(null)
+    const [showModalForm, setShowModalForm] = useState(null)
     const [showModal, setShowModal] = useState(false)
     const [id, setId] = useState(null)
+    const [objeto, setObjeto] = useState(null)
 
     let deleteHandler = (id) => {
         setShowModal(true)
-        setId(id)      
+        setId(id)
 
     }
 
-    let doDelete = () =>{
+    let doDelete = () => {
         dispatch(
             deleteTiposDocumentos(id)
 
@@ -60,33 +67,111 @@ let ListadoTiposDocumentos = (props) => {
             return {
                 tipoDocumento: row.tipo_documento,
                 opciones: [
-                    <Link className="button is-small is-primary mx-2" to={`/admin/tipos-documentos/editar/${row.id}`} key={`${row.id}0`}>Editar</Link>,
-                    <button className="button is-small is-danger mx-2"  onClick={event => {
+                    <button className="button is-small is-primary mx-2" key={`${row.id}0`} onClick={ev => {
+                        setObjeto(row)
+                        setShowModalForm(true)
+                    }}>
+                        <span className="icon">
+                            <FaRegEdit />
+                        </span>
+                    </button>,
+                    <button className="button is-small is-danger mx-2" onClick={event => {
                         deleteHandler(row.id)
-                    }}>Eliminar</button>
+                    }}>
+                        <span className="icon">
+                            <AiOutlineDelete />
+                        </span>
+                    </button>
                 ]
+
             }
         }
     )
 
+    let postHandler = (data) => {
 
+        dispatch(
+            postTiposDocumentos(
+                { tipo_documento: data.tipoDocumento.toUpperCase() }
+            )
+        ).unwrap()
+            .then((resp) => {
+                setResponse(resp);
+            })
+            .catch(
+                (err) => {
+                    if (err.messsage === "Cannot read property 'data' of undefined") {
+                        console.error("No hay conexión con el backend");
+
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+
+    }
+
+    let putHandler = (data) => {
+
+
+        dispatch(
+            putTiposDocumentos(
+                {
+                    id: objeto.id,
+                    tipo_documento: data.tipoDocumento.toUpperCase()
+                }
+            )
+        ).unwrap()
+            .then((resp) => {
+                setResponse(resp);
+            })
+            .catch(
+                (err) => {
+                    if (err.messsage === "Cannot read property 'data' of undefined") {
+                        console.error("No hay conexión con el backend");
+
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+
+    }
     return (
 
         <div className="conatiner">
             <div className="columns is-centered">
                 <div className="column is-half">
-                    <button className="button is-small is-info mt-4 mx-3"
+
+                    <button className="button is-info mt-4 mx-3 is-outlined"
                         onClick={event => {
                             navigate(-1);
                             dispatch(clearData())
-                        }}>Regresar</button>
+                        }}>
+                        <span className="icon">
+                            <IoIosArrowBack />
+                        </span>
+                    </button>
 
-                    <Link className="button is-small is-success mt-4"
-                        to="/admin/tipos-documentos/registrar">Registrar tipo documento</Link>
+                    <button className="button is-success mt-4 is-outlined" onClick={ev => setShowModalForm(true)}>
+                        <span className="icon">
+                            <IoIosAddCircleOutline />
+                        </span>
+                    </button>
                 </div>
                 {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                                <button className="delete" onClick={event => setResponse(null)}></button>
-                            </Alert>}
+                    <button className="delete" onClick={event => setResponse(null)}></button>
+                </Alert>}
             </div>
             <div className="columns is-centered">
 
@@ -131,6 +216,35 @@ let ListadoTiposDocumentos = (props) => {
                         setShowModal(false); doDelete();
                     }}>Confirmar</button>
                 </ConfirmDialog>
+            }
+            {
+                showModalForm &&
+                <RegistrarTipoDocumento
+                    title={objeto !== null ? 'Editar Tipo dcumento' : 'Registrar tipo documento'}
+                    objeto={objeto}
+                    handler={objeto !== null ? putHandler : postHandler}
+                >
+                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                        <button className="delete" onClick={event => setResponse(null)}></button>
+                    </Alert>}
+                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                        <button className="delete" onClick={event => {
+                            setResponse(null)
+                            setShowModalForm(false)
+                            setObjeto(null)
+                            dispatch(
+                                loadTiposDocumentos()
+                            )
+                        }}></button>
+                    </Alert>}
+                    {error && <Alert type={'is-danger is-light'} content={error.message}>
+                        <button className="delete" onClick={event => setError(null)}></button>
+                    </Alert>}
+                    <button className="button is-small is-danger mx-3" onClick={ev => {
+                        setShowModalForm(false)
+                        setObjeto(null)
+                    }}>Cancelar</button>
+                </RegistrarTipoDocumento>
             }
         </div >
     )

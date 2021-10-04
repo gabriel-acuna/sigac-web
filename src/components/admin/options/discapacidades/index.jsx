@@ -232,6 +232,7 @@ let ListadoDiscapacidades = (props) => {
                         <button className="delete" onClick={event =>{ 
                             setResponse(null)
                             setShowModalForm(false)
+                            setObjeto(null)
                             dispatch(
                                 loadDiscapacidades()
                             )}}></button>

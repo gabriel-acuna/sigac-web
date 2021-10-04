@@ -16,13 +16,8 @@ import ListadoCantonesProvincias from "./components/admin/options/provincias/Lis
 import isValid from "./services/auth";
 import ListadoDiscapacidades from "./components/admin/options/discapacidades";
 import ListadoEtnias from "./components/admin/options/etnias";
-import RegistrarEtnia from "./components/admin/options/etnias/RegistrarEtnia";
 import ListadoNacionalidades from "./components/admin/options/nacionalidades";
-import RegistrarNacionalidad from "./components/admin/options/nacionalidades/RegistrarNacionalidad";
-import EditarNacionalidad from "./components/admin/options/nacionalidades/EditarNacionalidad";
 import ListadoTiposDocumentos from "./components/admin/options/tipos-documentos";
-import RegistrarTipoDocumento from "./components/admin/options/tipos-documentos/RegistrarTipoDocumento";
-import EditarTipoDocumento from "./components/admin/options/tipos-documentos/EditarTipoDocumento";
 import ListadoRelacionesIES from "./components/admin/options/relaciones-ies";
 import RegistrarRelacion from "./components/admin/options/relaciones-ies/RegistrarRelacion";
 import EditarRelacionIES from "./components/admin/options/relaciones-ies/EditarRelacion";
@@ -48,6 +43,7 @@ import ListadoCategoriasDocentes from "./components/admin/options/categorias-doc
 import RegistrarCategoriaDocente from "./components/admin/options/categorias-docentes/RegistrarCategoriaDocente";
 import EditarCategoriaDocente from "./components/admin/options/categorias-docentes/EditarCategoriaDocente";
 import RegistrarPersona from './components/dth/nuevo';
+import ListadoEstadosCiviles from "./components/admin/options/estados-civiles";
 
 const routes = (user)=> [
     {
@@ -111,10 +107,6 @@ const routes = (user)=> [
                     {
                         path:'/',
                         element: <ListadoEtnias/>
-                    },
-                    {
-                        path: '/registrar',
-                        element: <RegistrarEtnia/>
                     }
                 ]
             }, {
@@ -124,13 +116,6 @@ const routes = (user)=> [
                     {
                         path:'/',
                         element: <ListadoNacionalidades/>
-                    },
-                    {
-                        path: '/registrar',
-                        element: <RegistrarNacionalidad/>
-                    },{
-                        path:'/editar/:id',
-                        element: <EditarNacionalidad/>
                     }
                 ]
             }, {
@@ -140,14 +125,8 @@ const routes = (user)=> [
                     {
                         path:'/',
                         element: <ListadoTiposDocumentos/>
-                    },
-                    {
-                        path: '/registrar',
-                        element: <RegistrarTipoDocumento/>
-                    },{
-                        path:'/editar/:id',
-                        element: <EditarTipoDocumento/>
                     }
+                   
                 ]
             }, {
                 path: '/relaciones-ies',
@@ -276,6 +255,15 @@ const routes = (user)=> [
                     }, {
                         path: '/editar/:id',
                         element: <EditarCategoriaDocente/>
+                    }
+                ]
+            },{
+                path: 'estados-civiles',
+                element: <Outlet/>,
+                children:[
+                    {
+                        path:'/',
+                        element: <ListadoEstadosCiviles/>
                     }
                 ]
             }

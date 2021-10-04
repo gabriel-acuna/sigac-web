@@ -1,10 +1,10 @@
 import Accordion from '../Accordion'
-import OptionCard from '../OptionCard'
+
 import { options } from './options'
 
 
 let Admin = (props) => {
-    const size = 'is-3'
+
 
     return (
         <div className="container">
@@ -21,20 +21,20 @@ let Admin = (props) => {
                     </p>
                 </div>
             </div>**/}
-                   
-                    <div className="columns is-multiline mt-4 mb-6">
-                        {
-                            options.map((option, index) => (
 
-                              <div className="column is-4">
-                                   <Accordion title={option.title} options={option.options}/>
-                              </div>
-                            ))
-                        }
+            <div className="columns is-multiline mt-4 mb-6">
+                {
+                    options.map((option, index) => (
 
-                    </div>
-                </div>
-                )
+                        <div className="column is-4">
+                            <Accordion title={option.title} options={option.options} />
+                        </div>
+                    ))
+                }
+
+            </div>
+        </div>
+    )
 }
 
-                export default Admin;
+export default Admin;
