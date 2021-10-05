@@ -56,6 +56,31 @@ export const loadPersona = createAsyncThunk(
     }
 )
 
+export const loadPersonaEmail = createAsyncThunk(
+    'persona-email/load',
+    async (email, { getState }) => {
+        let token;
+        try {
+            token = getState().user.user.jwt.token;
+        } catch (e) {
+            throw e;
+        }
+
+        try {
+            let response = await Axios.get(`${API}/personal/correo${email}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+            return response.data
+
+        } catch (error) {
+            throw error.response.detail
+        }
+    }
+)
+
 export const postInformacionPersonal = createAsyncThunk(
     'informacion-personal/post',
     async (datosPersonales, { getState }) => {

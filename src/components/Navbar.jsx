@@ -1,4 +1,5 @@
 import { FcSettings, FcHome, FcRight } from 'react-icons/fc'
+import { ImProfile } from 'react-icons/im'
 import { Link } from 'react-router-dom'
 import {  useDispatch , useSelector} from 'react-redux'
 import { logOut} from '../store/user'
@@ -38,6 +39,11 @@ let NavBar = (props) => {
                         </span>
                         Cambiar contraseña
                     </Link>
+                    <Link className="navbar-item" to="/cv">
+                        <span className="mr-2">
+                            <ImProfile/>
+                        </span>
+                        CV</Link>
                     <a className="navbar-item" onClick={ event=>doLogOut()}>
                         <span className="mr-2"> <FcRight /></span>
                         Cerrar sesión
