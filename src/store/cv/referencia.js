@@ -89,7 +89,7 @@ export const postReferencias = createAsyncThunk(
 
 )
 
-export const putReferncias = createAsyncThunk(
+export const putReferencias = createAsyncThunk(
     'referencias/put',
     async (referencia, { getState }) => {
         let token;
@@ -101,7 +101,7 @@ export const putReferncias = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.put(`${API}/referencias`, referencia,
+            let response = await Axios.put(`${API}/referencias/${referencia.id}`, referencia.referencia,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -170,7 +170,7 @@ let referenciasSlice = createSlice({
         [loadReferencias.fulfilled]: (state, action) => {
             state.status = 'success'
             state.data = {
-                personal: action.payload
+                referencias: action.payload
             }
         }
 

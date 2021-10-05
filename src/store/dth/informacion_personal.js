@@ -67,7 +67,7 @@ export const loadPersonaEmail = createAsyncThunk(
         }
 
         try {
-            let response = await Axios.get(`${API}/personal/correo${email}`,
+            let response = await Axios.get(`${API}/personal/correo/${email}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
