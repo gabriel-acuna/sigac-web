@@ -9,9 +9,9 @@ let Alert = (props) => {
                 {props.children}
             </Fragment>
 
-            <p>
+            <div>
                 {props.content}
-            </p>
+            </div>
         </div >
 
     )

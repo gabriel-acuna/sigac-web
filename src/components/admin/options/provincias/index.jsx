@@ -54,7 +54,7 @@ let ListadoProvincias = (props) => {
                 </div>
             </div>
             <div className="columns is-centered">
-                <div className="column is-half mb-6">
+                <div className="column is-half mb-6 is-size-7">
                     <ReactDatatable style={{ justifyContent: 'center' }}
                         className="table is-bordered is-striped is-fullwidth"
                         tHeadClassName="has-background-success-light"

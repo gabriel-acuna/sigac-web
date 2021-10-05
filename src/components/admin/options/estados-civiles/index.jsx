@@ -97,10 +97,10 @@ let ListadoEstadosCiviles = (props) => {
             })
             .catch(
                 (err) => {
-                    if (err.messsage === "Cannot read property 'data' of undefined") {
-                        console.error("No hay conexión con el backend");
-
-                    } else if (err.message === "Rejected") {
+                    if (err.message.includes("undefined (reading 'data')")) { 
+                    console.error("No hay conexión con el backend");
+                    setError({'message':'No es posible estrablecer conexión, intente mas tarde.'})
+                 } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
                         )
@@ -129,10 +129,10 @@ let ListadoEstadosCiviles = (props) => {
             })
             .catch(
                 (err) => {
-                    if (err.messsage === "Cannot read property 'data' of undefined") {
-                        console.error("No hay conexión con el backend");
-
-                    } else if (err.message === "Rejected") {
+                    if (err.message.includes("undefined (reading 'data')")) { 
+                    console.error("No hay conexión con el backend");
+                    setError({'message':'No es posible estrablecer conexión, intente mas tarde.'})
+                 } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
                         )

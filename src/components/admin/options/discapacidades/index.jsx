@@ -103,10 +103,10 @@ let ListadoDiscapacidades = (props) => {
             })
             .catch(
                 (err) => {
-                    if (err.messsage === "Cannot read property 'data' of undefined") {
-                        console.error("No hay conexión con el backend");
-
-                    } else if (err.message === "Rejected") {
+                    if (err.message.includes("undefined (reading 'data')")) { 
+                    console.error("No hay conexión con el backend");
+                    setError({'message':'No es posible estrablecer conexión, intente mas tarde.'})
+                 } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
                         )
@@ -177,7 +177,7 @@ let ListadoDiscapacidades = (props) => {
             <div className="columns is-centered">
 
 
-                <div className="column is-half">
+                <div className="column is-half is-size-7">
                     <ReactDatatable style={{ justifyContent: 'center' }}
                         className="table is-bordered is-striped"
                         tHeadClassName="is-info"

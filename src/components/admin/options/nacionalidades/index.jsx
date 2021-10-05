@@ -1,5 +1,5 @@
 import ReactDatatable from '@yun548/bulma-react-datatable'
-import {  useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { loadNacionalidades, clearData, deleteNacionalidades, postNacionalidades, putNacionalidades } from '../../../../store/core/nacionalidades'
@@ -100,9 +100,10 @@ let ListadoNacionalidades = (props) => {
             })
             .catch(
                 (err) => {
-                    if (err.messsage === "Cannot read property 'data' of undefined") {
-                        console.error("No hay conexión con el backend");
 
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible estrablecer conexión, intente mas tarde.' })
                     } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
@@ -129,9 +130,10 @@ let ListadoNacionalidades = (props) => {
             })
             .catch(
                 (err) => {
-                    if (err.messsage === "Cannot read property 'data' of undefined") {
-                        console.error("No hay conexión con el backend");
 
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible estrablecer conexión, intente mas tarde.' })
                     } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
@@ -158,7 +160,7 @@ let ListadoNacionalidades = (props) => {
                         </span>
                     </button>
 
-                    <button className="button is-success mt-4 is-outlined" onClick={ev=>setShowModalForm(true)}>
+                    <button className="button is-success mt-4 is-outlined" onClick={ev => setShowModalForm(true)}>
                         <span className="icon">
                             <IoIosAddCircleOutline />
                         </span>
