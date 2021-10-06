@@ -78,6 +78,7 @@ export const postCapacitaciones = createAsyncThunk(
 
         } catch (error) {
             let err;
+            console.log(err);
             if (error.response.data.detail[0].msg)
                 err = error.response.data.detail[0].msg
             if (error.response.data.type)
@@ -101,7 +102,7 @@ export const putCapacitaciones = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.put(`${API}/capacitaciones`, capacitacion,
+            let response = await Axios.put(`${API}/capacitaciones/${capacitacion.id}`, capacitacion.capacitacion,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -149,7 +150,7 @@ export const deleteCapacitaciones = createAsyncThunk(
 )
 
 let capcitacionesSlice = createSlice({
-    name: 'referencias',
+    name: 'capacitaciones',
     initialState: {
         data: {
             capacitaciones: []  
@@ -170,7 +171,7 @@ let capcitacionesSlice = createSlice({
         [loadCapacitaciones.fulfilled]: (state, action) => {
             state.status = 'success'
             state.data = {
-                personal: action.payload
+                capacitaciones: action.payload
             }
         }
 

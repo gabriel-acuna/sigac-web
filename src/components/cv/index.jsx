@@ -8,10 +8,12 @@ import { useDispatch } from 'react-redux'
 import { loadPersonaEmail } from '../../store/dth/informacion_personal'
 import ReferenciaModalForm from './referenciasModal'
 import { postReferencias, putReferencias, deleteReferencias, loadReferencias } from '../../store/cv/referencia'
+import { postCapacitaciones, putCapacitaciones, deleteCapacitaciones, loadCapacitaciones } from '../../store/cv/capacitacion'
 import Alert from '../Alert';
 import { useSelector } from 'react-redux'
 import { logOut } from '../../store/user'
 import ConfirmDialog from '../ConfirmDialog';
+import CapacitacionModalForm from './capacitacionesModal'
 
 
 const CV = ({ email }) => {
@@ -28,11 +30,12 @@ const CV = ({ email }) => {
     const [id, setId] = useState(null)
     const [error, setError] = useState(null)
     const [showModalRef, setShowModalRef] = useState(false)
-
+    const [showModalDelCap, setShowModalDelCap] = useState(false)
     const [respConfirmRef, setRespConfirmRef] = useState(null)
-    const [errorConfirm, setErrorRespConfirmRef] = useState(null)
-    let referenciasState = useSelector(state => state.referencias.data.referencias)
 
+
+    let referenciasState = useSelector(state => state.referencias.data.referencias)
+    let capacitacionesState = useSelector(state => state.capacitaciones.data.capacitaciones)
     useEffect(
         () => {
             dispatch(
@@ -44,12 +47,15 @@ const CV = ({ email }) => {
                         dispatch(
                             loadReferencias(resp.identificacion)
                         )
+                        dispatch(
+                            loadCapacitaciones(resp.identificacion)
+                        )
 
                     }
                 )
 
         }, [
-        dispatch
+        dispatch, email
     ]
     )
 
@@ -58,6 +64,12 @@ const CV = ({ email }) => {
 
     let deleteHandler = (id) => {
         setShowModalRef(true)
+        setId(id)
+
+    }
+
+    let deleteHandlerCap = (id) => {
+        setShowModalDelCap(true)
         setId(id)
 
     }
@@ -78,6 +90,32 @@ const CV = ({ email }) => {
 
                             dispatch(
                                 loadReferencias(persona.identificacion)
+                            )
+                        }
+
+                    )
+
+            }).catch(
+                (err) => console.error(err)
+            )
+    }
+
+    let doDeleteCap = () => {
+        dispatch(
+            deleteCapacitaciones(id)
+
+        ).unwrap()
+            .then(resp => {
+                setRespConfirmRef(resp)
+                dispatch(
+                    loadPersonaEmail(email))
+                    .unwrap()
+                    .then(
+                        resp => {
+                            setPersona(resp)
+
+                            dispatch(
+                                loadCapacitaciones(persona.identificacion)
                             )
                         }
 
@@ -164,6 +202,84 @@ const CV = ({ email }) => {
             )
     }
 
+    let postHandlerCap = (data) => {
+        dispatch(
+
+            postCapacitaciones(
+                {
+                    id_persona: persona.identificacion,
+                    tipo_certificado: data.tipoCertificado,
+                    tipo_evento: data.tipoEvento.toUpperCase(),
+                    institucion_organizadora: data.institucionOrganizadora.toUpperCase(),
+                    lugar: data.lugar.toUpperCase(),
+                    horas: data.horas,
+                    inicio: data.fechaInicio,
+                    fin: data.fechaFin
+
+                }
+            )
+        ).unwrap()
+            .then((resp) => {
+                setResponse(resp);
+            })
+            .catch(
+                (err) => {
+                    console.log(err);
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible estrablecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+    }
+
+
+    let putHandlerCap = (data) => {
+        dispatch(
+            putCapacitaciones(
+                {
+                    id: objeto.id,
+                    capacitacion: {
+
+
+                        tipo_certificado: data.tipoCertificado,
+                        tipo_evento: data.tipoEvento.toUpperCase(),
+                        institucion_organizadora: data.institucionOrganizadora.toUpperCase(),
+                        lugar: data.lugar.toUpperCase(),
+                        horas: data.horas,
+                        inicio: data.fechaInicio,
+                        fin: data.fechaFin
+
+                    }
+
+                }
+            )
+        ).unwrap()
+            .then((resp) => {
+                setResponse(resp);
+            })
+            .catch(
+                (err) => {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible estrablecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+    }
+
     return (
         <>
             <div className="container">
@@ -199,9 +315,6 @@ const CV = ({ email }) => {
                     <div className="column is-half">
                         <div className="card">
                             <header className="card-header" onClick={() => {
-                                dispatch(
-                                    loadReferencias(persona.identificacion)
-                                )
                                 setExpandirReferencia(!expandirReferencias)
                             }}>
                                 <p className="card-header-title">
@@ -289,13 +402,66 @@ const CV = ({ email }) => {
                             </header>
                             {
                                 expandirCapacitaciones && <div className="card-content">
-                                    <button className="button  is-success mx-3 is-outlined">
+                                    <button className="button  is-success mx-3 is-outlined"  onClick={ev => setShowModalCapacitacion(true)}>
                                         <span className="icon">
                                             <IoIosAddCircleOutline />
                                         </span>
                                     </button>
 
+                                    <div className="table-conatiner">
+                                        <table className="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        Tipo Evento
+                                                    </th>
+                                                    <th>
+                                                        Horas
+                                                    </th>
+                                                    <th>
+                                                        Opciones
+                                                    </th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                {
+                                                    capacitacionesState.map(
+                                                        (capacitacion) => (
+                                                            <tr key={capacitacion.id}>
+                                                                <td>{capacitacion.tipo_evento} - {capacitacion.institucion_organizadora}</td>
+                                                                <td>{capacitacion.horas}</td>
+                                                                <td>
+                                                                    <button className="button is-small is-primary mx-2 is-outlined" key={`${capacitacion.id}0`} onClick={ev => {
+                                                                        setObjeto(capacitacion)
+                                                                        setShowModalCapacitacion(true)
+                                                                    }}>
+                                                                        <span className="icon">
+                                                                            <FaRegEdit />
+                                                                        </span>
+                                                                    </button>
+
+                                                                    <button className="button is-small is-danger mx-2 is-outlined" onClick={event => {
+                                                                        deleteHandlerCap(capacitacion.id)
+                                                                    }}>
+                                                                        <span className="icon">
+                                                                            <AiOutlineDelete />
+                                                                        </span>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    )
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
                                 </div>
+
+
+
+
                             }
                         </div>
                     </div>
@@ -308,6 +474,16 @@ const CV = ({ email }) => {
                     <button className="button is-small is-danger is-pulled-left" onClick={event => setShowModalRef(false)}> Cancelar</button>
                     <button className="button is-small is-success is-pulled-rigth" onClick={event => {
                         setShowModalRef(false); doDelete();
+                    }}>Confirmar</button>
+                </ConfirmDialog>
+            }
+            {
+                showModalDelCap &&
+                <ConfirmDialog info="la capacitación" title="Eliminar capacitación">
+
+                    <button className="button is-small is-danger is-pulled-left" onClick={event => setShowModalDelCap(false)}> Cancelar</button>
+                    <button className="button is-small is-success is-pulled-rigth" onClick={event => {
+                        setShowModalDelCap(false); doDeleteCap();
                     }}>Confirmar</button>
                 </ConfirmDialog>
             }
@@ -338,6 +514,34 @@ const CV = ({ email }) => {
                         setObjeto(null)
                     }}>Cancelar</button>
                 </ReferenciaModalForm>
+            }
+
+            {
+                showModalCapacitacion && <CapacitacionModalForm
+                    title={objeto !== null ? 'Editar capacitación' : 'Registrar capacitación'}
+                    objeto={objeto}
+                    handler={objeto !== null ? putHandlerCap : postHandlerCap}>
+                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                        <button className="delete" onClick={event => setResponse(null)}></button>
+                    </Alert>}
+                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                        <button className="delete" onClick={event => {
+                            setResponse(null)
+                            setShowModalCapacitacion(false)
+                            setObjeto(null)
+                            dispatch(
+                                loadCapacitaciones(persona.identificacion)
+                            )
+                        }}></button>
+                    </Alert>}
+                    {error && <Alert type={'is-danger is-light'} content={error.message}>
+                        <button className="delete" onClick={event => setError(null)}></button>
+                    </Alert>}
+                    <button className="button is-small is-danger mx-3" onClick={ev => {
+                        setShowModalCapacitacion(false)
+                        setObjeto(null)
+                    }}>Cancelar</button>
+                </CapacitacionModalForm>
             }
         </>
     )
