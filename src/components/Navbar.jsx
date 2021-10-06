@@ -15,7 +15,7 @@ let NavBar = (props) => {
         )
     }
     return (
-        <nav className="navbar is-primary" style={{ background: 'linear-gradient(-90deg, #888,#48c78e)' }}>
+        <nav className="navbar is-light">
             <div className="navbar-brand">
                 <Link className="navbar-item" to="/">
                     <span className="mr-2">
