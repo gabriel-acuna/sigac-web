@@ -8,6 +8,7 @@ import { VscFileSubmodule } from 'react-icons/vsc'
 import RegistarPersona from './nuevo'
 import Alert from '../Alert';
 import { logOut} from '../../store/user'
+import { Link } from 'react-router-dom';
 
 
 
@@ -57,11 +58,11 @@ let DTH = (props) => {
                             <FaRegEdit/>
                         </span>
                     </button>,
-                    <button className="button is-info is-outlined mx-2" key={`${row.identificacion}1`}> 
+                    <Link className="button is-info is-outlined mx-2" key={`${row.identificacion}1`} to='/dth/expediente' state={row}> 
                         <span className="icon is-small">
                             <VscFileSubmodule/>
                         </span>
-                    </button>
+                    </Link>
 
                 ]
             }

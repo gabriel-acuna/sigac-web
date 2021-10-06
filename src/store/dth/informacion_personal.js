@@ -111,7 +111,7 @@ export const postInformacionPersonal = createAsyncThunk(
                 etnia: datosPersonales.etnia,
                 nacionalidad: datosPersonales.nacionalidad,
                 correo_institucional: datosPersonales.email_institucional,
-                correo_personal: datosPersonales.email_institucional,
+                correo_personal: datosPersonales.email_personal,
                 telefono_domicilio: datosPersonales.telefono_domicilio,
                 telefono_movil: datosPersonales.telefono_movil,
                 direccion_domicilio: {
@@ -160,7 +160,6 @@ export const putInformacionPersonal = createAsyncThunk(
         if (!token) return Promise.reject('There is not token')
 
         try {
-            console.log(datosPersonales);
             let data =
             {
                 tipo_identificacion: datosPersonales.tipo_identificacion,
@@ -178,7 +177,7 @@ export const putInformacionPersonal = createAsyncThunk(
                 etnia: datosPersonales.etnia,
                 nacionalidad: datosPersonales.nacionalidad,
                 correo_institucional: datosPersonales.email_institucional,
-                correo_personal: datosPersonales.email_institucional,
+                correo_personal: datosPersonales.email_personal,
                 telefono_domicilio: datosPersonales.telefono_domicilio,
                 telefono_movil: datosPersonales.telefono_movil,
                 direccion_domicilio: {

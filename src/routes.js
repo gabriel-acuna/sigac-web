@@ -47,6 +47,8 @@ import ListadoEstadosCiviles from "./components/admin/options/estados-civiles";
 import ListadoEstructurasInstitucionales from "./components/admin/options/estructura-institucional";
 import ListadoAreasInstitucionales from "./components/admin/options/areas-institucionales";
 import CV from './components/cv/index'
+import ListaExpediente from "./components/dth/ListaExpediente";
+
 const routes = (user)=> [
     {
         path: "/login",
@@ -314,8 +316,8 @@ const routes = (user)=> [
                 path: '/',
                 element: <DTH/>
             },{
-                path:'/registrar',
-                element:<RegistrarPersona/>
+                path:'/expediente',
+                element: <ListaExpediente/>
             },
             {
                 path: '/profesores',

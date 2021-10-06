@@ -64,6 +64,7 @@ let ListadoEtnias = (props) => {
     let rows = etniasState.map(
         (row, index) => {
             return {
+                id: index,
                 etnia: row.etnia,
                 opciones: [
                     <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev=>{
