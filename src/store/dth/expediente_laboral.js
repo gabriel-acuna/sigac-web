@@ -68,7 +68,7 @@ export const postDetalleExpedienteProfesor = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.post(`${API}/expediente-laboral/profesor`, detalleExpediente,
+            let response = await Axios.post(`${API}/expediente-laboral/profesor/${detalleExpediente.id_persona}`, detalleExpediente.detalle,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -101,7 +101,7 @@ export const postDetalleExpedienteFuncionario = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.post(`${API}/expediente-laboral/funcionario`, detalleExpediente,
+            let response = await Axios.post(`${API}/expediente-laboral/funcionario/${detalleExpediente.id_persona}`, detalleExpediente.detalle,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -122,7 +122,7 @@ export const postDetalleExpedienteFuncionario = createAsyncThunk(
 
 )
 
-export const putInformacionPersonal = createAsyncThunk(
+export const putDetalleExpediente = createAsyncThunk(
     'expediente-laboral/put',
     async (detalleExpediente, { getState }) => {
         let token;

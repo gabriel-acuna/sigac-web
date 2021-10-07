@@ -1,77 +1,99 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useEffect } from 'react'
 
-let ContratoFuncionario = ({objeto}) => {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+import { loadTiposFuncionarios } from '../../../store/core/tiposFuncionarios'
+import { loadTiposDocentesLOES } from '../../../store/core/tiposDocentes'
+import { loadCategoriasDocentesLOSEP } from '../../../store/core/categoriasDocentes'
+import { useDispatch, useSelector } from 'react-redux'
+
+let ContratoFuncionario = ({ objeto, register, errors }) => {
+    
+    
+    let tiposFuncionariosState = useSelector(state => state.tiposFuncionarios.data.tiposFuncionarios)
+    let tiposDocentesState = useSelector(state => state.tiposDocentesLOES.data.tiposDocentes)
+    let categoriasDocentesState = useSelector(state => state.categoriasDocentesLOSEP.data.categoriasDocentes)
+    const dispatch = useDispatch()
+    useEffect(
+        () => {
+            dispatch(loadTiposFuncionarios())
+            dispatch(loadTiposDocentesLOES())
+            dispatch(loadCategoriasDocentesLOSEP())
+        }, []
+    )
 
     return (
 
 
         <>
 
-                <div className="field is-grouped">
-                <p className="control">
+            <div className="field is-grouped">
+                <div className="control">
                     <label className="label is-small">TIPO FUNCIONARIO</label>
                     <div className="select">
                         <select {...register("tipo_funcionario", { required: true })} className="input is-small">
-                            <option value="ADMNISTARTIVO">ADMNISTARTIVO</option>
-                            <option value="TRABAJADOR">TRABAJADOR</option>
-                            <option value="DIRECTIVO">DIRECTIVO</option>
-                            <option value="DOCENTE LOES">DOCENTE LOES</option>
+                            <option> </option>
+                            {
+                                tiposFuncionariosState.map(
+                                    (row) => (<option key={row.id} value={row.id}> {row.tipo} </option>)
+                                )
+                            }
                         </select>
 
 
                         {errors.tipo_funcionario && <span>¡Por favor, Seleccione el tipo de funcionario!</span>}
                     </div>
-                </p>
+                </div>
             </div>
             <div className="field is-grouped">
-                <p className="control">
+                <div className="control">
                     <label htmlFor="" className="label is-small">
                         CARGO
                     </label>
                     <div className="control"><input type="text" {...register("cargo", { required: true })} className="input is-samll" />
-                        {errors.cargo && <span>¡Por favor, Seleccione si el cargo del funcionario!</span>}
+                        
                     </div>
-                </p>
-                <p className="control">
+                    {errors.cargo && <span>¡Por favor, Ingrese el cargo del funcionario!</span>}
+                </div>
+                <div className="control">
                     <label className="label is-small">TIPO DECENTE LOES</label>
                     <div className="select">
-                        <select {...register("tipo_docente", { required: true })} className="input is-small">
-                            <option value="TECNICO DOCENTE">TECNICO DOCENTE</option>
-                            <option value="TECNICO LABORATORIO">TECNICO LABORATORIO</option>
-                            <option value="TECNICO INVESTIGACION">TECNICO INVESTIGACION</option>
-                            <option value="TECNICO ARTES">TECNICO ARTES</option>
-                            <option value="NO APLICA">NO APLICA</option>
+                        <select {...register("tipo_docente", { required: true })} className="input is-small is-uppercase">
+                            <option> </option>
+                            {
+                                tiposDocentesState.map(
+                                    (row) => (<option key={row.id} value={row.id}> {row.tipo_docente} </option>)
+                                )
+                            }
                         </select>
 
 
-                        {errors.tipo_deocente && <span>¡Por favor, Seleccione el tipo de funcionario!</span>}
+                       
                     </div>
-                </p>
+                    {errors.tipo_deocente && <span>¡Por favor, Seleccione el tipo de funcionario!</span>}
+                </div>
             </div>
             <div className="field is-grouped">
 
-                <p className="control">
+                <div className="control">
                     <label className="label is-small">CATEGORIA DOCENTE</label>
                     <div className="select">
-                        <select {...register("catagoria_docente", { required: true })} className="input is-small">
-                            <option value="CATGORIA 1">CATGORIA 1</option>
-                            <option value="CATGORIA 2">CATGORIA 2</option>
-                            <option value="CATGORIA 3">CATGORIA 3</option>
-                            <option value="CATGORIA 4">CATGORIA 4</option>
-                            <option value="CATGORIA 5">CATGORIA 5</option>
-                            <option value="NO APLICA">NO APLICA</option>
+                        <select {...register("categoria_docente", { required: true })} className="input is-small">
+                            <option> </option>
+                            {
+                                categoriasDocentesState.map(
+                                    (row) => (<option key={row.id} value={row.id}> {row.categoria_docente} </option>)
+                                )
+                            }
                         </select>
 
 
-                        {errors.categoria_deocente && <span>¡Por favor, Seleccione la categoria de docente!</span>}
+                        
                     </div>
-                </p>
+                    {errors.categoria_docente && <span>¡Por favor, Seleccione la categoria de docente!</span>}
+                </div>
             </div>
             <div className="field is-grouped">
 
-                <p className="control">
+                <div className="control">
                     <label className="label is-small">PUESTO JERARQUICO SUPERIOR</label>
                     <div className="select">
                         <select {...register("puesto_jerarquico", { required: true })} className="input is-small">
@@ -81,19 +103,22 @@ let ContratoFuncionario = ({objeto}) => {
                         </select>
 
 
-                        {errors.puesto_jerarquico && <span>¡Por favor, Seleccione una opción!</span>}
+                       
                     </div>
-                </p>
-                <p className="control">
+                    {errors.puesto_jerarquico && <span>¡Por favor, Seleccione una opción!</span>}
+                </div>
+                <div className="control">
                     <label htmlFor="" className="label is-small">
                         HORAS LABORABLES SEMANA
                     </label>
-                    <div className="control"><input type="horas_laborables_semana" {...register("unidad_academica", { required: true })} className="input is-samll" />
-                        {errors.horas_laborables_semana && <span>¡Por favor, Ingrese las horas laborables por semana!</span>}
+                    <div className="control">
+                        <input type="text" {...register("horas_laborables_semanales", { required: true })} className="input is-small" />
+                       
                     </div>
-                </p>
+                    {errors.horas_laborables_semana && <span>¡Por favor, Ingrese las horas laborables por semana!</span>}
+                </div>
             </div>
-       
+
         </>
 
     )

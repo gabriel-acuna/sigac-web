@@ -7,16 +7,23 @@ import { loadExpedienteLaboral } from '../../store/dth/expediente_laboral'
 import { FaRegEdit } from 'react-icons/fa'
 import { AiOutlineDelete } from 'react-icons/ai'
 import ModalForm from './modalForm'
+import { postDetalleExpedienteFuncionario, postDetalleExpedienteProfesor, putDetalleExpediente } from '../../store/dth/expediente_laboral'
+import { logOut } from '../../store/user'
+import Alert from '../Alert'
+import { set } from 'react-hook-form'
 
 let ListaExpediente = (props) => {
     const location = useLocation()
     const navigate = useNavigate()
     const [persona, setPersona] = useState(null)
     const dispatch = useDispatch()
-    const [objeto, setObjeto] = useState()
+    const [objeto, setObjeto] = useState(null)
     let expedienteState = useSelector(state => state.referencias.data.referencias)
     const [showModalForm, setShowModalForm] = useState(false)
     const [rows, setRows] = useState([])
+    const [response, setResponse] = useState(null)
+    const [deteteResponse, setDeleteResponse] = useState(null)
+    const [error, setError] = useState(null)
 
     useEffect(
         () => {
@@ -33,7 +40,6 @@ let ListaExpediente = (props) => {
                     if (resp.detalle.length > 0) {
                         filas = expedienteState.map(
                             (row, index) => {
-                                console.log(row);
                                 return {
                                     id: index,
                                     numero_documento: row.numero_documento,
@@ -78,6 +84,64 @@ let ListaExpediente = (props) => {
     const deleteHandler = (id) => {
         console.log(id);
     }
+
+    let postHandler = (data) => {
+        let detalle = { id_persona: location.state.identificacion, detalle: data }
+        if (data.tipo_personal === 'PROFESOR') {
+            dispatch(
+                postDetalleExpedienteProfesor(detalle)
+            ).unwrap()
+                .then(
+                    resp => setResponse(resp)
+                ).catch(
+                    (err) => {
+                        console.log(err);
+                        if (err.message.includes("undefined (reading 'data')")) {
+                            console.error("No hay conexión con el backend");
+                            setError({ 'message': 'No es posible estrablecer conexión, intente mas tarde.' })
+                        } else if (err.message === "Rejected") {
+                            dispatch(
+                                logOut()
+                            )
+                        }
+
+                        else { setError(err) }
+                    }
+                )
+        } else if (data.tipo_personal == 'FUNCIONARIO') {
+            dispatch(
+                postDetalleExpedienteFuncionario(detalle))
+                .unwrap()
+                .then(
+                    (resp) => setResponse(resp)
+                ).catch(
+                    (err) => {
+                        console.log(err);
+                        if (err.message.includes("undefined (reading 'data')")) {
+                            console.error("No hay conexión con el backend");
+                            setError({ 'message': 'No es posible estrablecer conexión, intente mas tarde.' })
+                        } else if (err.message === "Rejected") {
+                            dispatch(
+                                logOut()
+                            )
+                        }
+
+                        else { setError(err) }
+                    }
+                )
+        }
+    }
+
+    let putHandler = (data) => {
+        let detalle = { id: objeto.id, ...data }
+        dispatch(
+            putDetalleExpediente(
+                detalle
+            )
+        )
+
+    }
+
 
     return (
         <>
@@ -148,14 +212,35 @@ let ListaExpediente = (props) => {
                                     }
                                 }
                             }}
-                            records={[]}
+                            records={rows}
                             columns={columns}
                         />
                     </div>
                 </div>
             </div>
             {
-                showModalForm && <ModalForm title={objeto !== null ? 'Registrar' : 'Editar'}>
+                showModalForm && <ModalForm title={objeto !== null ?'Editar': 'Registrar'  } objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
+
+                    {error && <Alert type={'is-danger is-light'} content={error.message}>
+                        <button className="delete" onClick={event => setError(null)}></button>
+                    </Alert>}
+                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                        <button className="delete" onClick={event => setResponse(null)}></button>
+                    </Alert>}
+                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                        <button className="delete" onClick={event => {
+                            setResponse(null)
+                            setObjeto(null)
+                            setShowModalForm(false)
+                            dispatch(
+                                loadExpedienteLaboral()
+                            )
+                        }}></button>
+                    </Alert>}
+                    <button className="button is-small is-danger mx-3" onClick={ev => {
+                        setShowModalForm(false)
+                        setObjeto(null)
+                    }}>Cancelar</button>
 
                 </ModalForm>
             }
