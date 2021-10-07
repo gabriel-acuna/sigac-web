@@ -6,6 +6,7 @@ import { IoIosArrowBack, IoIosAddCircleOutline } from 'react-icons/io'
 import { loadExpedienteLaboral } from '../../store/dth/expediente_laboral'
 import { FaRegEdit } from 'react-icons/fa'
 import { AiOutlineDelete } from 'react-icons/ai'
+import ModalForm from './modalForm'
 
 let ListaExpediente = (props) => {
     const location = useLocation()
@@ -79,79 +80,86 @@ let ListaExpediente = (props) => {
     }
 
     return (
-        <div className="continer">
-            <div className="columns is-centered">
-                <div className="column is-half mt-3">
-                    <div className="card">
-                        <header>
-                            <button className="button is-info mt-4 mx-3 is-outlined"
-                                onClick={event => {
-                                    navigate(-1);
+        <>
+            <div className="continer">
+                <div className="columns is-centered">
+                    <div className="column is-half mt-3">
+                        <div className="card">
+                            <header>
+                                <button className="button is-info mt-4 mx-3 is-outlined"
+                                    onClick={event => {
+                                        navigate(-1);
 
-                                }}>
-                                <span className="icon">
-                                    <IoIosArrowBack />
-                                </span>
-                            </button>
-                            <button className="button  is-success mt-4 is-outlined" onClick={ev => setShowModalForm(true)}>
-                                <span className="icon">
-                                    <IoIosAddCircleOutline />
-                                </span>
-                            </button>
-                        </header>
-                        {persona && <section className="card-content">
-                            <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr' }}>
-                                <div>
-                                    <span className="has-text-weight-medium">Nombres: </span> {persona.primer_nombre} {persona.segundo_nombre}
-                                </div>
-                                <div >
-                                    <span className="has-text-weight-medium">Apellidos: </span> {persona.primer_apellido} {persona.segundo_apellido}
-                                </div>
+                                    }}>
+                                    <span className="icon">
+                                        <IoIosArrowBack />
+                                    </span>
+                                </button>
+                                <button className="button  is-success mt-4 is-outlined" onClick={ev => setShowModalForm(true)}>
+                                    <span className="icon">
+                                        <IoIosAddCircleOutline />
+                                    </span>
+                                </button>
+                            </header>
+                            {persona && <section className="card-content">
+                                <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr' }}>
+                                    <div>
+                                        <span className="has-text-weight-medium">Nombres: </span> {persona.primer_nombre} {persona.segundo_nombre}
+                                    </div>
+                                    <div >
+                                        <span className="has-text-weight-medium">Apellidos: </span> {persona.primer_apellido} {persona.segundo_apellido}
+                                    </div>
 
-                                <div><span className="has-text-weight-medium">Edad: </span> {persona.edad.años}  años </div>
-                                <div><span className="has-text-weight-medium">Estado civil: </span> {persona.estado_civil.estado_civil}</div>
-                                <div><span className="has-text-weight-medium">Teléfono movil: </span> {persona.telefono_movil}</div>
-                                <div><span className="has-text-weight-medium">Correo: </span> {persona.correo_personal}</div>
-                            </div>
-                        </section>}
+                                    <div><span className="has-text-weight-medium">Edad: </span> {persona.edad.años}  años </div>
+                                    <div><span className="has-text-weight-medium">Estado civil: </span> {persona.estado_civil.estado_civil}</div>
+                                    <div><span className="has-text-weight-medium">Teléfono movil: </span> {persona.telefono_movil}</div>
+                                    <div><span className="has-text-weight-medium">Correo: </span> {persona.correo_personal}</div>
+                                </div>
+                            </section>}
+                        </div>
+                    </div>
+
+                </div>
+
+                <div className="columns is-centered">
+                    <div className="column is-half mb-6">
+                        <ReactDatatable style={{ justifyContent: 'center' }}
+                            className="table is-bordered is-striped"
+                            tHeadClassName="is-info"
+                            config={{
+                                page_size: 10,
+                                length_menu: [10, 20, 50],
+                                show_pagination: true,
+                                pagination: 'advance',
+                                button: {
+                                    excel: false,
+                                    print: false
+                                },
+                                language: {
+                                    length_menu: "Mostrar _MENU_ registros laborales por página",
+                                    filter: "Buscar en registros ...",
+                                    no_data_text: "No hay regsitros laborales",
+                                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros laborales",
+                                    pagination: {
+                                        first: "Primera",
+                                        previous: "Anterior",
+                                        next: "Siguiente",
+                                        last: "Ultima"
+                                    }
+                                }
+                            }}
+                            records={[]}
+                            columns={columns}
+                        />
                     </div>
                 </div>
-
             </div>
+            {
+                showModalForm && <ModalForm title={objeto !== null ? 'Registrar' : 'Editar'}>
 
-            <div className="columns is-centered">
-                <div className="column is-half mb-6">
-                    <ReactDatatable style={{ justifyContent: 'center' }}
-                        className="table is-bordered is-striped"
-                        tHeadClassName="is-info"
-                        config={{
-                            page_size: 10,
-                            length_menu: [10, 20, 50],
-                            show_pagination: true,
-                            pagination: 'advance',
-                            button: {
-                                excel: false,
-                                print: false
-                            },
-                            language: {
-                                length_menu: "Mostrar _MENU_ registros laborales por página",
-                                filter: "Buscar en registros ...",
-                                no_data_text: "No hay regsitros laborales",
-                                info: "Mostrando _START_ a _END_ de _TOTAL_ registros laborales",
-                                pagination: {
-                                    first: "Primera",
-                                    previous: "Anterior",
-                                    next: "Siguiente",
-                                    last: "Ultima"
-                                }
-                            }
-                        }}
-                        records={[]}
-                        columns={columns}
-                    />
-                </div>
-            </div>
-        </div>
+                </ModalForm>
+            }
+        </>
     )
 
 
