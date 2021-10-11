@@ -9,6 +9,10 @@ import { loadAreasInstitucionales } from '../../store/core/area'
 import { loadExpedienteLaboral, putDetalleExpediente } from '../../store/dth/expediente_laboral'
 import { useDispatch, useSelector } from "react-redux"
 import Alert from '../Alert'
+import { loadNivelesEducativos } from '../../store/core/nivelesEducativos'
+import { loadTiemposDedicacionesProfesores } from '../../store/core/tiemposDedicaciones'
+import { loadTiposEscalafonesNombramientos } from '../../store/core/tiposEscalafones'
+import { loadCategoriasContratoProfesores } from '../../store/core/categoriasContratos'
 
 let ModalForm = ({ title, children, objeto, handler, identificacion }) => {
 
@@ -22,22 +26,6 @@ let ModalForm = ({ title, children, objeto, handler, identificacion }) => {
     const [subAreas, setSubAreas] = useState([])
     const [error, setError] = useState(null)
     const [response, setResponse] = useState(null)
-
-    useEffect(
-        () => {
-            dispatch(
-                loadTiposDocumentos()
-            )
-            dispatch(
-                loadRelacionesIES()
-            )
-            dispatch(
-                loadAreasInstitucionales()
-            )
-            filtrarAreas(objeto.area.nombre)
-            filtrarSubAreas(objeto.sub_area.nombre)
-        }, [dispatch]
-    )
 
     let filtrarAreas = (ev) => {
         let filtrados = []
@@ -65,13 +53,42 @@ let ModalForm = ({ title, children, objeto, handler, identificacion }) => {
         setSubAreas(filtrados)
 
     }
+    useEffect(
+        () => {
+
+            dispatch(loadCategoriasContratoProfesores())
+            dispatch(loadTiemposDedicacionesProfesores())
+            dispatch(loadNivelesEducativos())
+            dispatch(loadTiposEscalafonesNombramientos())
+
+        }, []
+    )
+
+
+    useEffect(
+        () => {
+            dispatch(
+                loadTiposDocumentos()
+            )
+            dispatch(
+                loadRelacionesIES()
+            )
+            dispatch(
+                loadAreasInstitucionales()
+            )
+            filtrarAreas(objeto.area.nombre)
+            filtrarSubAreas(objeto.sub_area.nombre)
+        }, []
+    )
+
+
 
     useEffect(() => {
 
 
 
         setTipoFuncionario(objeto.tipo_personal)
-
+        filtrarSubAreas(objeto.sub_area.nombre)
         if (objeto.tipo_personal === 'FUNCIONARIO') {
             reset({
                 tipo_personal: objeto.tipo_personal,
@@ -83,31 +100,45 @@ let ModalForm = ({ title, children, objeto, handler, identificacion }) => {
                 ingreso_concurso: objeto.ingreso_concurso,
                 //relacion_ies: objeto.relacion_ies.id,
                 remuneracion_mensual: objeto.remuneracion_mensual,
-                //area: objeto.area.id,
-                //sub_area: objeto.sub_area !== null ? objeto.sub_area.id: '',
+                area: objeto.area.id,
+                sub_area: objeto.sub_area !== null ? objeto.sub_area.id : '',
 
-                // tipo_funcionario:objeto.tipo_funcionario.id,
+                //tipo_funcionario:objeto.tipo_funcionario.id,
                 // tipo_docente: objeto.tipo_docente.id,
                 // categoria_docente: objeto.categoria_docente.id,
                 cargo: objeto.cargo,
                 horas_laborables_semanales: objeto.horas_laborables_semanales
             })
+        } else if (objeto.tipo_personal === 'PROFESOR') {
+            reset({
+                tipo_personal: objeto.tipo_personal,
+                numero_documento: objeto.numero_documento,
+                fecha_inicio: objeto.fecha_inicio,
+                fecha_fin: objeto.fecha_fin,
+                ingreso_concurso: objeto.ingreso_concurso,
+                area: objeto.area.id,
+                sub_area: objeto.sub_area !== null ? objeto.sub_area.id : ''
+
+
+
+            })
+
         }
 
-    }, [])
+    }, [objeto, reset])
 
-let onSubmit = (data) =>{
+    let onSubmit = (data) => {
         console.log(data);
         let detalle = { id: objeto.id, ...data }
-        
+
         dispatch(
             putDetalleExpediente(detalle)
         ).unwrap().
-        then(
-            resp =>setResponse(resp)
-        ).catch(err=>console.log(err))
+            then(
+                resp => setResponse(resp)
+            ).catch(err => console.log(err))
     }
-
+    console.log(objeto);
     return (
         <div className="modal is-active">
             <div className="modal-background"></div>
@@ -116,7 +147,7 @@ let onSubmit = (data) =>{
                     <span className="modal-card-title">{title}</span>
 
                 </header>
-                <section className="modal-card-body" style={{ display: 'flex', justifyContent: 'center' }}>
+                <section className="modal-card-body">
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="field">
                             <label className="label is-small is-uppercase">Tipo Funcionario</label>
@@ -126,8 +157,8 @@ let onSubmit = (data) =>{
                                     reset(
                                         { tipo_personal: ev.target.value }
                                     )
-                                }} defaultValue={tipoFuncionario} className="input is-small">
-                                    {!objeto && <option> </option>}
+                                }} defaultValue={objeto.tipo_personal} className="input is-small">
+
                                     <option>FUNCIONARIO</option>
                                     <option>PROFESOR</option>
                                 </select>
@@ -138,7 +169,10 @@ let onSubmit = (data) =>{
                         <div className="field is-grouped">
 
                             <div className="control">
-                                <label className="label is-small">TIPO DOCUMENTO</label>
+                                <div className="control">
+                                    <label className="label is-small">TIPO DOCUMENTO</label>
+                                    {errors.tipo_documento && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el tipo de documento!</span>}
+                                </div>
                                 <div className="select">
                                     <select  {...register("tipo_documento", { required: true })} className="input is-small" defaultValue={objeto.tipo_documento}>
                                         <option> </option>
@@ -150,7 +184,7 @@ let onSubmit = (data) =>{
                                             )
                                         }
                                     </select>
-                                    {errors.tipo_documento && <span>¡Por favor, Seleccione el tipo de documento!</span>}
+
                                 </div>
                             </div>
                             <div className="control">
@@ -170,10 +204,13 @@ let onSubmit = (data) =>{
                         </div>
                         <div className="field is-grouped">
                             <div className="control">
-                                <label className="label is-small">
-                                    FECHA INICIO
-                                </label>
-                                <input type="date" {...register("fecha_inicio")} className="input is-small" />
+                                <div className="control">
+                                    <label className="label is-small">
+                                        FECHA INICIO
+                                    </label>
+                                    {errors.fecha_inicio && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione la fecha de incio!</span>}
+                                </div>
+                                <input type="date" {...register("fecha_inicio", { required: true })} className="input is-small" />
                             </div>
                             <div className="control">
                                 <label className="label is-small">
@@ -192,13 +229,16 @@ let onSubmit = (data) =>{
                                     </select>
 
 
-                                    {errors.ingreso_concurso && <span>¡Por favor, Seleccione si el ingreso fue por concurso!</span>}
+                                    {errors.ingreso_concurso && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione si el ingreso fue por concurso!</span>}
                                 </div>
                             </div>
                         </div>
                         <div className="field is-grouped">
                             <div className="control">
-                                <label className="label is-small">RELACION IES</label>
+                                <div className="control">
+                                    <label className="label is-small">TIPO RELACION IES</label>
+                                    {errors.relacion_ies && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione si la relación!</span>}
+                                </div>
                                 <div className="select">
                                     <select {...register("relacion_ies", { required: true })} className="input is-small">
                                         <option> </option>
@@ -212,7 +252,7 @@ let onSubmit = (data) =>{
                                     </select>
 
 
-                                    {errors.relacion_ies && <span>¡Por favor, Seleccione si la relación!</span>}
+
                                 </div>
                             </div>
                             <div className="control">
@@ -220,7 +260,7 @@ let onSubmit = (data) =>{
                                 <div className="control">
                                     <input  {...register("numero_documento", { required: true })} className="input is-small" />
 
-                                    {errors.numero_documento && <span>¡Por favor, Ingrese el número de documento!</span>}
+                                    {errors.numero_documento && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el número de documento!</span>}
                                 </div>
                             </div>
 
@@ -234,14 +274,17 @@ let onSubmit = (data) =>{
                         }
                         <div className="field is-grouped">
                             <div className="control">
-                                <label className="label is-small">REMUNERACION MENSUAL</label>
+                                <div className="control">
+                                    <label className="label is-small">REMUNERACION MENSUAL</label>
+                                    {errors.remuneracion_mensual && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese si la remuneración mensual!</span>}
+                                </div>
                                 <div className="control">
                                     <input {...register("remuneracion_mensual", { required: true })} className="input is-small" />
 
 
 
 
-                                    {errors.remuneracion_mensual && <span>¡Por favor, Seleccione si la remuneración mensual!</span>}
+
                                 </div>
                             </div>
                             <div className="control">
@@ -260,7 +303,7 @@ let onSubmit = (data) =>{
                                         }
                                     </select>
 
-                                    {errors.area && <span>¡Por favor, Ingrese el número de documento!</span>}
+                                    {errors.area && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el número de documento!</span>}
                                 </div>
                             </div>
 
@@ -308,7 +351,7 @@ let onSubmit = (data) =>{
 
                                 <button type="submit" className="button is-success is-small mx-3">
 
-                                Guardar</button>
+                                    Guardar</button>
 
                             </div>
                         </div>

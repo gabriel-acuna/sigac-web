@@ -3,12 +3,6 @@ import Home from "./components/Home";
 import NotImplemented from "./components/NotImplemted";
 import Admin from "./components/admin";
 import DTH from "./components/dth";
-import Profesores from "./components/dth/profesores";
-import Funcionarios from "./components/dth/funcionarios";
-import RegistrarFuncionario from "./components/dth/funcionarios/nuevo";
-import ContratoFuncionario from "./components/dth/funcionarios/contrato";
-import ContratoProfesor from "./components/dth/profesores/contrato";
-import RegistrarProfesor from "./components/dth/profesores/nuevo";
 import { Outlet, Navigate } from "react-router";
 import ListadoPaises from "./components/admin/options/paises";
 import ListadoProvincias from "./components/admin/options/provincias";
@@ -318,46 +312,9 @@ const routes = (user)=> [
             },{
                 path:'/expediente',
                 element: <ListaExpediente/>
-            },
-            {
-                path: '/profesores',
-                element: <Outlet/>,
-                children: [
-                    {
-                        path: '/',
-                        element: <Profesores/>
-                    },
-                    {
-                        path: '/nuevo',
-                        element: <RegistrarProfesor/>
-                    }
-                   
-                ]
-            },
-            {
-                path: '/profesor-contrato/:id',
-                element: <ContratoProfesor/>
-            },
-            {
-                path: '/funcionarios',
-                element: <Outlet/>,
-                children: [
-                    {
-                        path:'/',
-                        element: <Funcionarios/>
-                    },
-                    {
-                        path: '/nuevo',
-                        element: <RegistrarFuncionario/>
-                    }
-                   
-                ]
-            },
-            {
-                path: '/funcionario-contrato/:id',
-                element: <ContratoFuncionario/>
             }
             
+
            
         ]
     },
