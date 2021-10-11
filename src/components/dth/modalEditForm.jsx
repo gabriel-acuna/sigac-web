@@ -6,18 +6,22 @@ import { options } from './options'
 import { loadTiposDocumentos } from '../../store/core/tiposDocumentos'
 import { loadRelacionesIES } from '../../store/core/relacionesIES'
 import { loadAreasInstitucionales } from '../../store/core/area'
+import { loadExpedienteLaboral, putDetalleExpediente } from '../../store/dth/expediente_laboral'
 import { useDispatch, useSelector } from "react-redux"
+import Alert from '../Alert'
 
-let ModalForm = ({ title, children, handler }) => {
+let ModalForm = ({ title, children, objeto, handler, identificacion }) => {
 
     const [tipoFuncionario, setTipoFuncionario] = useState('')
-    const { register, handleSubmit, watch, reset, formState: { errors } } = useForm()
+    const { register, handleSubmit, getValues, watch, reset, formState: { errors } } = useForm()
     const dispatch = useDispatch()
     let tiposDocumentosState = useSelector(state => state.tiposDocumentos.data.tiposDocumentos)
     let relacionesIESState = useSelector(state => state.relacionesIES.data.relacionesIES)
     let areasState = useSelector(state => state.areasInstitucionales.data.areas)
     const [areas, setAreas] = useState([])
     const [subAreas, setSubAreas] = useState([])
+    const [error, setError] = useState(null)
+    const [response, setResponse] = useState(null)
 
     useEffect(
         () => {
@@ -30,6 +34,8 @@ let ModalForm = ({ title, children, handler }) => {
             dispatch(
                 loadAreasInstitucionales()
             )
+            filtrarAreas(objeto.area.nombre)
+            filtrarSubAreas(objeto.sub_area.nombre)
         }, [dispatch]
     )
 
@@ -60,33 +66,72 @@ let ModalForm = ({ title, children, handler }) => {
 
     }
 
+    useEffect(() => {
 
-   
-    
+
+
+        setTipoFuncionario(objeto.tipo_personal)
+
+        if (objeto.tipo_personal === 'FUNCIONARIO') {
+            reset({
+                tipo_personal: objeto.tipo_personal,
+                numero_documento: objeto.numero_documento,
+                //tipo_documento: objeto.tipo_documento.id,
+                motivo_accion: objeto.motivo_accion,
+                fecha_inicio: objeto.fecha_inicio,
+                fecha_fin: objeto.fecha_fin,
+                ingreso_concurso: objeto.ingreso_concurso,
+                //relacion_ies: objeto.relacion_ies.id,
+                remuneracion_mensual: objeto.remuneracion_mensual,
+                //area: objeto.area.id,
+                //sub_area: objeto.sub_area !== null ? objeto.sub_area.id: '',
+
+                // tipo_funcionario:objeto.tipo_funcionario.id,
+                // tipo_docente: objeto.tipo_docente.id,
+                // categoria_docente: objeto.categoria_docente.id,
+                cargo: objeto.cargo,
+                horas_laborables_semanales: objeto.horas_laborables_semanales
+            })
+        }
+
+    }, [])
+
+let onSubmit = (data) =>{
+        console.log(data);
+        let detalle = { id: objeto.id, ...data }
+        
+        dispatch(
+            putDetalleExpediente(detalle)
+        ).unwrap().
+        then(
+            resp =>setResponse(resp)
+        ).catch(err=>console.log(err))
+    }
+
     return (
         <div className="modal is-active">
             <div className="modal-background"></div>
             <div className="modal-card">
                 <header className="modal-card-head">
                     <span className="modal-card-title">{title}</span>
-                   
+
                 </header>
                 <section className="modal-card-body" style={{ display: 'flex', justifyContent: 'center' }}>
-                    <form onSubmit={handleSubmit(handler)}>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="field">
                             <label className="label is-small is-uppercase">Tipo Funcionario</label>
                             <div className="select">
-                                <select onChange={ev =>{ 
+                                <select onChange={ev => {
                                     setTipoFuncionario(ev.target.value)
                                     reset(
-                                        {tipo_personal: ev.target.value}
+                                        { tipo_personal: ev.target.value }
                                     )
-                                } } defaultValue={tipoFuncionario}  className="input is-small">
-                                   <option> </option>
+                                }} defaultValue={tipoFuncionario} className="input is-small">
+                                    {!objeto && <option> </option>}
                                     <option>FUNCIONARIO</option>
                                     <option>PROFESOR</option>
                                 </select>
-                                <input type="hidden"   {...register("tipo_personal", { required: true })}  />
+                                <input type="hidden"   {...register("tipo_personal", { required: true })} />
                             </div>
 
                         </div>
@@ -95,7 +140,7 @@ let ModalForm = ({ title, children, handler }) => {
                             <div className="control">
                                 <label className="label is-small">TIPO DOCUMENTO</label>
                                 <div className="select">
-                                    <select  {...register("tipo_documento", { required: true })} className="input is-small" >
+                                    <select  {...register("tipo_documento", { required: true })} className="input is-small" defaultValue={objeto.tipo_documento}>
                                         <option> </option>
                                         {
                                             tiposDocumentosState.map(
@@ -182,10 +227,10 @@ let ModalForm = ({ title, children, handler }) => {
                         </div>
 
                         {
-                            tipoFuncionario === 'FUNCIONARIO' && <Funcionario  register= {register} errors={errors} />
+                            tipoFuncionario === 'FUNCIONARIO' && <Funcionario register={register} errors={errors} objeto={objeto} />
                         }
                         {
-                            tipoFuncionario === 'PROFESOR' && <Profesor  register= {register} errors={errors} />
+                            tipoFuncionario === 'PROFESOR' && <Profesor register={register} errors={errors} objeto={objeto} />
                         }
                         <div className="field is-grouped">
                             <div className="control">
@@ -228,6 +273,7 @@ let ModalForm = ({ title, children, handler }) => {
                             <div className="select">
 
                                 <select {...register("sub_area")} className="input is-small" >
+                                    <option> </option>
                                     {
                                         subAreas.map(
                                             (subArea) =>
@@ -239,17 +285,34 @@ let ModalForm = ({ title, children, handler }) => {
                             </div>
                         </div>
 
-                        <div className="field is-grouped" style={{ display: 'flex', justifyContent: 'center' }}>
+                        <div className="field is-grouped mb-6" style={{ display: 'flex', justifyContent: 'center' }}>
                             <div className="control has-text-centered">
                                 <Fragment>
                                     {children}
                                 </Fragment>
+                                {error && <Alert type={'is-danger is-light'} content={error.message}>
+                                    <button className="delete" onClick={event => setError(null)}></button>
+                                </Alert>}
+                                {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                                    <button className="delete" onClick={event => setResponse(null)}></button>
+                                </Alert>}
+                                {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                                    <button className="delete" onClick={event => {
+                                        setResponse(null)
+                                        objeto = null
+                                        dispatch(
+                                            loadExpedienteLaboral(identificacion)
+                                        )
+                                    }}></button>
+                                </Alert>}
 
-                                <button type="submit" className="button is-success is-small mx-3">Guardar</button>
+                                <button type="submit" className="button is-success is-small mx-3">
+
+                                Guardar</button>
 
                             </div>
                         </div>
-                    
+
                     </form>
 
                 </section>

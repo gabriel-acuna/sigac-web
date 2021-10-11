@@ -39,8 +39,9 @@ let ContratoFuncionario = ({ objeto, register, errors }) => {
                         </select>
 
 
-                        {errors.tipo_funcionario && <span>¡Por favor, Seleccione el tipo de funcionario!</span>}
+                       
                     </div>
+                    {errors.tipo_funcionario && <span>¡Por favor, Seleccione el tipo de funcionario!</span>}
                 </div>
             </div>
             <div className="field is-grouped">
@@ -48,7 +49,7 @@ let ContratoFuncionario = ({ objeto, register, errors }) => {
                     <label htmlFor="" className="label is-small">
                         CARGO
                     </label>
-                    <div className="control"><input type="text" {...register("cargo", { required: true })} className="input is-samll" />
+                    <div className="control"><input type="text" {...register("cargo", { required: true })} className="input is-small" />
                         
                     </div>
                     {errors.cargo && <span>¡Por favor, Ingrese el cargo del funcionario!</span>}
@@ -68,7 +69,7 @@ let ContratoFuncionario = ({ objeto, register, errors }) => {
 
                        
                     </div>
-                    {errors.tipo_deocente && <span>¡Por favor, Seleccione el tipo de funcionario!</span>}
+                    {errors.tipo_docente && <span>¡Por favor, Seleccione el tipo de funcionario!</span>}
                 </div>
             </div>
             <div className="field is-grouped">

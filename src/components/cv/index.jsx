@@ -469,7 +469,7 @@ const CV = ({ email }) => {
             </div>
             {
                 showModalRef &&
-                <ConfirmDialog info="la refrencia" title="Eliminar referencia">
+                <ConfirmDialog info="la referencia" title="Eliminar referencia">
 
                     <button className="button is-small is-danger is-pulled-left" onClick={event => setShowModalRef(false)}> Cancelar</button>
                     <button className="button is-small is-success is-pulled-rigth" onClick={event => {

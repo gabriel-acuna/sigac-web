@@ -3,74 +3,45 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { IoIosArrowBack, IoIosAddCircleOutline } from 'react-icons/io'
-import { loadExpedienteLaboral } from '../../store/dth/expediente_laboral'
+import { deleteItemDetalle, loadExpedienteLaboral } from '../../store/dth/expediente_laboral'
 import { FaRegEdit } from 'react-icons/fa'
 import { AiOutlineDelete } from 'react-icons/ai'
 import ModalForm from './modalForm'
+import ModalEditForm from './modalEditForm'
 import { postDetalleExpedienteFuncionario, postDetalleExpedienteProfesor, putDetalleExpediente } from '../../store/dth/expediente_laboral'
 import { logOut } from '../../store/user'
 import Alert from '../Alert'
-import { set } from 'react-hook-form'
+import ConfirmDialog from '../ConfirmDialog'
 
 let ListaExpediente = (props) => {
     const location = useLocation()
+    let expedienteState = useSelector(state => state.expediente.data.expediente)
     const navigate = useNavigate()
     const [persona, setPersona] = useState(null)
     const dispatch = useDispatch()
     const [objeto, setObjeto] = useState(null)
-    let expedienteState = useSelector(state => state.referencias.data.referencias)
     const [showModalForm, setShowModalForm] = useState(false)
-    const [rows, setRows] = useState([])
+    const [showModalEditForm, setShowModalEditForm] = useState(false)
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false)
     const [response, setResponse] = useState(null)
     const [deteteResponse, setDeleteResponse] = useState(null)
     const [error, setError] = useState(null)
+    const [id, setId] = useState(null)
+
+    useEffect(
+        () => {
+            dispatch(
+                loadExpedienteLaboral(location.state.identificacion)
+            )
+        }, [dispatch]
+    )
 
     useEffect(
         () => {
             setPersona(location.state)
         }, [location, persona]
     )
-    useEffect(
-        () => {
-            dispatch(
-                loadExpedienteLaboral(location.state.identificacion)
-            ).unwrap().then(
-                resp => {
-                    let filas = []
-                    if (resp.detalle.length > 0) {
-                        filas = expedienteState.map(
-                            (row, index) => {
-                                return {
-                                    id: index,
-                                    numero_documento: row.numero_documento,
-                                    fecha_inicio: row.fecha_inicio,
-                                    fecha_fin: row.fecha_fin,
-                                    opciones: [
-                                        <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
-                                            setObjeto(row)
-                                            setShowModalForm(true)
-                                        }}>
-                                            <span className="icon">
-                                                <FaRegEdit />
-                                            </span>
-                                        </button>,
-                                        <button className="button is-small is-danger mx-2 is-outlined" onClick={event => {
-                                            deleteHandler(row.id)
-                                        }}>
-                                            <span className="icon">
-                                                <AiOutlineDelete />
-                                            </span>
-                                        </button>
-                                    ]
-                                }
-                            }
-                        )
-                        setRows(filas)
-                    }
-                }
-            )
-        }
-    )
+   
 
     const columns = [
         { key: 'numero_documento', text: 'No. Doc.', sortable: true },
@@ -79,10 +50,43 @@ let ListaExpediente = (props) => {
         { key: 'opciones', text: 'Opciones', sortable: false }
     ]
 
+    let rows =  expedienteState.detalle.map(
+
+
+
+        (row, index) => {
+            return {
+                id: index,
+                numero_documento: row.numero_documento,
+                fecha_inicio: row.fecha_inicio,
+                fecha_fin: row.fecha_fin,
+                opciones: [
+                    <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
+                        setObjeto(row)
+                        setShowModalEditForm(true)
+                    }}>
+                        <span className="icon">
+                            <FaRegEdit />
+                        </span>
+                    </button>,
+                    <button className="button is-small is-danger mx-2 is-outlined" onClick={event => {
+                        deleteHandler(row.id)
+                    }}>
+                        <span className="icon">
+                            <AiOutlineDelete />
+                        </span>
+                    </button>
+                ]
+            }
+        }
+    )
+
 
 
     const deleteHandler = (id) => {
-        console.log(id);
+        setId(id)
+        setShowConfirmDialog(true)
+
     }
 
     let postHandler = (data) => {
@@ -108,7 +112,7 @@ let ListaExpediente = (props) => {
                         else { setError(err) }
                     }
                 )
-        } else if (data.tipo_personal == 'FUNCIONARIO') {
+        } else if (data.tipo_personal === 'FUNCIONARIO') {
             dispatch(
                 postDetalleExpedienteFuncionario(detalle))
                 .unwrap()
@@ -132,17 +136,24 @@ let ListaExpediente = (props) => {
         }
     }
 
-    let putHandler = (data) => {
-        let detalle = { id: objeto.id, ...data }
-        dispatch(
-            putDetalleExpediente(
-                detalle
-            )
-        )
 
+
+
+    let doDelete = () => {
+        dispatch(
+            deleteItemDetalle(id)
+
+        ).unwrap()
+            .then(resp => {
+                setDeleteResponse(resp)
+
+
+            }).catch(
+                (err) => console.error(err)
+            )
     }
 
-
+    
     return (
         <>
             <div className="continer">
@@ -184,7 +195,19 @@ let ListaExpediente = (props) => {
                     </div>
 
                 </div>
-
+                <div className="columns is-centered">
+                    <div className="column  is-3">
+                        {deteteResponse && deteteResponse.type === 'warning' && <Alert type={'is-warning is-light'} content={deteteResponse.content}>
+                            <button className="delete" onClick={event => setDeleteResponse(null)}></button>
+                        </Alert>}
+                        {deteteResponse && deteteResponse.type === 'success' && <Alert type={'is-success is-light'} content={deteteResponse.content}>
+                            <button className="delete" onClick={event => {
+                                setDeleteResponse(null)
+                                dispatch(loadExpedienteLaboral(location.state.identificacion))
+                            }}></button>
+                        </Alert>}
+                    </div>
+                </div>
                 <div className="columns is-centered">
                     <div className="column is-half mb-6">
                         <ReactDatatable style={{ justifyContent: 'center' }}
@@ -219,7 +242,7 @@ let ListaExpediente = (props) => {
                 </div>
             </div>
             {
-                showModalForm && <ModalForm title={objeto !== null ?'Editar': 'Registrar'  } objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
+                showModalForm && <ModalForm title='Registrar'  handler={postHandler}>
 
                     {error && <Alert type={'is-danger is-light'} content={error.message}>
                         <button className="delete" onClick={event => setError(null)}></button>
@@ -233,7 +256,7 @@ let ListaExpediente = (props) => {
                             setObjeto(null)
                             setShowModalForm(false)
                             dispatch(
-                                loadExpedienteLaboral()
+                                loadExpedienteLaboral(location.state.identificacion)
                             )
                         }}></button>
                     </Alert>}
@@ -243,6 +266,28 @@ let ListaExpediente = (props) => {
                     }}>Cancelar</button>
 
                 </ModalForm>
+            }
+            {
+                showModalEditForm && <ModalEditForm title='Editar' objeto={objeto} identificacion={location.state.identificacion} >
+
+                   
+                    <button className="button is-small is-danger mx-3" onClick={ev => {
+                        setShowModalEditForm(false)
+                        setObjeto(null)
+                    }}>Cancelar</button>
+
+                </ModalEditForm>
+            }
+
+            {
+                showConfirmDialog &&
+                <ConfirmDialog info="el registro" title="Eliminar registro">
+
+                    <button className="button is-small is-danger is-pulled-left" onClick={event => setShowConfirmDialog(false)}> Cancelar</button>
+                    <button className="button is-small is-success is-pulled-rigth" onClick={event => {
+                        setShowConfirmDialog(false); doDelete();
+                    }}>Confirmar</button>
+                </ConfirmDialog>
             }
         </>
     )

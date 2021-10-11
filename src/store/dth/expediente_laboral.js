@@ -185,7 +185,12 @@ let expedienteLaboralSlice = createSlice({
     name: 'expedienteLaboral',
     initialState: {
         data: {
-            expediente: []  
+            expediente: {
+                id: null,
+                id_persona: null,
+                fecha_ingreso:'',
+                detalle:[]
+            }
         },
         status: ''
 
@@ -194,7 +199,12 @@ let expedienteLaboralSlice = createSlice({
 
         clearData: (state) => {
             state.data = {
-                expediente: []
+                expediente: {
+                    id: null,
+                    id_persona: null,
+                    fecha_ingreso:'',
+                    detalle:[]
+                }
             }
         }
 
@@ -202,9 +212,12 @@ let expedienteLaboralSlice = createSlice({
     extraReducers: {
         [loadExpedienteLaboral.fulfilled]: (state, action) => {
             state.status = 'success'
-            state.data = {
-                expediente: action.payload
-            }
+            state.data.expediente = {
+                    id: action.payload.id,
+                    id_persona: action.payload.id_persona,
+                    fecha_ingreso: action.payload.fecha_ingreso,
+                    detalle:action.payload.detalle
+                }
         }
 
 
