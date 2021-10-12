@@ -152,7 +152,7 @@ const CV = ({ email }) => {
                 (err) => {
                     if (err.message.includes("undefined (reading 'data')")) {
                         console.error("No hay conexión con el backend");
-                        setError({ 'message': 'No es posible estrablecer conexión, intente mas tarde.' })
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
                     } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
@@ -190,7 +190,7 @@ const CV = ({ email }) => {
                 (err) => {
                     if (err.message.includes("undefined (reading 'data')")) {
                         console.error("No hay conexión con el backend");
-                        setError({ 'message': 'No es posible estrablecer conexión, intente mas tarde.' })
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
                     } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
@@ -227,7 +227,7 @@ const CV = ({ email }) => {
                     console.log(err);
                     if (err.message.includes("undefined (reading 'data')")) {
                         console.error("No hay conexión con el backend");
-                        setError({ 'message': 'No es posible estrablecer conexión, intente mas tarde.' })
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
                     } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
@@ -268,7 +268,7 @@ const CV = ({ email }) => {
                 (err) => {
                     if (err.message.includes("undefined (reading 'data')")) {
                         console.error("No hay conexión con el backend");
-                        setError({ 'message': 'No es posible estrablecer conexión, intente mas tarde.' })
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
                     } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()

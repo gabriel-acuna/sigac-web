@@ -80,7 +80,7 @@ let DTH = (props) => {
                 (err) => {
                     if (err.message.includes("undefined (reading 'data')")) { 
                     console.error("No hay conexión con el backend");
-                    setError({'message':'No es posible estrablecer conexión, intente mas tarde.'})
+                    setError({'message':'No es posible establecer conexión, intente mas tarde.'})
                  } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
@@ -108,7 +108,7 @@ let DTH = (props) => {
                 (err) => {
                     if (err.message.includes("undefined (reading 'data')")) { 
                     console.error("No hay conexión con el backend");
-                    setError({'message':'No es posible estrablecer conexión, intente mas tarde.'})
+                    setError({'message':'No es posible establecer conexión, intente mas tarde.'})
                  } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
@@ -170,7 +170,7 @@ let DTH = (props) => {
                 </div>
             </div>
             {showRegistarPersona &&
-                <RegistarPersona title={ persona !== null ? "Editar personal":"Registrar personal"} handler={persona !== null? putHandler:postHandler} person={persona}>
+                <RegistarPersona title={ persona !== null ? "Editando datos personales de: ":"Registrar personal"} handler={persona !== null? putHandler:postHandler} person={persona}>
                     {error && <Alert type={'is-danger is-light'} content={error.message}>
                         <button className="delete" onClick={event => setError(null)}></button>
                     </Alert>}

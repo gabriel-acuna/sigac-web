@@ -36,7 +36,6 @@ import EditarTipoDocente from "./components/admin/options/tipos-docentes/EditarT
 import ListadoCategoriasDocentes from "./components/admin/options/categorias-docentes";
 import RegistrarCategoriaDocente from "./components/admin/options/categorias-docentes/RegistrarCategoriaDocente";
 import EditarCategoriaDocente from "./components/admin/options/categorias-docentes/EditarCategoriaDocente";
-import RegistrarPersona from './components/dth/nuevo';
 import ListadoEstadosCiviles from "./components/admin/options/estados-civiles";
 import ListadoEstructurasInstitucionales from "./components/admin/options/estructura-institucional";
 import ListadoAreasInstitucionales from "./components/admin/options/areas-institucionales";

@@ -11,3 +11,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+::placeholder {
+  color: rgba(57, 58, 60, 0.524) !important;
+  opacity: 1; 
+}

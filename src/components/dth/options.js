@@ -1,7 +1,7 @@
 
 export const options = [
    'INGRESO',
-   'NOMBREMIENTO',
+   'NOMBRAMIENTO',
    'ASCENSO',
    'SUBROGACIÓN',
    'ENCARGO',
