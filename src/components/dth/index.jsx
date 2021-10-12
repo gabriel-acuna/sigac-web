@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
 import ReactDatatable from '@yun548/bulma-react-datatable'
 import { useDispatch, useSelector } from 'react-redux';
-import { loadInformacionPersonal, postInformacionPersonal , putInformacionPersonal} from '../../store/dth/informacion_personal'
+import { loadInformacionPersonal, postInformacionPersonal, putInformacionPersonal, deleteInformacionPersonal } from '../../store/dth/informacion_personal'
 import { IoPersonAddOutline } from 'react-icons/io5'
 import { FaRegEdit } from 'react-icons/fa'
 import { VscFileSubmodule } from 'react-icons/vsc'
 import RegistarPersona from './nuevo'
 import Alert from '../Alert';
-import { logOut} from '../../store/user'
+import { logOut } from '../../store/user'
 import { Link } from 'react-router-dom';
+import { AiOutlineDelete } from 'react-icons/ai'
+import ConfirmDialog from '../ConfirmDialog'
 
 
 
@@ -19,6 +21,11 @@ let DTH = (props) => {
     const [showRegistarPersona, setShowRegistrarPersona] = useState(false)
     const [response, setResponse] = useState(null)
     const [error, setError] = useState(null)
+    const [respShowConfirmDialog, setRespShowConfirmDialog] = useState(null)
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false)
+    const [id, setId] = useState(null)
+
+
 
 
     useEffect(
@@ -32,6 +39,25 @@ let DTH = (props) => {
 
         }, [dispatch]
     )
+
+    const doDelete = () => {
+        dispatch(
+            deleteInformacionPersonal(
+                id
+            )
+        ).unwrap()
+            .then(
+                (resp) => setRespShowConfirmDialog(resp)
+            ).catch(
+                (err) => console.error(err)
+            )
+    }
+
+    const deleteHandler = (id) => {
+        setId(id)
+        setShowConfirmDialog(true)
+
+    }
     let informacionPersonalState = useSelector(
         state => state.informacionPersonal.data.personal
     )
@@ -42,6 +68,8 @@ let DTH = (props) => {
         { key: 'correo_institucional', text: 'Correo institucional', sortable: true },
         { key: 'opciones', text: 'Opciones', sortable: false }
     ]
+
+
     let rows = informacionPersonalState.map(
         (row, index) => {
             return {
@@ -50,19 +78,24 @@ let DTH = (props) => {
                 nombres: `${row.primer_nombre} ${row.segundo_nombre}`,
                 correo_institucional: row.correo_institucional,
                 opciones: [
-                    <button className="button is-primary is-outlined  mx-2" key={`${row.identificacion}0`} onClick={ev=>{
+                    <button className="button is-primary is-outlined  mx-2" key={`${row.identificacion}0`} onClick={ev => {
                         setPersona(row)
                         setShowRegistrarPersona(true)
                     }}>
                         <span className="icon is-small">
-                            <FaRegEdit/>
+                            <FaRegEdit />
                         </span>
                     </button>,
-                    <Link className="button is-info is-outlined mx-2" key={`${row.identificacion}1`} to='/dth/expediente' state={row}> 
+                    <Link className="button is-info is-outlined mx-2" key={`${row.identificacion}1`} to='/dth/expediente' state={row}>
                         <span className="icon is-small">
-                            <VscFileSubmodule/>
+                            <VscFileSubmodule />
                         </span>
-                    </Link>
+                    </Link>,
+                    <button className="button is-danger is-outlined mx-2" key={`${row.identificacion}2`} onClick={ev => deleteHandler(row)} >
+                        <span className="icon is-small">
+                            <AiOutlineDelete />
+                        </span>
+                    </button>
 
                 ]
             }
@@ -78,10 +111,10 @@ let DTH = (props) => {
                 }
             ).catch(
                 (err) => {
-                    if (err.message.includes("undefined (reading 'data')")) { 
-                    console.error("No hay conexión con el backend");
-                    setError({'message':'No es posible establecer conexión, intente mas tarde.'})
-                 } else if (err.message === "Rejected") {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
 
@@ -98,7 +131,7 @@ let DTH = (props) => {
             datosPersonales: data
         }
         dispatch(
-            putInformacionPersonal( params)
+            putInformacionPersonal(params)
         ).unwrap()
             .then(
                 resp => {
@@ -106,10 +139,10 @@ let DTH = (props) => {
                 }
             ).catch(
                 (err) => {
-                    if (err.message.includes("undefined (reading 'data')")) { 
-                    console.error("No hay conexión con el backend");
-                    setError({'message':'No es posible establecer conexión, intente mas tarde.'})
-                 } else if (err.message === "Rejected") {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
 
@@ -121,11 +154,24 @@ let DTH = (props) => {
             )
     };
     const [persona, setPersona] = useState(null);
-    
-    
+
+
     return (
         <>
             <div className="container">
+                <div className="columns is-centered">
+                    <div className="column  is-3">
+                        {respShowConfirmDialog && respShowConfirmDialog.type === 'warning' && <Alert type={'is-warning is-light'} content={respShowConfirmDialog.content}>
+                            <button className="delete" onClick={event => setRespShowConfirmDialog(null)}></button>
+                        </Alert>}
+                        {respShowConfirmDialog && respShowConfirmDialog.type === 'success' && <Alert type={'is-success is-light'} content={respShowConfirmDialog.content}>
+                            <button className="delete" onClick={event => {
+                                setRespShowConfirmDialog(null)
+                                dispatch(loadInformacionPersonal())
+                            }}></button>
+                        </Alert>}
+                    </div>
+                </div>
 
                 <div className="columns is-centered">
                     <div className="column is-half mt-4">
@@ -170,7 +216,7 @@ let DTH = (props) => {
                 </div>
             </div>
             {showRegistarPersona &&
-                <RegistarPersona title={ persona !== null ? "Editando datos personales de: ":"Registrar personal"} handler={persona !== null? putHandler:postHandler} person={persona}>
+                <RegistarPersona title={persona !== null ? "Editando datos personales de: " : "Registrar personal"} handler={persona !== null ? putHandler : postHandler} person={persona}>
                     {error && <Alert type={'is-danger is-light'} content={error.message}>
                         <button className="delete" onClick={event => setError(null)}></button>
                     </Alert>}
@@ -184,15 +230,25 @@ let DTH = (props) => {
                             dispatch(
                                 loadInformacionPersonal()
                             )
-                            }}></button>
+                        }}></button>
                     </Alert>}
 
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowRegistrarPersona(false)
                         setPersona(null)
-                        }}>Cancelar</button>
+                    }}>Cancelar</button>
 
                 </RegistarPersona>}
+            {
+                showConfirmDialog &&
+                <ConfirmDialog info="el registro" title="Eliminar registro">
+
+                    <button className="button is-small is-danger is-pulled-left" onClick={event => setShowConfirmDialog(false)}> Cancelar</button>
+                    <button className="button is-small is-success is-pulled-rigth" onClick={event => {
+                        setShowConfirmDialog(false); doDelete();
+                    }}>Confirmar</button>
+                </ConfirmDialog>
+            }
         </>
     )
 }

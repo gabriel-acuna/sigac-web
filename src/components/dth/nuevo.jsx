@@ -191,7 +191,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                     <label className="label is-small">TIPO IDENTIFICACION</label>
                                     <div className="select">
                                         <select  {...register("tipo_identificacion", { required: true })} className="input is-small">
-                                            <option>Seleccionar</option>
+                                            <option></option>
                                             <option>CEDULA</option>
                                             <option>PASAPORTE</option>
                                         </select>
@@ -278,7 +278,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                     <label className="label is-small">ESTADO CIVIL</label>
                                     <div className="select">
                                         <select  {...register("estado_civil", { required: true })} className="input is-small">
-                                            <option>Seleccionar</option>
+                                            <option></option>
                                             {
                                                 estadosCivilesState.map(
                                                     (row) => (
@@ -321,7 +321,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                     <label className="label is-small">DISCAPACIDAD</label>
                                     <div className="select">
                                         <select {...register("discapacidad", { required: true })} className="input is-small" defaultValue={person && person.discapacidad.id}>
-                                            <option>Seleccionar</option>
+                                            <option></option>
                                             {
                                                 discapacidadesState && discapacidadesState.map(
                                                     (d) => (
