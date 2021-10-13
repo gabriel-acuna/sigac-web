@@ -93,6 +93,7 @@ export const postInformacionPersonal = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
+           
             let data =
             {
                 tipo_identificacion: datosPersonales.tipo_identificacion,
@@ -102,7 +103,7 @@ export const postInformacionPersonal = createAsyncThunk(
                 primer_apellido: datosPersonales.primer_apellido.toUpperCase(),
                 segundo_apellido: datosPersonales.segundo_apellido.toUpperCase(),
                 sexo: datosPersonales.sexo,
-                fecha_nacimiento: datosPersonales.fecha_nacimiento,
+                fecha_nacimiento: datosPersonales.fecha_nacimiento.toISOString().slice(0, 10),
                 pais_origen: datosPersonales.pais_origen,
                 estado_civil: datosPersonales.estado_civil,
                 discapacidad: datosPersonales.discapacidad,
@@ -124,8 +125,9 @@ export const postInformacionPersonal = createAsyncThunk(
                 },
                 tipo_sangre: datosPersonales.tipo_sangre,
                 licencia_conduccion: datosPersonales.licencia_conduccion,
-                fecha_ingreso: datosPersonales.fecha_ingreso_ies
+                fecha_ingreso: datosPersonales.fecha_ingreso_ies.toISOString().slice(0, 10)
             }
+            console.log(data);
             let response = await Axios.post(`${API}/personal`, data,
                 {
                     headers: {
@@ -135,9 +137,11 @@ export const postInformacionPersonal = createAsyncThunk(
             return response.data
 
         } catch (error) {
-            let err;
-            if (error.response.data.detail[0].msg)
-                err = error.response.data.detail[0].msg
+            let err = '';
+            if (error.response.data.detail)
+            error.response.data.detail.map(
+                (e) => err +=`${e.loc[1].toUpperCase()} : ${e.msg} \n`
+            )
             if (error.response.data.type)
                 err = `${error.response.data.type}, ${error.response.data.type.content}`
             throw err

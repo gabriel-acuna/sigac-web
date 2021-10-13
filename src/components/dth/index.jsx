@@ -111,6 +111,7 @@ let DTH = (props) => {
                 }
             ).catch(
                 (err) => {
+                    console.log(err);
                     if (err.message.includes("undefined (reading 'data')")) {
                         console.error("No hay conexión con el backend");
                         setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
