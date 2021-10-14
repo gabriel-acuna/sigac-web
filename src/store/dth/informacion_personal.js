@@ -172,7 +172,7 @@ export const putInformacionPersonal = createAsyncThunk(
                 primer_apellido: datosPersonales.primer_apellido.toUpperCase(),
                 segundo_apellido: datosPersonales.segundo_apellido.toUpperCase(),
                 sexo: datosPersonales.sexo,
-                fecha_nacimiento: datosPersonales.fecha_nacimiento,
+                fecha_nacimiento: datosPersonales.fecha_nacimiento.toISOString().slice(0, 10),
                 pais_origen: datosPersonales.pais_origen,
                 estado_civil: datosPersonales.estado_civil,
                 discapacidad: datosPersonales.discapacidad,
@@ -194,7 +194,7 @@ export const putInformacionPersonal = createAsyncThunk(
                 },
                 tipo_sangre: datosPersonales.tipo_sangre.toUpperCase(),
                 licencia_conduccion: datosPersonales.licencia_conduccion !==null ? datosPersonales.licencia_conduccion.toUpperCase() : datosPersonales.licencia_conduccion,
-                fecha_ingreso: datosPersonales.fecha_ingreso_ies
+                fecha_ingreso: datosPersonales.fecha_ingreso_ies.toISOString().slice(0, 10)
             }
             let response = await Axios.put(`${API}/personal/${id}`, data,
                 {

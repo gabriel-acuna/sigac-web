@@ -242,7 +242,7 @@ let ListaExpediente = (props) => {
                 </div>
             </div>
             {
-                showModalForm && <ModalForm title='Registrar'  handler={postHandler}>
+                showModalForm && <ModalForm title={`Registrando información laboral de: ${persona.primer_nombre} ${persona.primer_apellido}`}  handler={postHandler}>
 
                     {error && <Alert type={'is-danger is-light'} content={error.message}>
                         <button className="delete" onClick={event => setError(null)}></button>
