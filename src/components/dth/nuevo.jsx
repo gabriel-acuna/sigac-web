@@ -17,7 +17,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
     const [cantones, setCantones] = useState([])
     const [ind, setInd] = useState(false);
     let hoy = new Date();
-    const MIN_FECHA_NAC =  new Date(hoy.setFullYear(hoy.getFullYear() - 18)).toISOString().slice(0, 10)
+    const MIN_FECHA_NAC = new Date(hoy.setFullYear(hoy.getFullYear() - 18)).toISOString().slice(0, 10)
 
     let dispatch = useDispatch()
     useEffect(
@@ -201,8 +201,6 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
         , [])
 
-
-console.log(errors, MIN_FECHA_NAC);
     return (
 
         <div className="modal is-active">
@@ -241,7 +239,10 @@ console.log(errors, MIN_FECHA_NAC);
                                     {errors.identificacion?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la identificación</span>}
                                     {errors.identificacion?.type === 'maxLength' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Máximo 10 caracteres¡</span>}
                                     <div className="control">
-                                        <input type="text" {...register("identificacion", { required: true, maxLength: 10 })} className="input is-small" />
+                                        <input type="text" {...register("identificacion", { required: true, maxLength: 10 })} 
+                                            className="input is-small" 
+                                            readOnly={person !== null ? true : false}
+                                             />
 
 
                                     </div>

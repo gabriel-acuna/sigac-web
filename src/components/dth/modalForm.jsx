@@ -11,13 +11,15 @@ import { useDispatch, useSelector } from "react-redux"
 let ModalForm = ({ title, children, handler }) => {
 
     const [tipoFuncionario, setTipoFuncionario] = useState('')
-    const { register, handleSubmit, watch, reset, formState: { errors } } = useForm()
+    const { register, handleSubmit, watch, reset, getValues,setValue, formState: { errors } } = useForm()
     const dispatch = useDispatch()
     let tiposDocumentosState = useSelector(state => state.tiposDocumentos.data.tiposDocumentos)
     let relacionesIESState = useSelector(state => state.relacionesIES.data.relacionesIES)
     let areasState = useSelector(state => state.areasInstitucionales.data.areas)
     const [areas, setAreas] = useState([])
     const [subAreas, setSubAreas] = useState([])
+    const[docType, setDocType] =useState(null)
+   
 
     useEffect(
         () => {
@@ -75,25 +77,30 @@ let ModalForm = ({ title, children, handler }) => {
                     <form onSubmit={handleSubmit(handler)}>
                         <div className="columns">
                             <div className="column">
-                                <label className="label is-small is-uppercase">Tipo Funcionario</label>
+                                <label className="label is-small is-uppercase">Tipo personal</label>
+                                {errors.tipo_personal && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Seleccione el tipo!</span>}
                                 <div className="select">
-                                    <select onChange={ev => {
-                                        setTipoFuncionario(ev.target.value)
-                                    }} className="input is-small">
+                                    <select onChange={ev => 
+                                        {setTipoFuncionario(ev.target.value)
+                                        setValue("tipo_personal", ev.target.value)}
+                                    } className="input is-small">
                                         <option></option>
                                         <option>FUNCIONARIO</option>
                                         <option>PROFESOR</option>
                                     </select>
-                                    <input type="hidden"   {...register("tipo_personal", { required: true })} defaultValue={tipoFuncionario} />
+                                    <input type="hidden"   {...register("tipo_personal", { required: true })}  />
                                 </div>
 
                             </div>
 
 
                             <div className="column">
-                                <label className="label is-small">TIPO DOCUMENTO</label>
+                                <div className="control">
+                                    <label className="label is-small">TIPO DOCUMENTO</label>
+                                    {errors.tipo_documento && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Seleccione el tipo de documento!</span>}
+                                </div>
                                 <div className="select">
-                                    <select  {...register("tipo_documento", { required: true })} className="input is-small" >
+                                    <select  {...register("tipo_documento", { required: true })} className="input is-small" onChange={ev=>setDocType(ev.target.options[ev.target.selectedIndex].text)} >
                                         <option> </option>
                                         {
                                             tiposDocumentosState.map(
@@ -103,7 +110,7 @@ let ModalForm = ({ title, children, handler }) => {
                                             )
                                         }
                                     </select>
-                                    {errors.tipo_documento && <span>¡Por favor, Seleccione el tipo de documento!</span>}
+
                                 </div>
                             </div>
                             <div className="column">
@@ -112,7 +119,7 @@ let ModalForm = ({ title, children, handler }) => {
                                     <select {...register("motivo_accion")} className="input is-small">
                                         <option></option>
                                         {
-                                            options.map((op) => (
+                                           docType === 'ACCION PERSONAL'  && options.map((op) => (
                                                 <option>{op}</option>
                                             ))
                                         }
@@ -126,7 +133,9 @@ let ModalForm = ({ title, children, handler }) => {
                                 <label className="label is-small">
                                     FECHA INICIO
                                 </label>
-                                <input type="date" {...register("fecha_inicio")} className="input is-small" />
+                                {errors.fecha_inicio?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la fecha de inicio!</span>}
+                                {errors.fecha_inicio?.type === 'max' && <span className="has-text-danger is-size-7 has-background-danger-light">¡La fecha de ingreso no puede ser mayor a la fecha actual!</span>}
+                                <input type="date" {...register("fecha_inicio", { required: true })} className="input is-small" />
                             </div>
                             <div className="column">
                                 <label className="label is-small">
@@ -137,24 +146,29 @@ let ModalForm = ({ title, children, handler }) => {
                         </div>
                         <div className="columns">
                             <div className="column">
-                                <label className="label is-small">INGRESO POR CONCURSO</label>
+                                <div className="control">
+                                    <label className="label is-small">INGRESO POR CONCURSO</label>
+                                    {errors.ingreso_concurso && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Seleccione si el ingreso fue por concurso!</span>}
+                                </div>
                                 <div className="select">
                                     <select {...register("ingreso_concurso", { required: true })} className="input is-small">
+                                        <option></option>
                                         <option value="SI">SI</option>
                                         <option value="NO">NO</option>
                                     </select>
 
 
-                                    {errors.ingreso_concurso && <span>¡Por favor, Seleccione si el ingreso fue por concurso!</span>}
+
                                 </div>
                             </div>
 
 
                             <div className="column">
                                 <label className="label is-small">RELACION IES</label>
+                                {errors.relacion_ies && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Seleccione si la relación!</span>}
                                 <div className="select">
                                     <select {...register("relacion_ies", { required: true })} className="input is-small">
-                                        <option> </option>
+                                        <option></option>
                                         {relacionesIESState.map(
                                             (row, index) => (
                                                 <option value={row.id}> {row.relacion}</option>
@@ -165,15 +179,16 @@ let ModalForm = ({ title, children, handler }) => {
                                     </select>
 
 
-                                    {errors.relacion_ies && <span>¡Por favor, Seleccione si la relación!</span>}
+                                   
                                 </div>
                             </div>
                             <div className="column">
                                 <label className="label is-small">NUMERO DOCUMENTO</label>
+                                {errors.numero_documento && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Ingrese el número de documento!</span>}
                                 <div className="control">
                                     <input  {...register("numero_documento", { required: true })} className="input is-small" />
 
-                                    {errors.numero_documento && <span>¡Por favor, Ingrese el número de documento!</span>}
+
                                 </div>
                             </div>
 
@@ -188,23 +203,23 @@ let ModalForm = ({ title, children, handler }) => {
                         <div className="columns">
                             <div className="column">
                                 <label className="label is-small">REMUNERACION MENSUAL</label>
+                                {errors.remuneracion_mensual && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Seleccione si la remuneración mensual!</span>}
                                 <div className="control">
                                     <input {...register("remuneracion_mensual", { required: true })} className="input is-small" />
 
 
-
-
-                                    {errors.remuneracion_mensual && <span>¡Por favor, Seleccione si la remuneración mensual!</span>}
                                 </div>
                             </div>
                             <div className="column">
                                 <div className="control">
                                     <label className="label is-small">AREA</label>
+                                    {errors.area && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Por favor seleccione el area institucional!</span>}
                                     <input type="text" onChange={ev => filtrarAreas(ev.target.value)} />
                                 </div>
+
                                 <div className="select">
 
-                                    <select {...register("area", { required: true })} className="input is-small" >
+                                    <select {...register("area", { required: true, valueAsNumber: true })} className="input is-small" >
                                         {
                                             areas.map(
                                                 (area) =>
@@ -213,7 +228,7 @@ let ModalForm = ({ title, children, handler }) => {
                                         }
                                     </select>
 
-                                    {errors.area && <span>¡Por favor, Ingrese el número de documento!</span>}
+
                                 </div>
                             </div>
 
@@ -243,7 +258,7 @@ let ModalForm = ({ title, children, handler }) => {
                                     {children}
                                 </Fragment>
 
-                                <button type="submit" className="button is-success is-small mx-3">Guardar</button>
+                                <button type="submit" className="button is-success is-small mx-3" >Guardar</button>
 
                             </div>
                         </div>

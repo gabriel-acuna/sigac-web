@@ -91,6 +91,7 @@ let ListaExpediente = (props) => {
 
     let postHandler = (data) => {
         let detalle = { id_persona: location.state.identificacion, detalle: data }
+        console.log(detalle);
         if (data.tipo_personal === 'PROFESOR') {
             dispatch(
                 postDetalleExpedienteProfesor(detalle)
