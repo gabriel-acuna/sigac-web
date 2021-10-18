@@ -20,7 +20,6 @@ let ContratoFuncionario = ({ objeto, register, errors }) => {
             dispatch(loadCategoriasDocentesLOSEP())
         }, []
     )
-    console.log(funcType);
     return (
 
 
@@ -122,7 +121,7 @@ let ContratoFuncionario = ({ objeto, register, errors }) => {
                         <input type="text" {...register("horas_laborables_semanales", { required: true })} className="input is-small" />
 
                     </div>
-                    {errors.horas_laborables_semana && <span className="has-text-danger is-size-7">¡Por favor, Ingrese las horas laborables por semana!</span>}
+                    {errors.horas_laborables_semanales && <span className="has-text-danger is-size-7">¡Por favor, Ingrese las horas laborables por semana!</span>}
                 </div>
             </div>
 

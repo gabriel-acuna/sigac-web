@@ -8,7 +8,7 @@ import { FaRegEdit } from 'react-icons/fa'
 import { AiOutlineDelete } from 'react-icons/ai'
 import ModalForm from './modalForm'
 import ModalEditForm from './modalEditForm'
-import { postDetalleExpedienteFuncionario, postDetalleExpedienteProfesor } from '../../store/dth/expediente_laboral'
+import { postDetalleExpedienteFuncionario, postDetalleExpedienteProfesor, putDetalleExpediente, clearData } from '../../store/dth/expediente_laboral'
 import { logOut } from '../../store/user'
 import Alert from '../Alert'
 import ConfirmDialog from '../ConfirmDialog'
@@ -41,7 +41,7 @@ let ListaExpediente = (props) => {
             setPersona(location.state)
         }, [location, persona]
     )
-   
+
 
     const columns = [
         { key: 'numero_documento', text: 'No. Doc.', sortable: true },
@@ -50,26 +50,26 @@ let ListaExpediente = (props) => {
         { key: 'opciones', text: 'Opciones', sortable: false }
     ]
 
-    let rows =  expedienteState.detalle.map(
+    let rows = expedienteState.detalle.map(
 
 
 
         (row, index) => {
             return {
-                id: index,
+                id: row.id,
                 numero_documento: row.numero_documento,
                 fecha_inicio: row.fecha_inicio,
                 fecha_fin: row.fecha_fin,
                 opciones: [
                     <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
                         setObjeto(row)
-                        setShowModalEditForm(true)
+                        setShowModalForm(true)
                     }}>
                         <span className="icon">
                             <FaRegEdit />
                         </span>
                     </button>,
-                    <button className="button is-small is-danger mx-2 is-outlined" onClick={event => {
+                    <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
                         deleteHandler(row.id)
                     }}>
                         <span className="icon">
@@ -138,7 +138,17 @@ let ListaExpediente = (props) => {
     }
 
 
+    let putHandler = (data) => {
+        console.log(data);
+        let detalle = { id: objeto.id, ...data }
 
+        dispatch(
+            putDetalleExpediente(detalle)
+        ).unwrap().
+            then(
+                resp => setResponse(resp)
+            ).catch(err => console.log(err))
+    }
 
     let doDelete = () => {
         dispatch(
@@ -154,7 +164,7 @@ let ListaExpediente = (props) => {
             )
     }
 
-    
+
     return (
         <>
             <div className="continer">
@@ -164,7 +174,8 @@ let ListaExpediente = (props) => {
                             <header>
                                 <button className="button is-info mt-4 mx-3 is-outlined"
                                     onClick={event => {
-                                        navigate(-1);
+                                        dispatch(clearData())
+                                        navigate(-1)
 
                                     }}>
                                     <span className="icon">
@@ -243,7 +254,13 @@ let ListaExpediente = (props) => {
                 </div>
             </div>
             {
-                showModalForm && <ModalForm title={`Registrando información laboral de: ${persona.primer_nombre} ${persona.primer_apellido}`}  handler={postHandler}>
+                showModalForm && <ModalForm title={
+                    objeto === null ?
+                        `Registrando información laboral de: ${persona.primer_nombre} ${persona.primer_apellido}`
+                        : `Editando información laboral de: ${persona.primer_nombre} ${persona.primer_apellido}`
+                }
+                    objeto={objeto} identificacion={location.state.identificacion}
+                    handler={objeto === null ? postHandler : putHandler}>
 
                     {error && <Alert type={'is-danger is-light'} content={error.message}>
                         <button className="delete" onClick={event => setError(null)}></button>
@@ -271,7 +288,7 @@ let ListaExpediente = (props) => {
             {
                 showModalEditForm && <ModalEditForm title='Editar' objeto={objeto} identificacion={location.state.identificacion} >
 
-                   
+
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalEditForm(false)
                         setObjeto(null)

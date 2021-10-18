@@ -8,18 +8,18 @@ import { loadRelacionesIES } from '../../store/core/relacionesIES'
 import { loadAreasInstitucionales } from '../../store/core/area'
 import { useDispatch, useSelector } from "react-redux"
 
-let ModalForm = ({ title, children, handler }) => {
+let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
 
     const [tipoFuncionario, setTipoFuncionario] = useState('')
-    const { register, handleSubmit, watch, reset, getValues,setValue, formState: { errors } } = useForm()
+    const { register, handleSubmit, getValues, reset, setValue, setError, clearErrors, formState: { errors } } = useForm()
     const dispatch = useDispatch()
     let tiposDocumentosState = useSelector(state => state.tiposDocumentos.data.tiposDocumentos)
     let relacionesIESState = useSelector(state => state.relacionesIES.data.relacionesIES)
     let areasState = useSelector(state => state.areasInstitucionales.data.areas)
     const [areas, setAreas] = useState([])
     const [subAreas, setSubAreas] = useState([])
-    const[docType, setDocType] =useState(null)
-   
+    const [docType, setDocType] = useState(null)
+
 
     useEffect(
         () => {
@@ -62,9 +62,49 @@ let ModalForm = ({ title, children, handler }) => {
 
     }
 
+    useEffect(() => {
+
+
+        if (objeto !== null) {
+            setTipoFuncionario(objeto.tipo_personal)
+            filtrarSubAreas(objeto.sub_area.nombre)
+            if (objeto.tipo_personal === 'FUNCIONARIO') {
+                reset({
+                    tipo_personal: objeto.tipo_personal,
+
+                    //tipo_documento: objeto.tipo_documento.id,
+                    motivo_accion: objeto.motivo_accion,
+                    fecha_inicio: objeto.fecha_inicio,
+                    fecha_fin: objeto.fecha_fin,
+                    ingreso_concurso: objeto.ingreso_concurso,
+                    //relacion_ies: objeto.relacion_ies.id,
+                    remuneracion_mensual: objeto.remuneracion_mensual,
+                    area: objeto.area.id,
+                    sub_area: objeto.sub_area !== null ? objeto.sub_area.id : '',
+
+                    //tipo_funcionario:objeto.tipo_funcionario.id,
+                    // tipo_docente: objeto.tipo_docente.id,
+                    // categoria_docente: objeto.categoria_docente.id,
+                    cargo: objeto.cargo,
+                    horas_laborables_semanales: objeto.horas_laborables_semanales
+                })
+            } else if (objeto.tipo_personal === 'PROFESOR') {
+                reset({
+                    tipo_personal: objeto.tipo_personal,
+                    fecha_inicio: objeto.fecha_inicio,
+                    fecha_fin: objeto.fecha_fin,
+                    ingreso_concurso: objeto.ingreso_concurso,
+                    area: objeto.area.id,
+                    sub_area: objeto.sub_area !== null ? objeto.sub_area.id : ''
 
 
 
+                })
+
+            }
+        }
+    }, [objeto, reset])
+   
     return (
         <div className="modal is-active">
             <div className="modal-background"></div>
@@ -80,15 +120,19 @@ let ModalForm = ({ title, children, handler }) => {
                                 <label className="label is-small is-uppercase">Tipo personal</label>
                                 {errors.tipo_personal && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Seleccione el tipo!</span>}
                                 <div className="select">
-                                    <select onChange={ev => 
-                                        {setTipoFuncionario(ev.target.value)
-                                        setValue("tipo_personal", ev.target.value)}
-                                    } className="input is-small">
+                                    <select onChange={ev => {
+                                        setTipoFuncionario(ev.target.value)
+                                        setValue("tipo_personal", ev.target.value)
+                                    }
+
+                                    } className="input is-small"
+
+                                        defaultValue={objeto?.tipo_personal}>
                                         <option></option>
                                         <option>FUNCIONARIO</option>
                                         <option>PROFESOR</option>
                                     </select>
-                                    <input type="hidden"   {...register("tipo_personal", { required: true })}  />
+                                    <input type="hidden"   {...register("tipo_personal", { required: true })} />
                                 </div>
 
                             </div>
@@ -100,7 +144,9 @@ let ModalForm = ({ title, children, handler }) => {
                                     {errors.tipo_documento && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Seleccione el tipo de documento!</span>}
                                 </div>
                                 <div className="select">
-                                    <select  {...register("tipo_documento", { required: true })} className="input is-small" onChange={ev=>setDocType(ev.target.options[ev.target.selectedIndex].text)} >
+                                    <select  {...register("tipo_documento", { required: true })}
+                                        defaultValue={tiposDocumentosState && objeto?.tipo_documento.id}
+                                        className="input is-small" onChange={ev => setDocType(ev.target.options[ev.target.selectedIndex].text)} >
                                         <option> </option>
                                         {
                                             tiposDocumentosState.map(
@@ -119,7 +165,7 @@ let ModalForm = ({ title, children, handler }) => {
                                     <select {...register("motivo_accion")} className="input is-small">
                                         <option></option>
                                         {
-                                           docType === 'ACCION PERSONAL'  && options.map((op) => (
+                                            docType === 'ACCION PERSONAL' && options.map((op) => (
                                                 <option>{op}</option>
                                             ))
                                         }
@@ -135,13 +181,35 @@ let ModalForm = ({ title, children, handler }) => {
                                 </label>
                                 {errors.fecha_inicio?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la fecha de inicio!</span>}
                                 {errors.fecha_inicio?.type === 'max' && <span className="has-text-danger is-size-7 has-background-danger-light">¡La fecha de ingreso no puede ser mayor a la fecha actual!</span>}
-                                <input type="date" {...register("fecha_inicio", { required: true })} className="input is-small" />
+                                <input type="date" {...register("fecha_inicio", { required: true })} className="input is-small" onChange={
+                                    ev => {
+                                        let fecha = new Date(ev.target.value)
+                                        clearErrors('fecha_inicio')
+                                        if (fecha > new Date()) {
+                                            setError('fecha_inicio', {
+                                                type: 'max'
+                                            })
+                                        }
+
+                                    }
+                                } />
                             </div>
                             <div className="column">
                                 <label className="label is-small">
                                     FECHA FIN
                                 </label>
-                                <input type="date" {...register("fecha_fin")} className="input is-small" />
+                                {errors.fecha_fin?.type === 'min' && <span className="has-text-danger is-size-7 has-background-danger-light"> {errors.fecha_fin.message} </span>}
+                                <input type="date" {...register("fecha_fin")} className="input is-small" onChange={
+                                    ev => {
+                                        clearErrors('fecha_fin')
+                                        if ((ev.target.value !== null || ev.target.value !== '') && new Date(ev.target.value) < new Date(getValues('fecha_inicio'))) {
+                                            setError("fecha_fin", {
+                                                type: 'min',
+                                                message: 'La fecha de fin debe ser mayor a la feha de inicio'
+                                            })
+                                        }
+                                    }
+                                } />
                             </div>
                         </div>
                         <div className="columns">
@@ -179,14 +247,16 @@ let ModalForm = ({ title, children, handler }) => {
                                     </select>
 
 
-                                   
+
                                 </div>
                             </div>
                             <div className="column">
                                 <label className="label is-small">NUMERO DOCUMENTO</label>
                                 {errors.numero_documento && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Ingrese el número de documento!</span>}
                                 <div className="control">
-                                    <input  {...register("numero_documento", { required: true })} className="input is-small" />
+                                    <input  {...register("numero_documento", { required: true })} className="input is-small" defaultValue={
+                                        objeto?.numero_documento
+                                    } />
 
 
                                 </div>

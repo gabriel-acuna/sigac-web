@@ -93,7 +93,7 @@ export const postInformacionPersonal = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-           
+
             let data =
             {
                 tipo_identificacion: datosPersonales.tipo_identificacion,
@@ -103,11 +103,11 @@ export const postInformacionPersonal = createAsyncThunk(
                 primer_apellido: datosPersonales.primer_apellido.toUpperCase(),
                 segundo_apellido: datosPersonales.segundo_apellido.toUpperCase(),
                 sexo: datosPersonales.sexo,
-                fecha_nacimiento: datosPersonales.fecha_nacimiento.toISOString().slice(0, 10),
+                fecha_nacimiento: datosPersonales.fecha_nacimiento,
                 pais_origen: datosPersonales.pais_origen,
                 estado_civil: datosPersonales.estado_civil,
                 discapacidad: datosPersonales.discapacidad,
-                carnet_conadis: datosPersonales.numero_conadis !==null ? datosPersonales.numero_conadis.toUpperCase() : datosPersonales.numero_conadis,
+                carnet_conadis: datosPersonales.numero_conadis !== null ? datosPersonales.numero_conadis.toUpperCase() : datosPersonales.numero_conadis,
                 porcentaje_discapacidad: datosPersonales.porcentaje_discapacidad,
                 etnia: datosPersonales.etnia,
                 nacionalidad: datosPersonales.nacionalidad,
@@ -125,9 +125,9 @@ export const postInformacionPersonal = createAsyncThunk(
                 },
                 tipo_sangre: datosPersonales.tipo_sangre,
                 licencia_conduccion: datosPersonales.licencia_conduccion,
-                fecha_ingreso: datosPersonales.fecha_ingreso_ies.toISOString().slice(0, 10)
+                fecha_ingreso: datosPersonales.fecha_ingreso_ies
             }
-            console.log(data);
+           
             let response = await Axios.post(`${API}/personal`, data,
                 {
                     headers: {
@@ -139,9 +139,9 @@ export const postInformacionPersonal = createAsyncThunk(
         } catch (error) {
             let err = '';
             if (error.response.data.detail)
-            error.response.data.detail.map(
-                (e) => err +=`${e.loc[1].toUpperCase()} : ${e.msg} \n`
-            )
+                error.response.data.detail.map(
+                    (e) => err += `${e.loc[1].toUpperCase()} : ${e.msg} \n`
+                )
             if (error.response.data.type)
                 err = `${error.response.data.type}, ${error.response.data.type.content}`
             throw err
@@ -153,7 +153,7 @@ export const postInformacionPersonal = createAsyncThunk(
 
 export const putInformacionPersonal = createAsyncThunk(
     'informacion-personal/put',
-    async ({id,datosPersonales}, { getState }) => {
+    async ({ id, datosPersonales }, { getState }) => {
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -172,11 +172,11 @@ export const putInformacionPersonal = createAsyncThunk(
                 primer_apellido: datosPersonales.primer_apellido.toUpperCase(),
                 segundo_apellido: datosPersonales.segundo_apellido.toUpperCase(),
                 sexo: datosPersonales.sexo,
-                fecha_nacimiento: datosPersonales.fecha_nacimiento.toISOString().slice(0, 10),
+                fecha_nacimiento: datosPersonales.fecha_nacimiento,
                 pais_origen: datosPersonales.pais_origen,
                 estado_civil: datosPersonales.estado_civil,
                 discapacidad: datosPersonales.discapacidad,
-                carnet_conadis: datosPersonales.numero_conadis !==null ? datosPersonales.numero_conadis.toUpperCase() : datosPersonales.numero_conadis,
+                carnet_conadis: datosPersonales.numero_conadis !== null ? datosPersonales.numero_conadis.toUpperCase() : datosPersonales.numero_conadis,
                 porcentaje_discapacidad: datosPersonales.porcentaje_discapacidad,
                 etnia: datosPersonales.etnia,
                 nacionalidad: datosPersonales.nacionalidad,
@@ -189,13 +189,14 @@ export const putInformacionPersonal = createAsyncThunk(
                     id_canton: datosPersonales.id_canton,
                     parroquia: datosPersonales.parroquia.toUpperCase(),
                     calle1: datosPersonales.calle1.toUpperCase(),
-                    calle2: datosPersonales.calle2 !== null ? datosPersonales.calle2.toUpperCase():datosPersonales.calle2,
-                    referencia:  datosPersonales.referencia !==null?datosPersonales.referencia.toUpperCase() : datosPersonales.referencia
+                    calle2: datosPersonales.calle2 !== null ? datosPersonales.calle2.toUpperCase() : datosPersonales.calle2,
+                    referencia: datosPersonales.referencia !== null ? datosPersonales.referencia.toUpperCase() : datosPersonales.referencia
                 },
                 tipo_sangre: datosPersonales.tipo_sangre.toUpperCase(),
-                licencia_conduccion: datosPersonales.licencia_conduccion !==null ? datosPersonales.licencia_conduccion.toUpperCase() : datosPersonales.licencia_conduccion,
-                fecha_ingreso: datosPersonales.fecha_ingreso_ies.toISOString().slice(0, 10)
+                licencia_conduccion: datosPersonales.licencia_conduccion !== null ? datosPersonales.licencia_conduccion.toUpperCase() : datosPersonales.licencia_conduccion,
+                fecha_ingreso: datosPersonales.fecha_ingreso_ies
             }
+
             let response = await Axios.put(`${API}/personal/${id}`, data,
                 {
                     headers: {

@@ -10,7 +10,7 @@ import { loadCantonesProvincia, loadProvincias } from '../../store/core/provinci
 
 
 let RegistrarPersona = ({ title, handler, children, person }) => {
-    const { register, handleSubmit, reset, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, setError, clearErrors, getValues, formState: { errors } } = useForm();
     const [paises, setPaises] = useState([])
     const [nacionalidades, setNacionalidades] = useState([])
     const [provincias, setProvincias] = useState([])
@@ -239,10 +239,10 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                     {errors.identificacion?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la identificación</span>}
                                     {errors.identificacion?.type === 'maxLength' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Máximo 10 caracteres¡</span>}
                                     <div className="control">
-                                        <input type="text" {...register("identificacion", { required: true, maxLength: 10 })} 
-                                            className="input is-small" 
+                                        <input type="text" {...register("identificacion", { required: true, maxLength: 10 })}
+                                            className="input is-small"
                                             readOnly={person !== null ? true : false}
-                                             />
+                                        />
 
 
                                     </div>
@@ -314,9 +314,21 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                     {errors.fecha_nacimiento?.type === "max" && <span className="has-text-danger is-size-7 has-background-danger-light">¡La persona debe tener mínimo 18 años!</span>}
                                     <div className="control">
                                         <input type="date" {...register("fecha_nacimiento", {
-                                            required: true, max: new Date(MIN_FECHA_NAC),
-                                            valueAsDate: true,
-                                        })} className="input is-small is-uppercase" />
+                                            required: true,
+
+                                        })} className="input is-small is-uppercase"
+
+                                            onChange={
+                                                ev => {
+                                                    console.log(new Date(ev.target.value) > new Date(MIN_FECHA_NAC), new Date(ev.target.value),new Date(MIN_FECHA_NAC))
+                                                    clearErrors('fecha_nacimiento')
+                                                    if ((ev.target.value !== null || ev.target.value !== '') && new Date(ev.target.value) > new Date(MIN_FECHA_NAC)) {
+                                                        setError("fecha_nacimiento", {
+                                                            type: 'max'
+
+                                                        })
+                                                    }
+                                                }} />
 
 
                                     </div>
@@ -592,15 +604,29 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                         </fieldset>
                         <fieldset style={{ border: '1px solid ', padding: '10px', marginTop: '20px' }}>
                             <legend className="has-text-weight-bold is-size-6 has-text-grey-dark">INGRESO A LA INSTITUCION</legend>
-                            {errors.fecha_ingreso_ies?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la fecha de ingreso a la institución!</span>}
-                            {errors.fecha_ingreso_ies?.type === 'max' && <span className="has-text-danger is-size-7 has-background-danger-light">¡La fecha de ingreso no puede ser mayor a la fecha actual!</span>}
+
 
 
                             <div className="columns">
                                 <div className="column is-3">
                                     <label className="label is-small">FECHA INGRESO IES</label>
+                                    {errors.fecha_ingreso_ies?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la fecha de ingreso a la institución!</span>}
+                                    {errors.fecha_ingreso_ies?.type === 'max' && <span className="has-text-danger is-size-7 has-background-danger-light">¡La fecha de ingreso no puede ser mayor a la fecha actual!</span>}
+
                                     <div className="control">
-                                        <input type="date" {...register("fecha_ingreso_ies", { required: true, max: new Date(), valueAsDate: true })} className="input is-small is-uppercase" />
+                                        <input type="date" {...register("fecha_ingreso_ies", { required: true })} className="input is-small is-uppercase"
+                                            onChange={
+                                                ev => {
+                                                    clearErrors('fecha_ingreso_ies')
+                                                    if ((ev.target.value !== null || ev.target.value !== '') && new Date(ev.target.value) > new Date()) {
+                                                        setError("fecha_ingreso_ies", {
+                                                            type: 'max'
+
+                                                        })
+                                                    }
+                                                }}
+
+                                        />
 
 
                                     </div>
