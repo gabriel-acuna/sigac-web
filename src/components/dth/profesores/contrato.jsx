@@ -1,16 +1,19 @@
-import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux'
+import { useEffect, useState} from 'react'
+import { useDispatch } from 'react-redux'
 
-let ContratoProfesor = ({ objeto, register, errors }) => {
 
-
+let ContratoProfesor = ({ objeto, register, errors, relacion }) => {
+    const dispatch = useDispatch()
+    
 
     let nivelesEducativosState = useSelector(state => state.nivelesEducativos.data.nivelesEducativos)
     let tiposEscalafonesState = useSelector(state => state.tipoEscalafones.data.tipoEscalafones)
     let categoriasContratosState = useSelector(state => state.categoriasContratos.data.categoriasContrato)
     let tiemposDedicacionesState = useSelector(state => state.tiemposDedicaciones.data.tiemposDedicaciones)
+    const [scaleType, setScaleType] = useState(null)
 
-
-
+console.log(relacion);
     return (
         <>
 
@@ -29,13 +32,19 @@ let ContratoProfesor = ({ objeto, register, errors }) => {
                         {errors.tipo_escalafon && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el tipo de escalafón!</span>}
                     </div>
                     <div className="select">
-                        <select  {...register("tipo_escalafon", { required: true })} className="input is-small" >
+                        <select  {...register("tipo_escalafon", { required: true })} className="input is-small"  onChange={
+                            ev=>setScaleType(ev.target.options[ev.target.selectedIndex].text)
+                        }>
                             <option> </option>
                             {
-                                tiposEscalafonesState.map(
+                              relacion ==='NOMBRAMIENTO' ? tiposEscalafonesState.map(
 
                                     (row) => (
-                                        <option key={row.id} value={row.id}> {row.escalafon_nombramiento}</option>
+                                        row.escalafon_nombramiento !== 'NO APLICA' && <option key={row.id} value={row.id}> {row.escalafon_nombramiento}</option>
+                                    )
+                                ): relacion !== null && relacion !== '' && tiposEscalafonesState.map(
+                                    (row) => (
+                                        row.escalafon_nombramiento === 'NO APLICA' &&  <option key={row.id} value={row.id}> {row.escalafon_nombramiento}</option>
                                     )
                                 )
                             }
@@ -53,9 +62,27 @@ let ContratoProfesor = ({ objeto, register, errors }) => {
                         <select  {...register("categoria", { required: true })} className="input is-small" >
                             <option> </option>
                             {
-                                categoriasContratosState.map(
+                               relacion ==='NOMBRAMIENTO' && scaleType ==='LABORAL PREVIO' ? categoriasContratosState.map(
                                     (row) => (
-                                        <option key={row.id} value={row.id}> {row.categoria_contrato}</option>
+                                        row.categoria_contrato.includes('TITULAR') &&<option key={row.id} value={row.id}> {row.categoria_contrato}</option>
+                                    )
+                                ):
+                                relacion ==='NOMBRAMIENTO' && scaleType ==='LABORAL ACTUAL' ?
+                                        categoriasContratosState.map(
+                                            (row) =>(
+                                                (row.categoria_contrato.startsWith('PRINCIPAL')
+                                                || row.categoria_contrato.startsWith('AGREGADO')
+                                                || row.categoria_contrato.startsWith('AUXILIAR'))
+                                                && <option key={row.id} value={row.id}> {row.categoria_contrato}</option>
+                                            )
+                                        ):
+                                scaleType !== null && scaleType!== '' && categoriasContratosState.map(
+                                    (row) =>(
+                                        (row.categoria_contrato.startsWith('OCASIONAL')
+                                        || row.categoria_contrato.startsWith('HONORARIO')
+                                        || row.categoria_contrato.startsWith('INVITADO')
+                                        || row.categoria_contrato.startsWith('NO TITULAR'))
+                                        && <option key={row.id} value={row.id}> {row.categoria_contrato}</option>
                                     )
                                 )
                             }

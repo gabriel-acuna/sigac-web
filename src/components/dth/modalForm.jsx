@@ -8,6 +8,11 @@ import { loadRelacionesIES } from '../../store/core/relacionesIES'
 import { loadAreasInstitucionales } from '../../store/core/area'
 import { useDispatch, useSelector } from "react-redux"
 
+import { loadNivelesEducativos } from '../../store/core/nivelesEducativos'
+import { loadTiemposDedicacionesProfesores } from '../../store/core/tiemposDedicaciones'
+import { loadTiposEscalafonesNombramientos } from '../../store/core/tiposEscalafones'
+import { loadCategoriasContratoProfesores } from '../../store/core/categoriasContratos'
+
 let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
 
     const [tipoFuncionario, setTipoFuncionario] = useState('')
@@ -19,6 +24,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
     const [areas, setAreas] = useState([])
     const [subAreas, setSubAreas] = useState([])
     const [docType, setDocType] = useState(null)
+    const[relType, setRelType] = useState(null)
 
 
     useEffect(
@@ -32,6 +38,15 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
             dispatch(
                 loadAreasInstitucionales()
             )
+
+
+            dispatch(loadCategoriasContratoProfesores())
+            dispatch(loadTiemposDedicacionesProfesores())
+            dispatch(loadNivelesEducativos())
+            dispatch(loadTiposEscalafonesNombramientos())
+
+
+
         }, [dispatch]
     )
 
@@ -104,7 +119,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
             }
         }
     }, [objeto, reset])
-   
+
     return (
         <div className="modal is-active">
             <div className="modal-background"></div>
@@ -235,7 +250,11 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                 <label className="label is-small">RELACION IES</label>
                                 {errors.relacion_ies && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Seleccione si la relación!</span>}
                                 <div className="select">
-                                    <select {...register("relacion_ies", { required: true })} className="input is-small">
+                                    <select {...register("relacion_ies", { required: true })} className="input is-small" onChange={
+                                        ev=>{
+                                            setRelType(ev.target.options[ev.target.selectedIndex].text)
+                                        }
+                                    }>
                                         <option></option>
                                         {relacionesIESState.map(
                                             (row, index) => (
@@ -268,7 +287,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                             tipoFuncionario === 'FUNCIONARIO' && <Funcionario register={register} errors={errors} />
                         }
                         {
-                            tipoFuncionario === 'PROFESOR' && <Profesor register={register} errors={errors} />
+                            tipoFuncionario === 'PROFESOR' && <Profesor register={register} errors={errors}  relacion={relType}/>
                         }
                         <div className="columns">
                             <div className="column">
