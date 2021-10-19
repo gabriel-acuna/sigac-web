@@ -1,8 +1,4 @@
 import React, { useEffect, useState } from 'react'
-
-import { loadTiposFuncionarios } from '../../../store/core/tiposFuncionarios'
-import { loadTiposDocentesLOES } from '../../../store/core/tiposDocentes'
-import { loadCategoriasDocentesLOSEP } from '../../../store/core/categoriasDocentes'
 import { useDispatch, useSelector } from 'react-redux'
 
 let ContratoFuncionario = ({ objeto, register, errors }) => {
@@ -11,15 +7,10 @@ let ContratoFuncionario = ({ objeto, register, errors }) => {
     let tiposFuncionariosState = useSelector(state => state.tiposFuncionarios.data.tiposFuncionarios)
     let tiposDocentesState = useSelector(state => state.tiposDocentesLOES.data.tiposDocentes)
     let categoriasDocentesState = useSelector(state => state.categoriasDocentesLOSEP.data.categoriasDocentes)
-    const dispatch = useDispatch()
+    
     const [funcType, setFuncType] = useState(null)
-    useEffect(
-        () => {
-            dispatch(loadTiposFuncionarios())
-            dispatch(loadTiposDocentesLOES())
-            dispatch(loadCategoriasDocentesLOSEP())
-        }, []
-    )
+  
+    
     return (
 
 

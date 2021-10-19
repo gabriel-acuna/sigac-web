@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 
 
 let ContratoProfesor = ({ objeto, register, errors, relacion }) => {
-    const dispatch = useDispatch()
+   
     
 
     let nivelesEducativosState = useSelector(state => state.nivelesEducativos.data.nivelesEducativos)
@@ -13,7 +13,7 @@ let ContratoProfesor = ({ objeto, register, errors, relacion }) => {
     let tiemposDedicacionesState = useSelector(state => state.tiemposDedicaciones.data.tiemposDedicaciones)
     const [scaleType, setScaleType] = useState(null)
 
-console.log(relacion);
+
     return (
         <>
 
@@ -32,7 +32,7 @@ console.log(relacion);
                         {errors.tipo_escalafon && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el tipo de escalafón!</span>}
                     </div>
                     <div className="select">
-                        <select  {...register("tipo_escalafon", { required: true })} className="input is-small"  onChange={
+                        <select  {...register("escalafon_nombramiento", { required: true })} className="input is-small"  onChange={
                             ev=>setScaleType(ev.target.options[ev.target.selectedIndex].text)
                         }>
                             <option> </option>
@@ -59,7 +59,7 @@ console.log(relacion);
                         {errors.categoria && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione la categoria contrato!</span>}
                     </div>
                     <div className="select">
-                        <select  {...register("categoria", { required: true })} className="input is-small" >
+                        <select  {...register("categoria_contrato", { required: true })} className="input is-small" >
                             <option> </option>
                             {
                                relacion ==='NOMBRAMIENTO' && scaleType ==='LABORAL PREVIO' ? categoriasContratosState.map(

@@ -7,7 +7,6 @@ import { deleteItemDetalle, loadExpedienteLaboral } from '../../store/dth/expedi
 import { FaRegEdit } from 'react-icons/fa'
 import { AiOutlineDelete } from 'react-icons/ai'
 import ModalForm from './modalForm'
-import ModalEditForm from './modalEditForm'
 import { postDetalleExpedienteFuncionario, postDetalleExpedienteProfesor, putDetalleExpediente, clearData } from '../../store/dth/expediente_laboral'
 import { logOut } from '../../store/user'
 import Alert from '../Alert'
@@ -91,7 +90,6 @@ let ListaExpediente = (props) => {
 
     let postHandler = (data) => {
         let detalle = { id_persona: location.state.identificacion, detalle: data }
-        console.log(detalle);
         if (data.tipo_personal === 'PROFESOR') {
             dispatch(
                 postDetalleExpedienteProfesor(detalle)
@@ -139,7 +137,6 @@ let ListaExpediente = (props) => {
 
 
     let putHandler = (data) => {
-        console.log(data);
         let detalle = { id: objeto.id, ...data }
 
         dispatch(
@@ -263,10 +260,10 @@ let ListaExpediente = (props) => {
                     handler={objeto === null ? postHandler : putHandler}>
 
                     {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={event => setError(null)}></button>
+                        <button className="delete" onClick={event => setError(null)} key={atob(`A${location.state.identificacion}`)}></button>
                     </Alert>}
                     {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={event => setResponse(null)}></button>
+                        <button className="delete" onClick={event => setResponse(null)} key={atob(`B${location.state.identificacion}`)}></button >
                     </Alert>}
                     {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
                         <button className="delete" onClick={event => {
@@ -276,7 +273,10 @@ let ListaExpediente = (props) => {
                             dispatch(
                                 loadExpedienteLaboral(location.state.identificacion)
                             )
-                        }}></button>
+                        }}
+                        key={atob(`C${location.state.identificacion}`)}
+                        
+                        ></button>
                     </Alert>}
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalForm(false)
@@ -285,18 +285,7 @@ let ListaExpediente = (props) => {
 
                 </ModalForm>
             }
-            {
-                showModalEditForm && <ModalEditForm title='Editar' objeto={objeto} identificacion={location.state.identificacion} >
-
-
-                    <button className="button is-small is-danger mx-3" onClick={ev => {
-                        setShowModalEditForm(false)
-                        setObjeto(null)
-                    }}>Cancelar</button>
-
-                </ModalEditForm>
-            }
-
+            
             {
                 showConfirmDialog &&
                 <ConfirmDialog info="el registro" title="Eliminar registro">

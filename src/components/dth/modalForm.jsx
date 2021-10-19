@@ -12,6 +12,9 @@ import { loadNivelesEducativos } from '../../store/core/nivelesEducativos'
 import { loadTiemposDedicacionesProfesores } from '../../store/core/tiemposDedicaciones'
 import { loadTiposEscalafonesNombramientos } from '../../store/core/tiposEscalafones'
 import { loadCategoriasContratoProfesores } from '../../store/core/categoriasContratos'
+import { loadTiposFuncionarios } from '../../store/core/tiposFuncionarios'
+import { loadTiposDocentesLOES } from '../../store/core/tiposDocentes'
+import { loadCategoriasDocentesLOSEP } from '../../store/core/categoriasDocentes'
 
 let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
 
@@ -21,10 +24,12 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
     let tiposDocumentosState = useSelector(state => state.tiposDocumentos.data.tiposDocumentos)
     let relacionesIESState = useSelector(state => state.relacionesIES.data.relacionesIES)
     let areasState = useSelector(state => state.areasInstitucionales.data.areas)
+
     const [areas, setAreas] = useState([])
     const [subAreas, setSubAreas] = useState([])
     const [docType, setDocType] = useState(null)
-    const[relType, setRelType] = useState(null)
+    const [relType, setRelType] = useState(null)
+    const [actReason, setActReason] = useState(null)
 
 
     useEffect(
@@ -44,7 +49,9 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
             dispatch(loadTiemposDedicacionesProfesores())
             dispatch(loadNivelesEducativos())
             dispatch(loadTiposEscalafonesNombramientos())
-
+            dispatch(loadTiposFuncionarios())
+            dispatch(loadTiposDocentesLOES())
+            dispatch(loadCategoriasDocentesLOSEP())
 
 
         }, [dispatch]
@@ -83,34 +90,36 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
         if (objeto !== null) {
             setTipoFuncionario(objeto.tipo_personal)
             filtrarSubAreas(objeto.sub_area.nombre)
+            setDocType(objeto.tipo_documento.tipo_documento)
+            setActReason(objeto.motivo_accion)
             if (objeto.tipo_personal === 'FUNCIONARIO') {
                 reset({
                     tipo_personal: objeto.tipo_personal,
 
-                    //tipo_documento: objeto.tipo_documento.id,
-                    motivo_accion: objeto.motivo_accion,
                     fecha_inicio: objeto.fecha_inicio,
                     fecha_fin: objeto.fecha_fin,
                     ingreso_concurso: objeto.ingreso_concurso,
-                    //relacion_ies: objeto.relacion_ies.id,
                     remuneracion_mensual: objeto.remuneracion_mensual,
                     area: objeto.area.id,
                     sub_area: objeto.sub_area !== null ? objeto.sub_area.id : '',
-
-                    //tipo_funcionario:objeto.tipo_funcionario.id,
-                    // tipo_docente: objeto.tipo_docente.id,
-                    // categoria_docente: objeto.categoria_docente.id,
+                    motivo_accion: objeto.motivo_accion,
+                   
                     cargo: objeto.cargo,
                     horas_laborables_semanales: objeto.horas_laborables_semanales
                 })
             } else if (objeto.tipo_personal === 'PROFESOR') {
                 reset({
+                    motivo_accion: objeto.motivo_accion,
                     tipo_personal: objeto.tipo_personal,
                     fecha_inicio: objeto.fecha_inicio,
                     fecha_fin: objeto.fecha_fin,
                     ingreso_concurso: objeto.ingreso_concurso,
                     area: objeto.area.id,
-                    sub_area: objeto.sub_area !== null ? objeto.sub_area.id : ''
+                    sub_area: objeto.sub_area !== null ? objeto.sub_area.id : '',
+                    remuneracion_mensual: objeto.remuneracion_mensual,
+                    remuneracion_hora: objeto.remuneracion_hora,
+                    contrato_relacionado: objeto.contrato_relacionado
+
 
 
 
@@ -175,17 +184,24 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                 </div>
                             </div>
                             <div className="column">
-                                <label className="label is-small">MOTIVO ACCIÓN</label>
+                                <label className="label is-small">MOTIVO ACCIÓN</label> 
+                                {errors.motivo_accion?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, seleccione el motivo de la acción de personal!</span>}
                                 <div className="select">
-                                    <select {...register("motivo_accion")} className="input is-small">
+                                    <select {...register("motivo_accion", { required: docType === 'ACCION PERSONAL' })} className="input is-small" onChange={ev => setActReason(ev.target.value)}>
                                         <option></option>
                                         {
                                             docType === 'ACCION PERSONAL' && options.map((op) => (
-                                                <option>{op}</option>
+                                                <option value={op}>{op}</option>
                                             ))
                                         }
                                     </select>
+
+
                                 </div>
+                                <div className="control">
+                                    {errors.descripcion?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, el motivo de la acción de personal!</span>}
+                                </div>
+                                {actReason === 'OTRO' && <input type="text"{...register("descripcion", { required: true })}  className="input is-small" defaultValue={ objeto?.descripcion}/>}
                             </div>
 
 
@@ -251,10 +267,11 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                 {errors.relacion_ies && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Seleccione si la relación!</span>}
                                 <div className="select">
                                     <select {...register("relacion_ies", { required: true })} className="input is-small" onChange={
-                                        ev=>{
+                                        ev => {
                                             setRelType(ev.target.options[ev.target.selectedIndex].text)
                                         }
-                                    }>
+                                    }
+                                        defaultValue={relacionesIESState && objeto?.relacion_ies.id}>
                                         <option></option>
                                         {relacionesIESState.map(
                                             (row, index) => (
@@ -284,10 +301,10 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                         </div>
 
                         {
-                            tipoFuncionario === 'FUNCIONARIO' && <Funcionario register={register} errors={errors} />
+                            tipoFuncionario === 'FUNCIONARIO' && <Funcionario register={register} errors={errors} objeto={objeto} />
                         }
                         {
-                            tipoFuncionario === 'PROFESOR' && <Profesor register={register} errors={errors}  relacion={relType}/>
+                            tipoFuncionario === 'PROFESOR' && <Profesor register={register} errors={errors} objeto={objeto} relacion={relType} />
                         }
                         <div className="columns">
                             <div className="column">
@@ -328,7 +345,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                 </div>
                                 <div className="select">
 
-                                    <select {...register("sub_area")} className="input is-small" >
+                                    <select {...register("sub_area", { valueAsNumber: true })} className="input is-small" >
                                         {
                                             subAreas.map(
                                                 (subArea) =>

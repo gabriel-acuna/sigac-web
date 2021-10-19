@@ -22,4 +22,5 @@ export const options = [
    'DESTITUCIÓN DEL CARGO',
    'REMOCIÓN',
    'JUBILACIÓN', 
+   'OTRO'
 ]
