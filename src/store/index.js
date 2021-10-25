@@ -3,9 +3,9 @@ import {
     configureStore
 } from '@reduxjs/toolkit';
 
-import userReducer from './user';
-import paisesReducer from './core/paises';
-import provinciasReducer from './core/provincias';
+import userReducer from './user'
+import paisesReducer from './core/paises'
+import provinciasReducer from './core/provincias'
 import discapacidadesReducer from './core/discapacidades'
 import etniasReducer from './core/etnias'
 import nacionalidadesReducer from './core/nacionalidades'
@@ -18,13 +18,20 @@ import nivelesEdutativosReducer from './core/nivelesEducativos'
 import tiposFuncionariosReducer from './core/tiposFuncionarios'
 import tiposDocentesLOESReducer from './core/tiposDocentes'
 import categoriasDocentesLOSEPReducer from './core/categoriasDocentes'
-import estadosCivilesReducer from './core/estado_civil';
+import estadosCivilesReducer from './core/estado_civil'
 import informacionPersonalReducer from './dth/informacion_personal'
 import expedienteLaboralReducer from './dth/expediente_laboral'
-import capacitacionReducer from './cv/capacitacion';
-import referenciaReducer from './cv/referencia';
-import estructuraInstitucionalReducer from './core/estructura-institucional';
+import capacitacionReducer from './cv/capacitacion'
+import referenciaReducer from './cv/referencia'
+import estructuraInstitucionalReducer from './core/estructura-institucional'
 import areaIstitucionalReducer from './core/area'
+import formacionAcademicaReducer from './cv/formacion_academica'
+import capacitacionfacilitadorReducer from './cv/capacitacion_facilitador'
+import ponenciasReducer from './cv/ponencia'
+import meritosReducer from './cv/merito'
+import experienciaLaboralReducer from './cv/experiencia_laboral'
+import idiomasReducer from './cv/compresion_idioma'
+
 
 import {
     persistStore,
@@ -59,7 +66,13 @@ const reducer = combineReducers({
     estadosCiviles: estadosCivilesReducer,
     informacionPersonal: informacionPersonalReducer,
     expediente:expedienteLaboralReducer,
+    formacionAcademica: formacionAcademicaReducer,
     capacitaciones: capacitacionReducer,
+    capacitacionesFacilitador:capacitacionReducer,
+    ponencias:ponenciasReducer,
+    experienciaLabaral: experienciaLaboralReducer,
+    meritos: meritosReducer,
+    idiomas: idiomasReducer,
     referencias: referenciaReducer,
     estructuraInstitucional: estructuraInstitucionalReducer,
     areasInstitucionales: areaIstitucionalReducer
