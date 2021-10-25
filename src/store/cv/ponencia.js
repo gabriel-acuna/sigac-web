@@ -72,7 +72,8 @@ export const postPonencias = createAsyncThunk(
             let data = {
                 id_persona: ponencia.id_persona,
                 tema: ponencia.tema,
-                institucion_organizadora: ponencia.institucion_organizadora,
+                institucion_organizadora: ponencia.institucionOrganizadora,
+                caracter: ponencia.caracter,
                 evento: ponencia.evento,
                 lugar: ponencia.lugar,
                 fecha: new Date(fechaEvento.setDate(fechaEvento.getDate()+1)).toISOString().slice(0, 10)

@@ -102,7 +102,7 @@ export const putCapacitacionesFacilitador = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.put(`${API}/capacitaciones-facilitador/${capacitacion.id}`, capacitacion.capacitacion,
+            let response = await Axios.put(`${API}/capacitaciones-facilitador`, capacitacion,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`

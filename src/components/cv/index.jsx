@@ -7,35 +7,90 @@ import { AiOutlineMinus, AiOutlinePlus, AiOutlineDelete } from 'react-icons/ai'
 import { useDispatch } from 'react-redux'
 import { loadPersonaEmail } from '../../store/dth/informacion_personal'
 import ReferenciaModalForm from './referenciasModal'
+
 import { postReferencias, putReferencias, deleteReferencias, loadReferencias } from '../../store/cv/referencia'
 import { postCapacitaciones, putCapacitaciones, deleteCapacitaciones, loadCapacitaciones } from '../../store/cv/capacitacion'
-import Alert from '../Alert';
+import { loadCapacitacionesFacilitador, postCapacitacionesFacilitador, putCapacitacionesFacilitador, deleteCapacitacionesFacilitador } from '../../store/cv/capacitacion_facilitador'
+import {
+    loadFormacionAcademica,
+    postFormacionAcademica,
+    putFormacionAcademica,
+    deleteFormacionAcademica
+} from '../../store/cv/formacion_academica'
+
+import {
+    loadPonencias, postPonencias, putPonencias, deletePonencia
+} from '../../store/cv/ponencia'
+
+import {
+    loadExperienciaLaboral, postExperienciaLaboral, putExperienciaLaboral, deleteExperienciaLaboral
+} from '../../store/cv/experiencia_laboral'
+
+import{
+    loadMeritos, postMeritos, putMeritos, deleteMeritos
+} from '../../store/cv/merito'
+
+import {
+    loadIdiomas, postIdiomas, putIdiomas, deleteIdiomas
+} from '../../store/cv/compresion_idioma'
+import Alert from '../Alert'
 import { useSelector } from 'react-redux'
 import { logOut } from '../../store/user'
-import ConfirmDialog from '../ConfirmDialog';
+import ConfirmDialog from '../ConfirmDialog'
 import CapacitacionModalForm from './capacitacionesModal'
-
+import CapacitacionFacModalForm from './capacitacionesFacModal'
+import PonenciaModalForm from './ponenciasModal'
 
 const CV = ({ email }) => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
+
     const [expandirReferencias, setExpandirReferencia] = useState(false)
     const [expandirCapacitaciones, setExpandirCapacitaciones] = useState(false)
+    const [expandirCapacitacionesFac, setExpandirCapacitacionesFac] = useState(false)
+    const [expandirFormacion, setExpandirFormacion] = useState(false)
+    const [expandirPonencias, setExpandirPonencias] = useState(false)
+    const [expandirExperienciaLaboral, setExpandirExperienciaLaboral] = useState(false)
+    const [expandirMeritos, setExpandirMeritos] = useState(false)
+    const [expandirIdiomas, setExpandirIdiomas] = useState(false)
+
+
     const [showModalReferencia, setShowModalReferencia] = useState(false)
     const [showModalCapacitacion, setShowModalCapacitacion] = useState(false)
+    const [showModalCapacitacionFac, setShowModalCapacitacionFac] = useState(false)
+    const [showModalPonencia, setShowModalPonencia] = useState(false)
+    const [showModalFormacionAcdemica, setShowModalFormacionAcademica] = useState(false)
+    const [showModalExperienciaLaboral, setShowModalExperienciaLaboral] = useState(false)
+    const [showModalMerito, setShowModalMerito] = useState(false)
+    const [showModalIdioma, setShowModalIdioma] = useState(false)
+
     const [persona, setPersona] = useState(null)
     const [objeto, setObjeto] = useState(null)
     const [response, setResponse] = useState(null)
     const [id, setId] = useState(null)
+
     const [error, setError] = useState(null)
     const [showModalRef, setShowModalRef] = useState(false)
     const [showModalDelCap, setShowModalDelCap] = useState(false)
+    const [showModalDelCapFac, setShowModalDelCapFac] = useState(false)
+    const [showModalDelPon, setShowModalDelPon] = useState(false)
+    const [showModalDelExp, setShowModalDelExp] = useState(false)
+    const [showModalDelFor, setShowModalDelFor] = useState(false)
+    const [showModalDelMer, setShowModalDelMer] = useState(false)
+    const [showModalDelIdi, setShowModalDelIdi] = useState(false)
     const [respConfirmRef, setRespConfirmRef] = useState(null)
 
 
     let referenciasState = useSelector(state => state.referencias.data.referencias)
     let capacitacionesState = useSelector(state => state.capacitaciones.data.capacitaciones)
+    let capacitacionFacState = useSelector(state => state.capacitacionesFacilitador.data.capacitaciones)
+    let formacionState = useSelector(state =>state.formacionAcademica.data.formacionAcademica)
+    let ponenciasState = useSelector(state=>state.ponencias.data.ponencias)
+    let experienciasState  = useSelector (state => state.experienciaLaboral.data.experiencias)
+    let meritosState = useSelector(state => state.meritos.data.meritos)
+    let idiomasState = useSelector( state => state.idiomas.data.idiomas)
+
     useEffect(
         () => {
             dispatch(
@@ -50,6 +105,14 @@ const CV = ({ email }) => {
                         dispatch(
                             loadCapacitaciones(resp.identificacion)
                         )
+                        dispatch(
+                            loadCapacitacionesFacilitador(resp.identificacion)
+                        )
+                        dispatch(loadFormacionAcademica(resp.identificacion))
+                        dispatch(loadPonencias(resp.identificacion))
+                        dispatch(loadExperienciaLaboral(resp.identificacion))
+                        dispatch(loadMeritos(resp.identificacion))
+                        dispatch(loadIdiomas(resp.identificacion))
 
                     }
                 )
@@ -72,6 +135,16 @@ const CV = ({ email }) => {
         setShowModalDelCap(true)
         setId(id)
 
+    }
+
+    let deleteHandlerCapFac = (id) => {
+        setShowModalDelCapFac(true)
+        setId(id)
+
+    }
+    let deleteHandlerPon = (id) =>{
+        setShowModalDelPon(true)
+        setId()
     }
 
     let doDelete = () => {
@@ -126,7 +199,58 @@ const CV = ({ email }) => {
             )
     }
 
+    let doDeleteCapFac = () => {
+        dispatch(
+            deleteCapacitacionesFacilitador(id)
 
+        ).unwrap()
+            .then(resp => {
+                setRespConfirmRef(resp)
+                dispatch(
+                    loadPersonaEmail(email))
+                    .unwrap()
+                    .then(
+                        resp => {
+                            setPersona(resp)
+
+                            dispatch(
+                                loadCapacitacionesFacilitador(persona.identificacion)
+                            )
+                        }
+
+                    )
+
+            }).catch(
+                (err) => console.error(err)
+            )
+    }
+
+
+    let doDeletePonencia = () => {
+        dispatch(
+            deletePonencia(id)
+
+        ).unwrap()
+            .then(resp => {
+                setRespConfirmRef(resp)
+                dispatch(
+                    loadPersonaEmail(email))
+                    .unwrap()
+                    .then(
+                        resp => {
+                            setPersona(resp)
+
+                            dispatch(
+                                loadPonencias(persona.identificacion)
+                            )
+                        }
+
+                    )
+
+            }).catch(
+                (err) => console.error(err)
+            )
+    }
 
     let postHandlerRef = (data) => {
         dispatch(
@@ -280,6 +404,149 @@ const CV = ({ email }) => {
             )
     }
 
+    let postHandlerCapFac = (data) => {
+        dispatch(
+
+            postCapacitacionesFacilitador(
+                {
+                    id_persona: persona.identificacion,
+                    certificado: data.certificado !== null ? data.certificado.toUpperCase() : data.certificado,
+                    funcion_evento: data.funcionEvento.toUpperCase(),
+                    institucion_organizadora: data.institucionOrganizadora.toUpperCase(),
+                    lugar: data.lugar.toUpperCase(),
+                    horas: data.horas,
+                    inicio: data.fechaInicio,
+                    fin: data.fechaFin
+
+                }
+            )
+        ).unwrap()
+            .then((resp) => {
+                setResponse(resp);
+            })
+            .catch(
+                (err) => {
+                    console.log(err);
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+    }
+
+
+    let putHandlerCapFac = (data) => {
+        dispatch(
+            putCapacitacionesFacilitador(
+                {
+                    id: objeto.id,
+                    certificado: data.certificado !== null ? data.certificado.toUpperCase() : data.certificado,
+                    funcion_evento: data.funcionEvento.toUpperCase(),
+                    institucion_organizadora: data.institucionOrganizadora.toUpperCase(),
+                    lugar: data.lugar.toUpperCase(),
+                    horas: data.horas,
+                    inicio: data.fechaInicio,
+                    fin: data.fechaFin
+
+
+
+                }
+            )
+        ).unwrap()
+            .then((resp) => {
+                setResponse(resp);
+            })
+            .catch(
+                (err) => {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+    }
+
+
+    let postHandlerPonencia = (data) => {
+        
+        dispatch(
+
+            postPonencias(
+                {
+                    id_persona: persona.identificacion,
+                   ... data
+                }
+            )
+        ).unwrap()
+            .then((resp) => {
+                setResponse(resp);
+            })
+            .catch(
+                (err) => {
+                    console.log(err);
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+    }
+
+
+    let putHandlerPonencia = (data) => {
+        dispatch(
+            putPonencias(
+                {
+                    id: objeto.id,
+                    tema: data.tema.toUpperCase(),
+                    institucion_organizadora: data.institucionOrganizadora.toUpperCase(),
+                    evento: data.evento.toUpperCase(),
+                    caracter: data.caracter,
+                    lugar: data.lugar.toUpperCase(),
+                    fecha: data.fecha
+
+
+                }
+            )
+        ).unwrap()
+            .then((resp) => {
+                setResponse(resp);
+            })
+            .catch(
+                (err) => {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+    }
+
     return (
         <>
             <div className="container">
@@ -311,7 +578,314 @@ const CV = ({ email }) => {
                 </div>
                 <div className="columns is-centered is-multiline">
 
+                    {/*Formación Profesional */}
+                    <div className="column is-half">
+                        <div className="card">
+                            <header className="card-header" onClick={() => setExpandirFormacion(!expandirFormacion)}>
+                                <p className="card-header-title">
+                                    Formación Profesional
+                                </p>
+                                <button className="card-header-icon" aria-label="more options">
+                                    <span className="icon">
+                                        {expandirFormacion ? <AiOutlineMinus /> : <AiOutlinePlus />}
+                                    </span>
+                                </button>
 
+                            </header>
+
+                            {
+                                expandirFormacion && <div className="card-content">
+                                    <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalFormacionAcademica(true)}>
+                                        <span className="icon">
+                                            <IoIosAddCircleOutline />
+                                        </span>
+                                    </button>
+                                    <div className="table-conatiner">
+                                        <table className="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        Titulo
+                                                    </th>
+                                                    <th>
+                                                        Estado
+                                                    </th>
+                                                    <th>
+                                                        Opciones
+                                                    </th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                {
+                                                    capacitacionFacState.map(
+                                                        (estudio) => (
+                                                            <tr key={estudio.id}>
+                                                                <td>{estudio.nombre_titulo}</td>
+                                                                <td>{estudio.estado}</td>
+                                                                <td>
+                                                                    <button className="button is-small is-primary mx-2 is-outlined" key={`${estudio.id}0`} onClick={ev => {
+                                                                        setObjeto(estudio)
+                                                                        setShowModalFormacionAcademica(true)
+                                                                    }}>
+                                                                        <span className="icon">
+                                                                            <FaRegEdit />
+                                                                        </span>
+                                                                    </button>
+                                                                    <button className="button is-small is-danger mx-2 is-outlined" onClick={event => {
+                                                                        deleteHandlerCapFac(estudio.id)
+                                                                    }}>
+                                                                        <span className="icon">
+                                                                            <AiOutlineDelete />
+                                                                        </span>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    )
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    {/*Capacitaciones*/}
+                    <div className="column is-half">
+                        <div className="card">
+                            <header className="card-header" onClick={() => setExpandirCapacitaciones(!expandirCapacitaciones)}>
+                                <p className="card-header-title">
+                                    Capacitaciones
+
+                                </p>
+                                <button className="card-header-icon" aria-label="more options">
+                                    <span className="icon">
+                                        {expandirCapacitaciones ? <AiOutlineMinus /> : <AiOutlinePlus />}
+                                    </span>
+                                </button>
+                            </header>
+                            {
+                                expandirCapacitaciones && <div className="card-content">
+                                    <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalCapacitacion(true)}>
+                                        <span className="icon">
+                                            <IoIosAddCircleOutline />
+                                        </span>
+                                    </button>
+
+                                    <div className="table-conatiner">
+                                        <table className="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        Tipo Evento
+                                                    </th>
+                                                    <th>
+                                                        Horas
+                                                    </th>
+                                                    <th>
+                                                        Opciones
+                                                    </th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                {
+                                                    capacitacionesState.map(
+                                                        (capacitacion) => (
+                                                            <tr key={capacitacion.id}>
+                                                                <td>{capacitacion.tipo_evento} - {capacitacion.institucion_organizadora}</td>
+                                                                <td>{capacitacion.horas}</td>
+                                                                <td>
+                                                                    <button className="button is-small is-primary mx-2 is-outlined" key={`${capacitacion.id}0`} onClick={ev => {
+                                                                        setObjeto(capacitacion)
+                                                                        setShowModalCapacitacion(true)
+                                                                    }}>
+                                                                        <span className="icon">
+                                                                            <FaRegEdit />
+                                                                        </span>
+                                                                    </button>
+
+                                                                    <button className="button is-small is-danger mx-2 is-outlined" onClick={event => {
+                                                                        deleteHandlerCap(capacitacion.id)
+                                                                    }}>
+                                                                        <span className="icon">
+                                                                            <AiOutlineDelete />
+                                                                        </span>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    )
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+
+
+
+
+                            }
+                        </div>
+                    </div>
+
+                    {/*Capacitaciones Facilitadores*/}
+                    <div className="column is-half">
+                        <div className="card">
+                            <header className="card-header" onClick={() => {
+                                setExpandirCapacitacionesFac(!expandirCapacitacionesFac)
+                            }}>
+                                <p className="card-header-title">
+                                    Capacitaciones (Facilitador)
+
+
+                                </p>
+                                <button className="card-header-icon" aria-label="more options">
+                                    <span className="icon">
+                                        {expandirCapacitacionesFac ? <AiOutlineMinus /> : <AiOutlinePlus />}
+                                    </span>
+                                </button>
+                            </header>
+                            {
+                                expandirCapacitacionesFac && <div className="card-content">
+                                    <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalCapacitacionFac(true)}>
+                                        <span className="icon">
+                                            <IoIosAddCircleOutline />
+                                        </span>
+                                    </button>
+                                    <div className="table-conatiner">
+                                        <table className="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        Función
+                                                    </th>
+                                                    <th>
+                                                        Lugar
+                                                    </th>
+                                                    <th>
+                                                        Opciones
+                                                    </th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                {
+                                                    capacitacionFacState.map(
+                                                        (capacitacion) => (
+                                                            <tr key={capacitacion.id}>
+                                                                <td>{capacitacion.funcion_evento}</td>
+                                                                <td>{capacitacion.lugar}</td>
+                                                                <td>
+                                                                    <button className="button is-small is-primary mx-2 is-outlined" key={`${capacitacion.id}0`} onClick={ev => {
+                                                                        setObjeto(capacitacion)
+                                                                        setShowModalCapacitacionFac(true)
+                                                                    }}>
+                                                                        <span className="icon">
+                                                                            <FaRegEdit />
+                                                                        </span>
+                                                                    </button>
+                                                                    <button className="button is-small is-danger mx-2 is-outlined" onClick={event => {
+                                                                        deleteHandlerCapFac(capacitacion.id)
+                                                                    }}>
+                                                                        <span className="icon">
+                                                                            <AiOutlineDelete />
+                                                                        </span>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    )
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    
+                    {/*Ponencias */}
+                    <div className="column is-half">
+                        <div className="card">
+                            <header className="card-header" onClick={() => setExpandirPonencias(!expandirPonencias)}>
+                                <p className="card-header-title">
+                                    Ponencias
+                                </p>
+                                <button className="card-header-icon" aria-label="more options">
+                                    <span className="icon">
+                                        {expandirPonencias ? <AiOutlineMinus /> : <AiOutlinePlus />}
+                                    </span>
+                                </button>
+
+                            </header>
+
+                            {
+                                expandirPonencias && <div className="card-content">
+                                    <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalPonencia(true)}>
+                                        <span className="icon">
+                                            <IoIosAddCircleOutline />
+                                        </span>
+                                    </button>
+                                    <div className="table-conatiner">
+                                        <table className="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        Tema
+                                                    </th>
+                                                    <th>
+                                                        Institución
+                                                    </th>
+                                                    <th>
+                                                        Opciones
+                                                    </th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                {
+                                                    ponenciasState.map(
+                                                        (ponencia) => (
+                                                            <tr key={ponencia.id}>
+                                                                <td>{ponencia.tema}</td>
+                                                                <td>{ponencia.institucion_organizadora}</td>
+                                                                <td>
+                                                                    <button className="button is-small is-primary mx-2 is-outlined" key={`${ponencia.id}0`} onClick={ev => {
+                                                                        setObjeto(ponencia)
+                                                                        setShowModalPonencia(true)
+                                                                    }}>
+                                                                        <span className="icon">
+                                                                            <FaRegEdit />
+                                                                        </span>
+                                                                    </button>
+                                                                    <button className="button is-small is-danger mx-2 is-outlined" onClick={event => {
+                                                                        deleteHandlerCapFac(ponencia.id)
+                                                                    }}>
+                                                                        <span className="icon">
+                                                                            <AiOutlineDelete />
+                                                                        </span>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    )
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    {/*Referencias*/}
                     <div className="column is-half">
                         <div className="card">
                             <header className="card-header" onClick={() => {
@@ -387,84 +961,6 @@ const CV = ({ email }) => {
                             }
                         </div>
                     </div>
-                    <div className="column is-half">
-                        <div className="card">
-                            <header className="card-header" onClick={() => setExpandirCapacitaciones(!expandirCapacitaciones)}>
-                                <p className="card-header-title">
-                                    Capacitaciones
-
-                                </p>
-                                <button className="card-header-icon" aria-label="more options">
-                                    <span className="icon">
-                                        {expandirCapacitaciones ? <AiOutlineMinus /> : <AiOutlinePlus />}
-                                    </span>
-                                </button>
-                            </header>
-                            {
-                                expandirCapacitaciones && <div className="card-content">
-                                    <button className="button  is-success mx-3 is-outlined"  onClick={ev => setShowModalCapacitacion(true)}>
-                                        <span className="icon">
-                                            <IoIosAddCircleOutline />
-                                        </span>
-                                    </button>
-
-                                    <div className="table-conatiner">
-                                        <table className="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        Tipo Evento
-                                                    </th>
-                                                    <th>
-                                                        Horas
-                                                    </th>
-                                                    <th>
-                                                        Opciones
-                                                    </th>
-                                                </tr>
-                                            </thead>
-
-                                            <tbody>
-                                                {
-                                                    capacitacionesState.map(
-                                                        (capacitacion) => (
-                                                            <tr key={capacitacion.id}>
-                                                                <td>{capacitacion.tipo_evento} - {capacitacion.institucion_organizadora}</td>
-                                                                <td>{capacitacion.horas}</td>
-                                                                <td>
-                                                                    <button className="button is-small is-primary mx-2 is-outlined" key={`${capacitacion.id}0`} onClick={ev => {
-                                                                        setObjeto(capacitacion)
-                                                                        setShowModalCapacitacion(true)
-                                                                    }}>
-                                                                        <span className="icon">
-                                                                            <FaRegEdit />
-                                                                        </span>
-                                                                    </button>
-
-                                                                    <button className="button is-small is-danger mx-2 is-outlined" onClick={event => {
-                                                                        deleteHandlerCap(capacitacion.id)
-                                                                    }}>
-                                                                        <span className="icon">
-                                                                            <AiOutlineDelete />
-                                                                        </span>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        )
-                                                    )
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                </div>
-
-
-
-
-                            }
-                        </div>
-                    </div>
                 </div>
             </div>
             {
@@ -486,6 +982,115 @@ const CV = ({ email }) => {
                         setShowModalDelCap(false); doDeleteCap();
                     }}>Confirmar</button>
                 </ConfirmDialog>
+            }
+
+            {
+                showModalDelCapFac &&
+                <ConfirmDialog info="la capacitación" title="Eliminar capacitación">
+
+                    <button className="button is-small is-danger is-pulled-left" onClick={event => setShowModalDelCapFac(false)}> Cancelar</button>
+                    <button className="button is-small is-success is-pulled-rigth" onClick={event => {
+                        setShowModalDelCapFac(false); doDeleteCapFac();
+                    }}>Confirmar</button>
+                </ConfirmDialog>
+            }
+
+{
+                showModalDelPon &&
+                <ConfirmDialog info="la ponencia" title="Eliminar ponencia">
+
+                    <button className="button is-small is-danger is-pulled-left" onClick={event => setShowModalDelPon(false)}> Cancelar</button>
+                    <button className="button is-small is-success is-pulled-rigth" onClick={event => {
+                        setShowModalDelPon(false); doDeletePonencia();
+                    }}>Confirmar</button>
+                </ConfirmDialog>
+            }
+
+            {/* Modal Capacitaciones*/}
+            {
+                showModalCapacitacion && <CapacitacionModalForm
+                    title={objeto !== null ? 'Editar capacitación' : 'Registrar capacitación'}
+                    objeto={objeto}
+                    handler={objeto !== null ? putHandlerCap : postHandlerCap}>
+                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                        <button className="delete" onClick={event => setResponse(null)}></button>
+                    </Alert>}
+                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                        <button className="delete" onClick={event => {
+                            setResponse(null)
+                            setShowModalCapacitacion(false)
+                            setObjeto(null)
+                            dispatch(
+                                loadCapacitaciones(persona.identificacion)
+                            )
+                        }}></button>
+                    </Alert>}
+                    {error && <Alert type={'is-danger is-light'} content={error.message}>
+                        <button className="delete" onClick={event => setError(null)}></button>
+                    </Alert>}
+                    <button className="button is-small is-danger mx-3" onClick={ev => {
+                        setShowModalCapacitacion(false)
+                        setObjeto(null)
+                    }}>Cancelar</button>
+                </CapacitacionModalForm>
+            }
+
+            {/* Modal Capacitaciones Facilitador*/}
+            {
+                showModalCapacitacionFac && <CapacitacionFacModalForm
+                    title={objeto !== null ? 'Editar capacitación' : 'Registrar capacitación'}
+                    objeto={objeto}
+                    handler={objeto !== null ? putHandlerCapFac : postHandlerCapFac}>
+                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                        <button className="delete" onClick={event => setResponse(null)}></button>
+                    </Alert>}
+                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                        <button className="delete" onClick={event => {
+                            setResponse(null)
+                            setShowModalCapacitacionFac(false)
+                            setObjeto(null)
+                            dispatch(
+                                loadCapacitacionesFacilitador(persona.identificacion)
+                            )
+                        }}></button>
+                    </Alert>}
+                    {error && <Alert type={'is-danger is-light'} content={error.message}>
+                        <button className="delete" onClick={event => setError(null)}></button>
+                    </Alert>}
+                    <button className="button is-small is-danger mx-3" onClick={ev => {
+                        setShowModalCapacitacionFac(false)
+                        setObjeto(null)
+                    }}>Cancelar</button>
+                </CapacitacionFacModalForm>
+            }
+
+             {/* Modal Ponencias*/}
+             {
+                showModalPonencia && <PonenciaModalForm
+                    title={objeto !== null ? 'Editar ponencia' : 'Registrar ponencia'}
+                    objeto={objeto}
+                    handler={objeto !== null ? putHandlerPonencia : postHandlerPonencia}>
+                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                        <button className="delete" onClick={event => setResponse(null)}></button>
+                    </Alert>}
+                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                        <button className="delete" onClick={event => {
+                            setResponse(null)
+                            setShowModalPonencia(false)
+                            setObjeto(null)
+                            dispatch(
+                                loadPonencias(persona.identificacion)
+                            )
+                        }}></button>
+                    </Alert>}
+                    {error && <Alert type={'is-danger is-light'} content={error.message}>
+                        <button className="delete" onClick={event => setError(null)}></button>
+                    </Alert>}
+                    <button className="button is-small is-danger mx-3" onClick={ev => {
+                        setShowModalPonencia(false)
+                        setObjeto(null)
+                    }}>Cancelar</button>
+                </PonenciaModalForm>
             }
 
             {
@@ -516,33 +1121,7 @@ const CV = ({ email }) => {
                 </ReferenciaModalForm>
             }
 
-            {
-                showModalCapacitacion && <CapacitacionModalForm
-                    title={objeto !== null ? 'Editar capacitación' : 'Registrar capacitación'}
-                    objeto={objeto}
-                    handler={objeto !== null ? putHandlerCap : postHandlerCap}>
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={event => setResponse(null)}></button>
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={event => {
-                            setResponse(null)
-                            setShowModalCapacitacion(false)
-                            setObjeto(null)
-                            dispatch(
-                                loadCapacitaciones(persona.identificacion)
-                            )
-                        }}></button>
-                    </Alert>}
-                    {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={event => setError(null)}></button>
-                    </Alert>}
-                    <button className="button is-small is-danger mx-3" onClick={ev => {
-                        setShowModalCapacitacion(false)
-                        setObjeto(null)
-                    }}>Cancelar</button>
-                </CapacitacionModalForm>
-            }
+
         </>
     )
 }
