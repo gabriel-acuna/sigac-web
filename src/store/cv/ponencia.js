@@ -112,15 +112,17 @@ export const putPonencias = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let fechaEvento= new Date(ponencia.ponencia.fecha)
+            let fechaEvento= new Date(ponencia.fecha)
             let data = {
-                tema: ponencia.ponencia.tema,
-                institucion_organizadora: ponencia.ponencia.institucion_organizadora,
-                evento: ponencia.ponencia.evento,
-                lugar: ponencia.ponencia.lugar,
+                id: ponencia.id,
+                tema: ponencia.tema,
+                institucion_organizadora: ponencia.institucionOrganizadora,
+                caracter: ponencia.caracter,
+                evento: ponencia.evento,
+                lugar: ponencia.lugar,
                 fecha: new Date(fechaEvento.setDate(fechaEvento.getDate()+1)).toISOString().slice(0, 10)
             }
-            let response = await Axios.put(`${API}/ponencias/${ponencia.id}`, data,
+            let response = await Axios.put(`${API}/ponencias/`, data,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -129,6 +131,7 @@ export const putPonencias = createAsyncThunk(
             return response.data
 
         } catch (error) {
+            console.log(error);
             let err;
             if (error.response.data.detail[0].msg)
                 err = error.response.data.detail[0].msg

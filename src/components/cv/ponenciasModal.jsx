@@ -16,9 +16,10 @@ let CapacitacionModalForm = ({ title, handler, children, objeto }) => {
                     evento: objeto.evento,
                     caracter: objeto.caracter,
                     lugar: objeto.lugar,
-                    fecha: objeto.fecha
+                    fecha: objeto.fecha.slice(0, 7)
 
                 })
+                
             }
         }, [objeto, reset]
     )

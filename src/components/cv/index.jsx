@@ -144,7 +144,7 @@ const CV = ({ email }) => {
     }
     let deleteHandlerPon = (id) =>{
         setShowModalDelPon(true)
-        setId()
+        setId(id)
     }
 
     let doDelete = () => {
@@ -348,7 +348,6 @@ const CV = ({ email }) => {
             })
             .catch(
                 (err) => {
-                    console.log(err);
                     if (err.message.includes("undefined (reading 'data')")) {
                         console.error("No hay conexión con el backend");
                         setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
@@ -426,7 +425,6 @@ const CV = ({ email }) => {
             })
             .catch(
                 (err) => {
-                    console.log(err);
                     if (err.message.includes("undefined (reading 'data')")) {
                         console.error("No hay conexión con el backend");
                         setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
@@ -496,7 +494,6 @@ const CV = ({ email }) => {
             })
             .catch(
                 (err) => {
-                    console.log(err);
                     if (err.message.includes("undefined (reading 'data')")) {
                         console.error("No hay conexión con el backend");
                         setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
@@ -517,15 +514,11 @@ const CV = ({ email }) => {
             putPonencias(
                 {
                     id: objeto.id,
-                    tema: data.tema.toUpperCase(),
-                    institucion_organizadora: data.institucionOrganizadora.toUpperCase(),
-                    evento: data.evento.toUpperCase(),
-                    caracter: data.caracter,
-                    lugar: data.lugar.toUpperCase(),
-                    fecha: data.fecha
-
-
+                    ...data
                 }
+
+
+                
             )
         ).unwrap()
             .then((resp) => {
@@ -865,7 +858,7 @@ const CV = ({ email }) => {
                                                                         </span>
                                                                     </button>
                                                                     <button className="button is-small is-danger mx-2 is-outlined" onClick={event => {
-                                                                        deleteHandlerCapFac(ponencia.id)
+                                                                        deleteHandlerPon(ponencia.id)
                                                                     }}>
                                                                         <span className="icon">
                                                                             <AiOutlineDelete />
