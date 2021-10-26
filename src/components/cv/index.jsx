@@ -31,8 +31,9 @@ import {
 } from '../../store/cv/merito'
 
 import {
-    loadIdiomas, postIdiomas, putIdiomas, deleteIdiomas
+    loadIdiomas, postIdiomas, putIdiomas, deleteIdiomas, loadIdioma
 } from '../../store/cv/compresion_idioma'
+
 import Alert from '../Alert'
 import { useSelector } from 'react-redux'
 import { logOut } from '../../store/user'
@@ -41,6 +42,9 @@ import CapacitacionModalForm from './capacitacionesModal'
 import CapacitacionFacModalForm from './capacitacionesFacModal'
 import PonenciaModalForm from './ponenciasModal'
 import ExperienciaLaboralModalForm from './experienciaLaboralModal'
+import MeritoModalForm from './meritoModal'
+import idiomaModalForm from './idiomaModal';
+import IdiomaModalForm from './idiomaModal';
 
 const CV = ({ email }) => {
 
@@ -153,6 +157,14 @@ const CV = ({ email }) => {
     }
     let deleteHandlerExp = (id) => {
         setShowModalDelExp(true)
+        setId(id)
+    }
+    let deleteHandlerMer = (id) => {
+        setShowModalDelMer(true)
+        setId(id)
+    }
+    let deleteHandlerIdi = (id) => {
+        setShowModalDelIdi(true)
         setId(id)
     }
     let doDeleteFormacionAcadémica = () => {
@@ -301,6 +313,58 @@ const CV = ({ email }) => {
 
                             dispatch(
                                 loadExperienciaLaboral(persona.identificacion)
+                            )
+                        }
+
+                    )
+
+            }).catch(
+                (err) => console.error(err)
+            )
+    }
+
+    let doDeleteMerito = () => {
+        dispatch(
+            deleteMeritos(id)
+
+        ).unwrap()
+            .then(resp => {
+                setRespConfirmRef(resp)
+                dispatch(
+                    loadPersonaEmail(email))
+                    .unwrap()
+                    .then(
+                        resp => {
+                            setPersona(resp)
+
+                            dispatch(
+                                loadMeritos(persona.identificacion)
+                            )
+                        }
+
+                    )
+
+            }).catch(
+                (err) => console.error(err)
+            )
+    }
+
+    let doDeleteIdioma = () => {
+        dispatch(
+            deleteIdiomas(id)
+
+        ).unwrap()
+            .then(resp => {
+                setRespConfirmRef(resp)
+                dispatch(
+                    loadPersonaEmail(email))
+                    .unwrap()
+                    .then(
+                        resp => {
+                            setPersona(resp)
+
+                            dispatch(
+                                loadIdioma(persona.identificacion)
                             )
                         }
 
@@ -661,6 +725,125 @@ const CV = ({ email }) => {
             )
     }
 
+    let postHandlerMerito = (data) => {
+
+        dispatch(
+
+            postMeritos(
+                {
+                    id_persona: persona.identificacion,
+                    ...data
+                }
+            )
+        ).unwrap()
+            .then((resp) => {
+                setResponse(resp);
+            })
+            .catch(
+                (err) => {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+    }
+
+    let putHandlerMerito = (data) => {
+
+        dispatch(
+
+            putMeritos(
+                {
+                    id: objeto.id,
+                    ...data
+                }
+            )
+        ).unwrap()
+            .then((resp) => {
+                setResponse(resp);
+            })
+            .catch(
+                (err) => {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+    }
+    
+    let postHandlerIdioma = (data) => {
+
+        dispatch(
+
+            postIdiomas(
+                {
+                    id_persona: persona.identificacion,
+                    ...data
+                }
+            )
+        ).unwrap()
+            .then((resp) => {
+                setResponse(resp);
+            })
+            .catch(
+                (err) => {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+    }
+
+    let putHandlerIdioma = (data) => {
+
+        dispatch(
+
+            putIdiomas(
+                {
+                    id: objeto.id,
+                    ...data
+                }
+            )
+        ).unwrap()
+            .then((resp) => {
+                setResponse(resp);
+            })
+            .catch(
+                (err) => {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+    }
     return (
         <>
             <div className="container">
@@ -713,7 +896,7 @@ const CV = ({ email }) => {
                                             <IoIosAddCircleOutline />
                                         </span>
                                     </button>
-                                    <div className="table-conatiner">
+                                    <div className="table-container">
                                         <table className="table">
                                             <thead>
                                                 <tr>
@@ -788,7 +971,7 @@ const CV = ({ email }) => {
                                         </span>
                                     </button>
 
-                                    <div className="table-conatiner">
+                                    <div className="table-container">
                                         <table className="table">
                                             <thead>
                                                 <tr>
@@ -870,7 +1053,7 @@ const CV = ({ email }) => {
                                             <IoIosAddCircleOutline />
                                         </span>
                                     </button>
-                                    <div className="table-conatiner">
+                                    <div className="table-container">
                                         <table className="table">
                                             <thead>
                                                 <tr>
@@ -945,7 +1128,7 @@ const CV = ({ email }) => {
                                             <IoIosAddCircleOutline />
                                         </span>
                                     </button>
-                                    <div className="table-conatiner">
+                                    <div className="table-container">
                                         <table className="table">
                                             <thead>
                                                 <tr>
@@ -998,7 +1181,7 @@ const CV = ({ email }) => {
                         </div>
                     </div>
 
-                    {/*Expeiencia Loboral*/}
+                    {/*Experiencia Loboral*/}
                     <div className="column is-half">
                         <div className="card">
                             <header className="card-header" onClick={() => setExpandirExperienciaLaboral(!expandirExperienciaLaboral)}>
@@ -1018,7 +1201,7 @@ const CV = ({ email }) => {
                                             <IoIosAddCircleOutline />
                                         </span>
                                     </button>
-                                    <div className="table-conatiner">
+                                    <div className="table-container">
                                         <table className="table">
                                             <thead>
                                                 <tr>
@@ -1077,6 +1260,165 @@ const CV = ({ email }) => {
                         </div>
                     </div>
 
+                    {/*Meritos y Distinciones*/}
+                    <div className="column is-half">
+                        <div className="card">
+                            <header className="card-header" onClick={() => setExpandirMeritos(!expandirMeritos)}>
+                                <p className="card-header-title">
+                                    Méritos y distinciones
+
+                                </p>
+                                <button className="card-header-icon" aria-label="more options">
+                                    <span className="icon">
+                                        {expandirMeritos ? <AiOutlineMinus /> : <AiOutlinePlus />}
+                                    </span>
+                                </button>
+                            </header>
+                            {
+                                expandirMeritos && <div className="card-content">
+                                    <button className="button  is-success mx-3 is-outlined" onClick={() => setShowModalMerito(true)}>
+                                        <span className="icon">
+                                            <IoIosAddCircleOutline />
+                                        </span>
+                                    </button>
+
+                                    <div className="table-container">
+                                        <table className="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        Título
+                                                    </th>
+                                                    <th>
+                                                        Institución asuspiciante
+                                                    </th>
+                                                    <th>
+                                                        Opciones
+                                                    </th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                {
+                                                    meritosState.map(
+                                                        (merito) => (
+                                                            <tr key={merito.id}>
+                                                                <td>{merito.titulo}</td>
+                                                                <td>{merito.institucion_auspiciante}</td>
+                                                                <td>
+                                                                    <button className="button is-small is-primary mx-2 is-outlined" key={`${merito.id}0`} onClick={() => {
+                                                                        setObjeto(merito)
+                                                                        setShowModalMerito(true)
+                                                                    }}>
+                                                                        <span className="icon">
+                                                                            <FaRegEdit />
+                                                                        </span>
+                                                                    </button>
+
+                                                                    <button className="button is-small is-danger mx-2 is-outlined" onClick={() => {
+                                                                        deleteHandlerMer(merito.id)
+                                                                    }}>
+                                                                        <span className="icon">
+                                                                            <AiOutlineDelete />
+                                                                        </span>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    )
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+
+
+
+
+                            }
+                        </div>
+                    </div>
+
+                    {/*Compresioón idiomas*/}
+                    <div className="column is-half">
+                        <div className="card">
+                            <header className="card-header" onClick={() => setExpandirIdiomas(!expandirIdiomas)}>
+                                <p className="card-header-title">
+                                    Compresión de idiomas
+
+                                </p>
+                                <button className="card-header-icon" aria-label="more options">
+                                    <span className="icon">
+                                        {expandirIdiomas ? <AiOutlineMinus /> : <AiOutlinePlus />}
+                                    </span>
+                                </button>
+                            </header>
+                            {
+                                expandirIdiomas && <div className="card-content">
+                                    <button className="button  is-success mx-3 is-outlined" onClick={() => setShowModalIdioma(true)}>
+                                        <span className="icon">
+                                            <IoIosAddCircleOutline />
+                                        </span>
+                                    </button>
+
+                                    <div className="table-container">
+                                        <table className="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        idioma
+                                                    </th>
+                                                    <th>
+                                                        Nivel
+                                                    </th>
+                                                    <th>
+                                                        Opciones
+                                                    </th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                {
+                                                    idiomasState.map(
+                                                        (idioma) => (
+                                                            <tr key={idioma.id}>
+                                                                <td>{idioma.idioma}</td>
+                                                                <td>{idioma.nivel_comprension}</td>
+                                                                <td>
+                                                                    <button className="button is-small is-primary mx-2 is-outlined" key={`${idioma.id}0`} onClick={() => {
+                                                                        setObjeto(idioma)
+                                                                        setShowModalIdioma(true)
+                                                                    }}>
+                                                                        <span className="icon">
+                                                                            <FaRegEdit />
+                                                                        </span>
+                                                                    </button>
+
+                                                                    <button className="button is-small is-danger mx-2 is-outlined" onClick={() => {
+                                                                        deleteHandlerIdi(idioma.id)
+                                                                    }}>
+                                                                        <span className="icon">
+                                                                            <AiOutlineDelete />
+                                                                        </span>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    )
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+
+
+
+
+                            }
+                        </div>
+                    </div>
 
                     {/*Referencias*/}
                     <div className="column is-half">
@@ -1102,7 +1444,7 @@ const CV = ({ email }) => {
                                             <IoIosAddCircleOutline />
                                         </span>
                                     </button>
-                                    <div className="table-conatiner">
+                                    <div className="table-container">
                                         <table className="table">
                                             <thead>
                                                 <tr>
@@ -1219,6 +1561,30 @@ const CV = ({ email }) => {
                     }}>Confirmar</button>
                 </ConfirmDialog>
             }
+
+            {
+                showModalDelMer &&
+                <ConfirmDialog info="el mérito o distición" title="Eliminar mérto/distición">
+
+                    <button className="button is-small is-danger is-pulled-left" onClick={event => setShowModalDelMer(false)}> Cancelar</button>
+                    <button className="button is-small is-success is-pulled-rigth" onClick={event => {
+                        setShowModalDelMer(false); doDeleteMerito();
+                    }}>Confirmar</button>
+                </ConfirmDialog>
+            }
+
+            {
+                showModalDelIdi &&
+                <ConfirmDialog info="el idioma" title="Eliminar idioma">
+
+                    <button className="button is-small is-danger is-pulled-left" onClick={event => setShowModalDelIdi(false)}> Cancelar</button>
+                    <button className="button is-small is-success is-pulled-rigth" onClick={event => {
+                        setShowModalDelIdi(false); doDeleteIdioma();
+                    }}>Confirmar</button>
+                </ConfirmDialog>
+            }
+
+
             {/* Modal Capacitaciones*/}
             {
                 showModalCapacitacion && <CapacitacionModalForm
@@ -1327,10 +1693,10 @@ const CV = ({ email }) => {
                 <div className="columns is-centered">
                     <div className="column is-6">
                         {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                            <button className="delete" onClick={event => setResponse(null)}></button>
+                            <button className="delete" onClick={() => setResponse(null)}></button>
                         </Alert>}
                         {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                            <button className="delete" onClick={event => {
+                            <button className="delete" onClick={() => {
                                 setResponse(null)
                                 setShowModalExperienciaLaboral(false)
                                 setObjeto(null)
@@ -1340,7 +1706,7 @@ const CV = ({ email }) => {
                             }}></button>
                         </Alert>}
                         {error && <Alert type={'is-danger is-light'} content={error.message}>
-                            <button className="delete" onClick={event => setError(null)}></button>
+                            <button className="delete" onClick={() => setError(null)}></button>
                         </Alert>}
                     </div>
                 </div>
@@ -1351,6 +1717,73 @@ const CV = ({ email }) => {
             </ExperienciaLaboralModalForm>
             }
 
+            {/*Modal meritos y distinciones*/}
+            {
+                showModalMerito &&
+                <MeritoModalForm
+                    title={objeto !== null ? 'Editar mérito' : 'Registrar mérito'}
+                    objeto={objeto}
+                    handler={objeto !== null ? putHandlerMerito : postHandlerMerito}>
+                    <div className="columns is-centered">
+                        <div className="column is-6">
+                            {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                                <button className="delete" onClick={event => setResponse(null)}></button>
+                            </Alert>}
+                            {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                                <button className="delete" onClick={event => {
+                                    setResponse(null)
+                                    setShowModalMerito(false)
+                                    setObjeto(null)
+                                    dispatch(
+                                        loadMeritos(persona.identificacion)
+                                    )
+                                }}></button>
+                            </Alert>}
+                            {error && <Alert type={'is-danger is-light'} content={error.message}>
+                                <button className="delete" onClick={() => setError(null)}></button>
+                            </Alert>}
+                        </div>
+                    </div>
+                    <button className="button is-small is-danger mx-3" onClick={() => {
+                        setShowModalMerito(false)
+                        setObjeto(null)
+                    }}>Cancelar</button>
+                </MeritoModalForm>
+            }
+            {/*Modal Compresion de idiomas*/}
+            {
+                showModalIdioma  && <IdiomaModalForm
+                title={objeto !== null ? 'Editar mérito' : 'Registrar mérito'}
+                objeto={objeto}
+                handler={objeto !== null ? putHandlerIdioma : postHandlerIdioma}>
+                <div className="columns is-centered">
+                    <div className="column is-6">
+                        {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                            <button className="delete" onClick={event => setResponse(null)}></button>
+                        </Alert>}
+                        {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                            <button className="delete" onClick={event => {
+                                setResponse(null)
+                                setShowModalIdioma(false)
+                                setObjeto(null)
+                                dispatch(
+                                    loadIdiomas(persona.identificacion)
+                                )
+                            }}></button>
+                        </Alert>}
+                        {error && <Alert type={'is-danger is-light'} content={error.message}>
+                            <button className="delete" onClick={() => setError(null)}></button>
+                        </Alert>}
+                    </div>
+                </div>
+                <button className="button is-small is-danger mx-3" onClick={() => {
+                    setShowModalIdioma(false)
+                    setObjeto(null)
+                }}>Cancelar</button>
+            </IdiomaModalForm>
+            }
+
+            {/* Modal Referencia*/}
             {
                 showModalReferencia && <ReferenciaModalForm
                     title={objeto !== null ? 'Editar referencia' : 'Registrar referencia'}

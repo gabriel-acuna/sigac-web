@@ -104,7 +104,7 @@ let ExperienciaLaboralModal = ({ title, handler, children, objeto }) => {
                                             if ((ev.target.value !== null || ev.target.value !== '') && new Date(ev.target.value) < new Date(getValues('inicio'))) {
                                                 setError("fin", {
                                                     type: 'min',
-                                                    message: 'La fecha de fin debe ser mayor a la feha de inicio'
+                                                    message: 'La fecha de fin debe ser mayor a la fecha de inicio'
 
                                                 })
                                             }

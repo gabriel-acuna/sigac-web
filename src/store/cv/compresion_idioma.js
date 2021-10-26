@@ -68,8 +68,13 @@ export const postIdiomas = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-        
-            let response = await Axios.post(`${API}/idiomas`, idioma,
+            let data = {
+                id_persona: idioma.id_persona,
+                idioma: idioma.idioma,
+                lugar_estudio: idioma.lugarEstudio,
+                nivel_comprension: idioma.nivel
+            }
+            let response = await Axios.post(`${API}/idiomas`, data,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -79,7 +84,6 @@ export const postIdiomas = createAsyncThunk(
 
         } catch (error) {
             let err;
-            console.log(err);
             if (error.response.data.detail[0].msg)
                 err = error.response.data.detail[0].msg
             if (error.response.data.type)
@@ -103,8 +107,13 @@ export const putIdiomas = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-
-            let response = await Axios.put(`${API}/idiomas/${idioma.id}`, idioma.idioma,
+            let data = {
+                id_: idioma,
+                idioma: idioma.idioma,
+                lugar_estudio: idioma.lugarEstudio,
+                nivel_comprension: idioma.nivel
+            }
+            let response = await Axios.put(`${API}/idiomas/`, data,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`

@@ -68,7 +68,16 @@ export const postMeritos = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.post(`${API}/meritos-distinciones`, merito,
+        
+            let data = {
+                id_persona: merito.id_persona,
+                titulo: merito.titulo.toUpperCase(),
+                institucion_auspiciante: merito.institucionAuspiciante.toUpperCase(),
+                funcion: merito.funcion.toUpperCase(),
+                fecha_inicio: merito.inicio,
+                fecha_fin: merito.fin
+            }
+            let response = await Axios.post(`${API}/meritos-distinciones`, data,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -78,7 +87,6 @@ export const postMeritos = createAsyncThunk(
 
         } catch (error) {
             let err;
-            console.log(err);
             if (error.response.data.detail[0].msg)
                 err = error.response.data.detail[0].msg
             if (error.response.data.type)
@@ -102,7 +110,16 @@ export const putMeritos = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.put(`${API}/meritos-distinciones/${merito.id}`, merito.merito,
+           
+            let data = {
+                id: merito.id,
+                titulo: merito.titulo.toUpperCase(),
+                institucion_auspiciante: merito.institucionAuspiciante.toUpperCase(),
+                funcion: merito.funcion.toUpperCase(),
+                fecha_inicio: merito.inicio,
+                fecha_fin: merito.fin
+            }
+            let response = await Axios.put(`${API}/meritos-distinciones/`, data,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
