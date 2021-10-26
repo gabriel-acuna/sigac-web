@@ -8,7 +8,7 @@ import { API } from '../../services/api'
 
 export const loadExperienciaLaboral = createAsyncThunk(
     'experiencia-laboral/load',
-    async ( id_persona, { getState }) => {
+    async (id_persona, { getState }) => {
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -58,7 +58,7 @@ export const loadExperiencia = createAsyncThunk(
 
 export const postExperienciaLaboral = createAsyncThunk(
     'experiencia-laboral/post',
-    async ( experiencia, { getState }) => {
+    async (experiencia, { getState }) => {
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -68,7 +68,18 @@ export const postExperienciaLaboral = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.post(`${API}/experiencia-laboral`, experiencia,
+            
+            let fechaInicio = new Date(experiencia.inicio)
+            let fechaFin = (experiencia.fin !== null && experiencia.fin !== '') ? new Date(experiencia.fin) : ''
+            let data = {
+                id_persona: experiencia.id_persona,
+                empresa: experiencia.empresa.toUpperCase(),
+                lugar: experiencia.lugar.toUpperCase(),
+                cargo: experiencia.cargo.toUpperCase(),
+                inicio: new Date(fechaInicio.setDate(fechaInicio.getDate() + 1)).toISOString().slice(0, 10),
+                fin: fechaFin !== '' ? new Date(fechaFin.setDate(fechaFin.getDate() + 1)).toISOString().slice(0, 10) : null,
+            }
+            let response = await Axios.post(`${API}/experiencia-laboral`, data,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -78,7 +89,6 @@ export const postExperienciaLaboral = createAsyncThunk(
 
         } catch (error) {
             let err;
-            console.log(err);
             if (error.response.data.detail[0].msg)
                 err = error.response.data.detail[0].msg
             if (error.response.data.type)
@@ -102,7 +112,17 @@ export const putExperienciaLaboral = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.put(`${API}/experiencia-laboral/${experiencia.id}`, experiencia.experiencia,
+            let fechaInicio = new Date(experiencia.inicio)
+            let fechaFin = (experiencia.fin !== null && experiencia.fin !== '') ? new Date(experiencia.fin) : ''
+            let data = {
+                id: experiencia.id,
+                empresa: experiencia.empresa.toUpperCase(),
+                lugar: experiencia.lugar.toUpperCase(),
+                cargo: experiencia.cargo.toUpperCase(),
+                inicio: new Date(fechaInicio.setDate(fechaInicio.getDate() + 1)).toISOString().slice(0, 10),
+                fin: fechaFin !== '' ? new Date(fechaFin.setDate(fechaFin.getDate() + 1)).toISOString().slice(0, 10) : null
+            }
+            let response = await Axios.put(`${API}/experiencia-laboral/`, data,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -153,7 +173,7 @@ let experienciaLaboralSlice = createSlice({
     name: 'experienciaLaboral',
     initialState: {
         data: {
-            experiencias: []  
+            experiencias: []
         },
         status: ''
 
@@ -171,7 +191,7 @@ let experienciaLaboralSlice = createSlice({
         [loadExperienciaLaboral.fulfilled]: (state, action) => {
             state.status = 'success'
             state.data = {
-                experienciaLaboral: action.payload
+                experiencias: action.payload
             }
         }
 

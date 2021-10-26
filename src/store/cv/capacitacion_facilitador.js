@@ -78,7 +78,6 @@ export const postCapacitacionesFacilitador = createAsyncThunk(
 
         } catch (error) {
             let err;
-            console.log(err);
             if (error.response.data.detail[0].msg)
                 err = error.response.data.detail[0].msg
             if (error.response.data.type)

@@ -26,7 +26,7 @@ import {
     loadExperienciaLaboral, postExperienciaLaboral, putExperienciaLaboral, deleteExperienciaLaboral
 } from '../../store/cv/experiencia_laboral'
 
-import{
+import {
     loadMeritos, postMeritos, putMeritos, deleteMeritos
 } from '../../store/cv/merito'
 
@@ -40,6 +40,7 @@ import ConfirmDialog from '../ConfirmDialog'
 import CapacitacionModalForm from './capacitacionesModal'
 import CapacitacionFacModalForm from './capacitacionesFacModal'
 import PonenciaModalForm from './ponenciasModal'
+import ExperienciaLaboralModalForm from './experienciaLaboralModal'
 
 const CV = ({ email }) => {
 
@@ -85,11 +86,11 @@ const CV = ({ email }) => {
     let referenciasState = useSelector(state => state.referencias.data.referencias)
     let capacitacionesState = useSelector(state => state.capacitaciones.data.capacitaciones)
     let capacitacionFacState = useSelector(state => state.capacitacionesFacilitador.data.capacitaciones)
-    let formacionState = useSelector(state =>state.formacionAcademica.data.formacionAcademica)
-    let ponenciasState = useSelector(state=>state.ponencias.data.ponencias)
-    let experienciasState  = useSelector (state => state.experienciaLaboral.data.experiencias)
+    let formacionState = useSelector(state => state.formacionAcademica.data.formacionAcademica)
+    let ponenciasState = useSelector(state => state.ponencias.data.ponencias)
+    let experienciasState = useSelector(state => state.experienciaLaboral.data.experiencias)
     let meritosState = useSelector(state => state.meritos.data.meritos)
-    let idiomasState = useSelector( state => state.idiomas.data.idiomas)
+    let idiomasState = useSelector(state => state.idiomas.data.idiomas)
 
     useEffect(
         () => {
@@ -142,11 +143,43 @@ const CV = ({ email }) => {
         setId(id)
 
     }
-    let deleteHandlerPon = (id) =>{
+    let deleteHandlerPon = (id) => {
         setShowModalDelPon(true)
         setId(id)
     }
+    let deleteHandlerFor = (id) => {
+        setShowModalDelFor(true)
+        setId(id)
+    }
+    let deleteHandlerExp = (id) => {
+        setShowModalDelExp(true)
+        setId(id)
+    }
+    let doDeleteFormacionAcadémica = () => {
+        dispatch(
+            deleteFormacionAcademica(id)
 
+        ).unwrap()
+            .then(resp => {
+                setRespConfirmRef(resp)
+                dispatch(
+                    loadPersonaEmail(email))
+                    .unwrap()
+                    .then(
+                        resp => {
+                            setPersona(resp)
+
+                            dispatch(
+                                loadFormacionAcademica(persona.identificacion)
+                            )
+                        }
+
+                    )
+
+            }).catch(
+                (err) => console.error(err)
+            )
+    }
     let doDelete = () => {
         dispatch(
             deleteReferencias(id)
@@ -242,6 +275,32 @@ const CV = ({ email }) => {
 
                             dispatch(
                                 loadPonencias(persona.identificacion)
+                            )
+                        }
+
+                    )
+
+            }).catch(
+                (err) => console.error(err)
+            )
+    }
+
+    let doDeleteExperienciaLaboral = () => {
+        dispatch(
+            deleteExperienciaLaboral(id)
+
+        ).unwrap()
+            .then(resp => {
+                setRespConfirmRef(resp)
+                dispatch(
+                    loadPersonaEmail(email))
+                    .unwrap()
+                    .then(
+                        resp => {
+                            setPersona(resp)
+
+                            dispatch(
+                                loadExperienciaLaboral(persona.identificacion)
                             )
                         }
 
@@ -479,13 +538,13 @@ const CV = ({ email }) => {
 
 
     let postHandlerPonencia = (data) => {
-        
+
         dispatch(
 
             postPonencias(
                 {
                     id_persona: persona.identificacion,
-                   ... data
+                    ...data
                 }
             )
         ).unwrap()
@@ -518,7 +577,69 @@ const CV = ({ email }) => {
                 }
 
 
-                
+
+            )
+        ).unwrap()
+            .then((resp) => {
+                setResponse(resp);
+            })
+            .catch(
+                (err) => {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+    }
+
+    let postHandlerExperienciaLaboral = (data) => {
+
+        dispatch(
+
+            postExperienciaLaboral(
+                {
+                    id_persona: persona.identificacion,
+                    ...data
+                }
+            )
+        ).unwrap()
+            .then((resp) => {
+                setResponse(resp);
+            })
+            .catch(
+                (err) => {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+    }
+
+
+    let putHandlerExperienciaLaboral = (data) => {
+        dispatch(
+            putExperienciaLaboral(
+                {
+                    id: objeto.id,
+                    ...data
+                }
+
+
+
             )
         ).unwrap()
             .then((resp) => {
@@ -543,7 +664,6 @@ const CV = ({ email }) => {
     return (
         <>
             <div className="container">
-                {email}
                 <div className="columns is-centered is-multiline">
                     <div className="column is-half">
                         <button className="button is-info mt-4 mx-3 is-outlined"
@@ -611,7 +731,7 @@ const CV = ({ email }) => {
 
                                             <tbody>
                                                 {
-                                                    capacitacionFacState.map(
+                                                    formacionState.map(
                                                         (estudio) => (
                                                             <tr key={estudio.id}>
                                                                 <td>{estudio.nombre_titulo}</td>
@@ -802,7 +922,7 @@ const CV = ({ email }) => {
                             }
                         </div>
                     </div>
-                    
+
                     {/*Ponencias */}
                     <div className="column is-half">
                         <div className="card">
@@ -877,6 +997,86 @@ const CV = ({ email }) => {
                             }
                         </div>
                     </div>
+
+                    {/*Expeiencia Loboral*/}
+                    <div className="column is-half">
+                        <div className="card">
+                            <header className="card-header" onClick={() => setExpandirExperienciaLaboral(!expandirExperienciaLaboral)}>
+                                <p className="card-header-title">
+                                    Experiencia Laboral
+                                </p>
+                                <button className="card-header-icon" aria-label="more options">
+                                    <span className="icon">
+                                        {expandirExperienciaLaboral ? <AiOutlineMinus /> : <AiOutlinePlus />}
+                                    </span>
+                                </button>
+                            </header>
+                            {
+                                expandirExperienciaLaboral && <div className="card-content">
+                                    <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalExperienciaLaboral(true)}>
+                                        <span className="icon">
+                                            <IoIosAddCircleOutline />
+                                        </span>
+                                    </button>
+                                    <div className="table-conatiner">
+                                        <table className="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        Cargo
+                                                    </th>
+                                                    <th>
+                                                        Empresa
+                                                    </th>
+
+                                                    <th>
+                                                        Opciones
+                                                    </th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                {
+                                                    experienciasState.map(
+                                                        (experiencia) => (
+                                                            <tr key={experiencia.id}>
+                                                                <td>{experiencia.cargo} </td>
+                                                                <td> <p className="has-text-centered"> {experiencia.empresa} </p>
+                                                                    <p className="is-7">
+                                                                        {experiencia.inicio} - {experiencia.fin !== null && experiencia.fin !== '' ? experiencia.fin : 'Actualidad'}
+                                                                    </p>
+                                                                </td>
+                                                                <td>
+                                                                    <button className="button is-small is-primary mx-2 is-outlined" key={`${experiencia.id}0`} onClick={() => {
+                                                                        setObjeto(experiencia)
+                                                                        setShowModalExperienciaLaboral(true)
+                                                                    }}>
+                                                                        <span className="icon">
+                                                                            <FaRegEdit />
+                                                                        </span>
+                                                                    </button>
+                                                                    <button className="button is-small is-danger mx-2 is-outlined" onClick={() => {
+                                                                        deleteHandlerExp(experiencia.id)
+                                                                    }}>
+                                                                        <span className="icon">
+                                                                            <AiOutlineDelete />
+                                                                        </span>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    )
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+                                </div>
+                            }
+                        </div>
+                    </div>
+
 
                     {/*Referencias*/}
                     <div className="column is-half">
@@ -957,6 +1157,16 @@ const CV = ({ email }) => {
                 </div>
             </div>
             {
+                showModalDelFor &&
+                <ConfirmDialog info="la formación académica" title="Eliminar formación académica">
+
+                    <button className="button is-small is-danger is-pulled-left" onClick={event => setShowModalDelFor(false)}> Cancelar</button>
+                    <button className="button is-small is-success is-pulled-rigth" onClick={event => {
+                        setShowModalDelFor(false); doDeleteFormacionAcadémica();
+                    }}>Confirmar</button>
+                </ConfirmDialog>
+            }
+            {
                 showModalRef &&
                 <ConfirmDialog info="la referencia" title="Eliminar referencia">
 
@@ -988,7 +1198,7 @@ const CV = ({ email }) => {
                 </ConfirmDialog>
             }
 
-{
+            {
                 showModalDelPon &&
                 <ConfirmDialog info="la ponencia" title="Eliminar ponencia">
 
@@ -999,28 +1209,42 @@ const CV = ({ email }) => {
                 </ConfirmDialog>
             }
 
+            {
+                showModalDelExp &&
+                <ConfirmDialog info="la experiencia laboral" title="Eliminar experiencia laboral">
+
+                    <button className="button is-small is-danger is-pulled-left" onClick={event => setShowModalDelExp(false)}> Cancelar</button>
+                    <button className="button is-small is-success is-pulled-rigth" onClick={event => {
+                        setShowModalDelExp(false); doDeleteExperienciaLaboral();
+                    }}>Confirmar</button>
+                </ConfirmDialog>
+            }
             {/* Modal Capacitaciones*/}
             {
                 showModalCapacitacion && <CapacitacionModalForm
                     title={objeto !== null ? 'Editar capacitación' : 'Registrar capacitación'}
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerCap : postHandlerCap}>
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={event => setResponse(null)}></button>
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={event => {
-                            setResponse(null)
-                            setShowModalCapacitacion(false)
-                            setObjeto(null)
-                            dispatch(
-                                loadCapacitaciones(persona.identificacion)
-                            )
-                        }}></button>
-                    </Alert>}
-                    {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={event => setError(null)}></button>
-                    </Alert>}
+                    <div className="columns is-centered">
+                        <div className="column is-6">
+                            {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                                <button className="delete" onClick={event => setResponse(null)}></button>
+                            </Alert>}
+                            {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                                <button className="delete" onClick={event => {
+                                    setResponse(null)
+                                    setShowModalCapacitacion(false)
+                                    setObjeto(null)
+                                    dispatch(
+                                        loadCapacitaciones(persona.identificacion)
+                                    )
+                                }}></button>
+                            </Alert>}
+                            {error && <Alert type={'is-danger is-light'} content={error.message}>
+                                <button className="delete" onClick={event => setError(null)}></button>
+                            </Alert>}
+                        </div>
+                    </div>
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalCapacitacion(false)
                         setObjeto(null)
@@ -1034,22 +1258,26 @@ const CV = ({ email }) => {
                     title={objeto !== null ? 'Editar capacitación' : 'Registrar capacitación'}
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerCapFac : postHandlerCapFac}>
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={event => setResponse(null)}></button>
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={event => {
-                            setResponse(null)
-                            setShowModalCapacitacionFac(false)
-                            setObjeto(null)
-                            dispatch(
-                                loadCapacitacionesFacilitador(persona.identificacion)
-                            )
-                        }}></button>
-                    </Alert>}
-                    {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={event => setError(null)}></button>
-                    </Alert>}
+                    <div className="columns is-centered">
+                        <div className="column is-6">
+                            {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                                <button className="delete" onClick={event => setResponse(null)}></button>
+                            </Alert>}
+                            {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                                <button className="delete" onClick={event => {
+                                    setResponse(null)
+                                    setShowModalCapacitacionFac(false)
+                                    setObjeto(null)
+                                    dispatch(
+                                        loadCapacitacionesFacilitador(persona.identificacion)
+                                    )
+                                }}></button>
+                            </Alert>}
+                            {error && <Alert type={'is-danger is-light'} content={error.message}>
+                                <button className="delete" onClick={event => setError(null)}></button>
+                            </Alert>}
+                        </div>
+                    </div>
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalCapacitacionFac(false)
                         setObjeto(null)
@@ -1057,28 +1285,33 @@ const CV = ({ email }) => {
                 </CapacitacionFacModalForm>
             }
 
-             {/* Modal Ponencias*/}
-             {
+            {/* Modal Ponencias*/}
+            {
                 showModalPonencia && <PonenciaModalForm
                     title={objeto !== null ? 'Editar ponencia' : 'Registrar ponencia'}
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerPonencia : postHandlerPonencia}>
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={event => setResponse(null)}></button>
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={event => {
-                            setResponse(null)
-                            setShowModalPonencia(false)
-                            setObjeto(null)
-                            dispatch(
-                                loadPonencias(persona.identificacion)
-                            )
-                        }}></button>
-                    </Alert>}
-                    {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={event => setError(null)}></button>
-                    </Alert>}
+                    <div className="columns is-centered">
+                        <div className="column is-6">
+                            {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                                <button className="delete" onClick={event => setResponse(null)}></button>
+
+                            </Alert>}
+                            {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                                <button className="delete" onClick={event => {
+                                    setResponse(null)
+                                    setShowModalPonencia(false)
+                                    setObjeto(null)
+                                    dispatch(
+                                        loadPonencias(persona.identificacion)
+                                    )
+                                }}></button>
+                            </Alert>}
+                            {error && <Alert type={'is-danger is-light'} content={error.message}>
+                                <button className="delete" onClick={event => setError(null)}></button>
+                            </Alert>}
+                        </div>
+                    </div>
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalPonencia(false)
                         setObjeto(null)
@@ -1086,27 +1319,63 @@ const CV = ({ email }) => {
                 </PonenciaModalForm>
             }
 
+            {/*Modal Experiencia Laboral*/}
+            {showModalExperienciaLaboral && <ExperienciaLaboralModalForm
+                title={objeto !== null ? 'Editar experiencia laboral' : 'Registrar experiencia laboral'}
+                objeto={objeto}
+                handler={objeto !== null ? putHandlerExperienciaLaboral : postHandlerExperienciaLaboral}>
+                <div className="columns is-centered">
+                    <div className="column is-6">
+                        {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                            <button className="delete" onClick={event => setResponse(null)}></button>
+                        </Alert>}
+                        {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                            <button className="delete" onClick={event => {
+                                setResponse(null)
+                                setShowModalExperienciaLaboral(false)
+                                setObjeto(null)
+                                dispatch(
+                                    loadExperienciaLaboral(persona.identificacion)
+                                )
+                            }}></button>
+                        </Alert>}
+                        {error && <Alert type={'is-danger is-light'} content={error.message}>
+                            <button className="delete" onClick={event => setError(null)}></button>
+                        </Alert>}
+                    </div>
+                </div>
+                <button className="button is-small is-danger mx-3" onClick={ev => {
+                    setShowModalExperienciaLaboral(false)
+                    setObjeto(null)
+                }}>Cancelar</button>
+            </ExperienciaLaboralModalForm>
+            }
+
             {
                 showModalReferencia && <ReferenciaModalForm
                     title={objeto !== null ? 'Editar referencia' : 'Registrar referencia'}
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerRef : postHandlerRef}>
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={event => setResponse(null)}></button>
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={event => {
-                            setResponse(null)
-                            setShowModalReferencia(false)
-                            setObjeto(null)
-                            dispatch(
-                                loadReferencias(persona.identificacion)
-                            )
-                        }}></button>
-                    </Alert>}
-                    {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={event => setError(null)}></button>
-                    </Alert>}
+                    <div className="columns is-centered">
+                        <div className="column is-6">
+                            {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                                <button className="delete" onClick={event => setResponse(null)}></button>
+                            </Alert>}
+                            {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                                <button className="delete" onClick={event => {
+                                    setResponse(null)
+                                    setShowModalReferencia(false)
+                                    setObjeto(null)
+                                    dispatch(
+                                        loadReferencias(persona.identificacion)
+                                    )
+                                }}></button>
+                            </Alert>}
+                            {error && <Alert type={'is-danger is-light'} content={error.message}>
+                                <button className="delete" onClick={event => setError(null)}></button>
+                            </Alert>}
+                        </div>
+                    </div>
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalReferencia(false)
                         setObjeto(null)
