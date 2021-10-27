@@ -70,8 +70,8 @@ export const postIdiomas = createAsyncThunk(
         try {
             let data = {
                 id_persona: idioma.id_persona,
-                idioma: idioma.idioma,
-                lugar_estudio: idioma.lugarEstudio,
+                idioma: idioma.idioma.toUpperCase(),
+                lugar_estudio: idioma.lugarEstudio.toUpperCase(),
                 nivel_comprension: idioma.nivel
             }
             let response = await Axios.post(`${API}/idiomas`, data,
@@ -108,9 +108,9 @@ export const putIdiomas = createAsyncThunk(
         if (!token) return Promise.reject('There is not token')
         try {
             let data = {
-                id_: idioma,
-                idioma: idioma.idioma,
-                lugar_estudio: idioma.lugarEstudio,
+                id: idioma.id,
+                idioma: idioma.idioma.toUpperCase(),
+                lugar_estudio: idioma.lugarEstudio.toUpperCase(),
                 nivel_comprension: idioma.nivel
             }
             let response = await Axios.put(`${API}/idiomas/`, data,

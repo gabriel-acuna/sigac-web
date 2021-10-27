@@ -364,7 +364,7 @@ const CV = ({ email }) => {
                             setPersona(resp)
 
                             dispatch(
-                                loadIdioma(persona.identificacion)
+                                loadIdiomas(persona.identificacion)
                             )
                         }
 
@@ -1592,7 +1592,7 @@ const CV = ({ email }) => {
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerCap : postHandlerCap}>
                     <div className="columns is-centered">
-                        <div className="column is-6">
+                        <div className="column">
                             {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
                                 <button className="delete" onClick={event => setResponse(null)}></button>
                             </Alert>}
@@ -1625,7 +1625,7 @@ const CV = ({ email }) => {
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerCapFac : postHandlerCapFac}>
                     <div className="columns is-centered">
-                        <div className="column is-6">
+                        <div className="column">
                             {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
                                 <button className="delete" onClick={event => setResponse(null)}></button>
                             </Alert>}
@@ -1658,7 +1658,7 @@ const CV = ({ email }) => {
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerPonencia : postHandlerPonencia}>
                     <div className="columns is-centered">
-                        <div className="column is-6">
+                        <div className="column">
                             {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
                                 <button className="delete" onClick={event => setResponse(null)}></button>
 
@@ -1691,7 +1691,7 @@ const CV = ({ email }) => {
                 objeto={objeto}
                 handler={objeto !== null ? putHandlerExperienciaLaboral : postHandlerExperienciaLaboral}>
                 <div className="columns is-centered">
-                    <div className="column is-6">
+                    <div className="column">
                         {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
                             <button className="delete" onClick={() => setResponse(null)}></button>
                         </Alert>}
@@ -1725,7 +1725,7 @@ const CV = ({ email }) => {
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerMerito : postHandlerMerito}>
                     <div className="columns is-centered">
-                        <div className="column is-6">
+                        <div className="column">
                             {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
                                 <button className="delete" onClick={event => setResponse(null)}></button>
                             </Alert>}
@@ -1757,7 +1757,7 @@ const CV = ({ email }) => {
                 objeto={objeto}
                 handler={objeto !== null ? putHandlerIdioma : postHandlerIdioma}>
                 <div className="columns is-centered">
-                    <div className="column is-6">
+                    <div className="column">
                         {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
                             <button className="delete" onClick={event => setResponse(null)}></button>
                         </Alert>}
@@ -1790,12 +1790,12 @@ const CV = ({ email }) => {
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerRef : postHandlerRef}>
                     <div className="columns is-centered">
-                        <div className="column is-6">
+                        <div className="column">
                             {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                                <button className="delete" onClick={event => setResponse(null)}></button>
+                                <button className="delete" onClick={() => setResponse(null)}></button>
                             </Alert>}
                             {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                                <button className="delete" onClick={event => {
+                                <button className="delete" onClick={() => {
                                     setResponse(null)
                                     setShowModalReferencia(false)
                                     setObjeto(null)

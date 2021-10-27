@@ -11,7 +11,7 @@ import { Fragment, useEffect } from 'react'
                 reset({
                     idioma:objeto.idioma,
                     lugarEstudio: objeto.lugar_estudio,
-                    nivel: objeto.nivel_compresion
+                    nivel: objeto.nivel_comprension
                 })
 
             }
