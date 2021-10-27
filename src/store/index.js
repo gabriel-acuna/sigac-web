@@ -31,7 +31,7 @@ import ponenciasReducer from './cv/ponencia'
 import meritosReducer from './cv/merito'
 import experienciaLaboralReducer from './cv/experiencia_laboral'
 import idiomasReducer from './cv/compresion_idioma'
-
+import financiamientoReducer from './core/tipo_financiamiento';
 
 import {
     persistStore,
@@ -75,7 +75,8 @@ const reducer = combineReducers({
     idiomas: idiomasReducer,
     referencias: referenciaReducer,
     estructuraInstitucional: estructuraInstitucionalReducer,
-    areasInstitucionales: areaIstitucionalReducer
+    areasInstitucionales: areaIstitucionalReducer,
+    financiamientos: financiamientoReducer
 
 
 });

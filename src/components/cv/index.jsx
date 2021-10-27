@@ -38,12 +38,12 @@ import Alert from '../Alert'
 import { useSelector } from 'react-redux'
 import { logOut } from '../../store/user'
 import ConfirmDialog from '../ConfirmDialog'
+import FormacionAcademicaModalForm from './formacioAcademicaModal';
 import CapacitacionModalForm from './capacitacionesModal'
 import CapacitacionFacModalForm from './capacitacionesFacModal'
 import PonenciaModalForm from './ponenciasModal'
 import ExperienciaLaboralModalForm from './experienciaLaboralModal'
 import MeritoModalForm from './meritoModal'
-import idiomaModalForm from './idiomaModal';
 import IdiomaModalForm from './idiomaModal';
 
 const CV = ({ email }) => {
@@ -65,7 +65,7 @@ const CV = ({ email }) => {
     const [showModalCapacitacion, setShowModalCapacitacion] = useState(false)
     const [showModalCapacitacionFac, setShowModalCapacitacionFac] = useState(false)
     const [showModalPonencia, setShowModalPonencia] = useState(false)
-    const [showModalFormacionAcdemica, setShowModalFormacionAcademica] = useState(false)
+    const [showModalFormacionAcademica, setShowModalFormacionAcademica] = useState(false)
     const [showModalExperienciaLaboral, setShowModalExperienciaLaboral] = useState(false)
     const [showModalMerito, setShowModalMerito] = useState(false)
     const [showModalIdioma, setShowModalIdioma] = useState(false)
@@ -784,7 +784,7 @@ const CV = ({ email }) => {
                 }
             )
     }
-    
+
     let postHandlerIdioma = (data) => {
 
         dispatch(
@@ -1584,6 +1584,38 @@ const CV = ({ email }) => {
                 </ConfirmDialog>
             }
 
+            {/* Modal formación profesional */}
+            {
+                 showModalFormacionAcademica && <FormacionAcademicaModalForm
+                 title={objeto !== null ? 'Editar formación académica' : 'Registrar formación académica'}
+                 objeto={objeto}
+               >
+                 <div className="columns is-centered">
+                     <div className="column">
+                         {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                             <button className="delete" onClick={() => setResponse(null)}></button>
+                         </Alert>}
+                         {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                             <button className="delete" onClick={() => {
+                                 setResponse(null)
+                                 setShowModalFormacionAcademica(false)
+                                 setObjeto(null)
+                                 dispatch(
+                                     loadFormacionAcademica(persona.identificacion)
+                                 )
+                             }}></button>
+                         </Alert>}
+                         {error && <Alert type={'is-danger is-light'} content={error.message}>
+                             <button className="delete" onClick={() => setError(null)}></button>
+                         </Alert>}
+                     </div>
+                 </div>
+                 <button className="button is-small is-danger mx-3" onClick={ev => {
+                     setShowModalFormacionAcademica(false)
+                     setObjeto(null)
+                 }}>Cancelar</button>
+             </FormacionAcademicaModalForm>
+            }
 
             {/* Modal Capacitaciones*/}
             {
@@ -1594,10 +1626,10 @@ const CV = ({ email }) => {
                     <div className="columns is-centered">
                         <div className="column">
                             {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                                <button className="delete" onClick={event => setResponse(null)}></button>
+                                <button className="delete" onClick={() => setResponse(null)}></button>
                             </Alert>}
                             {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                                <button className="delete" onClick={event => {
+                                <button className="delete" onClick={() => {
                                     setResponse(null)
                                     setShowModalCapacitacion(false)
                                     setObjeto(null)
@@ -1607,7 +1639,7 @@ const CV = ({ email }) => {
                                 }}></button>
                             </Alert>}
                             {error && <Alert type={'is-danger is-light'} content={error.message}>
-                                <button className="delete" onClick={event => setError(null)}></button>
+                                <button className="delete" onClick={() => setError(null)}></button>
                             </Alert>}
                         </div>
                     </div>
@@ -1752,35 +1784,35 @@ const CV = ({ email }) => {
             }
             {/*Modal Compresion de idiomas*/}
             {
-                showModalIdioma  && <IdiomaModalForm
-                title={objeto !== null ? 'Editar mérito' : 'Registrar mérito'}
-                objeto={objeto}
-                handler={objeto !== null ? putHandlerIdioma : postHandlerIdioma}>
-                <div className="columns is-centered">
-                    <div className="column">
-                        {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                            <button className="delete" onClick={event => setResponse(null)}></button>
-                        </Alert>}
-                        {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                            <button className="delete" onClick={event => {
-                                setResponse(null)
-                                setShowModalIdioma(false)
-                                setObjeto(null)
-                                dispatch(
-                                    loadIdiomas(persona.identificacion)
-                                )
-                            }}></button>
-                        </Alert>}
-                        {error && <Alert type={'is-danger is-light'} content={error.message}>
-                            <button className="delete" onClick={() => setError(null)}></button>
-                        </Alert>}
+                showModalIdioma && <IdiomaModalForm
+                    title={objeto !== null ? 'Editar mérito' : 'Registrar mérito'}
+                    objeto={objeto}
+                    handler={objeto !== null ? putHandlerIdioma : postHandlerIdioma}>
+                    <div className="columns is-centered">
+                        <div className="column">
+                            {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                                <button className="delete" onClick={event => setResponse(null)}></button>
+                            </Alert>}
+                            {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                                <button className="delete" onClick={event => {
+                                    setResponse(null)
+                                    setShowModalIdioma(false)
+                                    setObjeto(null)
+                                    dispatch(
+                                        loadIdiomas(persona.identificacion)
+                                    )
+                                }}></button>
+                            </Alert>}
+                            {error && <Alert type={'is-danger is-light'} content={error.message}>
+                                <button className="delete" onClick={() => setError(null)}></button>
+                            </Alert>}
+                        </div>
                     </div>
-                </div>
-                <button className="button is-small is-danger mx-3" onClick={() => {
-                    setShowModalIdioma(false)
-                    setObjeto(null)
-                }}>Cancelar</button>
-            </IdiomaModalForm>
+                    <button className="button is-small is-danger mx-3" onClick={() => {
+                        setShowModalIdioma(false)
+                        setObjeto(null)
+                    }}>Cancelar</button>
+                </IdiomaModalForm>
             }
 
             {/* Modal Referencia*/}

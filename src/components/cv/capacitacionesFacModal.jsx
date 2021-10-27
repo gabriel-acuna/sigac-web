@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form'
 import { Fragment, useEffect } from 'react'
 
 
-let CapacitacionFaciñitadorModalForm = ({ title, handler, children, objeto }) => {
+let CapacitacionFacilitadorModalForm = ({ title, handler, children, objeto }) => {
 
 
     const { register, reset, handleSubmit, formState: { errors }, getValues, clearErrors, setError } = useForm()
@@ -145,4 +145,4 @@ let CapacitacionFaciñitadorModalForm = ({ title, handler, children, objeto }) =
     )
 }
 
-export default CapacitacionFaciñitadorModalForm;
+export default CapacitacionFacilitadorModalForm;
