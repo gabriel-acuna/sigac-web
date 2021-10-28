@@ -375,6 +375,62 @@ const CV = ({ email }) => {
             )
     }
 
+    let postHandlerFormacionAcademica = (data) => {
+        dispatch(
+            postFormacionAcademica(
+                {
+                    id_persona: persona.identificacion,
+                    ...data
+                }
+            )
+        ).unwrap()
+        .then((resp) => {
+            setResponse(resp);
+        })
+        .catch(
+            (err) => {
+                if (err.message.includes("undefined (reading 'data')")) {
+                    console.error("No hay conexión con el backend");
+                    setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                } else if (err.message === "Rejected") {
+                    dispatch(
+                        logOut()
+                    )
+                }
+
+                else { setError(err) }
+            }
+        )
+    }
+
+    let putHandlerFormacionAcademica = (data) => {
+        dispatch(
+            putFormacionAcademica(
+                {
+                    id: objeto.id,
+                    ...data
+                }
+            )
+        ).unwrap()
+        .then((resp) => {
+            setResponse(resp);
+        })
+        .catch(
+            (err) => {
+                if (err.message.includes("undefined (reading 'data')")) {
+                    console.error("No hay conexión con el backend");
+                    setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                } else if (err.message === "Rejected") {
+                    dispatch(
+                        logOut()
+                    )
+                }
+
+                else { setError(err) }
+            }
+        )
+    }
+
     let postHandlerRef = (data) => {
         dispatch(
 
@@ -1586,35 +1642,36 @@ const CV = ({ email }) => {
 
             {/* Modal formación profesional */}
             {
-                 showModalFormacionAcademica && <FormacionAcademicaModalForm
-                 title={objeto !== null ? 'Editar formación académica' : 'Registrar formación académica'}
-                 objeto={objeto}
-               >
-                 <div className="columns is-centered">
-                     <div className="column">
-                         {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                             <button className="delete" onClick={() => setResponse(null)}></button>
-                         </Alert>}
-                         {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                             <button className="delete" onClick={() => {
-                                 setResponse(null)
-                                 setShowModalFormacionAcademica(false)
-                                 setObjeto(null)
-                                 dispatch(
-                                     loadFormacionAcademica(persona.identificacion)
-                                 )
-                             }}></button>
-                         </Alert>}
-                         {error && <Alert type={'is-danger is-light'} content={error.message}>
-                             <button className="delete" onClick={() => setError(null)}></button>
-                         </Alert>}
-                     </div>
-                 </div>
-                 <button className="button is-small is-danger mx-3" onClick={ev => {
-                     setShowModalFormacionAcademica(false)
-                     setObjeto(null)
-                 }}>Cancelar</button>
-             </FormacionAcademicaModalForm>
+                showModalFormacionAcademica && <FormacionAcademicaModalForm
+                    title={objeto !== null ? 'Editar formación académica' : 'Registrar formación académica'}
+                    objeto={objeto}
+                    handler={objeto !== null ? putHandlerFormacionAcademica : postHandlerFormacionAcademica}
+                >
+                    <div className="columns is-centered">
+                        <div className="column">
+                            {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                                <button className="delete" onClick={() => setResponse(null)}></button>
+                            </Alert>}
+                            {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                                <button className="delete" onClick={() => {
+                                    setResponse(null)
+                                    setShowModalFormacionAcademica(false)
+                                    setObjeto(null)
+                                    dispatch(
+                                        loadFormacionAcademica(persona.identificacion)
+                                    )
+                                }}></button>
+                            </Alert>}
+                            {error && <Alert type={'is-danger is-light'} content={error.message}>
+                                <button className="delete" onClick={() => setError(null)}></button>
+                            </Alert>}
+                        </div>
+                    </div>
+                    <button className="button is-small is-danger mx-3" onClick={ev => {
+                        setShowModalFormacionAcademica(false)
+                        setObjeto(null)
+                    }}>Cancelar</button>
+                </FormacionAcademicaModalForm>
             }
 
             {/* Modal Capacitaciones*/}

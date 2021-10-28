@@ -8,7 +8,7 @@ import { API } from '../../services/api'
 
 export const loadFormacionAcademica = createAsyncThunk(
     'formacion-academica/load',
-    async ( id_persona, { getState }) => {
+    async (id_persona, { getState }) => {
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -58,7 +58,7 @@ export const loadFormacion = createAsyncThunk(
 
 export const postFormacionAcademica = createAsyncThunk(
     'formacion-academica/post',
-    async ( formacion, { getState }) => {
+    async (formacion, { getState }) => {
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -68,7 +68,30 @@ export const postFormacionAcademica = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.post(`${API}/formacion-academica`, formacion,
+            let data = {
+                id_persona: formacion.id_persona,
+                pais_estudio: formacion.paisEstudio,
+                ies: formacion?.ies ? formacion.ies : null,
+                nombre_ies: formacion?.nombreIES ? formacion.nombreIES.toUpperCase():'',
+                nivel_educativo: formacion.nivel,
+                grado: formacion?.grado ? formacion.grado : null,
+                nombre_titulo: formacion.titulo.toUpperCase(),
+                campo_especifico: formacion.campoEstudio,
+                estado: formacion.estado,
+                fecha_inicio: formacion.fechaInicio,
+                fecha_fin: formacion?.fechaFin ? formacion.fechaFin: null,
+                registro_senescyt: formacion?.registroSenescyt ? formacion.registroSenescyt:'', 
+                fecha_obtencion_titulo: formacion?.fechaObtencionTitulo ? formacion.fechaObtencionTitulo:null,
+                lugar: formacion.lugar.toUpperCase(),
+                posee_beca: formacion?.poseeBeca ? formacion.poseeBeca : '',
+                tipo_beca: formacion?.tipoBeca ? formacion.tipoBeca:null,
+                monto_beca: formacion?.montoBeca ? formacion.montoBeca: 0,
+                financiamiento: formacion?.financiamiento ? formacion.financiamiento : null,
+                descripcion: formacion?.descripcion ? formacion.descripcion.toUpperCase() : ''
+            }
+            console.log(formacion, data);
+
+            let response = await Axios.post(`${API}/formacion-academica`, data,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -101,7 +124,28 @@ export const putFormacionAcademica = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.put(`${API}/formacion-academica/${formacion.id}`, formacion.formacion,
+            let data = {
+                id: formacion.id,
+                pais_estudio: formacion.paisEstudio,
+                ies: formacion?.ies ? formacion.ies : null,
+                nombre_ies: formacion?.nombreIES ? formacion.nombreIES.toUpperCase():'',
+                nivel_educativo: formacion.nivel,
+                grado: formacion?.grado ? formacion.grado : null,
+                nombre_titulo: formacion.titulo.toUpperCase(),
+                campo_especifico: formacion.campoEstudio,
+                estado: formacion.estado,
+                fecha_inicio: formacion.fechaInicio,
+                fecha_fin: formacion?.fechaFin ? formacion.fechaFin: null,
+                registro_senescyt: formacion?.registroSenescyt ? formacion.registroSenescyt:'', 
+                fecha_obtencion_titulo: formacion?.fechaObtencionTitulo ? formacion.fechaObtencionTitulo:null,
+                lugar: formacion.lugar.toUpperCase(),
+                posee_beca: formacion?.poseeBeca ? formacion.poseeBeca : '',
+                tipo_beca: formacion?.tipoBeca ? formacion.tipoBeca:null,
+                monto_beca: formacion?.montoBeca ? formacion.montoBeca: 0,
+                financiamiento: formacion?.financiamiento ? formacion.financiamiento : null,
+                descripcion: formacion?.descripcion ? formacion.descripcion.toUpperCase() : ''
+            }
+            let response = await Axios.put(`${API}/formacion-academica/`, data,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -152,7 +196,7 @@ let formacionAcademicaSlice = createSlice({
     name: 'formacionAcademica',
     initialState: {
         data: {
-            formacionAcademica: []  
+            formacionAcademica: []
         },
         status: ''
 

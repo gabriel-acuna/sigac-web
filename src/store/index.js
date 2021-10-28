@@ -35,6 +35,7 @@ import financiamientoReducer from './core/tipo_financiamiento'
 import gradoReducer from './core/grado'
 import tipoBecaReducer from './core/tipoBeca'
 import campoDetalladoReducer from './core/campoDetallado'
+import campoEspecificoReducer from './core/campoEspecifico'
 import iesNacionalesReducer from './core/ies-nacionales'
 
 import {
@@ -83,7 +84,8 @@ const reducer = combineReducers({
     financiamientos: financiamientoReducer,
     tipoBecas:tipoBecaReducer,
     grados: gradoReducer,
-    campoDetallado: campoDetalladoReducer,
+    camposDetallados: campoDetalladoReducer,
+    camposEspecificos:campoEspecificoReducer,
     ies: iesNacionalesReducer
 
 
