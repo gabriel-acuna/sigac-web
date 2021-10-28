@@ -5,6 +5,10 @@ import { loadPaises } from '../../store/core/paises'
 import { loadNivelesEducativos } from '../../store/core/nivelesEducativos'
 import { useSelector } from 'react-redux'
 import { loadTiposFinanciamientos } from '../../store/core/tipo_financiamiento'
+import { loadGrados } from '../../store/core/grado'
+import { loadTipoBecas } from '../../store/core/tipoBeca'
+import { loadIESNacionales } from '../../store/core/ies-nacionales'
+import { loadCamposDetallados } from '../../store/core/campoDetallado'
 
 
 let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
@@ -14,13 +18,37 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
     const opciones = { TERMINADA: "FINALIZADO", CURSANDO: "EN CURSO" }
     const [estadoFormacion, setEstadoFormacion] = useState(null)
     const [paises, setPaises] = useState([])
+    const [listadoIES, setListadoIES] = useState([])
+    const [listadoCampos, setListadoCampos] = useState([])
     const [nivelEdu, setNivelEdu] = useState(null)
     const [pais, setPais] = useState(null)
     const [tieneBeca, setTieneBeca] = useState(null)
+    const [tipoFin, setTipoFin] = useState(null)
+    const dispatch = useDispatch()
+
+    useEffect(
+        () => {
+            dispatch(loadPaises())
+            dispatch(loadIESNacionales())
+            dispatch(loadNivelesEducativos())
+            dispatch(loadCamposDetallados())
+            dispatch(loadGrados())
+            dispatch(loadTiposFinanciamientos())
+            dispatch(loadTipoBecas())
+            
+            
+        }, [dispatch]
+    )
+
     let paisesState = useSelector(state => state.paises.data.paises)
+    let iesState = useSelector(state => state.ies.data.iesNacionales)
     let nivelesState = useSelector(state => state.nivelesEducativos.data.nivelesEducativos)
     let financiamientosState = useSelector(state => state.financiamientos.data.tiposFinanciamientos)
-    const dispatch = useDispatch()
+    let tipoBecasState = useSelector(state=>state.tipoBecas.data.tipoBecas)
+    let gradosState = useSelector(state=>state.grados.data.grados )
+    let camposState = useSelector(state=>state.campoDetallado.data.campos)
+
+    
 
     let filtrarPaises = (ev) => {
         let filtrados = []
@@ -36,13 +64,36 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
 
     }
 
-    useEffect(
-        () => {
-            dispatch(loadPaises())
-            dispatch(loadNivelesEducativos())
-            dispatch(loadTiposFinanciamientos())
-        }, []
-    )
+    let filtrarIES = (ev) => {
+        let filtrados = []
+
+        iesState.forEach(
+            (item) => {
+                
+                if ( ev!== null && item?.institucion && item.institucion.includes(ev.toUpperCase())) {
+                    filtrados.push(item)
+                }
+            }
+        )
+        setListadoIES(filtrados)
+
+    }
+
+    let filtrarCampos = (ev) => {
+        let filtrados = []
+
+        camposState.forEach(
+            (ies) => {
+                if ( ev!== null && ies.descripcion.includes(ev.toUpperCase())) {
+                    filtrados.push(ies)
+                }
+            }
+        )
+        setListadoCampos(filtrados)
+
+    }
+
+    
 
     useEffect(
         () => {
@@ -97,19 +148,27 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                             {pais === 'ECUADOR' && <div className="column">
                                 <div className="control">
                                     <label className="label is-small is-uppercase">IES</label>
-                                    <input type="search" className="input" />
+                                    <input type="text" className="input is-uppercase" onChange={ev => filtrarIES(ev.target.value)}/>
                                     {errors.ies && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, seleecione la IES en la está realizado o realizó su formación!</span>}
                                 </div>
 
 
                                 <div className="select">
                                     <select type="text" className="input input is-uppercase" {...register('ies', { required: true, valueAsNumber: true })} >
+                                        <option></option>
+                                        {
+                                            listadoIES.map(
+                                                item=>(
+                                                    <option value={item.id}>{item.codigo} - {item.institucion}</option>
+                                                )
+                                            )
+                                        }
                                     </select>
                                 </div>
 
                             </div>}
 
-                            {pais !== 'ECUADOR' && <div className="column is-6">
+                            {pais !== 'ECUADOR' && <div className="column">
                                 <label className="label is-small is-uppercase">Nombre IES</label>
                                 {errors.nombreIES && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el nombre de la IES Internacional!</span>}
                                 <div className="control">
@@ -139,18 +198,24 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                 </div>
                             </div>
 
-                            {nivelEdu === 'CUARTO NIVEL' && <div className="column">
+                            {nivelEdu === 'CUARTO NIVEL' && <div className="column is-6">
                                 <div className="control">
                                     <label className="label is-small is-uppercase">Grado</label>
                                     {errors.grado && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Selecione el grado!</span>}
                                 </div>
                                 <div className="select">
                                     <select {...register('grado', { required: true })}>
-                                        <option></option>
+                                        <option> </option>
+                                        {gradosState.map(
+                                            (g)=>(
+                                            <option value={g.id}> {g.codigo} </option>
+                                            )
+                                        )}
                                     </select>
                                 </div>
                             </div>}
-
+                        </div>
+                        <div className="columns">
                             <div className="column is-6">
                                 <label className="label is-small is-uppercase">Título</label>
                                 {errors.titulo && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el título!</span>}
@@ -163,7 +228,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                             <div className="column">
                                 <div className="control">
                                     <label className="label is-small is-uppercase">Campo de estudio</label>
-                                    <input type="text" className="input" />
+                                    <input type="text" className="input"  onChange={ev=>filtrarCampos(ev.target.value)}/>
                                 </div>
                                 {errors.campoEstudio && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Selecione el campo de estudio!</span>}
 
@@ -176,6 +241,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                 </div>
                             </div>
                         </div>
+                        
                         <div className="columns">
                             <div className="column">
                                 <div className="control">
@@ -294,7 +360,13 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                 <div className="select">
                                     <select tclassName="input" {...register('tipoBeca', { required: true })} >
                                         <option></option>
-
+                                        {
+                                            tipoBecasState.map(
+                                                (tipo) =>(
+                                                    <option value={tipo.id}>{tipo.tipo_beca}</option>
+                                                )
+                                            )
+                                        }
                                     </select>
                                 </div>
 
@@ -328,7 +400,9 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                         {errors.financiamiento && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, selecione el tipo de financiamiento!</span>}
                                     </div>
                                     <div className="select">
-                                        <select tclassName="input" {...register('financiamiento', { required: true })} >
+                                        <select tclassName="input" {...register('financiamiento', { required: true })} 
+                                        onChange={ev => setTipoFin(ev.target.options[ev.target.selectedIndex].text)}
+                                        >
                                             <option></option>
                                             {financiamientosState.map(
                                                 (financiamiento) => (
@@ -340,16 +414,16 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                     </div>
                                 </div>
                             }
-                            {tieneBeca === 'SI' && <div className="column">
+                            {tieneBeca === 'SI' &&  tipoFin ==='OTRO' && <div className="column">
                                 <div className="control">
                                     <label className="label is-small is-uppercase">Descripción</label>
                                     {errors.financiamiento && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, describa el tipo de financiamiento!</span>}
                                 </div>
-                                <div className="select">
-                                    <select tclassName="input" {...register('financiamiento', { required: true })} >
-                                        <option></option>
+                                <div className="control">
+                                    <input className="input" {...register('descripcion', { required: true })} />
+                                       
 
-                                    </select>
+                                    
                                 </div>
 
                             </div>}

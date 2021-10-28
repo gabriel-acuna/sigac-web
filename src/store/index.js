@@ -31,7 +31,11 @@ import ponenciasReducer from './cv/ponencia'
 import meritosReducer from './cv/merito'
 import experienciaLaboralReducer from './cv/experiencia_laboral'
 import idiomasReducer from './cv/compresion_idioma'
-import financiamientoReducer from './core/tipo_financiamiento';
+import financiamientoReducer from './core/tipo_financiamiento'
+import gradoReducer from './core/grado'
+import tipoBecaReducer from './core/tipoBeca'
+import campoDetalladoReducer from './core/campoDetallado'
+import iesNacionalesReducer from './core/ies-nacionales'
 
 import {
     persistStore,
@@ -76,7 +80,12 @@ const reducer = combineReducers({
     referencias: referenciaReducer,
     estructuraInstitucional: estructuraInstitucionalReducer,
     areasInstitucionales: areaIstitucionalReducer,
-    financiamientos: financiamientoReducer
+    financiamientos: financiamientoReducer,
+    tipoBecas:tipoBecaReducer,
+    grados: gradoReducer,
+    campoDetallado: campoDetalladoReducer,
+    ies: iesNacionalesReducer
+
 
 
 });
