@@ -935,7 +935,7 @@ const CV = ({ email }) => {
                         <div className="card">
                             <header className="card-header" onClick={() => setExpandirFormacion(!expandirFormacion)}>
                                 <p className="card-header-title">
-                                    Formación Profesional
+                                    Formación Académica
                                 </p>
                                 <button className="card-header-icon" aria-label="more options">
                                     <span className="icon">
@@ -1640,7 +1640,7 @@ const CV = ({ email }) => {
                 </ConfirmDialog>
             }
 
-            {/* Modal formación profesional */}
+            {/* Modal formación académica */}
             {
                 showModalFormacionAcademica && <FormacionAcademicaModalForm
                     title={objeto !== null ? 'Editar formación académica' : 'Registrar formación académica'}
@@ -1710,7 +1710,7 @@ const CV = ({ email }) => {
             {/* Modal Capacitaciones Facilitador*/}
             {
                 showModalCapacitacionFac && <CapacitacionFacModalForm
-                    title={objeto !== null ? 'Editar capacitación' : 'Registrar capacitación'}
+                    title={objeto !== null ? 'Editar capacitación (facilitador)' : 'Registrar capacitación (facilitador)' }
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerCapFac : postHandlerCapFac}>
                     <div className="columns is-centered">
@@ -1842,7 +1842,7 @@ const CV = ({ email }) => {
             {/*Modal Compresion de idiomas*/}
             {
                 showModalIdioma && <IdiomaModalForm
-                    title={objeto !== null ? 'Editar mérito' : 'Registrar mérito'}
+                    title={objeto !== null ? 'Editar idioma' : 'Registrar idioma'}
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerIdioma : postHandlerIdioma}>
                     <div className="columns is-centered">
