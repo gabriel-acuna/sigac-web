@@ -89,7 +89,6 @@ export const postFormacionAcademica = createAsyncThunk(
                 financiamiento: formacion?.financiamiento ? formacion.financiamiento : null,
                 descripcion: formacion?.descripcion ? formacion.descripcion.toUpperCase() : ''
             }
-            console.log(formacion, data);
 
             let response = await Axios.post(`${API}/formacion-academica`, data,
                 {

@@ -99,9 +99,30 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
     useEffect(
         () => {
             if (objeto !== null) {
+               
+                filtrarPaises(objeto.pais_estudio.pais)
+                filtrarIES(objeto.ies?.institucion)
+                filtrarCampos(objeto.campo_especifico.descripcion)
+                setPais(objeto.pais_estudio.pais)
+                setNivelEdu(objeto.nivel_educativo.nivel)
+                setEstadoFormacion(objeto.estado)
+                setTipoFin(objeto.financiamiento?.financiamiento)
+                setTieneBeca(objeto.posee_beca)
                 reset({
-
-
+                    nombreIES:objeto.nombre_ies,
+                    descripcion:objeto.descripcion,
+                    estado:objeto.estado,
+                    fechaInicio:objeto.fecha_inicio,
+                    registroSenescyt:objeto.registro_senescyt,
+                    fechaFin:objeto.fecha_fin,
+                    fechaObtencionTitulo:objeto.fecha_obtencion_titulo,
+                    lugar: objeto.lugar,
+                    titulo: objeto.nombre_titulo,
+                    poseeBeca:objeto.posee_beca,
+                    montoBeca:objeto.monto_beca
+                    
+                    
+            
                 })
             }
         }, [objeto, reset]

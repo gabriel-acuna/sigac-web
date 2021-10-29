@@ -167,7 +167,7 @@ const CV = ({ email }) => {
         setShowModalDelIdi(true)
         setId(id)
     }
-    let doDeleteFormacionAcadémica = () => {
+    let doDeleteFormacionAcademica = () => {
         dispatch(
             deleteFormacionAcademica(id)
 
@@ -976,7 +976,7 @@ const CV = ({ email }) => {
                                                                 <td>{estudio.nombre_titulo}</td>
                                                                 <td>{estudio.estado}</td>
                                                                 <td>
-                                                                    <button className="button is-small is-primary mx-2 is-outlined" key={`${estudio.id}0`} onClick={ev => {
+                                                                    <button className="button is-small is-primary mx-2 is-outlined" key={`${estudio.id}0`} onClick={ () => {
                                                                         setObjeto(estudio)
                                                                         setShowModalFormacionAcademica(true)
                                                                     }}>
@@ -984,8 +984,8 @@ const CV = ({ email }) => {
                                                                             <FaRegEdit />
                                                                         </span>
                                                                     </button>
-                                                                    <button className="button is-small is-danger mx-2 is-outlined" onClick={event => {
-                                                                        deleteHandlerCapFac(estudio.id)
+                                                                    <button className="button is-small is-danger mx-2 is-outlined" onClick={() => {
+                                                                        deleteHandlerFor(estudio.id)
                                                                     }}>
                                                                         <span className="icon">
                                                                             <AiOutlineDelete />
@@ -1560,7 +1560,7 @@ const CV = ({ email }) => {
 
                     <button className="button is-small is-danger is-pulled-left" onClick={event => setShowModalDelFor(false)}> Cancelar</button>
                     <button className="button is-small is-success is-pulled-rigth" onClick={event => {
-                        setShowModalDelFor(false); doDeleteFormacionAcadémica();
+                        setShowModalDelFor(false); doDeleteFormacionAcademica();
                     }}>Confirmar</button>
                 </ConfirmDialog>
             }
