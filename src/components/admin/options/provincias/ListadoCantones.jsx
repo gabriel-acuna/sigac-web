@@ -23,7 +23,7 @@ let ListadoCantonesProvincias = (props) => {
                 .catch(
                     (err) => console.error(err)
                 )
-        }, [id, distpatch, cantonesProvincia]
+        }, [id, distpatch]
     )
 
     const columns = [
@@ -47,7 +47,7 @@ let ListadoCantonesProvincias = (props) => {
                 </div>
             </div>
             <div className="columns is-centered">
-                <div className="column is-half">
+                <div className="column is-half mb-6">
                     <ReactDatatable style={{ justifyContent: 'center' }}
                         className="table is-bordered is-striped is-fullwidth"
                         tHeadClassName="has-background-success-light"

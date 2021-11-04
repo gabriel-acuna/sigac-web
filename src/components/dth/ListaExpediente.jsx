@@ -20,7 +20,6 @@ let ListaExpediente = (props) => {
     const dispatch = useDispatch()
     const [objeto, setObjeto] = useState(null)
     const [showModalForm, setShowModalForm] = useState(false)
-    const [showModalEditForm, setShowModalEditForm] = useState(false)
     const [showConfirmDialog, setShowConfirmDialog] = useState(false)
     const [response, setResponse] = useState(null)
     const [deteteResponse, setDeleteResponse] = useState(null)
@@ -141,8 +140,8 @@ let ListaExpediente = (props) => {
 
         dispatch(
             putDetalleExpediente(detalle)
-        ).unwrap().
-            then(
+        ).unwrap()
+            .then(
                 resp => setResponse(resp)
             ).catch(err => console.log(err))
     }

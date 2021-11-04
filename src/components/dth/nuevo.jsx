@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { set, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadPaises } from '../../store/core/paises';
 import { loadDiscapacidades } from '../../store/core/discapacidades';
@@ -10,7 +10,7 @@ import { loadCantonesProvincia, loadProvincias } from '../../store/core/provinci
 
 
 let RegistrarPersona = ({ title, handler, children, person }) => {
-    const { register, handleSubmit, reset, setError, clearErrors, getValues, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, setError, clearErrors, formState: { errors } } = useForm();
     const [paises, setPaises] = useState([])
     const [nacionalidades, setNacionalidades] = useState([])
     const [provincias, setProvincias] = useState([])

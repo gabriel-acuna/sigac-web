@@ -100,7 +100,7 @@ let CapacitacionFacilitadorModalForm = ({ title, handler, children, objeto }) =>
                             <div className="column">
                                 <label className="label is-small">Fecha fin</label>
                                 {errors.fechaFin && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la fecha de finalización del evento!</span>}
-                                {errors.fechaFin?.type == 'min' && <span className="has-text-danger is-size-7 has-background-danger-light">{errors.fechaFin.message}</span>}
+                                {errors.fechaFin?.type === 'min' && <span className="has-text-danger is-size-7 has-background-danger-light">{errors.fechaFin.message}</span>}
 
                                 <div className="control">
                                     <input type="date" className="input" {...register('fechaFin', { required: true })}   onChange={

@@ -30,7 +30,6 @@ let NavBar = (props) => {
             <div className="navbar-item has-dropdown is-hoverable">
                 <span className="navbar-link has-text-weight-bold">
                     Hola, { user.nombre} { user.apellido}
-
                 </span>
                 <div className="navbar-dropdown is-boxed">
                     <Link className="navbar-item" to="/change-password" >
@@ -44,7 +43,7 @@ let NavBar = (props) => {
                             <ImProfile/>
                         </span>
                         CV</Link>
-                    <a className="navbar-item" onClick={ event=>doLogOut()}>
+                    <a className="navbar-item" onClick={ ()=>doLogOut()}>
                         <span className="mr-2"> <FcRight /></span>
                         Cerrar sesión
                     </a>

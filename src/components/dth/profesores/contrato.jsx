@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux'
-import { useEffect, useState} from 'react'
-import { useDispatch } from 'react-redux'
+import { useState} from 'react'
 
 
 let ContratoProfesor = ({ objeto, register, errors, relacion }) => {

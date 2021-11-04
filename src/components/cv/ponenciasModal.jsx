@@ -5,7 +5,7 @@ import { Fragment, useEffect } from 'react'
 let CapacitacionModalForm = ({ title, handler, children, objeto }) => {
 
 
-    const { register, reset, handleSubmit, formState: { errors }, getValues, clearErrors, setError } = useForm()
+    const { register, reset, handleSubmit, formState: { errors }, clearErrors, setError } = useForm()
 
     useEffect(
         () => {

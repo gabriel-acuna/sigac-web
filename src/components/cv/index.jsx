@@ -31,7 +31,7 @@ import {
 } from '../../store/cv/merito'
 
 import {
-    loadIdiomas, postIdiomas, putIdiomas, deleteIdiomas, loadIdioma
+    loadIdiomas, postIdiomas, putIdiomas, deleteIdiomas
 } from '../../store/cv/compresion_idioma'
 
 import Alert from '../Alert'

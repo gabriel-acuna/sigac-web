@@ -3,7 +3,7 @@ import { Fragment, useEffect } from 'react'
  let IdiomaModalForm = ({ title, handler, children, objeto }) => {
 
     const comprension = [ 'Excelente', 'Buena', 'Limitada', 'Ninguna' ]
-    const { register, reset, handleSubmit, formState: { errors }, getValues, clearErrors, setError } = useForm()
+    const { register, reset, handleSubmit, formState: { errors } } = useForm()
 
     useEffect(
         () => {
