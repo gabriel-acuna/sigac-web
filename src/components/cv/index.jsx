@@ -384,23 +384,23 @@ const CV = ({ email }) => {
                 }
             )
         ).unwrap()
-        .then((resp) => {
-            setResponse(resp);
-        })
-        .catch(
-            (err) => {
-                if (err.message.includes("undefined (reading 'data')")) {
-                    console.error("No hay conexión con el backend");
-                    setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
-                } else if (err.message === "Rejected") {
-                    dispatch(
-                        logOut()
-                    )
-                }
+            .then((resp) => {
+                setResponse(resp);
+            })
+            .catch(
+                (err) => {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
 
-                else { setError(err) }
-            }
-        )
+                    else { setError(err) }
+                }
+            )
     }
 
     let putHandlerFormacionAcademica = (data) => {
@@ -412,23 +412,23 @@ const CV = ({ email }) => {
                 }
             )
         ).unwrap()
-        .then((resp) => {
-            setResponse(resp);
-        })
-        .catch(
-            (err) => {
-                if (err.message.includes("undefined (reading 'data')")) {
-                    console.error("No hay conexión con el backend");
-                    setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
-                } else if (err.message === "Rejected") {
-                    dispatch(
-                        logOut()
-                    )
-                }
+            .then((resp) => {
+                setResponse(resp);
+            })
+            .catch(
+                (err) => {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
 
-                else { setError(err) }
-            }
-        )
+                    else { setError(err) }
+                }
+            )
     }
 
     let postHandlerRef = (data) => {
@@ -976,7 +976,7 @@ const CV = ({ email }) => {
                                                                 <td>{estudio.nombre_titulo}</td>
                                                                 <td>{estudio.estado}</td>
                                                                 <td>
-                                                                    <button className="button is-small is-primary mx-2 is-outlined" key={`${estudio.id}0`} onClick={ () => {
+                                                                    <button className="button is-small is-primary mx-2 is-outlined" key={`${estudio.id}0`} onClick={() => {
                                                                         setObjeto(estudio)
                                                                         setShowModalFormacionAcademica(true)
                                                                     }}>
@@ -1710,7 +1710,7 @@ const CV = ({ email }) => {
             {/* Modal Capacitaciones Facilitador*/}
             {
                 showModalCapacitacionFac && <CapacitacionFacModalForm
-                    title={objeto !== null ? 'Editar capacitación (facilitador)' : 'Registrar capacitación (facilitador)' }
+                    title={objeto !== null ? 'Editar capacitación (facilitador)' : 'Registrar capacitación (facilitador)'}
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerCapFac : postHandlerCapFac}>
                     <div className="columns is-centered">

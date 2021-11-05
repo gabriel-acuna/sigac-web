@@ -88,7 +88,7 @@ let ListadoAreasInstitucionales = (props) => {
         }
     )
 
-    console.log(rows);
+
     let postHandler = (data) => {
 
         dispatch(

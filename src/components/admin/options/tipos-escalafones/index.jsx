@@ -1,15 +1,18 @@
 import ReactDatatable from '@yun548/bulma-react-datatable'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
-import { loadTiposEscalafonesNombramientos, clearData, deleteTiposEscalafonesNombramientos } from '../../../../store/core/tiposEscalafones'
+import { loadTiposEscalafonesNombramientos, clearData, deleteTiposEscalafonesNombramientos, postTiposEscalafonesNombramientos, putTiposEscalafonesNombramientos } from '../../../../store/core/tiposEscalafones'
 import ConfirmDialog from '../../../ConfirmDialog'
 import Alert from '../../../Alert'
-
-
+import { AiOutlineDelete } from 'react-icons/ai'
+import { FaRegEdit } from 'react-icons/fa'
+import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
+import ModalForm from './modal'
+import { logOut } from '../../../../store/user'
 
 let ListadoTiposEscalafones = (props) => {
-    
+
     let navigate = useNavigate()
     let dispatch = useDispatch()
 
@@ -31,16 +34,20 @@ let ListadoTiposEscalafones = (props) => {
     let tiposEscalafonesState = useSelector(state => state.tipoEscalafones.data.tipoEscalafones)
 
     const [response, setResponse] = useState(null)
+    const [delResponse, setDelResponse] = useState(null)
+    const [showModalForm, setShowModalForm] = useState(false)
     const [showModal, setShowModal] = useState(false)
+    const [objeto, setObjeto] = useState(null)
     const [id, setId] = useState(null)
+    const [error, setError] = useState(null)
 
     let deleteHandler = (id) => {
         setShowModal(true)
-        setId(id)      
+        setId(id)
 
     }
 
-    let doDelete = () =>{
+    let doDelete = () => {
         dispatch(
             deleteTiposEscalafonesNombramientos(id)
 
@@ -55,15 +62,81 @@ let ListadoTiposEscalafones = (props) => {
             )
     }
 
+    let postHandler = (data) => {
+
+        dispatch(
+            postTiposEscalafonesNombramientos(
+                { escalafon_nombramiento: data.tipoEscalafon.toUpperCase() }
+            )
+        ).unwrap()
+            .then((resp) => {
+                setResponse(resp);
+            })
+            .catch(
+                (err) => {
+                    if (err.message === "Cannot read property 'data' of undefined") {
+                        console.error("No hay conexión con el backend");
+
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+
+    }
+
+
+    let putHandler = (data) => {
+
+
+        dispatch(
+            putTiposEscalafonesNombramientos(
+
+                {
+                    id: objeto.id,
+                    escalafon_nombramiento: data.tipoEscalafon.toUpperCase()
+                }
+            )
+        ).unwrap()
+            .then((resp) => {
+                setResponse(resp);
+            })
+            .catch(
+                (err) => {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+
+    }
     let rows = tiposEscalafonesState.map(
         (row, index) => {
             return {
                 escalafonNombramiento: row.escalafon_nombramiento,
                 opciones: [
-                    <Link className="button is-small is-primary mx-2" to={`/admin/tipos-escalafones/editar/${row.id}`} key={`${row.id}0`}>Editar</Link>,
-                    <button className="button is-small is-danger mx-2"  onClick={event => {
+                    <button className="button is-small is-primary mx-2 is-outlined" onClick={() => {
+                        setShowModalForm(true)
+                        setObjeto(row)
+                    }} key={`${row.id}0`}>
+                        <span className="icon"><FaRegEdit /></span>
+                    </button>,
+                    <button className="button is-small is-danger mx-2 is-outlined" onClick={event => {
                         deleteHandler(row.id)
-                    }}>Eliminar</button>
+                    }}>
+                        <span className="icon"><AiOutlineDelete /></span>
+                    </button>
                 ]
             }
         }
@@ -75,18 +148,26 @@ let ListadoTiposEscalafones = (props) => {
         <div className="conatiner">
             <div className="columns is-centered">
                 <div className="column is-half">
-                    <button className="button is-small is-info mt-4 mx-3"
+                    <button className="button is-outlined is-info mt-4 mx-3"
                         onClick={event => {
                             navigate(-1);
                             dispatch(clearData())
-                        }}>Regresar</button>
+                        }}>
+                        <span className="icon">
+                            <IoIosArrowBack />
+                        </span>
+                    </button>
 
-                    <Link className="button is-small is-success mt-4"
-                        to="/admin/tipos-escalafones/registrar">Registrar escalafón nombramiento</Link>
+                    <button className="button is-outlined is-success mt-4"
+                        onClick={() => setShowModalForm(true)}>
+                        <span className="icon">
+                            <IoIosAddCircleOutline />
+                        </span>
+                    </button>
                 </div>
-                {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                                <button className="delete" onClick={event => setResponse(null)}></button>
-                            </Alert>}
+                {delResponse && delResponse.type === 'success' && <Alert type={'is-success is-light'} content={delResponse.content}>
+                    <button className="delete" onClick={event => setDelResponse(null)}></button>
+                </Alert>}
             </div>
             <div className="columns is-centered">
 
@@ -131,6 +212,30 @@ let ListadoTiposEscalafones = (props) => {
                         setShowModal(false); doDelete();
                     }}>Confirmar</button>
                 </ConfirmDialog>
+            }
+            {
+                showModalForm && <ModalForm title={objeto !== null ? 'Editar tipo escalafón' : 'Registrar tipo escalafón'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
+                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                        <button className="delete" onClick={event => setResponse(null)}></button>
+                    </Alert>}
+                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                        <button className="delete" onClick={event => {
+                            setResponse(null)
+                            setShowModalForm(false)
+                            setObjeto(null)
+                            dispatch(
+                                loadTiposEscalafonesNombramientos()
+                            )
+                        }}></button>
+                    </Alert>}
+                    {error && <Alert type={'is-danger is-light'} content={error.message}>
+                        <button className="delete" onClick={event => setError(null)}></button>
+                    </Alert>}
+                    <button className="button is-small is-danger mx-3" onClick={ev => {
+                        setShowModalForm(false)
+                        setObjeto(null)
+                    }}>Cancelar</button>
+                </ModalForm>
             }
         </div >
     )

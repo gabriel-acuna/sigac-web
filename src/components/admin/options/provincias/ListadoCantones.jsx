@@ -1,38 +1,175 @@
 import ReactDatatable from '@yun548/bulma-react-datatable';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { loadCantonesProvincia } from '../../../../store/core/provincias';
+import { loadCantonesProvincia, postCantones, putCantones, deleteCantones } from '../../../../store/core/provincias';
+
+import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
+import { FaRegEdit } from 'react-icons/fa'
+import { AiOutlineDelete } from 'react-icons/ai'
+import Alert from '../../../Alert'
+import ModalForm from './modalCanton'
+import { logOut } from '../../../../store/user'
+import ConfirmDialog from '../../../ConfirmDialog'
+
 
 let ListadoCantonesProvincias = (props) => {
 
     let navigate = useNavigate()
-    let distpatch = useDispatch()
-    const { id } = useParams()
+    let dispatch = useDispatch()
     const [cantonesProvincia, setCantonesProvincia] = useState([])
+    const location = useLocation()
+    const [objeto, setObjeto] = useState(null)
 
     useEffect(
         () => {
-            distpatch(
-                loadCantonesProvincia(id)
+            dispatch(
+                loadCantonesProvincia(location.state.id)
 
             ).unwrap()
                 .then(
-                    resp=>setCantonesProvincia(resp)
+                    resp => setCantonesProvincia(resp)
                 )
                 .catch(
                     (err) => console.error(err)
                 )
-        }, [id, distpatch]
+        }, [location, dispatch]
     )
+
+    const [showModalForm, setShowModalForm] = useState(false)
+    const [showModal, setShowModal] = useState(false)
+    const [response, setResponse] = useState(null)
+    const [delResponse, setDelResponse] = useState(null)
+    const [error, setError] = useState(null)
+    const [id, setId] = useState(null)
+
+    const deleteHandler = (id) => {
+        setId(id)
+        setShowModal(true)
+    }
+
 
     const columns = [
         { key: 'canton', text: 'Cantón', sortable: true },
         { key: 'opciones', text: ' Opciones' }
 
     ]
-    
-    console.log(cantonesProvincia);
+
+    let rows = cantonesProvincia.map(
+        (row, index) => {
+            return {
+                id: row.id,
+                canton: row.canton,
+                opciones: [
+                    <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}.`} onClick={ev => {
+                        setObjeto(row)
+                        setShowModalForm(true)
+                    }}>
+                        <span className="icon">
+                            <FaRegEdit />
+                        </span>
+                    </button>,
+                    <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}+`} onClick={event => {
+                        deleteHandler(row.id)
+                    }}>
+                        <span className="icon">
+                            <AiOutlineDelete />
+                        </span>
+                    </button>
+                ]
+            }
+        }
+
+    )
+
+    let postHandler = (data) => {
+
+        dispatch(
+            postCantones(
+                {
+                    provincia_id: location.state.id,
+                    canton: data.canton.toUpperCase()
+                }
+            )
+        ).unwrap()
+            .then((resp) => {
+                setResponse(resp);
+            })
+            .catch(
+                (err) => {
+                    if (err.message === "Cannot read property 'data' of undefined") {
+                        console.error("No hay conexión con el backend");
+
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+
+    }
+
+
+    let putHandler = (data) => {
+
+
+        dispatch(
+            putCantones(
+
+                {
+                    id: objeto.id,
+                    provincia_id: location.state.id,
+                    canton: data.canton.toUpperCase(),
+
+                }
+            )
+        ).unwrap()
+            .then((resp) => {
+                setResponse(resp);
+            })
+            .catch(
+                (err) => {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+
+    }
+
+    let doDelete = () => {
+        dispatch(
+            deleteCantones(id)
+
+        ).unwrap()
+            .then(resp => {
+                setDelResponse(resp)
+                dispatch(
+                    loadCantonesProvincia(location.state.id))
+                    .unwrap()
+                    .then(
+                        resp => {
+                            setCantonesProvincia(resp)
+
+
+                        }
+
+                    )
+
+            }).catch(
+                (err) => console.error(err)
+            )
+    }
 
     return (
 
@@ -40,14 +177,35 @@ let ListadoCantonesProvincias = (props) => {
         <div className="conatiner" >
             <div className="columns is-centered">
                 <div className="column is-half">
-                    <button className="button is-small is-info mt-4 mx-3" onClick={event => {
-                        navigate(-1);
-                        
-                    }}>Regresar</button>
+                    <button className="button is-info mt-4 mx-3 is-outlined"
+                        onClick={() => navigate(-1)}>
+                        <span className="icon">
+                            <IoIosArrowBack />
+                        </span>
+                    </button>
+
+                    <button className="button  is-success mt-4 is-outlined" onClick={() => setShowModalForm(true)}>
+                        <span className="icon">
+                            <IoIosAddCircleOutline />
+                        </span>
+                    </button>
+                    {delResponse && delResponse.type === 'warning' && <Alert type={'is-warning is-light'} content={delResponse.content}>
+                        <button className="delete" onClick={event => setDelResponse(null)}></button>
+                    </Alert>}
+                    {delResponse && delResponse.type === 'success' && <Alert type={'is-success is-light'} content={delResponse.content}>
+                        <button className="delete" onClick={event => {
+                            setDelResponse(null)
+
+
+
+                        }}></button>
+                    </Alert>}
                 </div>
             </div>
             <div className="columns is-centered">
+
                 <div className="column is-half mb-6">
+                    <span> Provincia: {location.state.provincia}</span>
                     <ReactDatatable style={{ justifyContent: 'center' }}
                         className="table is-bordered is-striped is-fullwidth"
                         tHeadClassName="has-background-success-light"
@@ -72,11 +230,49 @@ let ListadoCantonesProvincias = (props) => {
                                 }
                             }
                         }}
-                        records={cantonesProvincia}
+                        records={rows}
                         columns={columns}
                     />
                 </div>
             </div>
+            {
+                showModal &&
+                <ConfirmDialog info="el cantón" title="Eliminar cantón">
+
+                    <button className="button is-small is-danger is-pulled-left" onClick={event => setShowModal(false)}> Cancelar</button>
+                    <button className="button is-small is-success is-pulled-rigth" onClick={event => {
+                        setShowModal(false); doDelete();
+                    }}>Confirmar</button>
+                </ConfirmDialog>
+            }
+            {
+                showModalForm && <ModalForm title={objeto !== null ? 'Editar cantón' : 'Registrar cantón'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
+                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                        <button className="delete" onClick={() => setResponse(null)}></button>
+                    </Alert>}
+                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                        <button className="delete" onClick={() => {
+                            setResponse(null)
+                            setShowModalForm(false)
+                            setObjeto(null)
+                            dispatch(
+                                loadCantonesProvincia(location.state.id)
+
+                            ).unwrap()
+                                .then(
+                                    resp => setCantonesProvincia(resp)
+                                )
+                        }}></button>
+                    </Alert>}
+                    {error && <Alert type={'is-danger is-light'} content={error.message}>
+                        <button className="delete" onClick={() => setError(null)}></button>
+                    </Alert>}
+                    <button className="button is-small is-danger mx-3" onClick={ev => {
+                        setShowModalForm(false)
+                        setObjeto(null)
+                    }}>Cancelar</button>
+                </ModalForm>
+            }
         </div >
     )
 

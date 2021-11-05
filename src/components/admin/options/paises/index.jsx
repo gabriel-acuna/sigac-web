@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { loadPaises, clearData } from '../../../../store/core/paises';
-
+import { IoIosArrowBack } from 'react-icons/io'
 
 let ListadoPaises = (props) => {
 
@@ -38,11 +38,15 @@ let ListadoPaises = (props) => {
         <div className="conatiner">
             <div className="columns is-centered">
                 <div className="column is-half">
-                    <button className="button is-small is-info mt-4 mx-3"
+                    <button className="button is-small is-info mt-4 mx-3 is-outlined"
                         onClick={event => {
                             navigate(-1);
                             dispatch(clearData())
-                        }}>Regresar</button>
+                        }}>
+                        <span className="icon">
+                            <IoIosArrowBack />
+                        </span>
+                    </button>
                 </div>
             </div>
             <div className="columns is-centered">
@@ -71,7 +75,7 @@ let ListadoPaises = (props) => {
                                 }
                             }
                         }}
-                        records={ paisesState}
+                        records={paisesState}
                         columns={columns}
                     />
                 </div>

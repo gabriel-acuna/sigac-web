@@ -75,14 +75,14 @@ const routes = (user)=> [
                     }
                 ]
             }, {
-                path: '/provincias-cantones',
+                path: '/provincias',
                 element: <Outlet/>,
                 children:[
                     {
                         path:'/',
                         element: <ListadoProvincias/>
                     },{
-                        path:'/:id',
+                        path:'/cantones',
                         element:<ListadoCantonesProvincias/>
                     }
                 ]

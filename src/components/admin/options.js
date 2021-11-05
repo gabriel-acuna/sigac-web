@@ -28,7 +28,7 @@ export const options = [
             title: 'Provincias y Cantones',
             icon: <FaCity />,
             content: 'Gestione el listado de provincias y cantones.',
-            url: '/admin/provincias-cantones'
+            url: '/admin/provincias'
 
         }, {
             title: 'Discapacidades',
