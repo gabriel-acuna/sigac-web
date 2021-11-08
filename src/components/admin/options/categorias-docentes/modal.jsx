@@ -5,17 +5,16 @@ import { Fragment, useEffect } from 'react'
 let ModalForm = ({ title, handler, children, objeto }) => {
 
 
-    const { register,reset, handleSubmit, formState: { errors } } = useForm()
+    const { register, reset, handleSubmit, formState: { errors } } = useForm()
 
     useEffect(
-        ()=>{
-            if(objeto!==null){
+        () => {
+            if (objeto !== null) {
                 reset({
-                    nombre: objeto.nombre,
-                    codigo: objeto.codigo
+                    categoriaDocente: objeto.categoria_docente
                 })
             }
-        },[objeto, reset]
+        }, [objeto, reset]
     )
 
 
@@ -31,20 +30,14 @@ let ModalForm = ({ title, handler, children, objeto }) => {
 
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
                         <div className="field">
-                            <label className="label is-small">Nombre</label>
+                            <label className="label is-small">Categoria docente</label>
                             <div className="control">
-                                <input type="text" {...register("nombre", { required: true })} className="input is-samll is-uppercase" />
-                                {errors.nombre && <span className="has-text-danger">¡Por favor, Ingrese el nombre del area institucional!</span>}
+                                <input type="text" {...register("categoriaDocente", { required: true })} className="input is-samll is-uppercase" />
+                                {errors.categoriaDocente && <span className="has-text-danger">¡Por favor, Ingrese la categoría docente!</span>}
 
                             </div>
                         </div>
-                        <div className="field">
-                            <label className="label is-small">Código</label>
-                            <div className="control">
-                                <input type="text" {...register("codigo")} className="input is-samll is-uppercase" />
 
-                            </div>
-                        </div>
                         <div className="field is-grouped" style={{ display: 'flex', justifyContent: 'center' }}>
                             <div className="control has-text-centered">
                                 <Fragment>

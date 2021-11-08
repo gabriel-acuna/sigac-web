@@ -7,14 +7,14 @@ import { Fragment, useEffect } from 'react'
 
     useEffect(
         () => {
-            if (objeto !== null) {
+           
                 reset({
-                    idioma:objeto.idioma,
-                    lugarEstudio: objeto.lugar_estudio,
-                    nivel: objeto.nivel_comprension
+                    idioma:objeto?.idioma,
+                    lugarEstudio: objeto?.lugar_estudio,
+                    nivel: objeto?.nivel_comprension
                 })
 
-            }
+            
         }, [objeto, reset]
     )
 

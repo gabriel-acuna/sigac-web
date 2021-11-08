@@ -1,15 +1,20 @@
 import ReactDatatable from '@yun548/bulma-react-datatable'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
-import { loadCategoriasDocentesLOSEP, clearData, deleteCategoriasDocentesLOSEP } from '../../../../store/core/categoriasDocentes'
+import { loadCategoriasDocentesLOSEP, clearData, deleteCategoriasDocentesLOSEP, postCategoriasDocentesLOSEP, putCategoriasDocentesLOSEP } from '../../../../store/core/categoriasDocentes'
 import ConfirmDialog from '../../../ConfirmDialog'
 import Alert from '../../../Alert'
+import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
+import { logOut } from '../../../../store/user'
+import { FaRegEdit } from 'react-icons/fa'
+import { AiOutlineDelete } from 'react-icons/ai'
+import ModalForm from './modal'
 
 
 
 let ListadoCategoriasDocentes = (props) => {
-    
+
     let navigate = useNavigate()
     let dispatch = useDispatch()
 
@@ -31,24 +36,28 @@ let ListadoCategoriasDocentes = (props) => {
 
     let categoriasDocentesState = useSelector(state => state.categoriasDocentesLOSEP.data.categoriasDocentes)
 
+    const [delResponse, setDelResponse] = useState(null)
     const [response, setResponse] = useState(null)
     const [showModal, setShowModal] = useState(false)
-   
+    const [showModalForm, setShowModalForm] = useState(false)
+    const [objeto, setObjeto] = useState(null)
+    const [error, setError] = useState(null)
+
     const [id, setId] = useState(null)
 
     let deleteHandler = (id) => {
         setShowModal(true)
-        setId(id)      
+        setId(id)
 
     }
 
-    let doDelete = () =>{
+    let doDelete = () => {
         dispatch(
             deleteCategoriasDocentesLOSEP(id)
 
         ).unwrap()
             .then(resp => {
-                setResponse(resp)
+                setDelResponse(resp)
                 dispatch(
                     loadCategoriasDocentesLOSEP()
                 )
@@ -59,37 +68,119 @@ let ListadoCategoriasDocentes = (props) => {
     }
 
     let rows = categoriasDocentesState.map(
-        (row, index) => {
+        (row) => {
             return {
                 categoria: row.categoria_docente,
                 opciones: [
-                    <Link className="button is-small is-primary mx-2" to={`/admin/categorias-docentes/editar/${row.id}`} key={`${row.id}0`}>Editar</Link>,
-                    <button className="button is-small is-danger mx-2" onClick={event => {
+                    <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={() => {
+                        setObjeto(row)
+                        setShowModalForm(true)
+                    }}>
+                        <span className="icon">
+                            <FaRegEdit />
+                        </span>
+                    </button>,
+                    <button className="button is-small is-danger mx-2 is-outlined" onClick={() => {
                         deleteHandler(row.id)
-                    }}>Eliminar</button>
+                    }}>
+                        <span className="icon">
+                            <AiOutlineDelete />
+                        </span>
+                    </button>
                 ]
             }
         }
     )
 
+    let postHandler = (data) => {
+        dispatch(
+            postCategoriasDocentesLOSEP(
+                {
+                    categoria_docente: data.categoriaDocente.toUpperCase()
+                }
+            )
+        ).unwrap()
+            .then((resp) => {
+                setResponse(resp);
+            })
+            .catch(
+                (err) => {
+                    if (err.message === "Cannot read property 'data' of undefined") {
+                        console.error("No hay conexión con el backend");
+
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+
+    }
+
+
+    let putHandler = (data) => {
+
+
+        dispatch(
+            putCategoriasDocentesLOSEP(
+
+                {
+                    id: objeto.id,
+                    categoria_docente: data.categoriaDocente.toUpperCase()
+                }
+            )
+        ).unwrap()
+            .then((resp) => {
+                setResponse(resp);
+            })
+            .catch(
+                (err) => {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+
+    }
 
     return (
 
         <div className="conatiner">
             <div className="columns is-centered">
                 <div className="column is-half">
-                    <button className="button is-small is-info mt-4 mx-3"
-                        onClick={event => {
+
+                    <button className="button is-info mt-4 mx-3 is-outlined"
+                        onClick={() => {
                             navigate(-1);
                             dispatch(clearData())
-                        }}>Regresar</button>
+                        }}>
+                        <span className="icon">
+                            <IoIosArrowBack />
+                        </span>
+                    </button>
 
-                    <Link className="button is-small is-success mt-4"
-                        to="/admin/categorias-docentes/registrar">Registrar categoria docente</Link>
+                    <button className="button  is-success mt-4 is-outlined" onClick={() => setShowModalForm(true)}>
+                        <span className="icon">
+                            <IoIosAddCircleOutline />
+                        </span>
+                    </button>
                 </div>
-                {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                                <button className="delete" onClick={event => setResponse(null)}></button>
-                            </Alert>}
+                {delResponse && delResponse.type === 'success' && <Alert type={'is-success is-light'} content={delResponse.content}>
+                    <button className="delete" onClick={() => setDelResponse(null)}></button>
+                </Alert>}
+                {delResponse && delResponse.type === 'warning' && <Alert type={'is-success is-light'} content={delResponse.content}>
+                    <button className="delete" onClick={() => setDelResponse(null)}></button>
+                </Alert>}
             </div>
             <div className="columns is-centered">
 
@@ -129,11 +220,35 @@ let ListadoCategoriasDocentes = (props) => {
                 showModal &&
                 <ConfirmDialog info="la categoría" title="Eliminar categoría">
 
-                    <button className="button is-small is-danger is-pulled-left" onClick={event => setShowModal(false)}> Cancelar</button>
-                    <button className="button is-small is-success is-pulled-rigth" onClick={event => {
+                    <button className="button is-small is-danger is-pulled-left" onClick={() => setShowModal(false)}> Cancelar</button>
+                    <button className="button is-small is-success is-pulled-rigth" onClick={() => {
                         setShowModal(false); doDelete();
                     }}>Confirmar</button>
                 </ConfirmDialog>
+            }
+            {
+                showModalForm && <ModalForm title={objeto !== null ? 'Editar categoría docente' : 'Registrar categoría docente'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
+                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                        <button className="delete" onClick={() => setResponse(null)}></button>
+                    </Alert>}
+                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                        <button className="delete" onClick={() => {
+                            setResponse(null)
+                            setShowModalForm(false)
+                            setObjeto(null)
+                            dispatch(
+                                loadCategoriasDocentesLOSEP()
+                            )
+                        }}></button>
+                    </Alert>}
+                    {error && <Alert type={'is-danger is-light'} content={error.message}>
+                        <button className="delete" onClick={event => setError(null)}></button>
+                    </Alert>}
+                    <button className="button is-small is-danger mx-3" onClick={ev => {
+                        setShowModalForm(false)
+                        setObjeto(null)
+                    }}>Cancelar</button>
+                </ModalForm>
             }
         </div >
     )

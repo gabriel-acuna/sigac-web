@@ -149,7 +149,7 @@ let ListadoEstadosCiviles = (props) => {
             <div className="columns is-centered">
                 <div className="column is-half">
                     <button className="button is-info mt-4 mx-3 is-outlined"
-                        onClick={event => {
+                        onClick={() => {
                             navigate(-1);
                             dispatch(clearData())
                         }}>
@@ -158,14 +158,14 @@ let ListadoEstadosCiviles = (props) => {
                         </span>
                     </button>
 
-                    <button className="button  is-success mt-4 is-outlined" onClick={ev=>setShowModalForm(true)}>
+                    <button className="button  is-success mt-4 is-outlined" onClick={()=>setShowModalForm(true)}>
                         <span className="icon">
                             <IoIosAddCircleOutline />
                         </span>
                     </button>
                 </div>
                 {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                    <button className="delete" onClick={event => setResponse(null)}></button>
+                    <button className="delete" onClick={() => setResponse(null)}></button>
                 </Alert>}
             </div>
             <div className="columns is-centered">

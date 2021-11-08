@@ -13,29 +13,13 @@ import ListadoEtnias from "./components/admin/options/etnias";
 import ListadoNacionalidades from "./components/admin/options/nacionalidades";
 import ListadoTiposDocumentos from "./components/admin/options/tipos-documentos";
 import ListadoRelacionesIES from "./components/admin/options/relaciones-ies";
-import RegistrarRelacion from "./components/admin/options/relaciones-ies/RegistrarRelacion";
-import EditarRelacionIES from "./components/admin/options/relaciones-ies/EditarRelacion";
 import ListadoTiposEscalafones from './components/admin/options/tipos-escalafones/index';
-import RegistrarTipoEscalafon from './components/admin/options/tipos-escalafones/RegistrarTipoEscalafon'
-import EditarTipoEscalafon from './components/admin/options/tipos-escalafones/EditarTipoEscalafon'
 import ListadoCategoriasContratos from "./components/admin/options/categorias-contratos";
-import RegistrarCategoriaContrato from "./components/admin/options/categorias-contratos/RegistrarCategoriaContrato";
-import EditarCategoriaContrato from "./components/admin/options/categorias-contratos/EditarCategoriaContrato";
 import  ListadoTiemposDedicaciones from './components/admin/options/tiempos-dedicaciones/index'
-import RegistrarTiempoDedicacion from './components/admin/options/tiempos-dedicaciones/RegistrarTiempoDedicacion'
-import EditarTiempoDedicacion from './components/admin/options/tiempos-dedicaciones/EditarTiempoDedicacion'
 import ListadoNivelesEducativos from './components/admin/options/niveles-educativos/index'
-import RegistrarNivelEducativo from "./components/admin/options/niveles-educativos/RegistrarNivelEducativo";
-import EditarNivelEducativo from "./components/admin/options/niveles-educativos/EditarNivelEducativo";
 import ListadoTiposFuncionarios from "./components/admin/options/tipos-funcionarios";
-import RegistrarTipoFuncionario from "./components/admin/options/tipos-funcionarios/RegistrarTipoFuncionario";
-import EditarTipoFuncionario from "./components/admin/options/tipos-funcionarios/EditarTipoFuncionario";
 import ListadoTiposDocentes from "./components/admin/options/tipos-docentes";
-import RegistrarTipoDocente from "./components/admin/options/tipos-docentes/RegistrarTipoDocente";
-import EditarTipoDocente from "./components/admin/options/tipos-docentes/EditarTipoDocente";
 import ListadoCategoriasDocentes from "./components/admin/options/categorias-docentes";
-import RegistrarCategoriaDocente from "./components/admin/options/categorias-docentes/RegistrarCategoriaDocente";
-import EditarCategoriaDocente from "./components/admin/options/categorias-docentes/EditarCategoriaDocente";
 import ListadoEstadosCiviles from "./components/admin/options/estados-civiles";
 import ListadoEstructurasInstitucionales from "./components/admin/options/estructura-institucional";
 import ListadoAreasInstitucionales from "./components/admin/options/areas-institucionales";
@@ -132,13 +116,6 @@ const routes = (user)=> [
                     {
                         path:'/',
                         element: <ListadoRelacionesIES/>
-                    },
-                    {
-                        path: '/registrar',
-                        element: <RegistrarRelacion/>
-                    },{
-                        path:'/editar/:id',
-                        element: <EditarRelacionIES/>
                     }
                 ]
             }, {
@@ -148,13 +125,6 @@ const routes = (user)=> [
                     {
                         path:'/',
                         element: <ListadoTiposEscalafones/>
-                    },
-                    {
-                        path: '/registrar',
-                        element: <RegistrarTipoEscalafon/>
-                    },{
-                        path:'/editar/:id',
-                        element: <EditarTipoEscalafon/>
                     }
                 ]
             }, {
@@ -164,13 +134,7 @@ const routes = (user)=> [
                     {
                         path:'/',
                         element: <ListadoCategoriasContratos/>
-                    },
-                    {
-                        path: '/registrar',
-                        element: <RegistrarCategoriaContrato/>
-                    },{
-                        path:'/editar/:id',
-                        element: <EditarCategoriaContrato/>
+                
                     }
                 ]
             },
@@ -181,13 +145,6 @@ const routes = (user)=> [
                     {
                         path:'/',
                         element: <ListadoTiemposDedicaciones/>
-                    },
-                    {
-                        path: '/registrar',
-                        element: <RegistrarTiempoDedicacion/>
-                    },{
-                        path:'/editar/:id',
-                        element: <EditarTiempoDedicacion/>
                     }
                 ]
             }, {
@@ -197,13 +154,6 @@ const routes = (user)=> [
                     {
                         path: '/',
                         element: <ListadoNivelesEducativos/>
-                    },{
-                        path:'/registrar',
-                        element: <RegistrarNivelEducativo/>
-                    },
-                    {
-                        path: '/editar/:id',
-                        element:<EditarNivelEducativo/>
                     }
                 ]
             }, {
@@ -213,13 +163,6 @@ const routes = (user)=> [
                     {
                         path: '/',
                         element: <ListadoTiposFuncionarios/>
-                    },{
-                        path:'/registrar',
-                        element: <RegistrarTipoFuncionario/>
-                    },
-                    {
-                        path: '/editar/:id',
-                        element:<EditarTipoFuncionario/>
                     }
                 ]
             },
@@ -230,13 +173,6 @@ const routes = (user)=> [
                     {
                         path: '/',
                         element: <ListadoTiposDocentes/>
-                    },{
-                        path:'/registrar',
-                        element: <RegistrarTipoDocente/>
-                    },
-                    {
-                        path: '/editar/:id',
-                        element:<EditarTipoDocente/>
                     }
                 ]
             }, {
@@ -246,12 +182,6 @@ const routes = (user)=> [
                     {
                         path:'/',
                         element: <ListadoCategoriasDocentes/>
-                    },{
-                        path: '/registrar',
-                        element: <RegistrarCategoriaDocente/>
-                    }, {
-                        path: '/editar/:id',
-                        element: <EditarCategoriaDocente/>
                     }
                 ]
             },{

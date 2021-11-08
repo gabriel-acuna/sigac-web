@@ -11,8 +11,8 @@ let ModalForm = ({ title, handler, children, objeto }) => {
         ()=>{
             if(objeto!==null){
                 reset({
-                    nombre: objeto.nombre,
-                    codigo: objeto.codigo
+                    tipoDocente: objeto.tipo_docente
+                  
                 })
             }
         },[objeto, reset]
@@ -31,20 +31,14 @@ let ModalForm = ({ title, handler, children, objeto }) => {
 
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
                         <div className="field">
-                            <label className="label is-small">Nombre</label>
+                            <label className="label is-small">Tipo docente</label>
                             <div className="control">
-                                <input type="text" {...register("nombre", { required: true })} className="input is-samll is-uppercase" />
-                                {errors.nombre && <span className="has-text-danger">¡Por favor, Ingrese el nombre del area institucional!</span>}
+                                <input type="text" {...register("tipoDocente", { required: true })} className="input is-samll is-uppercase" />
+                                {errors.tipoDocente && <span className="has-text-danger">¡Por favor, Ingrese el tipo docente!</span>}
 
                             </div>
                         </div>
-                        <div className="field">
-                            <label className="label is-small">Código</label>
-                            <div className="control">
-                                <input type="text" {...register("codigo")} className="input is-samll is-uppercase" />
-
-                            </div>
-                        </div>
+                      
                         <div className="field is-grouped" style={{ display: 'flex', justifyContent: 'center' }}>
                             <div className="control has-text-centered">
                                 <Fragment>
