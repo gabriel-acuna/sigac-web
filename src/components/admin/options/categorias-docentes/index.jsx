@@ -70,6 +70,7 @@ let ListadoCategoriasDocentes = (props) => {
     let rows = categoriasDocentesState.map(
         (row) => {
             return {
+                id: row.id,
                 categoria: row.categoria_docente,
                 opciones: [
                     <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={() => {
@@ -80,7 +81,7 @@ let ListadoCategoriasDocentes = (props) => {
                             <FaRegEdit />
                         </span>
                     </button>,
-                    <button className="button is-small is-danger mx-2 is-outlined" onClick={() => {
+                    <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={() => {
                         deleteHandler(row.id)
                     }}>
                         <span className="icon">

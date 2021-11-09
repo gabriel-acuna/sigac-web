@@ -1,8 +1,8 @@
 import ReactDatatable from '@yun548/bulma-react-datatable'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
-import { loadCamposDetalladosPorCampoEspecifico, clearData, deleteCamposDetallados, putCamposDetallados, postCampoDetallado } from '../../../../store/core/campoDetallado'
+import { loadTipoBecas, clearData, deleteTipoBecas, putTipoBecas, postTipoBecas } from '../../../../store/core/tipoBeca'
 import ConfirmDialog from '../../../ConfirmDialog'
 import Alert from '../../../Alert'
 import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
@@ -12,33 +12,32 @@ import { AiOutlineDelete } from 'react-icons/ai'
 import ModalForm from './modal'
 
 
-let ListadoCamposEstudiosDetallados = (props) => {
+let ListadoTiposBecas = (props) => {
+
     let navigate = useNavigate()
     let dispatch = useDispatch()
-    let location = useLocation()
 
     useEffect(
         () => {
             dispatch(
-                loadCamposDetalladosPorCampoEspecifico(location.state.id)
+                loadTipoBecas()
             ).unwrap()
                 .catch(
                     (err) => console.log(err)
                 )
-        }, [dispatch, location.state.id]
+        }, [dispatch]
     )
 
     const columns = [
-        { key: 'codigo', text: 'Código', sortable: true },
-        { key: 'nombre', text: 'Nombre', sortable: true },
+        { key: 'tipoBeca', text: 'Tipo beca', sortable: true },
         { key: 'opciones', text: 'Opciones', sortable: false }
     ]
 
-    let camposDetalladosState = useSelector(state => state.camposDetallados.data.campos)
+    let tipoBecasState = useSelector(state => state.tipoBecas.data.tipoBecas)
 
     const [response, setResponse] = useState(null)
     const [error, setError] = useState(null)
-    const [showModalForm, setShowModalForm] = useState(false)
+    const [showModalForm, setShowModalForm] = useState(null)
     const [showModal, setShowModal] = useState(false)
     const [id, setId] = useState(null)
     const [objeto, setObjeto] = useState(null)
@@ -51,27 +50,25 @@ let ListadoCamposEstudiosDetallados = (props) => {
 
     let doDelete = () => {
         dispatch(
-            deleteCamposDetallados(id)
+            deleteTipoBecas(id)
 
         ).unwrap()
             .then(resp => {
                 setResponse(resp)
                 dispatch(
-                    loadCamposDetalladosPorCampoEspecifico(location.state.id)
+                    loadTipoBecas()
                 )
             }).catch(
                 (err) => console.error(err)
             )
     }
 
-    let rows = camposDetalladosState.map(
+    let rows = tipoBecasState.map(
         (row) => {
             return {
-                id: row.id,
-                codigo: row.codigo,
-                nombre: row.descripcion,
+                tipoBeca: row.tipo_beca,
                 opciones: [
-                    <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}.`} onClick={() => {
+                    <button className="button is-small is-primary mx-2" key={`${row.id}0`} onClick={() => {
                         setObjeto(row)
                         setShowModalForm(true)
                     }}>
@@ -79,7 +76,7 @@ let ListadoCamposEstudiosDetallados = (props) => {
                             <FaRegEdit />
                         </span>
                     </button>,
-                    <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}+`}  onClick={() => {
+                    <button className="button is-small is-danger mx-2" key={`${row.id}1`} onClick={() => {
                         deleteHandler(row.id)
                     }}>
                         <span className="icon">
@@ -87,20 +84,16 @@ let ListadoCamposEstudiosDetallados = (props) => {
                         </span>
                     </button>
                 ]
+
             }
         }
     )
 
-
     let postHandler = (data) => {
 
         dispatch(
-            postCampoDetallado(
-                {
-                    descripcion: data.descripcion,
-                    codigo: data.codigo,
-                    campo_especifico: location.state.id
-                }
+            postTipoBecas(
+                { tipo_beca: data.tipoBeca.toUpperCase() }
             )
         ).unwrap()
             .then((resp) => {
@@ -108,12 +101,13 @@ let ListadoCamposEstudiosDetallados = (props) => {
             })
             .catch(
                 (err) => {
-                    if (err.message === "Cannot read property 'data' of undefined") {
+                    if (err.message.includes("undefined (reading 'data')")) {
                         console.error("No hay conexión con el backend");
-
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
                     } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
+
                         )
                     }
 
@@ -123,18 +117,14 @@ let ListadoCamposEstudiosDetallados = (props) => {
 
     }
 
-
     let putHandler = (data) => {
 
 
         dispatch(
-            putCamposDetallados(
-                
+            putTipoBecas(
                 {
                     id: objeto.id,
-                    descripcion: data.descripcion,
-                    codigo: data.codigo.toUpperCase(),
-                    campo_especifico: location.state.id
+                    tipo_beca: data.tipoBeca.toUpperCase()
                 }
             )
         ).unwrap()
@@ -143,12 +133,13 @@ let ListadoCamposEstudiosDetallados = (props) => {
             })
             .catch(
                 (err) => {
-                    if (err.message.includes("undefined (reading 'data')")) { 
-                    console.error("No hay conexión con el backend");
-                    setError({'message':'No es posible establecer conexión, intente mas tarde.'})
-                 } else if (err.message === "Rejected") {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
+
                         )
                     }
 
@@ -162,6 +153,7 @@ let ListadoCamposEstudiosDetallados = (props) => {
         <div className="conatiner">
             <div className="columns is-centered">
                 <div className="column is-half">
+
                     <button className="button is-info mt-4 mx-3 is-outlined"
                         onClick={() => {
                             navigate(-1);
@@ -172,7 +164,7 @@ let ListadoCamposEstudiosDetallados = (props) => {
                         </span>
                     </button>
 
-                    <button className="button  is-success mt-4 is-outlined" onClick={ev => setShowModalForm(true)}>
+                    <button className="button is-success mt-4 is-outlined" onClick={() => setShowModalForm(true)}>
                         <span className="icon">
                             <IoIosAddCircleOutline />
                         </span>
@@ -185,8 +177,7 @@ let ListadoCamposEstudiosDetallados = (props) => {
             <div className="columns is-centered">
 
 
-                <div className="column is-half mb-6">
-                <span> Campo Específico: {location.state.descripcion}</span>
+                <div className="column is-half">
                     <ReactDatatable style={{ justifyContent: 'center' }}
                         className="table is-bordered is-striped"
                         tHeadClassName="is-info"
@@ -200,55 +191,57 @@ let ListadoCamposEstudiosDetallados = (props) => {
                                 print: false
                             },
                             language: {
-                                length_menu: "Mostrar _MENU_ campos de estudio por página",
+                                length_menu: "Mostrar _MENU_ tipo becas por página",
                                 filter: "Buscar en registros ...",
-                                no_data_text: "No hay campos de estudio  registradas",
-                                info: "Mostrando _START_ a _END_ de _TOTAL_ campos de estudio detallado",
+                                no_data_text: "No hay tipo becas registrados",
+                                info: "Mostrando _START_ a _END_ de _TOTAL_ tipo becas",
                                 pagination: {
                                     first: "Primera",
                                     previous: "Anterior",
                                     next: "Siguiente",
                                     last: "Ultima"
-                                },
-                                loading_text: "cargando ..."
+                                }
                             }
-                            
                         }}
                         records={rows}
                         columns={columns}
-                        loading ={ camposDetalladosState.length === 0}
                     />
                 </div>
             </div>
             {
                 showModal &&
-                <ConfirmDialog info="el campo de estudio" title="Eliminar el campo de estudio detallado">
+                <ConfirmDialog info="el tipo beca" title="Eliminar tipo beca">
 
-                    <button className="button is-small is-danger is-pulled-left" onClick={event => setShowModal(false)}> Cancelar</button>
-                    <button className="button is-small is-success is-pulled-rigth" onClick={event => {
+                    <button className="button is-small is-danger is-pulled-left" onClick={() => setShowModal(false)}> Cancelar</button>
+                    <button className="button is-small is-success is-pulled-rigth" onClick={() => {
                         setShowModal(false); doDelete();
                     }}>Confirmar</button>
                 </ConfirmDialog>
             }
             {
-                showModalForm && <ModalForm title={objeto !== null ? 'Editar campo de estudio detallado' : 'Registrar campo de estudio detallado'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
+                showModalForm &&
+                <ModalForm
+                    title={objeto !== null ? 'Editar tipo beca' : 'Registrar tipo beca'}
+                    objeto={objeto}
+                    handler={objeto !== null ? putHandler : postHandler}
+                >
                     {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={event => setResponse(null)}></button>
+                        <button className="delete" onClick={() => setResponse(null)}></button>
                     </Alert>}
                     {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={event => {
+                        <button className="delete" onClick={() => {
                             setResponse(null)
                             setShowModalForm(false)
                             setObjeto(null)
                             dispatch(
-                                loadCamposDetalladosPorCampoEspecifico(location.state.id)
+                                loadTipoBecas()
                             )
                         }}></button>
                     </Alert>}
                     {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={event => setError(null)}></button>
+                        <button className="delete" onClick={() => setError(null)}></button>
                     </Alert>}
-                    <button className="button is-small is-danger mx-3" onClick={ev => {
+                    <button className="button is-small is-danger mx-3" onClick={() => {
                         setShowModalForm(false)
                         setObjeto(null)
                     }}>Cancelar</button>
@@ -258,4 +251,4 @@ let ListadoCamposEstudiosDetallados = (props) => {
     )
 }
 
-export default ListadoCamposEstudiosDetallados;
+export default ListadoTiposBecas;

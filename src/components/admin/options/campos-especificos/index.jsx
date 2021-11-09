@@ -26,7 +26,7 @@ let ListadoCamposEstudiosEspecificos = (props) => {
                 .catch(
                     (err) => console.log(err)
                 )
-        }, [dispatch]
+        }, [dispatch, location.state.id]
     )
 
     const columns = [
@@ -218,7 +218,7 @@ let ListadoCamposEstudiosEspecificos = (props) => {
                         }}
                         records={rows}
                         columns={columns}
-                        loading ={ camposEspecificosState.length == 0}
+                        loading ={ camposEspecificosState.length === 0}
                     />
                 </div>
             </div>

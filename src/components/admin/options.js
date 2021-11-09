@@ -1,7 +1,7 @@
 import { FaCity, FaBlind, FaUniversity, FaBookReader } from 'react-icons/fa';
 import { IoIosPeople } from 'react-icons/io'
 import { IoDocumentTextOutline } from 'react-icons/io5'
-import { GiSouthAmerica, GiFarmer, GiPlayerTime, GiOrganigram, GiTeamUpgrade, GiTeacher, GiReceiveMoney,GiDiploma, GiMoneyStack } from 'react-icons/gi'
+import { GiSouthAmerica, GiFarmer, GiPlayerTime, GiOrganigram, GiTeamUpgrade, GiTeacher, GiReceiveMoney, GiDiploma, GiMoneyStack } from 'react-icons/gi'
 import { GrWorkshop } from 'react-icons/gr'
 import { BsPersonCheck } from 'react-icons/bs'
 import { VscOrganization } from 'react-icons/vsc'
@@ -147,14 +147,14 @@ export const options = [
                 title: 'Tipos de becas',
                 icon: <GiReceiveMoney />,
                 content: '',
-                url: ''
+                url: '/admin/tipo-becas'
 
             },
             {
                 title: 'Tipos de financiamiento',
                 icon: <GiMoneyStack />,
                 content: '',
-                url: '',
+                url: '/admin/tipo-financiamientos',
 
             },
             {
@@ -171,7 +171,7 @@ export const options = [
                 url: '',
 
             }
-            
+
         ]
     }
 

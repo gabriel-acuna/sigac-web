@@ -3,19 +3,18 @@ import { useEffect, useState, Fragment } from 'react'
 import Alert from '../../../Alert'
 
 
-let RegistrarTipoDocumento = ({ title, handler, children, objeto }) => {
+let ModalForm = ({ title, handler, children, objeto }) => {
 
 
     const [error, setError] = useState(null)
     const { register, reset, handleSubmit, formState: { errors } } = useForm()
-    const [response, setResponse] = useState(null)
 
 
     useEffect(
         () => {
             if (objeto !== null) {
                 reset({
-                    tipoDocumento: objeto.tipo_documento
+                    financiamiento: objeto.financiamiento
                 })
             }
         }, [objeto, reset]
@@ -34,21 +33,16 @@ let RegistrarTipoDocumento = ({ title, handler, children, objeto }) => {
 
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
                         <div className="field">
-                            <label className="label is-small">Tipo documento</label>
+                            <label className="label is-small">Financiamiento</label>
                             <div className="control">
-                                <input type="text" {...register("tipoDocumento", { required: true })} className="input is-samll is-uppercase" />
-                                {errors.tipoDocumento && <span className="has-text-danger">¡Por favor, Ingrese el tipo documento!</span>}
+                                <input type="text" {...register("financiamiento", { required: true })} className="input is-samll is-uppercase" />
+                                {errors.financiamiento && <span className="has-text-danger">¡Por favor, Ingrese el tipo de financiamiento!</span>}
                                 {
                                     error && <Alert type={'is-danger is-light'} content={error.message}>
-                                        <button className="delete" onClick={event => setError(null)}></button>
+                                        <button className="delete" onClick={() => setError(null)}></button>
                                     </Alert>
                                 }
-                                {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                                    <button className="delete" onClick={event => setResponse(null)}></button>
-                                </Alert>}
-                                {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                                    <button className="delete" onClick={event => setResponse(null)}></button>
-                                </Alert>}
+                               
 
                             </div>
                         </div>
@@ -69,4 +63,4 @@ let RegistrarTipoDocumento = ({ title, handler, children, objeto }) => {
     )
 }
 
-export default RegistrarTipoDocumento;
+export default ModalForm;

@@ -56,7 +56,7 @@ export const loadTipoFinanciamiento = createAsyncThunk(
     }
 )
 
-export const postTiposfinanciamientosLOES = createAsyncThunk(
+export const postTiposFinanciamientos = createAsyncThunk(
     'tipos-financiamientos/post',
     async (tipofinanciamiento, { getState }) => {
         let token;
@@ -89,7 +89,7 @@ export const postTiposfinanciamientosLOES = createAsyncThunk(
 
 )
 
-export const putTiposfinanciamientos = createAsyncThunk(
+export const putTiposFinanciamientos = createAsyncThunk(
     'tipos-financiamientos/put',
     async (tipofinanciamiento, { getState }) => {
         let token;
@@ -121,7 +121,7 @@ export const putTiposfinanciamientos = createAsyncThunk(
     }
 )
 
-export const deleteTiposfinanciamientos = createAsyncThunk(
+export const deleteTiposFinanciamientos = createAsyncThunk(
     'tipos-financiamientos/delete',
     async (id, { getState }) => {
         let token;

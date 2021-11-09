@@ -15,7 +15,7 @@ import ListadoTiposDocumentos from "./components/admin/options/tipos-documentos"
 import ListadoRelacionesIES from "./components/admin/options/relaciones-ies";
 import ListadoTiposEscalafones from './components/admin/options/tipos-escalafones/index';
 import ListadoCategoriasContratos from "./components/admin/options/categorias-contratos";
-import  ListadoTiemposDedicaciones from './components/admin/options/tiempos-dedicaciones/index'
+import ListadoTiemposDedicaciones from './components/admin/options/tiempos-dedicaciones/index'
 import ListadoNivelesEducativos from './components/admin/options/niveles-educativos/index'
 import ListadoTiposFuncionarios from "./components/admin/options/tipos-funcionarios";
 import ListadoTiposDocentes from "./components/admin/options/tipos-docentes";
@@ -28,219 +28,242 @@ import ListaExpediente from "./components/dth/ListaExpediente";
 import ListadoCamposEstudiosAmplios from "./components/admin/options/campos-amplios";
 import ListadoCamposEstudiosEspecificos from "./components/admin/options/campos-especificos";
 import ListadoCamposEstudiosDetallados from "./components/admin/options/campos-detallados";
+import ListadoTiposBecas from "./components/admin/options/tipos-becas";
+import ListadoTiposFinanciamientos from "./components/admin/options/tipos-financiamientos";
 
-const routes = (user)=> [
+const routes = (user) => [
     {
         path: "/login",
-        element: !user  || !isValid(user.jwt)? <Login/>: <Navigate to='/'/>
+        element: !user || !isValid(user.jwt) ? <Login /> : <Navigate to='/' />
     },
     {
         path: "/",
-        element: user && isValid(user.jwt)? <Home roles= {user.userInfo.roles}/> : <Navigate to="/login" ></Navigate>
+        element: user && isValid(user.jwt) ? <Home roles={user.userInfo.roles} /> : <Navigate to="/login" ></Navigate>
     }, {
         path: "/reset-password",
-        element: <NotImplemented/>
+        element: <NotImplemented />
     }, {
         path: "/admin",
-        element: user && user && isValid ? <Outlet/> : <Navigate to="/login"></Navigate>,
+        element: user && user && isValid ? <Outlet /> : <Navigate to="/login"></Navigate>,
         children: [
             {
-                path:'/',
-                element: <Admin/>
+                path: '/',
+                element: <Admin />
             },
             {
                 path: '/usuarios-roles',
-                element: <NotImplemented/>
+                element: <NotImplemented />
             },
             {
                 path: '/paises',
-                element: <Outlet/>,
+                element: <Outlet />,
                 children: [
                     {
                         path: '/',
-                        element: <ListadoPaises/>
+                        element: <ListadoPaises />
                     }
                 ]
             }, {
                 path: '/provincias',
-                element: <Outlet/>,
-                children:[
+                element: <Outlet />,
+                children: [
                     {
-                        path:'/',
-                        element: <ListadoProvincias/>
-                    },{
-                        path:'/cantones',
-                        element:<ListadoCantonesProvincias/>
+                        path: '/',
+                        element: <ListadoProvincias />
+                    }, {
+                        path: '/cantones',
+                        element: <ListadoCantonesProvincias />
                     }
                 ]
             },
             {
                 path: '/discapacidades',
-                element: <Outlet/>,
+                element: <Outlet />,
                 children: [
                     {
-                        path:'/',
-                        element: <ListadoDiscapacidades/>
+                        path: '/',
+                        element: <ListadoDiscapacidades />
                     }
-                    
+
                 ]
             }, {
                 path: '/etnias',
-                element: <Outlet/>,
+                element: <Outlet />,
                 children: [
                     {
-                        path:'/',
-                        element: <ListadoEtnias/>
+                        path: '/',
+                        element: <ListadoEtnias />
                     }
                 ]
             }, {
                 path: '/nacionalidades',
-                element: <Outlet/>,
+                element: <Outlet />,
                 children: [
                     {
-                        path:'/',
-                        element: <ListadoNacionalidades/>
+                        path: '/',
+                        element: <ListadoNacionalidades />
                     }
                 ]
             }, {
                 path: '/tipos-documentos',
-                element: <Outlet/>,
+                element: <Outlet />,
                 children: [
                     {
-                        path:'/',
-                        element: <ListadoTiposDocumentos/>
+                        path: '/',
+                        element: <ListadoTiposDocumentos />
                     }
-                   
+
                 ]
             }, {
                 path: '/relaciones-ies',
-                element: <Outlet/>,
+                element: <Outlet />,
                 children: [
                     {
-                        path:'/',
-                        element: <ListadoRelacionesIES/>
+                        path: '/',
+                        element: <ListadoRelacionesIES />
                     }
                 ]
             }, {
                 path: '/tipos-escalafones',
-                element: <Outlet/>,
+                element: <Outlet />,
                 children: [
                     {
-                        path:'/',
-                        element: <ListadoTiposEscalafones/>
+                        path: '/',
+                        element: <ListadoTiposEscalafones />
                     }
                 ]
             }, {
                 path: '/categorias-contratos',
-                element: <Outlet/>,
+                element: <Outlet />,
                 children: [
                     {
-                        path:'/',
-                        element: <ListadoCategoriasContratos/>
-                
+                        path: '/',
+                        element: <ListadoCategoriasContratos />
+
                     }
                 ]
             },
             {
                 path: '/tiempos-dedicaciones',
-                element: <Outlet/>,
+                element: <Outlet />,
                 children: [
                     {
-                        path:'/',
-                        element: <ListadoTiemposDedicaciones/>
+                        path: '/',
+                        element: <ListadoTiemposDedicaciones />
                     }
                 ]
             }, {
                 path: '/niveles-educativos',
-                element: <Outlet/>,
+                element: <Outlet />,
                 children: [
                     {
                         path: '/',
-                        element: <ListadoNivelesEducativos/>
+                        element: <ListadoNivelesEducativos />
                     }
                 ]
             }, {
                 path: '/tipos-funcionarios',
-                element: <Outlet/>,
-                children:[
+                element: <Outlet />,
+                children: [
                     {
                         path: '/',
-                        element: <ListadoTiposFuncionarios/>
+                        element: <ListadoTiposFuncionarios />
                     }
                 ]
             },
             {
                 path: '/tipos-docentes',
-                element: <Outlet/>,
-                children:[
+                element: <Outlet />,
+                children: [
                     {
                         path: '/',
-                        element: <ListadoTiposDocentes/>
+                        element: <ListadoTiposDocentes />
                     }
                 ]
             }, {
                 path: '/categorias-docentes',
-                element: <Outlet/>,
+                element: <Outlet />,
                 children: [
                     {
-                        path:'/',
-                        element: <ListadoCategoriasDocentes/>
+                        path: '/',
+                        element: <ListadoCategoriasDocentes />
                     }
                 ]
-            },{
+            }, {
                 path: 'estados-civiles',
-                element: <Outlet/>,
-                children:[
+                element: <Outlet />,
+                children: [
                     {
-                        path:'/',
-                        element: <ListadoEstadosCiviles/>
+                        path: '/',
+                        element: <ListadoEstadosCiviles />
                     }
                 ]
             },
             {
                 path: 'estructuras-institucionales',
-                element: <Outlet/>,
-                children:[
+                element: <Outlet />,
+                children: [
                     {
-                        path:'/',
-                        element: <ListadoEstructurasInstitucionales/>
+                        path: '/',
+                        element: <ListadoEstructurasInstitucionales />
                     }
                 ]
             },
             {
                 path: 'areas-institucionales',
-                element: <Outlet/>,
-                children:[
+                element: <Outlet />,
+                children: [
                     {
-                        path:'/',
-                        element: <ListadoAreasInstitucionales/>
+                        path: '/',
+                        element: <ListadoAreasInstitucionales />
                     }
                 ]
             },
             {
                 path: 'campos-estudio-amplio',
-                element: <Outlet/>,
-                children:[
+                element: <Outlet />,
+                children: [
                     {
-                        path:'/',
-                        element: <ListadoCamposEstudiosAmplios/>
-                    },{
-                        path:'/especificos',
-                        element: <Outlet/>,
+                        path: '/',
+                        element: <ListadoCamposEstudiosAmplios />
+                    }, {
+                        path: '/especificos',
+                        element: <Outlet />,
                         children: [
                             {
-                                path:'/',
-                                element: <ListadoCamposEstudiosEspecificos/>
+                                path: '/',
+                                element: <ListadoCamposEstudiosEspecificos />
                             }, {
-                                path:'/detallados',
-                                element: <Outlet/>,
-                                children:[
-                                   { path:'/', element: <ListadoCamposEstudiosDetallados/>}
+                                path: '/detallados',
+                                element: <Outlet />,
+                                children: [
+                                    { path: '/', element: <ListadoCamposEstudiosDetallados /> }
 
                                 ]
                             }
                         ]
                     }
+                ]
+            }, {
+                path: 'tipo-becas',
+                element: <Outlet />,
+                children: [
+                    {
+                        path: '/',
+                        element: <ListadoTiposBecas />
+                    }
+
+                ]
+            },
+            {
+                path: 'tipo-financiamientos',
+                element: <Outlet />,
+                children: [
+                    {
+                        path: '/',
+                        element: <ListadoTiposFinanciamientos />
+                    }
+
                 ]
             }
 
@@ -248,32 +271,32 @@ const routes = (user)=> [
     },
     {
         path: '/change-password',
-        element: <NotImplemented/>
-    },{
-        path:'/cv',
-        element: <Outlet/>,
-        children:[
-            {
-                path: '/',
-                element: user && isValid(user.jwt)? <CV email= {user.userInfo.email}/> : <Navigate to="/login"/>
-            }
-        ]
-    },
-   
-    {
-        path: '/dth',
-        element: user && isValid(user.jwt)? <Outlet/> : <Navigate to="/login"></Navigate>,
+        element: <NotImplemented />
+    }, {
+        path: '/cv',
+        element: <Outlet />,
         children: [
             {
                 path: '/',
-                element: <DTH/>
-            },{
-                path:'/expediente',
-                element: <ListaExpediente/>
+                element: user && isValid(user.jwt) ? <CV email={user.userInfo.email} /> : <Navigate to="/login" />
             }
-            
+        ]
+    },
 
-           
+    {
+        path: '/dth',
+        element: user && isValid(user.jwt) ? <Outlet /> : <Navigate to="/login"></Navigate>,
+        children: [
+            {
+                path: '/',
+                element: <DTH />
+            }, {
+                path: '/expediente',
+                element: <ListaExpediente />
+            }
+
+
+
         ]
     },
 ];
