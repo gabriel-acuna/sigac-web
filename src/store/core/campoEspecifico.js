@@ -56,6 +56,31 @@ export const loadCampoEspecifico = createAsyncThunk(
     }
 )
 
+export const loadCamposEspecificosPorCampoAmplio = createAsyncThunk(
+    'campo-amplio/campos-especificos/load',
+    async (id, { getState }) => {
+        let token;
+        try {
+            token = getState().user.user.jwt.token;
+        } catch (e) {
+            throw e;
+        }
+
+        try {
+            let response = await Axios.get(`${API}/campos-amplios/especificos/${id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+            return response.data
+
+        } catch (error) {
+            throw error.response.detail
+        }
+    }
+)
+
 export const postCamposEspecificos = createAsyncThunk(
     'campos-especificos/post',
     async (campo, { getState }) => {
@@ -79,10 +104,10 @@ export const postCamposEspecificos = createAsyncThunk(
         } catch (error) {
             let err;
             if (error.response.data.detail[0].msg)
-                err =error.response.data.detail[0].msg
-            if(error.response.data.type)
+                err = error.response.data.detail[0].msg
+            if (error.response.data.type)
                 err = `${error.response.data.type}, ${error.response.data.type.content}`
-            throw  err
+            throw err
         }
 
     }
@@ -112,10 +137,10 @@ export const putCamposEspecificos = createAsyncThunk(
         } catch (error) {
             let err;
             if (error.response.data.detail[0].msg)
-                err =error.response.data.detail[0].msg
-            if(error.response.data.type)
+                err = error.response.data.detail[0].msg
+            if (error.response.data.type)
                 err = `${error.response.data.type}, ${error.response.data.type.content}`
-            throw  err
+            throw err
         }
 
     }
@@ -153,7 +178,7 @@ let camposEspecificosSlice = createSlice({
     initialState: {
         data: {
             campos: []
-        
+
         },
         status: ''
 
@@ -163,7 +188,7 @@ let camposEspecificosSlice = createSlice({
         clearData: (state) => {
             state.data = {
                 campos: []
-               
+
             }
         }
 
@@ -172,8 +197,15 @@ let camposEspecificosSlice = createSlice({
         [loadCamposEspecificos.fulfilled]: (state, action) => {
             state.status = 'success'
             state.data = {
-                    campos: action.payload
-                }
+                campos: action.payload
+            }
+
+        },
+        [loadCamposEspecificosPorCampoAmplio.fulfilled]: (state, action) => {
+            state.status = 'success'
+            state.data = {
+                campos: action.payload
+            }
 
         }
 

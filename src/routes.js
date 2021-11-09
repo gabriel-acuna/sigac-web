@@ -25,6 +25,9 @@ import ListadoEstructurasInstitucionales from "./components/admin/options/estruc
 import ListadoAreasInstitucionales from "./components/admin/options/areas-institucionales";
 import CV from './components/cv/index'
 import ListaExpediente from "./components/dth/ListaExpediente";
+import ListadoCamposEstudiosAmplios from "./components/admin/options/campos-amplios";
+import ListadoCamposEstudiosEspecificos from "./components/admin/options/campos-especificos";
+import ListadoCamposEstudiosDetallados from "./components/admin/options/campos-detallados";
 
 const routes = (user)=> [
     {
@@ -211,6 +214,32 @@ const routes = (user)=> [
                     {
                         path:'/',
                         element: <ListadoAreasInstitucionales/>
+                    }
+                ]
+            },
+            {
+                path: 'campos-estudio-amplio',
+                element: <Outlet/>,
+                children:[
+                    {
+                        path:'/',
+                        element: <ListadoCamposEstudiosAmplios/>
+                    },{
+                        path:'/especificos',
+                        element: <Outlet/>,
+                        children: [
+                            {
+                                path:'/',
+                                element: <ListadoCamposEstudiosEspecificos/>
+                            }, {
+                                path:'/detallados',
+                                element: <Outlet/>,
+                                children:[
+                                   { path:'/', element: <ListadoCamposEstudiosDetallados/>}
+
+                                ]
+                            }
+                        ]
                     }
                 ]
             }

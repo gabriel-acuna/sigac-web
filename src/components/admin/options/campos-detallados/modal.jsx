@@ -5,17 +5,17 @@ import { Fragment, useEffect } from 'react'
 let ModalForm = ({ title, handler, children, objeto }) => {
 
 
-    const { register,reset, handleSubmit, formState: { errors } } = useForm()
+    const { register, reset, handleSubmit, formState: { errors } } = useForm()
 
     useEffect(
-        ()=>{
-            if(objeto!==null){
+        () => {
+            if (objeto !== null) {
                 reset({
-                    nombre: objeto.nombre,
+                    descripcion: objeto.descripcion,
                     codigo: objeto.codigo
                 })
             }
-        },[objeto, reset]
+        }, [objeto, reset]
     )
 
 
@@ -30,21 +30,24 @@ let ModalForm = ({ title, handler, children, objeto }) => {
                 <section className="modal-card-body" style={{ display: 'flex', justifyContent: 'center' }}>
 
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
-                        <div className="field">
-                            <label className="label is-small">Nombre</label>
-                            <div className="control">
-                                <input type="text" {...register("nombre", { required: true })} className="input is-uppercase" />
-                                {errors.nombre && <span className="has-text-danger">¡Por favor, Ingrese el nombre del area institucional!</span>}
+                        
+                            <div className="field">
+                                <label className="label is-small">Código</label>
+                                <div className="control">
+                                    <input type="text" {...register("codigo", { required: true })} className="input" />
+                                    {errors.codigo && <span className="has-text-danger">¡Por favor, Ingrese el código del campo de estudio amplio!</span>}
 
+                                </div>
                             </div>
-                        </div>
-                        <div className="field">
-                            <label className="label is-small">Código</label>
-                            <div className="control">
-                                <input type="text" {...register("codigo")} className="input is-uppercase" />
+                            <div className="field">
+                                <label className="label is-small">Nombre</label>
+                                <div className="control">
+                                    <textarea class="textarea"  {...register("descripcion", { required: true })}></textarea>
+                                    {errors.descripcion && <span className="has-text-danger">¡Por favor, Ingrese el nombre del campo de estudio!</span>}
 
+                                </div>
                             </div>
-                        </div>
+                        
                         <div className="field is-grouped" style={{ display: 'flex', justifyContent: 'center' }}>
                             <div className="control has-text-centered">
                                 <Fragment>

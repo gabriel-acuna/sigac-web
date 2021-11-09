@@ -21,8 +21,9 @@ const Accordion = ({ title, options }) => {
                     options.map(
                         (option, index) => (
                             <p key={index}>
-                                {option.title} <Link className="mx-2 is-small button" to={option.url}>
-                                    <span className="icon"> {option.icon}</span>
+                                <Link className="mx-2 my-1 button is-text" to={option.url}>
+                                   <span> {option.title} </span>
+                                   <span className="icon"> {option.icon}</span>
                                 </Link>
                             </p>
                         )

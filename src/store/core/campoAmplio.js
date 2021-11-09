@@ -6,8 +6,8 @@ import {
 import Axios from 'axios'
 import { API } from '../../services/api'
 
-export const loadCamposDetallados = createAsyncThunk(
-    'campos-detallados/load',
+export const loadCamposAmplios = createAsyncThunk(
+    'campos-amplios/load',
     async (_, { getState }) => {
         let token;
         try {
@@ -17,7 +17,7 @@ export const loadCamposDetallados = createAsyncThunk(
         }
 
         try {
-            let response = await Axios.get(`${API}/campos-detallados`,
+            let response = await Axios.get(`${API}/campos-amplios`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -31,8 +31,8 @@ export const loadCamposDetallados = createAsyncThunk(
     }
 )
 
-export const loadCampoDetallado = createAsyncThunk(
-    'campo-detallado/load',
+export const loadCampoAmplio = createAsyncThunk(
+    'campo-amplio/load',
     async (id, { getState }) => {
         let token;
         try {
@@ -42,7 +42,7 @@ export const loadCampoDetallado = createAsyncThunk(
         }
 
         try {
-            let response = await Axios.get(`${API}/campos-detallados/${id}`,
+            let response = await Axios.get(`${API}/campos-amplios/${id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -56,33 +56,8 @@ export const loadCampoDetallado = createAsyncThunk(
     }
 )
 
-export const loadCamposDetalladosPorCampoEspecifico = createAsyncThunk(
-    'campo-especifico/campos-detallados/load',
-    async (id, { getState }) => {
-        let token;
-        try {
-            token = getState().user.user.jwt.token;
-        } catch (e) {
-            throw e;
-        }
-
-        try {
-            let response = await Axios.get(`${API}/campos-especificos/detallados/${id}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                })
-            return response.data
-
-        } catch (error) {
-            throw error.response.detail
-        }
-    }
-)
-
-export const postCampoDetallado = createAsyncThunk(
-    'campos-detallados/post',
+export const postCamposAmplios = createAsyncThunk(
+    'campos-amplios/post',
     async (campo, { getState }) => {
         let token;
         try {
@@ -93,7 +68,7 @@ export const postCampoDetallado = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.post(`${API}/campos-detallados`, campo,
+            let response = await Axios.post(`${API}/campos-amplios`, campo,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -104,18 +79,18 @@ export const postCampoDetallado = createAsyncThunk(
         } catch (error) {
             let err;
             if (error.response.data.detail[0].msg)
-                err = error.response.data.detail[0].msg
-            if (error.response.data.type)
+                err =error.response.data.detail[0].msg
+            if(error.response.data.type)
                 err = `${error.response.data.type}, ${error.response.data.type.content}`
-            throw err
+            throw  err
         }
 
     }
 
 )
 
-export const putCamposDetallados = createAsyncThunk(
-    'camposDetallados/put',
+export const putCamposAmplios = createAsyncThunk(
+    'CamposAmplios/put',
     async (campo, { getState }) => {
         let token;
         try {
@@ -126,7 +101,7 @@ export const putCamposDetallados = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.put(`${API}/campos-detallados`, campo,
+            let response = await Axios.put(`${API}/campos-amplios`, campo,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -137,17 +112,17 @@ export const putCamposDetallados = createAsyncThunk(
         } catch (error) {
             let err;
             if (error.response.data.detail[0].msg)
-                err = error.response.data.detail[0].msg
-            if (error.response.data.type)
+                err =error.response.data.detail[0].msg
+            if(error.response.data.type)
                 err = `${error.response.data.type}, ${error.response.data.type.content}`
-            throw err
+            throw  err
         }
 
     }
 )
 
-export const deleteCamposDetallados = createAsyncThunk(
-    'campos-detallados/delete',
+export const deleteCamposAmplios = createAsyncThunk(
+    'campos-amplios/delete',
     async (id, { getState }) => {
         let token;
         try {
@@ -158,7 +133,7 @@ export const deleteCamposDetallados = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.delete(`${API}/campos-detallados/${id}`,
+            let response = await Axios.delete(`${API}/campos-amplios/${id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -173,12 +148,12 @@ export const deleteCamposDetallados = createAsyncThunk(
     }
 )
 
-let camposDetalladosSlice = createSlice({
-    name: 'camposDetallados',
+let CamposAmpliosSlice = createSlice({
+    name: 'camposAmplios',
     initialState: {
         data: {
             campos: []
-
+        
         },
         status: ''
 
@@ -188,24 +163,17 @@ let camposDetalladosSlice = createSlice({
         clearData: (state) => {
             state.data = {
                 campos: []
-
+               
             }
         }
 
     },
     extraReducers: {
-        [loadCamposDetallados.fulfilled]: (state, action) => {
+        [loadCamposAmplios.fulfilled]: (state, action) => {
             state.status = 'success'
             state.data = {
-                campos: action.payload
-            }
-
-        },
-        [loadCamposDetalladosPorCampoEspecifico.fulfilled]: (state, action) => {
-            state.status = 'success'
-            state.data = {
-                campos: action.payload
-            }
+                    campos: action.payload
+                }
 
         }
 
@@ -214,5 +182,5 @@ let camposDetalladosSlice = createSlice({
 }
 )
 
-export const { clearData } = camposDetalladosSlice.actions;
-export default camposDetalladosSlice.reducer;
+export const { clearData } = CamposAmpliosSlice.actions;
+export default CamposAmpliosSlice.reducer;

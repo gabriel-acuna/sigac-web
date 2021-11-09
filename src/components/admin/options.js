@@ -1,12 +1,14 @@
-import { FaCity, FaBlind } from 'react-icons/fa';
+import { FaCity, FaBlind, FaUniversity, FaBookReader } from 'react-icons/fa';
 import { IoIosPeople } from 'react-icons/io'
 import { IoDocumentTextOutline } from 'react-icons/io5'
-import { GiSouthAmerica, GiFarmer, GiPlayerTime, GiOrganigram, GiTeamUpgrade, GiTeacher } from 'react-icons/gi'
+import { GiSouthAmerica, GiFarmer, GiPlayerTime, GiOrganigram, GiTeamUpgrade, GiTeacher, GiReceiveMoney,GiDiploma, GiMoneyStack } from 'react-icons/gi'
 import { GrWorkshop } from 'react-icons/gr'
 import { BsPersonCheck } from 'react-icons/bs'
 import { VscOrganization } from 'react-icons/vsc'
 import { MdPeople } from 'react-icons/md'
-import { ImOffice} from 'react-icons/im'
+import { ImOffice } from 'react-icons/im'
+import { AiOutlineTags } from 'react-icons/ai'
+
 
 export const options = [
     /*{
@@ -105,19 +107,19 @@ export const options = [
         },
         {
             title: 'Tipo docente LOES',
-            icon: <GiOrganigram />,
+            icon: <GrWorkshop />,
             content: 'Gestione el tiempo de dedicación del profesorado de la IES.',
             url: '/admin/tipos-docentes'
         }, {
             title: 'Categoría docente LOSEP',
-            icon: < GiPlayerTime />,
+            icon: < AiOutlineTags />,
             content: 'Gestione el tiempo de dedicación del profesorado de la IES.',
             url: '/admin/categorias-docentes'
         }
-    ]
+        ]
     }, {
         title: 'Información Institucional',
-        options:[
+        options: [
             {
                 title: 'Estructura orgánica',
                 icon: <GiOrganigram />,
@@ -128,8 +130,48 @@ export const options = [
                 icon: <ImOffice />,
                 content: '',
                 url: '/admin/areas-institucionales',
-            
+
             }
+        ]
+    },
+    {
+        title: 'Información Formación Académica',
+        options: [
+            {
+                title: 'Campos de estudio',
+                icon: <FaBookReader />,
+                content: '',
+                url: '/admin/campos-estudio-amplio'
+            },
+            {
+                title: 'Tipos de becas',
+                icon: <GiReceiveMoney />,
+                content: '',
+                url: ''
+
+            },
+            {
+                title: 'Tipos de financiamiento',
+                icon: <GiMoneyStack />,
+                content: '',
+                url: '',
+
+            },
+            {
+                title: 'Grados',
+                icon: <GiDiploma />,
+                content: '',
+                url: '',
+
+            },
+            {
+                title: 'IES Nacionales',
+                icon: <FaUniversity />,
+                content: '',
+                url: '',
+
+            }
+            
         ]
     }
 
