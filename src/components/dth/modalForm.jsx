@@ -340,7 +340,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
 
                             <div className="column">
                                 <div className="control">
-                                    <label className="label is-small">SUBAREA</label>
+                                    <label className="label is-small">SUB AREA</label>
                                     <input type="text" onChange={ev => filtrarSubAreas(ev.target.value)} />
                                 </div>
                                 <div className="select">

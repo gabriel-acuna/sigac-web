@@ -21,6 +21,7 @@ let ListadoTiposEscalafones = (props) => {
             dispatch(
                 loadTiposEscalafonesNombramientos()
             ).unwrap()
+                .then(() => setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -31,6 +32,9 @@ let ListadoTiposEscalafones = (props) => {
         { key: 'escalafonNombramiento', text: 'Escalafón nombramiento', sortable: true },
         { key: 'opciones', text: 'Opciones', sortable: false }
     ]
+
+    const [loading, setLoading] = useState(true)
+
     let tiposEscalafonesState = useSelector(state => state.tipoEscalafones.data.tipoEscalafones)
 
     const [response, setResponse] = useState(null)
@@ -145,7 +149,7 @@ let ListadoTiposEscalafones = (props) => {
 
     return (
 
-        <div className="conatiner">
+        <>
             <div className="columns is-centered">
                 <div className="column is-half">
                     <button className="button is-outlined is-info mt-4 mx-3"
@@ -195,11 +199,14 @@ let ListadoTiposEscalafones = (props) => {
                                     previous: "Anterior",
                                     next: "Siguiente",
                                     last: "Ultima"
-                                }
+                                },
+                                loading_text: 'cargando ...'
+
                             }
                         }}
                         records={rows}
                         columns={columns}
+                        loading={loading}
                     />
                 </div>
             </div>
@@ -237,7 +244,7 @@ let ListadoTiposEscalafones = (props) => {
                     }}>Cancelar</button>
                 </ModalForm>
             }
-        </div >
+        </>
     )
 }
 

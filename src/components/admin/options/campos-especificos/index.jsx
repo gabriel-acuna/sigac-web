@@ -17,12 +17,14 @@ let ListadoCamposEstudiosEspecificos = (props) => {
     let navigate = useNavigate()
     let dispatch = useDispatch()
     let location = useLocation()
+    const [loading, setLoading] = useState(true)
 
     useEffect(
         () => {
             dispatch(
                 loadCamposEspecificosPorCampoAmplio(location.state.id)
             ).unwrap()
+                .then(()=>setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -161,7 +163,7 @@ let ListadoCamposEstudiosEspecificos = (props) => {
     }
     return (
 
-        <div className="conatiner">
+        <>
             <div className="columns is-centered">
                 <div className="column is-half">
                     <button className="button is-info mt-4 mx-3 is-outlined"
@@ -201,6 +203,7 @@ let ListadoCamposEstudiosEspecificos = (props) => {
                                 excel: false,
                                 print: false
                             },
+                            sort: { column:'codigo', order: 'asc'},
                             language: {
                                 length_menu: "Mostrar _MENU_ campos de estudio por página",
                                 filter: "Buscar en registros ...",
@@ -218,7 +221,7 @@ let ListadoCamposEstudiosEspecificos = (props) => {
                         }}
                         records={rows}
                         columns={columns}
-                        loading ={ camposEspecificosState.length === 0}
+                        loading ={ loading}
                     />
                 </div>
             </div>
@@ -256,7 +259,7 @@ let ListadoCamposEstudiosEspecificos = (props) => {
                     }}>Cancelar</button>
                 </ModalForm>
             }
-        </div >
+        </>
     )
 }
 

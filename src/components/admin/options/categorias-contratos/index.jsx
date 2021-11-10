@@ -22,6 +22,7 @@ let ListadoCategoriasContratos = (props) => {
             dispatch(
                 loadCategoriasContratoProfesores()
             ).unwrap()
+                .then(() => setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -32,6 +33,8 @@ let ListadoCategoriasContratos = (props) => {
         { key: 'categoria', text: 'Categoría', sortable: true },
         { key: 'opciones', text: 'Opciones', sortable: false }
     ]
+
+    const [loading, setLoading] = useState(true)
 
     let categoriasContratosState = useSelector(state => state.categoriasContratos.data.categoriasContrato)
 
@@ -154,7 +157,7 @@ let ListadoCategoriasContratos = (props) => {
     }
     return (
 
-        <div className="conatiner">
+        <>
             <div className="columns is-centered">
                 <div className="column is-half">
                     <button className="button is-info mt-4 mx-3 is-outlined"
@@ -206,11 +209,13 @@ let ListadoCategoriasContratos = (props) => {
                                     previous: "Anterior",
                                     next: "Siguiente",
                                     last: "Ultima"
-                                }
+                                },
+                                loading_text: "cargando ..."
                             }
                         }}
                         records={rows}
                         columns={columns}
+                        loading={loading}
                     />
                 </div>
             </div>
@@ -218,8 +223,8 @@ let ListadoCategoriasContratos = (props) => {
                 showModal &&
                 <ConfirmDialog info="la categoría" title="Eliminar categoría">
 
-                    <button className="button is-small is-danger is-pulled-left" onClick={event => setShowModal(false)}> Cancelar</button>
-                    <button className="button is-small is-success is-pulled-rigth" onClick={event => {
+                    <button className="button is-small is-danger is-pulled-left" onClick={() => setShowModal(false)}> Cancelar</button>
+                    <button className="button is-small is-success is-pulled-rigth" onClick={() => {
                         setShowModal(false); doDelete();
                     }}>Confirmar</button>
                 </ConfirmDialog>
@@ -240,15 +245,15 @@ let ListadoCategoriasContratos = (props) => {
                         }}></button>
                     </Alert>}
                     {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={event => setError(null)}></button>
+                        <button className="delete" onClick={() => setError(null)}></button>
                     </Alert>}
-                    <button className="button is-small is-danger mx-3" onClick={ev => {
+                    <button className="button is-small is-danger mx-3" onClick={() => {
                         setShowModalForm(false)
                         setObjeto(null)
                     }}>Cancelar</button>
                 </ModalForm>
             }
-        </div >
+        </>
     )
 }
 

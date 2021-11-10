@@ -9,7 +9,7 @@ import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
 import RegistrarDiscapacidad from './RegistrarDiscapacidad'
 import { logOut } from '../../../../store/user'
 import { FaRegEdit } from 'react-icons/fa'
-import { AiOutlineDelete} from 'react-icons/ai'
+import { AiOutlineDelete } from 'react-icons/ai'
 
 let ListadoDiscapacidades = (props) => {
 
@@ -18,7 +18,7 @@ let ListadoDiscapacidades = (props) => {
     const [error, setError] = useState(null)
 
     const [response, setResponse] = useState(null)
-    const [ objeto, setObjeto] = useState(null)
+    const [objeto, setObjeto] = useState(null)
 
 
     useEffect(
@@ -26,6 +26,9 @@ let ListadoDiscapacidades = (props) => {
             dispatch(
                 loadDiscapacidades()
             ).unwrap()
+                .then(
+                    ()=>setLoadning(false)
+                )
                 .catch(
                     (err) => console.log(err)
                 )
@@ -36,9 +39,12 @@ let ListadoDiscapacidades = (props) => {
         { key: 'discapacidad', text: 'Discapacidad', sortable: true },
         { key: 'opciones', text: 'Opciones', sortable: false }
     ]
+
+    const [loading, setLoadning] = useState(true)
+
     let discapacidadesState = useSelector(state => state.discapacidades.data.discapacidades)
 
-   
+
     const [showModal, setShowModal] = useState(false)
     const [showModalForm, setShowModalForm] = useState(false)
 
@@ -67,23 +73,24 @@ let ListadoDiscapacidades = (props) => {
     }
 
     let rows = discapacidadesState.map(
-        (row, index) => {
+        (row) => {
             return {
+                id: row.id,
                 discapacidad: row.discapacidad,
                 opciones: [
-                    <button className="button is-small is-primary is-outlined mx-2" onClick={ ev=>{ 
+                    <button className="button is-small is-primary is-outlined mx-2" onClick={ev => {
                         setObjeto(row)
                         setShowModalForm(true)
                     }} key={`${row.id}0`}>
                         <span className="icon">
-                            <FaRegEdit/>
+                            <FaRegEdit />
                         </span>
                     </button>,
-                    <button className="button is-small is-danger mx-2 is-outlined" onClick={event => {
+                    <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
                         deleteHandler(row.id)
                     }}>
                         <span className="icon">
-                            <AiOutlineDelete/>
+                            <AiOutlineDelete />
                         </span>
                     </button>
                 ]
@@ -103,10 +110,10 @@ let ListadoDiscapacidades = (props) => {
             })
             .catch(
                 (err) => {
-                    if (err.message.includes("undefined (reading 'data')")) { 
-                    console.error("No hay conexión con el backend");
-                    setError({'message':'No es posible establecer conexión, intente mas tarde.'})
-                 } else if (err.message === "Rejected") {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
                         )
@@ -119,8 +126,8 @@ let ListadoDiscapacidades = (props) => {
     }
 
     let putHandler = (data) => {
-        
-        
+
+
         dispatch(
             putDiscapacidades(
                 {
@@ -136,18 +143,18 @@ let ListadoDiscapacidades = (props) => {
                 (err) => {
                     if (err.messsage === "Cannot read property 'data' of undefined") {
                         console.error("No hay conexión con el backend");
-                        
+
                     }
-                    else if(err.message==="Rejected"){
+                    else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
                         )
                     }
 
                     else { setError(err) }
-                 }
+                }
             )
-       
+
     }
     return (
 
@@ -159,10 +166,10 @@ let ListadoDiscapacidades = (props) => {
                             navigate(-1);
                             dispatch(clearData())
                         }}>
-                            <span className="icon">
-                                <IoIosArrowBack/>
-                            </span>
-                        </button>
+                        <span className="icon">
+                            <IoIosArrowBack />
+                        </span>
+                    </button>
 
                     <button className="button is-success is-outlined mt-4" onClick={ev => setShowModalForm(true)}>
                         <span className="icon">
@@ -200,11 +207,13 @@ let ListadoDiscapacidades = (props) => {
                                     previous: "Anterior",
                                     next: "Siguiente",
                                     last: "Ultima"
-                                }
+                                },
+                                loading_text: 'cargando ...'
                             }
                         }}
                         records={rows}
                         columns={columns}
+                        loading={loading}
                     />
                 </div>
             </div>
@@ -219,7 +228,7 @@ let ListadoDiscapacidades = (props) => {
                 </ConfirmDialog>
             }
             {
-                showModalForm && <RegistrarDiscapacidad title={ objeto!== null ? "Editar discapacidad": "Registrar discapacidad"} objeto={objeto} handler={objeto!==null ? putHandler:postHandler}>
+                showModalForm && <RegistrarDiscapacidad title={objeto !== null ? "Editar discapacidad" : "Registrar discapacidad"} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
                     {
                         error && <Alert type={'is-danger is-light'} content={error.message}>
                             <button className="delete" onClick={event => setError(null)}></button>
@@ -229,18 +238,19 @@ let ListadoDiscapacidades = (props) => {
                         <button className="delete" onClick={event => setResponse(null)}></button>
                     </Alert>}
                     {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={event =>{ 
+                        <button className="delete" onClick={event => {
                             setResponse(null)
                             setShowModalForm(false)
                             setObjeto(null)
                             dispatch(
                                 loadDiscapacidades()
-                            )}}></button>
+                            )
+                        }}></button>
                     </Alert>}
-                    <button className="button is-small is-danger mx-3" onClick={ev =>{ 
+                    <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalForm(false)
                         setObjeto(null)
-                        }}>Cancelar</button>
+                    }}>Cancelar</button>
                 </RegistrarDiscapacidad>
             }
         </div >

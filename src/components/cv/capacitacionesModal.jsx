@@ -39,8 +39,8 @@ let CapacitacionModalForm = ({ title, handler, children, objeto }) => {
                         <div className="columns">
 
                             <div className="column">
-                                <label className="label is-small">Tipo Evento</label>
-                                {errors.tipoEvento && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el tipo de evento!</span>}
+                                <label className="label is-small">Nombre</label>
+                                {errors.tipoEvento && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el nombre de la capacitación!</span>}
                                 <div className="control">
                                     <input type="text" className="input is-uppercase" {...register('tipoEvento', { required: true })} />
                                 </div>
@@ -117,8 +117,9 @@ let CapacitacionModalForm = ({ title, handler, children, objeto }) => {
                             <div className="column">
                                 <label className="label is-small">Fecha fin</label>
                                 {errors.fechaFin?.type === 'min' && <span className="has-text-danger is-size-7 has-background-danger-light">{errors.fechaFin.message}</span>}
+                                {errors.fechaFin?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, ingrese la fecha de finalización!</span>}
                                 <div className="control">
-                                    <input type="date" className="input" {...register('fechaFin')}
+                                    <input type="date" className="input" {...register('fechaFin',{ required:true})}
 
                                         onChange={
                                             ev => {

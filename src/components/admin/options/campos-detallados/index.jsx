@@ -16,12 +16,14 @@ let ListadoCamposEstudiosDetallados = (props) => {
     let navigate = useNavigate()
     let dispatch = useDispatch()
     let location = useLocation()
+    const [loading, setLoading] = useState(true)
 
     useEffect(
         () => {
             dispatch(
                 loadCamposDetalladosPorCampoEspecifico(location.state.id)
             ).unwrap()
+                .then(()=>setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -159,7 +161,7 @@ let ListadoCamposEstudiosDetallados = (props) => {
     }
     return (
 
-        <div className="conatiner">
+        <>
             <div className="columns is-centered">
                 <div className="column is-half">
                     <button className="button is-info mt-4 mx-3 is-outlined"
@@ -216,7 +218,7 @@ let ListadoCamposEstudiosDetallados = (props) => {
                         }}
                         records={rows}
                         columns={columns}
-                        loading ={ camposDetalladosState.length === 0}
+                        loading ={loading}
                     />
                 </div>
             </div>
@@ -254,7 +256,7 @@ let ListadoCamposEstudiosDetallados = (props) => {
                     }}>Cancelar</button>
                 </ModalForm>
             }
-        </div >
+        </>
     )
 }
 

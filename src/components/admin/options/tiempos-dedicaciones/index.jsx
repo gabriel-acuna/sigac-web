@@ -24,6 +24,7 @@ let ListadoTiemposDedicaciones = (props) => {
             dispatch(
                 loadTiemposDedicacionesProfesores()
             ).unwrap()
+                .then(() => setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -34,6 +35,8 @@ let ListadoTiemposDedicaciones = (props) => {
         { key: 'dedicacion', text: 'Tiempo dedicación', sortable: true },
         { key: 'opciones', text: 'Opciones', sortable: false }
     ]
+
+    const [loading, setLoading] = useState(true)
     let tiemposDedicaionesState = useSelector(state => state.tiemposDedicaciones.data.tiemposDedicaciones)
 
     const [delResponse, setDelResponse] = useState(null)
@@ -153,7 +156,7 @@ let ListadoTiemposDedicaciones = (props) => {
 
     return (
 
-        <div className="conatiner">
+        <>
             <div className="columns is-centered">
                 <div className="column is-half">
                     <button className="button is-info mt-4 mx-3 is-outlined"
@@ -205,11 +208,13 @@ let ListadoTiemposDedicaciones = (props) => {
                                     previous: "Anterior",
                                     next: "Siguiente",
                                     last: "Ultima"
-                                }
+                                },
+                                loading_text: "cargando ..."
                             }
                         }}
                         records={rows}
                         columns={columns}
+                        loading={loading}
                     />
                 </div>
             </div>
@@ -247,7 +252,7 @@ let ListadoTiemposDedicaciones = (props) => {
                     }}>Cancelar</button>
                 </ModalForm>
             }
-        </div >
+        </>
     )
 }
 

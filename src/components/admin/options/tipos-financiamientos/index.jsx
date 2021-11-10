@@ -16,12 +16,14 @@ let ListadoTiposFinanciamientos = (props) => {
 
     let navigate = useNavigate()
     let dispatch = useDispatch()
+    const [loading, setLoading] =useState(true)
 
     useEffect(
         () => {
             dispatch(
                 loadTiposFinanciamientos()
             ).unwrap()
+                .then(()=>setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -69,7 +71,7 @@ let ListadoTiposFinanciamientos = (props) => {
                 id: row.id,
                 financiamiento: row.financiamiento,
                 opciones: [
-                    <button className="button is-small is-primary mx-2" key={`${row.id}0`} onClick={() => {
+                    <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={() => {
                         setObjeto(row)
                         setShowModalForm(true)
                     }}>
@@ -77,7 +79,7 @@ let ListadoTiposFinanciamientos = (props) => {
                             <FaRegEdit />
                         </span>
                     </button>,
-                    <button className="button is-small is-danger mx-2" key={`${row.id}1`} onClick={() => {
+                    <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={() => {
                         deleteHandler(row.id)
                     }}>
                         <span className="icon">
@@ -151,7 +153,7 @@ let ListadoTiposFinanciamientos = (props) => {
     }
     return (
 
-        <div className="conatiner">
+        <>
             <div className="columns is-centered">
                 <div className="column is-half">
 
@@ -192,20 +194,22 @@ let ListadoTiposFinanciamientos = (props) => {
                                 print: false
                             },
                             language: {
-                                length_menu: "Mostrar _MENU_ tipo becas por página",
+                                length_menu: "Mostrar _MENU_ financiamientos por página",
                                 filter: "Buscar en registros ...",
                                 no_data_text: "No hay tipo becas registrados",
-                                info: "Mostrando _START_ a _END_ de _TOTAL_ tipo becas",
+                                info: "Mostrando _START_ a _END_ de _TOTAL_ financiamientos",
                                 pagination: {
                                     first: "Primera",
                                     previous: "Anterior",
                                     next: "Siguiente",
                                     last: "Ultima"
-                                }
+                                },
+                                loading_text:"cargando ..."
                             }
                         }}
                         records={rows}
                         columns={columns}
+                        loading={loading}
                     />
                 </div>
             </div>
@@ -248,7 +252,7 @@ let ListadoTiposFinanciamientos = (props) => {
                     }}>Cancelar</button>
                 </ModalForm>
             }
-        </div >
+        </>
     )
 }
 

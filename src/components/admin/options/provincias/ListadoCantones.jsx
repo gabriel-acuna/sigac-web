@@ -174,7 +174,7 @@ let ListadoCantonesProvincias = (props) => {
     return (
 
 
-        <div className="conatiner" >
+        <>
             <div className="columns is-centered">
                 <div className="column is-half">
                     <button className="button is-info mt-4 mx-3 is-outlined"
@@ -273,7 +273,7 @@ let ListadoCantonesProvincias = (props) => {
                     }}>Cancelar</button>
                 </ModalForm>
             }
-        </div >
+        </>
     )
 
 }

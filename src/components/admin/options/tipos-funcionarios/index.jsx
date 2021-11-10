@@ -23,6 +23,7 @@ let ListadoTiposFuncionarios = (props) => {
             dispatch(
                 loadTiposFuncionarios()
             ).unwrap()
+                .then(()=>setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -33,6 +34,8 @@ let ListadoTiposFuncionarios = (props) => {
         { key: 'tipoFuncionario', text: 'Tipo funcionario', sortable: true },
         { key: 'opciones', text: 'Opciones', sortable: false }
     ]
+
+    const [loading, setLoading] =useState(true)
 
     let tiposFuncionariosState = useSelector(state => state.tiposFuncionarios.data.tiposFuncionarios)
 
@@ -153,7 +156,7 @@ let ListadoTiposFuncionarios = (props) => {
 
     return (
 
-        <div className="conatiner">
+        <>
             <div className="columns is-centered">
                 <div className="column is-half">
                     <button className="button is-info mt-4 mx-3 is-outlined"
@@ -206,11 +209,13 @@ let ListadoTiposFuncionarios = (props) => {
                                     previous: "Anterior",
                                     next: "Siguiente",
                                     last: "Ultima"
-                                }
+                                },
+                                loading_text: "cargando ..."
                             }
                         }}
                         records={rows}
                         columns={columns}
+                        loading={loading}
                     />
                 </div>
             </div>
@@ -248,7 +253,7 @@ let ListadoTiposFuncionarios = (props) => {
                 }}>Cancelar</button>
             </ModalForm>
             }
-        </div >
+        </>
     )
 }
 

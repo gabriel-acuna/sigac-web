@@ -21,6 +21,7 @@ let ListadoEtnias = (props) => {
             dispatch(
                 loadEtnias()
             ).unwrap()
+                .then(()=>setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -31,6 +32,7 @@ let ListadoEtnias = (props) => {
         { key: 'etnia', text: 'Etnia', sortable: true },
         { key: 'opciones', text: 'Opciones', sortable: false }
     ]
+    const [loading, setLoading] = useState(true)
     let etniasState = useSelector(state => state.etnias.data.etnias)
 
     const [response, setResponse] = useState(null)
@@ -67,9 +69,10 @@ let ListadoEtnias = (props) => {
                 id: index,
                 etnia: row.etnia,
                 opciones: [
-                    <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev=>{
+                    <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
                         setObjeto(row)
-                        setShowModalForm(true)}}>
+                        setShowModalForm(true)
+                    }}>
                         <span className="icon">
                             <FaRegEdit />
                         </span>
@@ -98,10 +101,10 @@ let ListadoEtnias = (props) => {
             })
             .catch(
                 (err) => {
-                    if (err.message.includes("undefined (reading 'data')")) { 
-                    console.error("No hay conexión con el backend");
-                    setError({'message':'No es posible establecer conexión, intente mas tarde.'})
-                 } else if (err.message === "Rejected") {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
                         )
@@ -130,10 +133,10 @@ let ListadoEtnias = (props) => {
             })
             .catch(
                 (err) => {
-                    if (err.message.includes("undefined (reading 'data')")) { 
-                    console.error("No hay conexión con el backend");
-                    setError({'message':'No es posible establecer conexión, intente mas tarde.'})
-                 } else if (err.message === "Rejected") {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
                         )
@@ -146,7 +149,7 @@ let ListadoEtnias = (props) => {
     }
     return (
 
-        <div className="conatiner">
+        <>
             <div className="columns is-centered">
                 <div className="column is-half">
                     <button className="button is-info mt-4 mx-3 is-outlined"
@@ -159,7 +162,7 @@ let ListadoEtnias = (props) => {
                         </span>
                     </button>
 
-                    <button className="button  is-success mt-4 is-outlined" onClick={ev=>setShowModalForm(true)}>
+                    <button className="button  is-success mt-4 is-outlined" onClick={ev => setShowModalForm(true)}>
                         <span className="icon">
                             <IoIosAddCircleOutline />
                         </span>
@@ -195,11 +198,14 @@ let ListadoEtnias = (props) => {
                                     previous: "Anterior",
                                     next: "Siguiente",
                                     last: "Ultima"
-                                }
+                                },
+                                loading_text: "cargando ..."
+
                             }
                         }}
                         records={rows}
                         columns={columns}
+                        loading={loading}
                     />
                 </div>
             </div>
@@ -226,18 +232,18 @@ let ListadoEtnias = (props) => {
                             dispatch(
                                 loadEtnias()
                             )
-                            }}></button>
+                        }}></button>
                     </Alert>}
                     {error && <Alert type={'is-danger is-light'} content={error.message}>
                         <button className="delete" onClick={event => setError(null)}></button>
                     </Alert>}
-                    <button className="button is-small is-danger mx-3" onClick={ev =>{ 
+                    <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalForm(false)
                         setObjeto(null)
-                        }}>Cancelar</button>
+                    }}>Cancelar</button>
                 </RegistrarEtnia>
             }
-        </div >
+        </>
     )
 }
 

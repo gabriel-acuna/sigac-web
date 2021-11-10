@@ -16,12 +16,14 @@ let ListadoTiposBecas = (props) => {
 
     let navigate = useNavigate()
     let dispatch = useDispatch()
+    const [loading, setLoading] = useState(true)
 
     useEffect(
         () => {
             dispatch(
                 loadTipoBecas()
             ).unwrap()
+                .then(()=>setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -68,7 +70,7 @@ let ListadoTiposBecas = (props) => {
             return {
                 tipoBeca: row.tipo_beca,
                 opciones: [
-                    <button className="button is-small is-primary mx-2" key={`${row.id}0`} onClick={() => {
+                    <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={() => {
                         setObjeto(row)
                         setShowModalForm(true)
                     }}>
@@ -76,7 +78,7 @@ let ListadoTiposBecas = (props) => {
                             <FaRegEdit />
                         </span>
                     </button>,
-                    <button className="button is-small is-danger mx-2" key={`${row.id}1`} onClick={() => {
+                    <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={() => {
                         deleteHandler(row.id)
                     }}>
                         <span className="icon">
@@ -150,7 +152,7 @@ let ListadoTiposBecas = (props) => {
     }
     return (
 
-        <div className="conatiner">
+        <>
             <div className="columns is-centered">
                 <div className="column is-half">
 
@@ -200,11 +202,13 @@ let ListadoTiposBecas = (props) => {
                                     previous: "Anterior",
                                     next: "Siguiente",
                                     last: "Ultima"
-                                }
+                                },
+                                loading_text: "cargando ..."
                             }
                         }}
                         records={rows}
                         columns={columns}
+                        loading={loading}
                     />
                 </div>
             </div>
@@ -247,7 +251,7 @@ let ListadoTiposBecas = (props) => {
                     }}>Cancelar</button>
                 </ModalForm>
             }
-        </div >
+        </>
     )
 }
 

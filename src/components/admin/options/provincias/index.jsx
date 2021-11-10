@@ -22,6 +22,7 @@ let ListadoProvincias = (props) => {
                 loadProvincias()
 
             ).unwrap()
+                .then( ()=>setLoading(false))
                 .catch(
                     (err) => console.error(err)
                 )
@@ -33,6 +34,7 @@ let ListadoProvincias = (props) => {
         { key: 'opciones', text: ' Opciones' }
 
     ]
+    const [loading, setLoading] = useState(true)
 
     const [showModalForm, setShowModalForm] = useState(false)
     const [objeto, setObjeto] = useState(null)
@@ -124,7 +126,7 @@ let ListadoProvincias = (props) => {
         }
     )
     return (
-        <div className="conatiner">
+        <div className="container">
             <div className="columns is-centered">
                 <div className="column is-half">
                     <button className="button is-info mt-4 mx-3 is-outlined"
@@ -148,7 +150,6 @@ let ListadoProvincias = (props) => {
                 <div className="column is-half mb-6">
                     <ReactDatatable style={{ justifyContent: 'center' }}
                         className="table is-bordered is-striped is-fullwidth"
-                        tHeadClassName="has-background-success-light"
                         config={{
                             page_size: 10,
                             length_menu: [10, 20, 50],
@@ -158,20 +159,24 @@ let ListadoProvincias = (props) => {
                                 excel: false,
                                 print: false
                             },
+                            sort: { column: 'provincia', order: 'asc' },
                             language: {
                                 length_menu: "Mostrar _MENU_ provincias por página",
                                 filter: "Buscar en registros ...",
                                 info: "Mostrando _START_ a _END_ de _TOTAL_ provincias",
+                                no_data_text: "No hay provincias registradas",
                                 pagination: {
                                     first: "Primera",
                                     previous: "Anterior",
                                     next: "Siguiente",
                                     last: "Ultima"
-                                }
+                                },
+                                loading_text: 'cargando ...'
                             }
                         }}
                         records={rows}
                         columns={columns}
+                        loading={loading}
                     />
                 </div>
             </div>

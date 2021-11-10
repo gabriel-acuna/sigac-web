@@ -24,6 +24,7 @@ let ListadoRelacionesIES = (props) => {
             dispatch(
                 loadRelacionesIES()
             ).unwrap()
+                .then(() => setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -34,6 +35,8 @@ let ListadoRelacionesIES = (props) => {
         { key: 'relacion', text: 'Relación', sortable: true },
         { key: 'opciones', text: 'Opciones', sortable: false }
     ]
+
+    const [loading, setLoading] = useState(true)
 
     let relacionesIESState = useSelector(state => state.relacionesIES.data.relacionesIES)
 
@@ -66,11 +69,12 @@ let ListadoRelacionesIES = (props) => {
     }
 
     let rows = relacionesIESState.map(
-        (row, index) => {
+        (row) => {
             return {
+                id: row.id,
                 relacion: row.relacion,
                 opciones: [
-                    <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
+                    <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={() => {
                         setObjeto(row)
                         setShowModalForm(true)
                     }}>
@@ -78,7 +82,7 @@ let ListadoRelacionesIES = (props) => {
                             <FaRegEdit />
                         </span>
                     </button>,
-                    <button className="button is-small is-danger mx-2 is-outlined" onClick={event => {
+                    <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={() => {
                         deleteHandler(row.id)
                     }}>
                         <span className="icon">
@@ -103,10 +107,10 @@ let ListadoRelacionesIES = (props) => {
             })
             .catch(
                 (err) => {
-                    if (err.message.includes("undefined (reading 'data')")) { 
-                    console.error("No hay conexión con el backend");
-                    setError({'message':'No es posible establecer conexión, intente mas tarde.'})
-                 } else if (err.message === "Rejected") {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
 
@@ -136,10 +140,10 @@ let ListadoRelacionesIES = (props) => {
             })
             .catch(
                 (err) => {
-                    if (err.message.includes("undefined (reading 'data')")) { 
-                    console.error("No hay conexión con el backend");
-                    setError({'message':'No es posible establecer conexión, intente mas tarde.'})
-                 } else if (err.message === "Rejected") {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
 
@@ -154,7 +158,7 @@ let ListadoRelacionesIES = (props) => {
 
     return (
 
-        <div className="conatiner">
+        <>
             <div className="columns is-centered">
                 <div className="column is-half">
                     <button className="button is-info mt-4 mx-3 is-outlined"
@@ -203,11 +207,13 @@ let ListadoRelacionesIES = (props) => {
                                     previous: "Anterior",
                                     next: "Siguiente",
                                     last: "Ultima"
-                                }
+                                },
+                                loading_text: "cargando ...."
                             }
                         }}
                         records={rows}
                         columns={columns}
+                        loading={loading}
                     />
                 </div>
             </div>
@@ -221,7 +227,7 @@ let ListadoRelacionesIES = (props) => {
                     }}>Confirmar</button>
                 </ConfirmDialog>
             }
-             {
+            {
                 showModalForm && <RegistrarRelacion title={objeto !== null ? 'Editar realación IES' : 'Registrar realación IES'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
                     {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
                         <button className="delete" onClick={event => setResponse(null)}></button>
@@ -234,18 +240,18 @@ let ListadoRelacionesIES = (props) => {
                             dispatch(
                                 loadRelacionesIES()
                             )
-                            }}></button>
+                        }}></button>
                     </Alert>}
                     {error && <Alert type={'is-danger is-light'} content={error.message}>
                         <button className="delete" onClick={event => setError(null)}></button>
                     </Alert>}
-                    <button className="button is-small is-danger mx-3" onClick={ev =>{ 
+                    <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalForm(false)
                         setObjeto(null)
-                        }}>Cancelar</button>
+                    }}>Cancelar</button>
                 </RegistrarRelacion>
             }
-        </div >
+        </>
     )
 }
 

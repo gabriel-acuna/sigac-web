@@ -31,7 +31,7 @@ export const loadIESNacionales = createAsyncThunk(
     }
 )
 
-export const loadGrado = createAsyncThunk(
+export const loadIES = createAsyncThunk(
     'ies/load',
     async (id, { getState }) => {
         let token;
@@ -56,7 +56,7 @@ export const loadGrado = createAsyncThunk(
     }
 )
 
-export const postGrados = createAsyncThunk(
+export const postIES = createAsyncThunk(
     'ies-nacionales/post',
     async (ies, { getState }) => {
         let token;
@@ -89,7 +89,7 @@ export const postGrados = createAsyncThunk(
 
 )
 
-export const putIESNacionales = createAsyncThunk(
+export const putIES = createAsyncThunk(
     'ies-nacionales/put',
     async (ies, { getState }) => {
         let token;
@@ -121,8 +121,8 @@ export const putIESNacionales = createAsyncThunk(
     }
 )
 
-export const deleteGrados = createAsyncThunk(
-    'grados/delete',
+export const deleteIES = createAsyncThunk(
+    'ies-nacionales/delete',
     async (id, { getState }) => {
         let token;
         try {

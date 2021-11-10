@@ -21,6 +21,7 @@ let ListadoEstadosCiviles = (props) => {
             dispatch(
                 loadEstadosCiviles()
             ).unwrap()
+                .then(()=>setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -31,6 +32,9 @@ let ListadoEstadosCiviles = (props) => {
         { key: 'estado_civil', text: 'Estado civil', sortable: true },
         { key: 'opciones', text: 'Opciones', sortable: false }
     ]
+
+    const [loading, setLoading] = useState(true)
+
     let eatdosCivilesState = useSelector(state => state.estadosCiviles.data.estadosCiviles)
 
     const [response, setResponse] = useState(null)
@@ -145,7 +149,7 @@ let ListadoEstadosCiviles = (props) => {
     }
     return (
 
-        <div className="conatiner">
+        <>
             <div className="columns is-centered">
                 <div className="column is-half">
                     <button className="button is-info mt-4 mx-3 is-outlined"
@@ -194,11 +198,13 @@ let ListadoEstadosCiviles = (props) => {
                                     previous: "Anterior",
                                     next: "Siguiente",
                                     last: "Ultima"
-                                }
+                                },
+                                loading_text: 'cargando ...'
                             }
                         }}
                         records={rows}
                         columns={columns}
+                        loading={loading}
                     />
                 </div>
             </div>
@@ -236,7 +242,7 @@ let ListadoEstadosCiviles = (props) => {
                         }}>Cancelar</button>
                 </ModalForm>
             }
-        </div >
+        </>
     )
 }
 

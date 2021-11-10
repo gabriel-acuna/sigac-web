@@ -15,12 +15,14 @@ import ModalForm from './modalForm'
 let ListadoAreasInstitucionales = (props) => {
     let navigate = useNavigate()
     let dispatch = useDispatch()
+    const [loading, setLoading] = useState(true)
 
     useEffect(
         () => {
             dispatch(
                 loadAreasInstitucionales()
             ).unwrap()
+                .then(()=>setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -63,12 +65,12 @@ let ListadoAreasInstitucionales = (props) => {
     }
 
     let rows = areasState.map(
-        (row, index) => {
+        (row) => {
             return {
                 id: row.id,
                 nombre: row.nombre,
                 opciones: [
-                    <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}.`} onClick={ev => {
+                    <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}.`} onClick={() => {
                         setObjeto(row)
                         setShowModalForm(true)
                     }}>
@@ -76,7 +78,7 @@ let ListadoAreasInstitucionales = (props) => {
                             <FaRegEdit />
                         </span>
                     </button>,
-                    <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}+`}  onClick={event => {
+                    <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}+`}  onClick={() => {
                         deleteHandler(row.id)
                     }}>
                         <span className="icon">
@@ -151,11 +153,11 @@ let ListadoAreasInstitucionales = (props) => {
     }
     return (
 
-        <div className="conatiner">
+        <>
             <div className="columns is-centered">
                 <div className="column is-half">
                     <button className="button is-info mt-4 mx-3 is-outlined"
-                        onClick={event => {
+                        onClick={() => {
                             navigate(-1);
                             dispatch(clearData())
                         }}>
@@ -164,20 +166,20 @@ let ListadoAreasInstitucionales = (props) => {
                         </span>
                     </button>
 
-                    <button className="button  is-success mt-4 is-outlined" onClick={ev => setShowModalForm(true)}>
+                    <button className="button  is-success mt-4 is-outlined" onClick={()=> setShowModalForm(true)}>
                         <span className="icon">
                             <IoIosAddCircleOutline />
                         </span>
                     </button>
                 </div>
                 {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                    <button className="delete" onClick={event => setResponse(null)}></button>
+                    <button className="delete" onClick={() => setResponse(null)}></button>
                 </Alert>}
             </div>
             <div className="columns is-centered">
 
 
-                <div className="column is-half">
+                <div className="column is-half mb-6">
                     <ReactDatatable style={{ justifyContent: 'center' }}
                         className="table is-bordered is-striped"
                         tHeadClassName="is-info"
@@ -200,11 +202,13 @@ let ListadoAreasInstitucionales = (props) => {
                                     previous: "Anterior",
                                     next: "Siguiente",
                                     last: "Ultima"
-                                }
+                                },
+                                loading_text: "cargando .."
                             }
                         }}
                         records={rows}
                         columns={columns}
+                        loading={loading}
                     />
                 </div>
             </div>
@@ -242,7 +246,7 @@ let ListadoAreasInstitucionales = (props) => {
                     }}>Cancelar</button>
                 </ModalForm>
             }
-        </div >
+        </>
     )
 }
 

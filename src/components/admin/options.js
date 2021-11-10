@@ -161,14 +161,14 @@ export const options = [
                 title: 'Grados',
                 icon: <GiDiploma />,
                 content: '',
-                url: '',
+                url: '/admin/grados',
 
             },
             {
                 title: 'IES Nacionales',
                 icon: <FaUniversity />,
                 content: '',
-                url: '',
+                url: '/admin/ies-nacionales',
 
             }
 

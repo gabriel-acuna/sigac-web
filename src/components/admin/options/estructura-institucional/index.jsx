@@ -15,12 +15,14 @@ import ModalForm from './modalForm'
 let ListadoEstructurasInstitucionales = (props) => {
     let navigate = useNavigate()
     let dispatch = useDispatch()
+    const [loading, setLoading] = useState(true)
 
     useEffect(
         () => {
             dispatch(
                 loadEstructurasInstitucionales()
             ).unwrap()
+                .then(()=>setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -154,7 +156,7 @@ let ListadoEstructurasInstitucionales = (props) => {
     }
     return (
 
-        <div className="conatiner">
+        <>
             <div className="columns is-centered">
                 <div className="column is-half">
                     <button className="button is-info mt-4 mx-3 is-outlined"
@@ -180,7 +182,7 @@ let ListadoEstructurasInstitucionales = (props) => {
             <div className="columns is-centered">
 
 
-                <div className="column is-half">
+                <div className="column is-half mb-6">
                     <ReactDatatable style={{ justifyContent: 'center' }}
                         className="table is-bordered is-striped"
                         tHeadClassName="is-info"
@@ -203,11 +205,13 @@ let ListadoEstructurasInstitucionales = (props) => {
                                     previous: "Anterior",
                                     next: "Siguiente",
                                     last: "Ultima"
-                                }
+                                },
+                                loading_text: "cargando ..."
                             }
                         }}
                         records={rows}
                         columns={columns}
+                        loading={loading}
                     />
                 </div>
             </div>
@@ -227,7 +231,7 @@ let ListadoEstructurasInstitucionales = (props) => {
                         <button className="delete" onClick={event => setResponse(null)}></button>
                     </Alert>}
                     {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={event => {
+                        <button className="delete" onClick={() => {
                             setResponse(null)
                             setShowModalForm(false)
                             setObjeto(null)
@@ -237,15 +241,15 @@ let ListadoEstructurasInstitucionales = (props) => {
                         }}></button>
                     </Alert>}
                     {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={event => setError(null)}></button>
+                        <button className="delete" onClick={()=> setError(null)}></button>
                     </Alert>}
-                    <button className="button is-small is-danger mx-3" onClick={ev => {
+                    <button className="button is-small is-danger mx-3" onClick={() => {
                         setShowModalForm(false)
                         setObjeto(null)
                     }}>Cancelar</button>
                 </ModalForm>
             }
-        </div >
+        </>
     )
 }
 

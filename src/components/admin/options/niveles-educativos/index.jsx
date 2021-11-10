@@ -23,6 +23,7 @@ let ListadoNivelesEducativos = (props) => {
             dispatch(
                 loadNivelesEducativos()
             ).unwrap()
+                .then(()=>setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -33,6 +34,8 @@ let ListadoNivelesEducativos = (props) => {
         { key: 'nivel', text: 'Nivel', sortable: true },
         { key: 'opciones', text: 'Opciones', sortable: false }
     ]
+
+    const [loading, setLoading] = useState(true)
 
     let nivelesEducativosState = useSelector(state => state.nivelesEducativos.data.nivelesEducativos)
 
@@ -152,7 +155,7 @@ let ListadoNivelesEducativos = (props) => {
     }
     return (
 
-        <div className="conatiner">
+        <>
             <div className="columns is-centered">
         
                 <div className="column is-half">
@@ -205,11 +208,13 @@ let ListadoNivelesEducativos = (props) => {
                                     previous: "Anterior",
                                     next: "Siguiente",
                                     last: "Ultima"
-                                }
+                                },
+                                loading_text:"cargando ..."
                             }
                         }}
                         records={rows}
                         columns={columns}
+                        loading={loading}
                     />
                 </div>
             </div>
@@ -247,7 +252,7 @@ let ListadoNivelesEducativos = (props) => {
                     }}>Cancelar</button>
                 </ModalForm>
             }
-        </div >
+        </>
     )
 }
 

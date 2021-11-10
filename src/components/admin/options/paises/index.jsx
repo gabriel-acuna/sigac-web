@@ -1,7 +1,7 @@
 import ReactDatatable from '@yun548/bulma-react-datatable';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { loadPaises, clearData } from '../../../../store/core/paises';
 import { IoIosArrowBack } from 'react-icons/io'
 
@@ -9,6 +9,7 @@ let ListadoPaises = (props) => {
 
     let navigate = useNavigate()
     let dispatch = useDispatch()
+    const [loading, setLoading] = useState(true)
 
 
 
@@ -18,6 +19,7 @@ let ListadoPaises = (props) => {
                 loadPaises()
 
             ).unwrap()
+                .then(()=>setLoading(false))
                 .catch(
                     (err) => console.error(err)
                 )
@@ -35,7 +37,7 @@ let ListadoPaises = (props) => {
 
 
     return (
-        <div className="conatiner">
+        <>
             <div className="columns is-centered">
                 <div className="column is-half">
                     <button className="button is-small is-info mt-4 mx-3 is-outlined"
@@ -67,20 +69,23 @@ let ListadoPaises = (props) => {
                                 length_menu: "Mostrar _MENU_ paises por página",
                                 filter: "Buscar en registros ...",
                                 info: "Mostrando _START_ a _END_ de _TOTAL_ paises",
+                                no_data_text: "No hay paises registrados",
                                 pagination: {
                                     first: "Primera",
                                     previous: "Anterior",
                                     next: "Siguiente",
                                     last: "Ultima"
-                                }
+                                },
+                                loading_text: 'cargando ...'
                             }
                         }}
                         records={paisesState}
                         columns={columns}
+                        loading={loading}
                     />
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 

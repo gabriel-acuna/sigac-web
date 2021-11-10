@@ -2,27 +2,27 @@ import ReactDatatable from '@yun548/bulma-react-datatable'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
-import { loadTiposDocumentos, clearData, deleteTiposDocumentos, putTiposDocumentos, postTiposDocumentos } from '../../../../store/core/tiposDocumentos'
+import { loadGrados, clearData, deleteGrados, postGrados, putGrados } from '../../../../store/core/grado'
 import ConfirmDialog from '../../../ConfirmDialog'
 import Alert from '../../../Alert'
 import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
 import { logOut } from '../../../../store/user'
 import { FaRegEdit } from 'react-icons/fa'
 import { AiOutlineDelete } from 'react-icons/ai'
-import RegistrarTipoDocumento from './RegistrarTipoDocumento'
+import ModalForm from './modal'
 
 
-let ListadoTiposDocumentos = (props) => {
-
+let ListadoGrados = (props) => {
     let navigate = useNavigate()
     let dispatch = useDispatch()
+    const [loading, setLoading] = useState(true)
 
     useEffect(
         () => {
             dispatch(
-                loadTiposDocumentos()
+                loadGrados()
             ).unwrap()
-                .then(() => setLoading(false))
+                .then(()=>setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -30,17 +30,14 @@ let ListadoTiposDocumentos = (props) => {
     )
 
     const columns = [
-        { key: 'tipoDocumento', text: 'Tipos documentos', sortable: true },
+        { key: 'grado', text: 'Grado', sortable: true },
         { key: 'opciones', text: 'Opciones', sortable: false }
     ]
-
-    const [loading, setLoading] = useState(true)
-
-    let tiposDocumentosState = useSelector(state => state.tiposDocumentos.data.tiposDocumentos)
+    let gardosState = useSelector(state => state.grados.data.grados)
 
     const [response, setResponse] = useState(null)
     const [error, setError] = useState(null)
-    const [showModalForm, setShowModalForm] = useState(null)
+    const [showModalForm, setShowModalForm] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [id, setId] = useState(null)
     const [objeto, setObjeto] = useState(null)
@@ -53,33 +50,33 @@ let ListadoTiposDocumentos = (props) => {
 
     let doDelete = () => {
         dispatch(
-            deleteTiposDocumentos(id)
+            deleteGrados(id)
 
         ).unwrap()
             .then(resp => {
                 setResponse(resp)
                 dispatch(
-                    loadTiposDocumentos()
+                    loadGrados()
                 )
             }).catch(
                 (err) => console.error(err)
             )
     }
 
-    let rows = tiposDocumentosState.map(
-        (row) => {
+    let rows = gardosState.map(
+        (row, index) => {
             return {
-                tipoDocumento: row.tipo_documento,
+                id: index,
+                grado: row.grado,
                 opciones: [
-                    <button className="button is-small is-primary mx-2" key={`${row.id}0`} onClick={() => {
+                    <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev=>{
                         setObjeto(row)
-                        setShowModalForm(true)
-                    }}>
+                        setShowModalForm(true)}}>
                         <span className="icon">
                             <FaRegEdit />
                         </span>
                     </button>,
-                    <button className="button is-small is-danger mx-2" key={`${row.id}1`} onClick={() => {
+                    <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={() => {
                         deleteHandler(row.id)
                     }}>
                         <span className="icon">
@@ -87,7 +84,6 @@ let ListadoTiposDocumentos = (props) => {
                         </span>
                     </button>
                 ]
-
             }
         }
     )
@@ -95,8 +91,8 @@ let ListadoTiposDocumentos = (props) => {
     let postHandler = (data) => {
 
         dispatch(
-            postTiposDocumentos(
-                { tipo_documento: data.tipoDocumento.toUpperCase() }
+            postGrados(
+                data
             )
         ).unwrap()
             .then((resp) => {
@@ -104,13 +100,12 @@ let ListadoTiposDocumentos = (props) => {
             })
             .catch(
                 (err) => {
-                    if (err.message.includes("undefined (reading 'data')")) {
-                        console.error("No hay conexión con el backend");
-                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
-                    } else if (err.message === "Rejected") {
+                    if (err.message.includes("undefined (reading 'data')")) { 
+                    console.error("No hay conexión con el backend");
+                    setError({'message':'No es posible establecer conexión, intente mas tarde.'})
+                 } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
-
                         )
                     }
 
@@ -120,14 +115,15 @@ let ListadoTiposDocumentos = (props) => {
 
     }
 
+
     let putHandler = (data) => {
 
 
         dispatch(
-            putTiposDocumentos(
+            putGrados(
                 {
                     id: objeto.id,
-                    tipo_documento: data.tipoDocumento.toUpperCase()
+                    ... data
                 }
             )
         ).unwrap()
@@ -136,13 +132,12 @@ let ListadoTiposDocumentos = (props) => {
             })
             .catch(
                 (err) => {
-                    if (err.message.includes("undefined (reading 'data')")) {
-                        console.error("No hay conexión con el backend");
-                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
-                    } else if (err.message === "Rejected") {
+                    if (err.message.includes("undefined (reading 'data')")) { 
+                    console.error("No hay conexión con el backend");
+                    setError({'message':'No es posible establecer conexión, intente mas tarde.'})
+                 } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
-
                         )
                     }
 
@@ -156,9 +151,8 @@ let ListadoTiposDocumentos = (props) => {
         <>
             <div className="columns is-centered">
                 <div className="column is-half">
-
                     <button className="button is-info mt-4 mx-3 is-outlined"
-                        onClick={() => {
+                        onClick={event => {
                             navigate(-1);
                             dispatch(clearData())
                         }}>
@@ -167,20 +161,20 @@ let ListadoTiposDocumentos = (props) => {
                         </span>
                     </button>
 
-                    <button className="button is-success mt-4 is-outlined" onClick={()=> setShowModalForm(true)}>
+                    <button className="button  is-success mt-4 is-outlined" onClick={ev=>setShowModalForm(true)}>
                         <span className="icon">
                             <IoIosAddCircleOutline />
                         </span>
                     </button>
                 </div>
                 {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                    <button className="delete" onClick={() => setResponse(null)}></button>
+                    <button className="delete" onClick={event => setResponse(null)}></button>
                 </Alert>}
             </div>
             <div className="columns is-centered">
 
 
-                <div className="column is-half">
+                <div className="column is-half mb-6">
                     <ReactDatatable style={{ justifyContent: 'center' }}
                         className="table is-bordered is-striped"
                         tHeadClassName="is-info"
@@ -194,17 +188,17 @@ let ListadoTiposDocumentos = (props) => {
                                 print: false
                             },
                             language: {
-                                length_menu: "Mostrar _MENU_ tipos documentos por página",
+                                length_menu: "Mostrar _MENU_ grados por página",
                                 filter: "Buscar en registros ...",
-                                no_data_text: "No hay tipos documentos registrados",
-                                info: "Mostrando _START_ a _END_ de _TOTAL_ tipos documentos",
+                                no_data_text: "No hay grados registradas",
+                                info: "Mostrando _START_ a _END_ de _TOTAL_ grados",
                                 pagination: {
                                     first: "Primera",
                                     previous: "Anterior",
                                     next: "Siguiente",
                                     last: "Ultima"
                                 },
-                                loading_text: 'cargando ...'
+                                loading_text: "cargando ..."
                             }
                         }}
                         records={rows}
@@ -215,45 +209,40 @@ let ListadoTiposDocumentos = (props) => {
             </div>
             {
                 showModal &&
-                <ConfirmDialog info="el tipo documento" title="Eliminar tipo documento">
+                <ConfirmDialog info="el grado" title="Eliminar grado">
 
-                    <button className="button is-small is-danger is-pulled-left" onClick={() => setShowModal(false)}> Cancelar</button>
-                    <button className="button is-small is-success is-pulled-rigth" onClick={() => {
+                    <button className="button is-small is-danger is-pulled-left" onClick={event => setShowModal(false)}> Cancelar</button>
+                    <button className="button is-small is-success is-pulled-rigth" onClick={event => {
                         setShowModal(false); doDelete();
                     }}>Confirmar</button>
                 </ConfirmDialog>
             }
             {
-                showModalForm &&
-                <RegistrarTipoDocumento
-                    title={objeto !== null ? 'Editar Tipo dcumento' : 'Registrar tipo documento'}
-                    objeto={objeto}
-                    handler={objeto !== null ? putHandler : postHandler}
-                >
+                showModalForm && <ModalForm title={objeto !== null ? 'Editar grado' : 'Registrar grado'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
                     {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={()=> setResponse(null)}></button>
+                        <button className="delete" onClick={event => setResponse(null)}></button>
                     </Alert>}
                     {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={() => {
+                        <button className="delete" onClick={event => {
                             setResponse(null)
                             setShowModalForm(false)
                             setObjeto(null)
                             dispatch(
-                                loadTiposDocumentos()
+                                loadGrados()
                             )
-                        }}></button>
+                            }}></button>
                     </Alert>}
                     {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={() => setError(null)}></button>
+                        <button className="delete" onClick={event => setError(null)}></button>
                     </Alert>}
-                    <button className="button is-small is-danger mx-3" onClick={() => {
+                    <button className="button is-small is-danger mx-3" onClick={ev =>{ 
                         setShowModalForm(false)
                         setObjeto(null)
-                    }}>Cancelar</button>
-                </RegistrarTipoDocumento>
+                        }}>Cancelar</button>
+                </ModalForm>
             }
         </>
     )
 }
 
-export default ListadoTiposDocumentos;
+export default ListadoGrados;

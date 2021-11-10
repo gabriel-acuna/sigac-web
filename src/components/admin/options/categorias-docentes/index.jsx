@@ -17,12 +17,14 @@ let ListadoCategoriasDocentes = (props) => {
 
     let navigate = useNavigate()
     let dispatch = useDispatch()
+    const [loading, setLoading] = useState(true)
 
     useEffect(
         () => {
             dispatch(
                 loadCategoriasDocentesLOSEP()
             ).unwrap()
+                .then(() => setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -156,7 +158,7 @@ let ListadoCategoriasDocentes = (props) => {
 
     return (
 
-        <div className="conatiner">
+        <>
             <div className="columns is-centered">
                 <div className="column is-half">
 
@@ -209,11 +211,13 @@ let ListadoCategoriasDocentes = (props) => {
                                     previous: "Anterior",
                                     next: "Siguiente",
                                     last: "Ultima"
-                                }
+                                }, 
+                                loading_text: "cargando ..."
                             }
                         }}
                         records={rows}
                         columns={columns}
+                        loading={loading}
                     />
                 </div>
             </div>
@@ -251,7 +255,7 @@ let ListadoCategoriasDocentes = (props) => {
                     }}>Cancelar</button>
                 </ModalForm>
             }
-        </div >
+        </>
     )
 }
 

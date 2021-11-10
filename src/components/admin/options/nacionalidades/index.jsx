@@ -22,6 +22,7 @@ let ListadoNacionalidades = (props) => {
             dispatch(
                 loadNacionalidades()
             ).unwrap()
+                .then(()=>setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -32,6 +33,8 @@ let ListadoNacionalidades = (props) => {
         { key: 'nacionalidad', text: 'Nacionalidad', sortable: true },
         { key: 'opciones', text: 'Opciones', sortable: false }
     ]
+    const [loading, setLoading] = useState(true)
+
     let nacionalidadesState = useSelector(state => state.nacionalidades.data.nacionalidades)
 
     const [response, setResponse] = useState(null)
@@ -63,11 +66,12 @@ let ListadoNacionalidades = (props) => {
     }
 
     let rows = nacionalidadesState.map(
-        (row, index) => {
+        (row) => {
             return {
+                id: row.id,
                 nacionalidad: row.nacionalidad,
                 opciones: [
-                    <button className="button is-small is-primary mx-2" key={`${row.id}0`} onClick={ev => {
+                    <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={() => {
                         setObjeto(row)
                         setShowModalForm(true)
                     }}>
@@ -75,7 +79,7 @@ let ListadoNacionalidades = (props) => {
                             <FaRegEdit />
                         </span>
                     </button>,
-                    <button className="button is-small is-danger mx-2" onClick={event => {
+                    <button className="button is-small is-danger mx-2 is-outlined"  key={`${row.id}i`} onClick={()=> {
                         deleteHandler(row.id)
                     }}>
                         <span className="icon">
@@ -160,14 +164,14 @@ let ListadoNacionalidades = (props) => {
                         </span>
                     </button>
 
-                    <button className="button is-success mt-4 is-outlined" onClick={ev => setShowModalForm(true)}>
+                    <button className="button is-success mt-4 is-outlined" onClick={() => setShowModalForm(true)}>
                         <span className="icon">
                             <IoIosAddCircleOutline />
                         </span>
                     </button>
                 </div>
                 {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                    <button className="delete" onClick={event => setResponse(null)}></button>
+                    <button className="delete" onClick={() => setResponse(null)}></button>
                 </Alert>}
             </div>
             <div className="columns is-centered">
@@ -196,11 +200,13 @@ let ListadoNacionalidades = (props) => {
                                     previous: "Anterior",
                                     next: "Siguiente",
                                     last: "Ultima"
-                                }
+                                },
+                                loading_text: 'cargando ...'
                             }
                         }}
                         records={rows}
                         columns={columns}
+                        loading={loading}
                     />
                 </div>
             </div>
@@ -208,8 +214,8 @@ let ListadoNacionalidades = (props) => {
                 showModal &&
                 <ConfirmDialog info="la nacionalidad" title="Eliminar nacionalidad">
 
-                    <button className="button is-small is-danger is-pulled-left" onClick={event => setShowModal(false)}> Cancelar</button>
-                    <button className="button is-small is-success is-pulled-rigth" onClick={event => {
+                    <button className="button is-small is-danger is-pulled-left" onClick={() => setShowModal(false)}> Cancelar</button>
+                    <button className="button is-small is-success is-pulled-rigth" onClick={() => {
                         setShowModal(false); doDelete();
                     }}>Confirmar</button>
                 </ConfirmDialog>
@@ -219,10 +225,10 @@ let ListadoNacionalidades = (props) => {
                     title={objeto !== null ? 'Editar nacionalidad' : 'Registrar nacionalidad'}
                     objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
                     {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={event => setResponse(null)}></button>
+                        <button className="delete" onClick={() => setResponse(null)}></button>
                     </Alert>}
                     {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={event => {
+                        <button className="delete" onClick={() => {
                             setResponse(null)
                             setShowModalForm(false)
                             setObjeto(null)
@@ -232,9 +238,9 @@ let ListadoNacionalidades = (props) => {
                         }}></button>
                     </Alert>}
                     {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={event => setError(null)}></button>
+                        <button className="delete" onClick={() => setError(null)}></button>
                     </Alert>}
-                    <button className="button is-small is-danger mx-3" onClick={ev => {
+                    <button className="button is-small is-danger mx-3" onClick={() => {
                         setShowModalForm(false)
                         setObjeto(null)
                     }}>Cancelar</button>

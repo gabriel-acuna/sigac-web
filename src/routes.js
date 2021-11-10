@@ -30,6 +30,8 @@ import ListadoCamposEstudiosEspecificos from "./components/admin/options/campos-
 import ListadoCamposEstudiosDetallados from "./components/admin/options/campos-detallados";
 import ListadoTiposBecas from "./components/admin/options/tipos-becas";
 import ListadoTiposFinanciamientos from "./components/admin/options/tipos-financiamientos";
+import ListadoGrados from "./components/admin/options/grados";
+import ListadoIESNacionales from "./components/admin/options/ies-nacionales";
 
 const routes = (user) => [
     {
@@ -262,6 +264,28 @@ const routes = (user) => [
                     {
                         path: '/',
                         element: <ListadoTiposFinanciamientos />
+                    }
+
+                ]
+            },
+            {
+                path: 'grados',
+                element: <Outlet />,
+                children: [
+                    {
+                        path: '/',
+                        element: <ListadoGrados />
+                    }
+
+                ]
+            }, 
+            {
+                path: 'ies-nacionales',
+                element: <Outlet />,
+                children: [
+                    {
+                        path: '/',
+                        element: <ListadoIESNacionales />
                     }
 
                 ]
