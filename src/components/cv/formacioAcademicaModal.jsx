@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { Fragment, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { loadPaises } from '../../store/core/paises'
@@ -9,17 +9,16 @@ import { loadGrados } from '../../store/core/grado'
 import { loadTipoBecas } from '../../store/core/tipoBeca'
 import { loadIESNacionales } from '../../store/core/ies-nacionales'
 import { loadCamposEspecificos } from '../../store/core/campoEspecifico'
+import Select from 'react-select/'
+import { Radio, RadioGroup, FormControlLabel } from "@mui/material"
 
 
 let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
 
 
-    const { register, reset, handleSubmit, formState: { errors }, getValues, clearErrors, setError } = useForm()
+    const { register, reset, handleSubmit, formState: { errors }, setValue, getValues, clearErrors, setError, control } = useForm()
     const opciones = { TERMINADA: "FINALIZADO", CURSANDO: "EN CURSO" }
     const [estadoFormacion, setEstadoFormacion] = useState(null)
-    const [paises, setPaises] = useState([])
-    const [listadoIES, setListadoIES] = useState([])
-    const [listadoCampos, setListadoCampos] = useState([])
     const [nivelEdu, setNivelEdu] = useState(null)
     const [pais, setPais] = useState(null)
     const [tieneBeca, setTieneBeca] = useState(null)
@@ -29,7 +28,18 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
     useEffect(
         () => {
             dispatch(loadPaises())
-            dispatch(loadNivelesEducativos())
+            dispatch(loadNivelesEducativos()).unwrap(
+            ).then(
+                (resp) => {
+                    let listado = []
+                    resp.forEach(n =>{
+                        if (!n.nivel.includes('/')){
+                            listado.push(n)
+                        }
+                    })
+                    setNiveles(listado)
+                }
+            )
             dispatch(loadCamposEspecificos())
 
         }, [dispatch]
@@ -43,91 +53,45 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
 
     let paisesState = useSelector(state => state.paises.data.paises)
     let iesState = useSelector(state => state.ies.data.iesNacionales)
-    let nivelesState = useSelector(state => state.nivelesEducativos.data.nivelesEducativos)
+    
     let financiamientosState = useSelector(state => state.financiamientos.data.tiposFinanciamientos)
     let tipoBecasState = useSelector(state => state.tipoBecas.data.tipoBecas)
     let gradosState = useSelector(state => state.grados.data.grados)
     let camposState = useSelector(state => state.camposEspecificos.data.campos)
-
-
-
-    let filtrarPaises = (ev) => {
-        let filtrados = []
-
-        paisesState.forEach(
-            (pais) => {
-                if (pais.pais.startsWith(ev.toUpperCase())) {
-                    filtrados.push(pais)
-                }
-            }
-        )
-        setPaises(filtrados)
-
-    }
-
-    let filtrarIES = (ev) => {
-        let filtrados = []
-
-        iesState.forEach(
-            (item) => {
-
-                if (ev !== null && item?.institucion && item.institucion.includes(ev.toUpperCase())) {
-                    filtrados.push(item)
-                }
-            }
-        )
-        setListadoIES(filtrados)
-
-    }
-
-    let filtrarCampos = (ev) => {
-        let filtrados = []
-
-        camposState.forEach(
-            (campo) => {
-                if (ev !== null && campo.descripcion.toLowerCase().includes(ev)) {
-                    filtrados.push(campo)
-                }
-            }
-        )
-        setListadoCampos(filtrados)
-
-    }
-
-
+    const [niveles, setNiveles] = useState([])
 
     useEffect(
         () => {
             if (objeto !== null) {
+
                
-                filtrarPaises(objeto.pais_estudio.pais)
-                filtrarIES(objeto.ies?.institucion)
-                filtrarCampos(objeto.campo_especifico.descripcion)
-                setPais(objeto.pais_estudio.pais)
+                setPais({label:objeto.pais_estudio.pais, value: objeto.pais_estudio.id})
                 setNivelEdu(objeto.nivel_educativo.nivel)
                 setEstadoFormacion(objeto.estado)
                 setTipoFin(objeto.financiamiento?.financiamiento)
                 setTieneBeca(objeto.posee_beca)
                 reset({
-                    nombreIES:objeto.nombre_ies,
-                    descripcion:objeto.descripcion,
-                    estado:objeto.estado,
-                    fechaInicio:objeto.fecha_inicio,
-                    registroSenescyt:objeto.registro_senescyt,
-                    fechaFin:objeto.fecha_fin,
-                    fechaObtencionTitulo:objeto.fecha_obtencion_titulo,
+                    paisEstudio:   { value:objeto.pais_estudio.id, label: objeto.pais_estudio.pais},
+                    nivel:   { value:objeto?.nivel_educativo.id, label: objeto?.nivel_educativo.nivel},
+                    campoEstudio: { value: objeto.campo_especifico.id, label: `${objeto.campo_especifico.codigo} - ${objeto.campo_especifico.descripcion}` },
+                    nombreIES: objeto.nombre_ies,
+                    descripcion: objeto.descripcion,
+                    estado: objeto.estado,
+                    fechaInicio: objeto.fecha_inicio,
+                    registroSenescyt: objeto.registro_senescyt,
+                    fechaFin: objeto.fecha_fin,
+                    fechaObtencionTitulo: objeto.fecha_obtencion_titulo,
                     lugar: objeto.lugar,
                     titulo: objeto.nombre_titulo,
-                    poseeBeca:objeto.posee_beca,
-                    montoBeca:objeto.monto_beca
-                    
-                    
-            
+                    poseeBeca: objeto.posee_beca,
+                    montoBeca: objeto.monto_beca
+
+
+
                 })
             }
         }, [objeto, reset]
     )
-
 
     return (
         <div className="modal is-active">
@@ -137,51 +101,88 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                     <span className="modal-card-title">{title}</span>
 
                 </header>
-                <section className="modal-card-body" style={{ display: 'flex', justifyContent: 'center' }}>
+                <section className="modal-card-body">
 
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
-                        <div className="columns">
-                            <div className="column">
+                        <div className="columns is-multiline">
+                            <div className="column is-full">
                                 <div className="control">
                                     <label className="label is-small is-uppercase">País estudio</label>
-                                    <input type="text" className="input" onChange={ev => filtrarPaises(ev.target.value)} />
+
                                     {errors.paisEstudio && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el país donde realizó o está realizado sus estudios!</span>}
                                 </div>
 
-                                <div className="select">
-                                    <select type="text" className="input is-uppercase" {...register('paisEstudio', { required: true })}
-                                        onChange={ev => {
-                                            setPais(ev.target.options[ev.target.selectedIndex].text)
-                                            if (ev.target.options[ev.target.selectedIndex].text === 'ECUADOR') {
-                                                dispatch(loadIESNacionales())
-                                            }
-                                        }}>
-                                        <option></option>
-                                        {
 
-                                            paises && paises.map(
-                                                (pais) => (
-                                                    <option value={pais.id} key={pais.id}>{pais.pais}</option>
-                                                )
-                                            )
-                                        }
-                                    </select>
-                                </div>
+                                <Controller
+                                    name="paisEstudio"
+                                    control={control}
+                                    
+                                    rules={{ required: true }}
+                                    render={({ field}) => (
+                                        <Select
+
+                                            
+                                            placeholder="Selecione"
+                                            isClearable
+                                            
+                                        
+                                            {...field}
+
+
+                                            options={
+                                                paisesState.map(
+                                                    (p) => ({ value: p.id, label: p.pais, key: p.id }))
+                                            }
+
+                                            onChange={(ev) => {
+                                                setPais(ev)
+                                                setValue('paisEstudio', ev, { shouldValidate: true })
+                                                if (ev?.label === 'ECUADOR') {
+                                                    dispatch(loadIESNacionales())
+                                                }
+                                            }}
+
+
+                                        />
+                                    )}
+                                />
+
+
 
                             </div>
 
 
 
-                            {pais === 'ECUADOR' && <div className="column">
+                            {pais?.label === 'ECUADOR' && <div className="column">
                                 <div className="control">
                                     <label className="label is-small is-uppercase">IES</label>
-                                    <input type="text" className="input is-uppercase" onChange={ev => filtrarIES(ev.target.value)} />
+                                    {/* <input type="text" className="input is-uppercase" onChange={ev => filtrarIES(ev.target.value)} /> */}
                                     {errors.ies && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, seleecione la IES en la está realizado o realizó su formación!</span>}
                                 </div>
+                                <Controller
+                                    name="ies"
+                                    control={control}
+                                    defaultValue={ objeto?.ies ? {value: objeto.ies.id, label: `${objeto.ies.codigo} - ${objeto.ies.institucion}` }: ''}
+                                    rules={{ required: true }}
+                                    render={({ field }) => (
+                                        <Select
+                                            placeholder="Selecione"
+                                            isClearable
+
+                                            {...field}
 
 
-                                <div className="select">
-                                    <select type="text" className="input input is-uppercase" {...register('ies', { required: true})} >
+                                            options={
+                                                iesState.map(
+                                                    (ies) => ({ value: ies.id, label: `${ies.codigo} - ${ies.institucion}` }))
+                                            }
+
+                                        />
+                                    )}
+                                />
+
+                                {/* <div className="select">
+                                    <select type="text" className="input input is-uppercase" {...register('ies', { required: true })} >
                                         <option></option>
                                         {
                                             listadoIES.map(
@@ -191,11 +192,11 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                             )
                                         }
                                     </select>
-                                </div>
+                                </div> */}
 
                             </div>}
 
-                            {pais !== 'ECUADOR' && <div className="column">
+                            {pais?.label !== 'ECUADOR' && <div className="column">
                                 <label className="label is-small is-uppercase">Nombre IES</label>
                                 {errors.nombreIES && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el nombre de la IES Internacional!</span>}
                                 <div className="control">
@@ -211,7 +212,37 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                     <label className="label is-small is-uppercase">Nivel Educativo</label>
                                     {errors.nivel && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Selecione el nivel educativo!</span>}
                                 </div>
-                                <div className="select">
+
+
+                                <Controller
+                                    name="nivel"
+                                    control={control}
+                                    rules={{ required: true }}
+                                    render={
+                                        ({ field }) =>
+                                        (<Select aria-label="nivel" {...field}
+                                            onChange={(ev) => {
+                                                setNivelEdu(ev?.label)
+                                                setValue('nivel', ev?.value, { shouldValidate: true })
+                                                if (ev?.label.includes('CUARTO')) { dispatch(loadGrados()) }
+                                            }}
+
+
+
+                                            options={
+                                                niveles.map(
+                                                    (nivel) => ( { label: nivel.nivel, value: nivel.id})
+                                                        
+                                                    )
+                                            }
+
+
+
+                                        />)}
+
+                                />
+                                
+                                {/* <div className="select">
                                     <select {...register('nivel', { required: true })} onChange={ev => {
                                         setNivelEdu(ev.target.options[ev.target.selectedIndex].text)
                                         if (ev.target.options[ev.target.selectedIndex].text.includes('CUARTO')) {
@@ -231,7 +262,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                             )
                                         }
                                     </select>
-                                </div>
+                                </div> */}
                             </div>
 
                             {nivelEdu === 'CUARTO NIVEL' && <div className="column is-6">
@@ -264,23 +295,31 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                             <div className="column">
                                 <div className="control">
                                     <label className="label is-small is-uppercase">Campo de estudio</label>
-                                    <input type="text" className="input" onChange={ev => filtrarCampos(ev.target.value)} />
+                                    {/* <input type="text" className="input" onChange={ev => filtrarCampos(ev.target.value)} /> */}
                                 </div>
                                 {errors.campoEstudio && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Selecione el campo de estudio!</span>}
 
-                                <div className="select">
-                                    <select {...register('campoEstudio', { required: true })}>
-                                        <option></option>
-                                            {
-                                                listadoCampos.map(
-                                                    (campo)=>(
-                                                        <option value={campo.id} >{campo.codigo} - {campo.descripcion}</option>
-                                                    )
-                                                )
-                                            }
-                                    </select>
+                                <Controller
+                                    name="campoEstudio"
+                                    control={control}
+                                    defaultValue={objeto?.campo_especifico}
+                                    rules={{ required: true }}
+                                    render={({ field }) => (
+                                        <Select
+                                            placeholder="Selecione"
+                                            isClearable
 
-                                </div>
+                                            {...field}
+
+
+                                            options={
+                                                camposState.map(
+                                                    (campo) => ({ value: campo.id, label: `${campo.codigo} - ${campo.descripcion}` }))
+                                            }
+
+                                        />
+                                    )}
+                                />
                             </div>
                         </div>
 
@@ -290,16 +329,40 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                     <label className="label is-small is-uppercase"> Estado</label>
                                     {errors.estado && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Selecione el estado de la formación académica!</span>}
                                 </div>
-                                <div className="select">
-                                    <select  {...register('estado', { required: true })} onChange={(ev) => setEstadoFormacion(ev.target.value)}>
+                                <Controller
+                                    name="estado"
+                                    control={control}
+                                    rules={{ required: true }}
+                                    defaultValue={objeto?.estado}
+                                    render={
+                                        ({ field }) =>
+                                        (<RadioGroup aria-label="estado" {...field} onChange={(ev) => {
+                                            setEstadoFormacion(ev.currentTarget.value)
+                                            console.log(ev.currentTarget.value);
+                                            setValue('estado', ev.currentTarget.value, { shouldValidate: true })
+
+                                        }}>
+                                            {Object.entries(opciones).map((op) => (
+                                                <FormControlLabel key={atob(op[1])}
+                                                    value={op[1]}
+                                                    control={<Radio />}
+                                                    label={op[1]}
+                                                />
+
+                                            ))}
+                                        </RadioGroup>)
+                                    }
+                                />
+
+                                {/* <select  {...register('estado', { required: true })} onChange={(ev) => setEstadoFormacion(ev.target.value)} className="input">
                                         <option></option>
                                         {
                                             Object.entries(opciones).map((op) => (
                                                 <option value={op[1]}> {op[1]} </option>
                                             ))
                                         }
-                                    </select>
-                                </div>
+                                    </select> */}
+
                             </div>
                             <div className="column">
                                 <label className="label is-small is-uppercase">Fecha inicio</label>
@@ -358,7 +421,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                             {estadoFormacion === 'FINALIZADO' && <div className="column">
                                 <div className="control">
                                     <label className="label is-small is-uppercase">Fecha Obtención título</label>
-                                    {errors.fechaObtencionTitulo?.type==='min' && <span className="has-text-danger is-size-7 has-background-danger-light">{errors.fechaObtencionTitulo.message}</span>}
+                                    {errors.fechaObtencionTitulo?.type === 'min' && <span className="has-text-danger is-size-7 has-background-danger-light">{errors.fechaObtencionTitulo.message}</span>}
                                 </div>
                                 <div className="control">
                                     <input type="date" className="input" {...register('fechaObtencionTitulo', { required: true })} onChange={
@@ -386,31 +449,70 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                             {estadoFormacion === 'EN CURSO' && <div className="column">
                                 <label className="label is-small is-uppercase">Posee beca</label>
                                 {errors.poseeBeca && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, selecione una opción!</span>}
-                                <div className="select">
+                                <Controller
+                                    name="poseeBeca"
+                                    control={control}
+                                    rules={{ required: true }}
+                                    render={
+                                        ({ field }) =>
+                                        (<RadioGroup aria-label="poseeBeca" {...field} onChange={(ev) => {
+                                            setTieneBeca(ev.currentTarget.value)
+                                            setValue('poseeBeca', ev.currentTarget.value ? ev.currentTarget.value : null, { shouldValidate: true })
+
+                                        }}>
+
+                                            <FormControlLabel
+                                                value="SI"
+                                                control={<Radio />}
+                                                label="SI"
+                                            />
+                                            <FormControlLabel
+                                                value="NO"
+                                                control={<Radio />}
+                                                label="NO"
+                                            />
+
+
+                                        </RadioGroup>)
+                                    }
+                                />
+                                {/* <div className="select">
                                     <select className="input" {...register('poseeBeca', { required: true })} onChange={ev => setTieneBeca(ev.target.value)}>
                                         <option></option>
                                         <option value="SI">SI</option>
                                         <option value="NO">NO</option>
                                     </select>
-                                </div>
+                                </div> */}
 
                             </div>}
 
                             {tieneBeca === 'SI' && <div className="column">
                                 <label className="label is-small is-uppercase">Tipo beca</label>
                                 {errors.tipoBeca && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, selecione el tipo de beca!</span>}
-                                <div className="select">
-                                    <select tclassName="input" {...register('tipoBeca', { required: true })} >
-                                        <option></option>
-                                        {
-                                            tipoBecasState.map(
-                                                (tipo) => (
-                                                    <option value={tipo.id}>{tipo.tipo_beca}</option>
-                                                )
-                                            )
-                                        }
-                                    </select>
-                                </div>
+
+                                <Controller
+                                    name="tipoBeca"
+                                    control={control}
+                                    rules={{ required: true }}
+                                    render={
+                                        ({ field }) =>
+                                        (<RadioGroup aria-label="tipoBeca" {...field} onChange={(ev) => {
+                                            setValue('tipoBeca', ev.currentTarget.value ? ev.currentTarget.value : null, { shouldValidate: true })
+
+                                        }}>
+
+                                            {tipoBecasState.map((tipo) => (<FormControlLabel
+                                                value={tipo.id}
+                                                control={<Radio />}
+                                                label={tipo.tipo_beca}
+                                            />))}
+
+
+
+                                        </RadioGroup>)}
+
+                                />
+
 
                             </div>}
 
@@ -441,7 +543,34 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                         <label className="label is-small is-uppercase">Tipo finaciamiento</label>
                                         {errors.financiamiento && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, selecione el tipo de financiamiento!</span>}
                                     </div>
-                                    <div className="select">
+                                    <Controller
+                                        control={control}
+                                        name="finaciamiento"
+
+                                        render={
+                                            ({ field }) =>
+                                            (<Select
+                                                placeholder="Selecione"
+                                                isClearable
+                                                rules={{ required: true }}
+                                                {...field}
+
+
+                                                options={
+                                                    financiamientosState.map(
+                                                        (financiamiento) => ({ value: financiamiento.id, label: financiamiento.financiamiento }))
+                                                }
+                                                onChange={
+                                                    ev => {
+                                                        setTipoFin(ev?.label)
+                                                        setValue('financiamiento', ev?.value)
+                                                    }
+                                                }
+                                            />)
+
+                                        }
+                                    />
+                                    {/* <div className="select">
                                         <select tclassName="input" {...register('financiamiento', { required: true })}
                                             onChange={ev => setTipoFin(ev.target.options[ev.target.selectedIndex].text)}
                                         >
@@ -453,7 +582,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                             )}
 
                                         </select>
-                                    </div>
+                                    </div> */}
                                 </div>
                             }
                             {tieneBeca === 'SI' && tipoFin === 'OTRO' && <div className="column">
@@ -476,7 +605,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                     {children}
                                 </Fragment>
 
-                                <button type="submit" className="button is-success is-small mx-3">Guardar</button>
+                                <button type="submit" className="button is-success is-small mx-3" onClick={() => getValues()}>Guardar</button>
 
                             </div>
                         </div>

@@ -59,6 +59,7 @@ export const loadFormacion = createAsyncThunk(
 export const postFormacionAcademica = createAsyncThunk(
     'formacion-academica/post',
     async (formacion, { getState }) => {
+        console.log(formacion);
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -70,13 +71,13 @@ export const postFormacionAcademica = createAsyncThunk(
         try {
             let data = {
                 id_persona: formacion.id_persona,
-                pais_estudio: formacion.paisEstudio,
-                ies: formacion?.ies ? formacion.ies : null,
+                pais_estudio: formacion.paisEstudio.value,
+                ies: formacion?.ies ? formacion.ies.value : null,
                 nombre_ies: formacion?.nombreIES ? formacion.nombreIES.toUpperCase():'',
-                nivel_educativo: formacion.nivel,
-                grado: formacion?.grado ? formacion.grado : null,
+                nivel_educativo: formacion.nivel.value,
+                grado: formacion?.grado ? formacion.grado.value : null,
                 nombre_titulo: formacion.titulo.toUpperCase(),
-                campo_especifico: formacion.campoEstudio,
+                campo_especifico: formacion.campoEstudio.value,
                 estado: formacion.estado,
                 fecha_inicio: formacion.fechaInicio,
                 fecha_fin: formacion?.fechaFin ? formacion.fechaFin: null,
@@ -125,13 +126,13 @@ export const putFormacionAcademica = createAsyncThunk(
         try {
             let data = {
                 id: formacion.id,
-                pais_estudio: formacion.paisEstudio,
-                ies: formacion?.ies ? formacion.ies : null,
+                pais_estudio: formacion.paisEstudio.value,
+                ies: formacion?.ies ? formacion.ies.value : null,
                 nombre_ies: formacion?.nombreIES ? formacion.nombreIES.toUpperCase():'',
-                nivel_educativo: formacion.nivel,
-                grado: formacion?.grado ? formacion.grado : null,
+                nivel_educativo: formacion.nivel.value,
+                grado: formacion?.grado ? formacion.grado.value : null,
                 nombre_titulo: formacion.titulo.toUpperCase(),
-                campo_especifico: formacion.campoEstudio,
+                campo_especifico: formacion.campoEstudio.value,
                 estado: formacion.estado,
                 fecha_inicio: formacion.fechaInicio,
                 fecha_fin: formacion?.fechaFin ? formacion.fechaFin: null,
