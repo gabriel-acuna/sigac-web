@@ -38,6 +38,7 @@ import campoAmplioReducer from './core/campoAmplio';
 import campoDetalladoReducer from './core/campoDetallado'
 import campoEspecificoReducer from './core/campoEspecifico'
 import iesNacionalesReducer from './core/ies-nacionales'
+import peridoAcademicoReducer from './dac/perido_academico';
 
 import {
     persistStore,
@@ -88,7 +89,8 @@ const reducer = combineReducers({
     camposAmplios: campoAmplioReducer,
     camposDetallados: campoDetalladoReducer,
     camposEspecificos:campoEspecificoReducer,
-    ies: iesNacionalesReducer
+    ies: iesNacionalesReducer,
+    periodosAcademicos: peridoAcademicoReducer
 
 
 

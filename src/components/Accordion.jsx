@@ -16,16 +16,21 @@ const Accordion = ({ title, options }) => {
                     </span>
                 </button>
             </header>
-           { expanded && <div className="card-content">
+            {expanded && <div className="card-content">
                 {
                     options.map(
                         (option, index) => (
-                            <p key={index}>
-                                <Link className="mx-2 my-1 button is-text" to={option.url}>
-                                   <span> {option.title} </span>
-                                   <span className="icon"> {option.icon}</span>
-                                </Link>
-                            </p>
+                            option?.url ? <p key={index}>
+                                 <Link className="mx-2 my-1 button is-text" to={option.url}>
+                                    <span> {option.title} </span>
+                                    <span className="icon"> {option.icon}</span>
+                                </Link> 
+                            </p>:
+                             <button className="is-text m-1">
+                                    <span> {option.title} </span>
+                                    <span className="icon"> {option.icon}</span>
+                                </button> 
+                        
                         )
                     )
                 }

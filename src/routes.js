@@ -32,6 +32,8 @@ import ListadoTiposBecas from "./components/admin/options/tipos-becas";
 import ListadoTiposFinanciamientos from "./components/admin/options/tipos-financiamientos";
 import ListadoGrados from "./components/admin/options/grados";
 import ListadoIESNacionales from "./components/admin/options/ies-nacionales";
+import DAC from './components/dac/index'
+import ReportesPeriodo from './components/dac/reportesPeriodo'
 
 const routes = (user) => [
     {
@@ -278,7 +280,7 @@ const routes = (user) => [
                     }
 
                 ]
-            }, 
+            },
             {
                 path: 'ies-nacionales',
                 element: <Outlet />,
@@ -322,6 +324,24 @@ const routes = (user) => [
 
 
         ]
-    },
+    }, {
+        path: '/dac',
+        element: user && isValid(user.jwt) ? <Outlet /> : <Navigate to="/login"></Navigate>,
+        children: [
+            {
+                path: '/',
+                element: <DAC />
+            }, {
+                path: '/periodo',
+                element:<Outlet/>,
+                children:[
+                    {
+                        path:'/',
+                        element: <ReportesPeriodo/>
+                    }
+                ]
+            }]
+
+    }
 ];
 export default routes;

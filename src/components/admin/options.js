@@ -22,7 +22,7 @@ export const options = [
         options: [{
             title: 'Paises',
             icon: <GiSouthAmerica />,
-            content: 'Gestione el lsitado de paises de origen para funcionarios, docentes y alumnos.',
+            content: 'Gestione el listado de paises de origen para funcionarios, docentes y alumnos.',
             url: '/admin/paises'
 
         },
