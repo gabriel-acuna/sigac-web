@@ -87,7 +87,7 @@ export const postFormacionAcademica = createAsyncThunk(
                 posee_beca: formacion?.poseeBeca ? formacion.poseeBeca : '',
                 tipo_beca: formacion?.tipoBeca ? formacion.tipoBeca:null,
                 monto_beca: formacion?.montoBeca ? formacion.montoBeca: 0,
-                financiamiento: formacion?.financiamiento ? formacion.financiamiento : null,
+                financiamiento: formacion?.financiamiento ? formacion.financiamiento.value : null,
                 descripcion: formacion?.descripcion ? formacion.descripcion.toUpperCase() : ''
             }
 
@@ -142,7 +142,7 @@ export const putFormacionAcademica = createAsyncThunk(
                 posee_beca: formacion?.poseeBeca ? formacion.poseeBeca : '',
                 tipo_beca: formacion?.tipoBeca ? formacion.tipoBeca:null,
                 monto_beca: formacion?.montoBeca ? formacion.montoBeca: 0,
-                financiamiento: formacion?.financiamiento ? formacion.financiamiento : null,
+                financiamiento: formacion?.financiamiento ? formacion.financiamiento.value : null,
                 descripcion: formacion?.descripcion ? formacion.descripcion.toUpperCase() : ''
             }
             let response = await Axios.put(`${API}/formacion-academica/`, data,

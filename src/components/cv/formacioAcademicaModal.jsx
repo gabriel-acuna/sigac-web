@@ -86,13 +86,11 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                     poseeBeca: objeto.posee_beca,
                     montoBeca: objeto.monto_beca
 
-
-
                 })
             }
         }, [objeto, reset]
     )
-
+       
     return (
         <div className="modal is-active">
             <div className="modal-background"></div>
@@ -223,7 +221,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                         (<Select aria-label="nivel" {...field}
                                             onChange={(ev) => {
                                                 setNivelEdu(ev?.label)
-                                                setValue('nivel', ev?.value, { shouldValidate: true })
+                                                setValue('nivel', ev, { shouldValidate: true })
                                                 if (ev?.label.includes('CUARTO')) { dispatch(loadGrados()) }
                                             }}
 
@@ -270,7 +268,29 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                     <label className="label is-small is-uppercase">Grado</label>
                                     {errors.grado && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Selecione el grado!</span>}
                                 </div>
-                                <div className="select">
+                                <Controller
+                                    control={control}
+                                    name="grado"
+                                    rules={{required: true}}
+                                    defaultValue={ objeto?.grado ? {value: objeto.grado.id, label: objeto.grado.grado }: ''}
+                                    render ={
+                                        ({field})=>(
+                                            <Select
+                                                aria-label="grado"
+                                                {...field}
+
+                                                options={
+                                                    gradosState.map(
+                                                        grado=>(
+                                                            { label: grado.grado , value: grado.id}
+                                                        )
+                                                    )
+                                                }
+                                            />
+                                        )
+                                    }
+                                />
+                                {/* <div className="select">
                                     <select {...register('grado', { required: true })}>
                                         <option> </option>
                                         {gradosState.map(
@@ -279,7 +299,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                             )
                                         )}
                                     </select>
-                                </div>
+                                </div> */}
                             </div>}
                         </div>
                         <div className="columns">
@@ -302,7 +322,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                 <Controller
                                     name="campoEstudio"
                                     control={control}
-                                    defaultValue={objeto?.campo_especifico}
+                                    
                                     rules={{ required: true }}
                                     render={({ field }) => (
                                         <Select
@@ -494,6 +514,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                     name="tipoBeca"
                                     control={control}
                                     rules={{ required: true }}
+                                    defaultValue={objeto?.tipo_beca.id}
                                     render={
                                         ({ field }) =>
                                         (<RadioGroup aria-label="tipoBeca" {...field} onChange={(ev) => {
@@ -545,14 +566,15 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                     </div>
                                     <Controller
                                         control={control}
-                                        name="finaciamiento"
+                                        name="financiamiento"
+                                        rules={{ required: true }}
 
                                         render={
                                             ({ field }) =>
                                             (<Select
                                                 placeholder="Selecione"
                                                 isClearable
-                                                rules={{ required: true }}
+                                                defaultValue ={ objeto?.financiamiento ? { label:objeto.financiamiento.financiamiento , value:objeto.financiamiento.id} : null}
                                                 {...field}
 
 
@@ -563,7 +585,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                                 onChange={
                                                     ev => {
                                                         setTipoFin(ev?.label)
-                                                        setValue('financiamiento', ev?.value)
+                                                        setValue('financiamiento', ev)
                                                     }
                                                 }
                                             />)
