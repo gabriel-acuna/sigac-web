@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadPaises } from '../../store/core/paises';
 import { loadDiscapacidades } from '../../store/core/discapacidades';
@@ -7,10 +7,12 @@ import { loadEtnias } from '../../store/core/etnias'
 import { loadEstadosCiviles } from '../../store/core/estado_civil'
 import { loadNacionalidades } from '../../store/core/nacionalidades'
 import { loadCantonesProvincia, loadProvincias } from '../../store/core/provincias'
+import { FormControlLabel, Radio, RadioGroup } from '@mui/material'
+import Select from 'react-select'
 
 
 let RegistrarPersona = ({ title, handler, children, person }) => {
-    const { register, handleSubmit, reset, setError, clearErrors, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, setError, clearErrors, setValue, control, formState: { errors } } = useForm();
     const [paises, setPaises] = useState([])
     const [nacionalidades, setNacionalidades] = useState([])
     const [provincias, setProvincias] = useState([])
@@ -180,7 +182,6 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
 
     let cargarCantones = (provincia) => {
-        console.log(provincia)
         if (provincia !== null) {
             dispatch(
                 loadCantonesProvincia(provincia)
@@ -223,15 +224,38 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                             <div className="columns">
                                 <div className="column">
                                     <label className="label is-small">TIPO IDENTIFICACION</label>
-                                    {errors.tipo_identificacion && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Ingrese el tipo de identificación</span>}
-                                    <div className="select">
-                                        <select  {...register("tipo_identificacion", { required: true })} className="input is-small">
-                                            <option></option>
-                                            <option>CEDULA</option>
-                                            <option>PASAPORTE</option>
-                                        </select>
+                                    {errors.tipo_identificacion && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione el tipo de identificación!</span>}
+                                    <Controller
+                                        control={control}
+                                        name="tipo_identificacion"
+                                        rules={{ required: true }}
+                                        render={
+                                            ({ field }) => (
+                                                <RadioGroup
+                                                    row
+                                                    aria-label="tipo_identificacion"
+                                                    {...field}
+                                                    onChange={(ev) => {
+                                                        setValue('tipo_identificacion', ev.currentTarget.value ? ev.currentTarget.value : null, { shouldValidate: true })
+                                                    }}
+                                                >
+                                                    <FormControlLabel value="CEDULA" label="CEDULA" control={<Radio size="small" />} sx={{
+                                                        '& .MuiFormControlLabel-label': {
+                                                            fontSize: 14,
+                                                            fontWeight: 500
+                                                        },
+                                                    }} />
+                                                    <FormControlLabel value="PASAPORTE" label="PASAPORTE" control={<Radio size="small" />} sx={{
+                                                        '& .MuiFormControlLabel-label': {
+                                                            fontSize: 14,
+                                                            fontWeight: 500
+                                                        },
+                                                    }} />
+                                                </RadioGroup>
+                                            )
+                                        }
+                                    />
 
-                                    </div>
 
                                 </div>
                                 <div className="column">
@@ -240,7 +264,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                     {errors.identificacion?.type === 'maxLength' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Máximo 10 caracteres¡</span>}
                                     <div className="control">
                                         <input type="text" {...register("identificacion", { required: true, maxLength: 10 })}
-                                            className="input is-small"
+                                            className="input"
                                             readOnly={person !== null ? true : false}
                                         />
 
@@ -254,7 +278,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                     <label className="label is-small">PRIMER APELLIDO</label>
                                     {errors.primer_apellido && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el primer apellido</span>}
                                     <div className="control">
-                                        <input type="text" {...register("primer_apellido", { required: true })} className="input is-small is-uppercase" />
+                                        <input type="text" {...register("primer_apellido", { required: true })} className="input is-uppercase" />
 
                                     </div>
 
@@ -264,7 +288,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                     <label className="label is-small">SEGUNDO APELLIDO</label>
                                     {errors.segundo_apellido && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese segundo apellido</span>}
                                     <div className="control">
-                                        <input type="text" {...register("segundo_apellido", { required: true })} className="input is-small is-uppercase" />
+                                        <input type="text" {...register("segundo_apellido", { required: true })} className="input is-uppercase" />
 
 
                                     </div>
@@ -276,7 +300,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                     <label className="label is-small">PRIMER NOMBRE</label>
                                     {errors.primer_nombre && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el primer nombre </span>}
                                     <div className="control">
-                                        <input type="text" {...register("primer_nombre", { required: true })} className="input is-small is-uppercase" />
+                                        <input type="text" {...register("primer_nombre", { required: true })} className="input is-uppercase" />
 
 
                                     </div>
@@ -286,7 +310,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                     <label className="label is-small">SEGUNDO NOMBRE</label>
                                     {errors.segundo_nombre && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el segundo nombre</span>}
                                     <div className="control">
-                                        <input type="text" {...register("segundo_nombre", { required: true })} className="input is-small is-uppercase" />
+                                        <input type="text" {...register("segundo_nombre", { required: true })} className="input is-uppercase" />
 
 
                                     </div>
@@ -297,15 +321,37 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
                                 <div className="column">
                                     <label className="label is-small">SEXO</label>
-                                    {errors.sexo && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el sexo</span>}
-                                    <div className="select">
-                                        <select  {...register("sexo", { required: true })} className="input is-small is-uppercase">
-                                            <option></option>
-                                            <option>HOMBRE</option>
-                                            <option>MUJER</option>
-                                        </select>
-
-                                    </div>
+                                    {errors.sexo && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, seleccione el sexo!</span>}
+                                    <Controller
+                                        control={control}
+                                        name="sexo"
+                                        rules={{ required: true }}
+                                        render={
+                                            ({ field }) => (
+                                                <RadioGroup
+                                                    row
+                                                    aria-label="sexo"
+                                                    {...field}
+                                                    onChange={(ev) => {
+                                                        setValue('sexo', ev.currentTarget.value ? ev.currentTarget.value : null, { shouldValidate: true })
+                                                    }}
+                                                >
+                                                    <FormControlLabel value="HOMBRE" label="HOMBRE" control={<Radio size="small" />} sx={{
+                                                        '& .MuiFormControlLabel-label': {
+                                                            fontSize: 14,
+                                                            fontWeight: 500
+                                                        },
+                                                    }} />
+                                                    <FormControlLabel value="MUJER" label="MUJER" control={<Radio size="small" />} sx={{
+                                                        '& .MuiFormControlLabel-label': {
+                                                            fontSize: 14,
+                                                            fontWeight: 500
+                                                        },
+                                                    }} />
+                                                </RadioGroup>
+                                            )
+                                        }
+                                    />
 
                                 </div>
                                 <div className="column">
@@ -316,11 +362,11 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                         <input type="date" {...register("fecha_nacimiento", {
                                             required: true,
 
-                                        })} className="input is-small is-uppercase"
+                                        })} className="input is-uppercase"
 
                                             onChange={
                                                 ev => {
-                                                    console.log(new Date(ev.target.value) > new Date(MIN_FECHA_NAC), new Date(ev.target.value),new Date(MIN_FECHA_NAC))
+                                                    console.log(new Date(ev.target.value) > new Date(MIN_FECHA_NAC), new Date(ev.target.value), new Date(MIN_FECHA_NAC))
                                                     clearErrors('fecha_nacimiento')
                                                     if ((ev.target.value !== null || ev.target.value !== '') && new Date(ev.target.value) > new Date(MIN_FECHA_NAC)) {
                                                         setError("fecha_nacimiento", {
@@ -340,8 +386,35 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                 <div className="column">
                                     <label className="label is-small">ESTADO CIVIL</label>
                                     {errors.estado_civil && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el estado civil</span>}
-                                    <div className="select">
-                                        <select  {...register("estado_civil", { required: true })} className="input is-small">
+                                    <Controller
+                                        control={control}
+                                        rules={{ required: true }}
+                                        name="estado_civil"
+                                        render={
+                                            ({ field }) =>
+                                            (<RadioGroup aria-label="estado_civil" {...field} onChange={(ev) => {
+                                                setValue('estado_civil', ev.currentTarget.value ? ev.currentTarget.value : null, { shouldValidate: true })
+
+                                            }}>
+
+                                                {estadosCivilesState.map((estado) => (<FormControlLabel
+                                                    sx={{
+                                                        '& .MuiFormControlLabel-label': {
+                                                            fontSize: 14,
+                                                            fontWeight: 500
+                                                        },
+                                                    }}
+                                                    value={estado.id}
+                                                    control={<Radio size="small" />}
+                                                    label={estado.estado_civil}
+                                                />))}
+
+
+
+                                            </RadioGroup>)}
+                                    />
+                                    {/* <div className="select">
+                                        <select  {...register("estado_civil", { required: true })} className="input">
                                             <option></option>
                                             {
                                                 estadosCivilesState.map(
@@ -352,32 +425,45 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                             }
                                         </select>
 
-                                    </div>
+                                    </div> */}
                                 </div>
 
 
                                 <div className="column">
-                                    <div className="control">
-                                        <label className="label is-small">PAIS ORIGEN</label>
-                                        {errors.pais_origen && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el país de origen</span>}
-                                        <input onChange={ev => filtrarPaises(ev.target.value)} className="input is-small" />
-                                    </div>
-                                    <div className="select">
 
-                                        <select  {...register("pais_origen", { required: true })} className="input is-small">
-                                            <option></option>
+                                    <label className="label is-small">PAIS ORIGEN</label>
+                                    {errors.pais_origen && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el país de origen</span>}
 
-                                            {
+                                    <Controller
+                                        name="pais_origen"
+                                        control={control}
 
-                                                paises && paises.map(
-                                                    (pais) => (
-                                                        <option value={pais.id} key={pais.id}>{pais.pais}</option>
-                                                    )
-                                                )
-                                            }
-                                        </select>
+                                        rules={{ required: true }}
+                                        render={({ field }) => (
+                                            <Select
 
-                                    </div>
+
+                                                placeholder="Seleccione"
+                                                isClearable
+
+
+                                                {...field}
+
+
+                                                options={
+                                                    paisesState.map(
+                                                        (p) => ({ value: p.id, label: p.pais, key: p.id }))
+                                                }
+
+                                                onChange={(ev) => {
+                                                    setValue('paies_origen', ev, { shouldValidate: true })
+
+                                                }}
+
+
+                                            />
+                                        )}
+                                    />
                                 </div>
 
 
@@ -385,27 +471,44 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                 <div className="column">
                                     <label className="label is-small">DISCAPACIDAD</label>
                                     {errors.discapacidad && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione una discapacidad</span>}
-                                    <div className="select">
-                                        <select {...register("discapacidad", { required: true })} className="input is-small" defaultValue={person && person.discapacidad.id}>
-                                            <option></option>
-                                            {
-                                                discapacidadesState && discapacidadesState.map(
-                                                    (d) => (
-                                                        <option value={d.id} key={d.id}>{d.discapacidad}</option>
-                                                    )
-                                                )
-                                            }
-                                        </select>
+                                    <Controller
+                                        name="discapacidad"
+                                        control={control}
+
+                                        rules={{ required: true }}
+                                        render={({ field }) => (
+                                            <Select
 
 
-                                    </div>
+                                                placeholder="Seleccione"
+                                                isClearable
+
+
+                                                {...field}
+
+
+                                                options={
+                                                    discapacidadesState.map(
+                                                        (d) => ({ value: d.id, label: d.discapacidad, key: d.id }))
+                                                }
+
+                                                onChange={(ev) => {
+                                                    setValue('discapacidad', ev, { shouldValidate: true })
+
+                                                }}
+
+
+                                            />
+                                        )}
+                                    />
+
 
                                 </div>
                                 <div className="column">
                                     <label className="label is-small">NUMERO CONADIS</label>
                                     {errors.numero_conadis && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el numero de carnet del CONADIS</span>}
                                     <div className="control">
-                                        <input type="text" {...register("numero_conadis")} className="input is-small is-uppercase" />
+                                        <input type="text" {...register("numero_conadis")} className="input is-uppercase" />
 
                                     </div>
 
@@ -418,7 +521,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                     <label className="label is-small">PORCENTAJE DISCAPACIDAD</label>
                                     {errors.porcentaje_discapacidad && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el porcentaje de discapacidad</span>}
                                     <div className="control">
-                                        <input type="number" min="0" {...register("porcentaje_discapacidad", { required: true, max: 100 })} className="input is-small" />
+                                        <input type="number" min="0" {...register("porcentaje_discapacidad", { required: true, max: 100 })} className="input" />
 
 
                                     </div>
@@ -428,7 +531,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                     <label className="label is-small">ETNIA</label>
                                     {errors.etnia && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione la autoidentificación étnica</span>}
                                     <div className="select">
-                                        <select  {...register("etnia", { required: true })} className="input is-small" onChange={ev => onChangeEtinia(ev.target.options[ev.target.selectedIndex].text)}>
+                                        <select  {...register("etnia", { required: true })} className="input" onChange={ev => onChangeEtinia(ev.target.options[ev.target.selectedIndex].text)}>
                                             <option> </option>
                                             {
                                                 etinasState && etinasState.map(
@@ -446,12 +549,12 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                 <div className="column">
                                     <div className="control">
                                         <label className="label is-small is-uppercase">Nacionalidad</label>
-                                        <input type="text" onChange={ev => filtrarNacionalidades(ev.target.value)} className="input is-small" />
+                                        <input type="text" onChange={ev => filtrarNacionalidades(ev.target.value)} className="input" />
 
                                     </div>
                                     {errors.nacionalidad && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione la nacionalidad </span>}
                                     <div className="select">
-                                        <select  {...register("nacionalidad", { required: true })} className="input is-small">
+                                        <select  {...register("nacionalidad", { required: true })} className="input">
                                             <option></option>
                                             {nacionalidades && nacionalidades.map(
                                                 (row) => (
@@ -469,16 +572,42 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                     <label className="label is-small">TIPO DE SANGRE</label>
                                     {errors.tipo_sangre && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el tipo de sangre</span>}
                                     <div className="control">
-                                        <input type="text" {...register("tipo_sangre", { required: true })} className="input is-small is-uppercase" />
+                                        <input type="text" {...register("tipo_sangre", { required: true })} className="input is-uppercase" />
 
                                     </div>
                                 </div>
                                 <div className="column">
                                     <label className="label is-small">LINCENCIA DE CONDUCCION</label>
-                                    <div className="control">
-                                        <input type="text" {...register("licencia_conduccion")} className="input is-small is-uppercase" />
-
-                                    </div>
+                                    <Controller
+                                        control={control}
+                                        name="licencia_conduccion"
+                                        rules={{ required: true }}
+                                        render={
+                                            ({ field }) => (
+                                                <RadioGroup
+                                                    row
+                                                    aria-label="licencia_conduccion"
+                                                    {...field}
+                                                    onChange={(ev) => {
+                                                        setValue('licencia_conduccion', ev.currentTarget.value ? ev.currentTarget.value : null, { shouldValidate: true })
+                                                    }}
+                                                >
+                                                    <FormControlLabel value="SI" label="SI" control={<Radio size="small" />} sx={{
+                                                        '& .MuiFormControlLabel-label': {
+                                                            fontSize: 14,
+                                                            fontWeight: 500
+                                                        },
+                                                    }} />
+                                                    <FormControlLabel value="NO" label="NO" control={<Radio size="small" />} sx={{
+                                                        '& .MuiFormControlLabel-label': {
+                                                            fontSize: 14,
+                                                            fontWeight: 500
+                                                        },
+                                                    }} />
+                                                </RadioGroup>
+                                            )
+                                        }
+                                    />
                                 </div>
 
                             </div>
@@ -488,27 +617,49 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                             <div className="columns">
                                 <div className="column">
 
-                                    <div className="control">
-                                        <label className="label is-small">
-                                            PROVINCIA
-                                        </label>
-                                        <input type="text" className="input is-small" onChange={ev => filtrarProvincias(ev.target.value)} />
 
-                                    </div>
-                                    {errors.id_provincia && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Selecione una provincia!</span>}
-                                    <div className="select">
-                                        <select {...register("id_provincia", { required: true })} className="input is-small" onChange={ev => cargarCantones(ev.target.value)}>
-                                            <option></option>
-                                            {
-                                                provincias && provincias.map(
-                                                    (row) => (
-                                                        <option value={row.id} key={row.id}>{row.provincia}</option>
-                                                    )
-                                                )
-                                            }
-                                        </select>
+                                    <label className="label is-small">
+                                        PROVINCIA
+                                    </label>
 
-                                    </div>
+
+
+                                    {errors.id_provincia && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione una provincia!</span>}
+
+                                    <Controller
+                                        name="id_provincia"
+                                        control={control}
+
+                                        rules={{ required: true }}
+                                        render={({ field }) => (
+                                            <Select
+
+
+                                                placeholder="Seleccione"
+                                                isClearable
+
+
+                                                {...field}
+
+
+                                                options={
+                                                    provinciasState.map(
+                                                        (p) => ({ value: p.id, label: p.provincia, key: p.id }))
+                                                }
+
+                                                onChange={(ev) => {
+                                                    cargarCantones(ev?.value)
+                                                    setValue('id_provincia', ev, { shouldValidate: true })
+                                                    setValue('id_canton', {label:'', value:''}, { shouldValidate: true})
+
+                                                }}
+
+
+                                            />
+                                        )}
+                                    />
+
+
 
                                 </div>
 
@@ -516,140 +667,165 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                     <label className="label is-small">
                                         CANTON
                                     </label>
-                                    {errors.id_provincia && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione un cantón!</span>}
-                                    <div className="select">
-                                        <select {...register("id_canton", { required: true })} className="input is-small">
+                                    {errors.id_canton && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione un cantón!</span>}
+                                    <Controller
+                                        name="id_canton"
+                                        control={control}
 
-                                            {
-                                                cantones && cantones.map(
-                                                    (row) => (
-                                                        <option value={row.id} key={row.id}> {row.canton} </option>
-                                                    )
-                                                )
-                                            }
-                                        </select>
-
-                                    </div>
-
-                                </div>
-                                <div className="column">
-                                    <label className="label is-small">PARROQUIA</label>
-                                    {errors.parroquia && <span className="has-text-danger is-size-7 has-background-danger-light"> ¡Por favor, ingrese la parroquia!</span>}
-                                    <div className="control">
-                                        <input type="text"  {...register("parroquia", { required: true })} className="input is-small is-uppercase" />
-                                    </div>
-
-                                </div>
-                                <div className="column">
-                                    <label className="label is-small">CALLE 1</label>
-                                    {errors.calle1 && <span className="has-text-danger is-size-7 has-background-danger-light"> ¡Por favor, ingrese la calle principal!</span>}
-                                    <div className="control">
-                                        <input type="text"  {...register("calle1", { required: true })} className="input is-small is-uppercase" />
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div className="columns">
-                                <div className="column">
-                                    <label className="label is-small">CALLE 2</label>
-                                    <div className="control">
-                                        <input type="text"  {...register("calle2",)} className="input is-small is-uppercase" />
-                                    </div>
-                                </div>
-                                <div className="column">
-                                    <label className="label is-small">REFERENCIA</label>
-                                    <div className="control">
-                                        <input type="text"  {...register("referencia")} className="input is-small is-uppercase" />
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                        <fieldset style={{ border: '1px solid ', padding: '10px', marginTop: '20px' }}>
-                            <legend className="has-text-weight-bold is-size-6 has-text-grey-dark">CONTACTOS</legend>
-                            <div className="columns">
-                                <div className="column">
-                                    <label className="label is-small">TELEFONO MOVIL</label>
-                                    {errors.telefono_movil && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el teléfono movil</span>}
-                                    <div className="control">
-                                        <input type="tel" {...register("telefono_movil", { required: true })} className="input is-small" />
-
-                                    </div>
-
-                                </div>
-                                <div className="column">
-                                    <label className="label is-small">TELEFONO DOMICILIO</label>
-                                    <div className="control">
-                                        <input type="tel" {...register("telefono_domicilio")} className="input is-small" />
-
-                                    </div>
-                                </div>
-                                <div className="column">
-                                    <label className="label is-small">EMAIL PERSONAL</label>
-                                    {errors.email_personal && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el email personal</span>}
-                                    <div className="control">
-                                        <input type="email" {...register("email_personal", { required: true })} className="input is-small" placeholder="example@email.com" />
-
-                                    </div>
-                                </div>
-                                <div className="column">
-                                    <label className="label is-small">EMAIL INSTITUCIONAL</label>
-                                    {errors.email_institucional && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el email institucional</span>}
-                                    <div className="control">
-                                        <input type="email" {...register("email_institucional", { required: true })} className="input is-small" placeholder="example@unesum.edu.ec" />
-
-                                    </div>
-                                </div>
-                            </div>
-
-                        </fieldset>
-                        <fieldset style={{ border: '1px solid ', padding: '10px', marginTop: '20px' }}>
-                            <legend className="has-text-weight-bold is-size-6 has-text-grey-dark">INGRESO A LA INSTITUCION</legend>
+                                        rules={{ required: true }}
+                                        render={({ field }) => (
+                                            <Select
 
 
+                                                placeholder="Seleccione"
+                                                isClearable
 
-                            <div className="columns">
-                                <div className="column is-3">
-                                    <label className="label is-small">FECHA INGRESO IES</label>
-                                    {errors.fecha_ingreso_ies?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la fecha de ingreso a la institución!</span>}
-                                    {errors.fecha_ingreso_ies?.type === 'max' && <span className="has-text-danger is-size-7 has-background-danger-light">¡La fecha de ingreso no puede ser mayor a la fecha actual!</span>}
 
-                                    <div className="control">
-                                        <input type="date" {...register("fecha_ingreso_ies", { required: true })} className="input is-small is-uppercase"
-                                            onChange={
-                                                ev => {
-                                                    clearErrors('fecha_ingreso_ies')
-                                                    if ((ev.target.value !== null || ev.target.value !== '') && new Date(ev.target.value) > new Date()) {
-                                                        setError("fecha_ingreso_ies", {
-                                                            type: 'max'
+                                                {...field}
 
-                                                        })
-                                                    }
+
+                                                options={
+                                                    cantones.map(
+                                                        (p) => ({ value: p.id, label: p.canton, key: p.id }))
+                                                }
+
+                                                onChange={(ev) => {
+                                
+                                                    setValue('id_canton', ev, { shouldValidate: true })
+
                                                 }}
 
-                                        />
+
+                                            />
+                                        )}
+                                    />
 
 
-                                    </div>
-                                </div>
+                            
+
                             </div>
+                            <div className="column">
+                                <label className="label is-small">PARROQUIA</label>
+                                {errors.parroquia && <span className="has-text-danger is-size-7 has-background-danger-light"> ¡Por favor, ingrese la parroquia!</span>}
+                                <div className="control">
+                                    <input type="text"  {...register("parroquia", { required: true })} className="input is-uppercase" />
+                                </div>
 
-                        </fieldset>
-                        <div className="field is-grouped mt-2" style={{ display: 'flex', justifyContent: 'center' }}>
-                            <div className="control has-text-centered">
-                                <Fragment>
-                                    {children}
-                                </Fragment>
-
-                                <button type="submit" className="button is-success is-small mx-3">Guardar</button>
+                            </div>
+                            <div className="column">
+                                <label className="label is-small">CALLE 1</label>
+                                {errors.calle1 && <span className="has-text-danger is-size-7 has-background-danger-light"> ¡Por favor, ingrese la calle principal!</span>}
+                                <div className="control">
+                                    <input type="text"  {...register("calle1", { required: true })} className="input is-uppercase" />
+                                </div>
 
                             </div>
                         </div>
-                    </form>
+                        <div className="columns">
+                            <div className="column">
+                                <label className="label is-small">CALLE 2</label>
+                                <div className="control">
+                                    <input type="text"  {...register("calle2",)} className="input is-uppercase" />
+                                </div>
+                            </div>
+                            <div className="column">
+                                <label className="label is-small">REFERENCIA</label>
+                                <div className="control">
+                                    <input type="text"  {...register("referencia")} className="input is-uppercase" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset style={{ border: '1px solid ', padding: '10px', marginTop: '20px' }}>
+                        <legend className="has-text-weight-bold is-size-6 has-text-grey-dark">CONTACTOS</legend>
+                        <div className="columns">
+                            <div className="column">
+                                <label className="label is-small">TELEFONO MOVIL</label>
+                                {errors.telefono_movil && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el teléfono movil</span>}
+                                <div className="control">
+                                    <input type="tel" {...register("telefono_movil", { required: true })} className="input" />
+
+                                </div>
+
+                            </div>
+                            <div className="column">
+                                <label className="label is-small">TELEFONO DOMICILIO</label>
+                                <div className="control">
+                                    <input type="tel" {...register("telefono_domicilio")} className="input" />
+
+                                </div>
+                            </div>
+                            <div className="column">
+                                <label className="label is-small">EMAIL PERSONAL</label>
+                                {errors.email_personal && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el email personal</span>}
+                                <div className="control">
+                                    <input type="email" {...register("email_personal", { required: true })} className="input" placeholder="example@email.com" />
+
+                                </div>
+                            </div>
+                            <div className="column">
+                                <label className="label is-small">EMAIL INSTITUCIONAL</label>
+                                {errors.email_institucional && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el email institucional</span>}
+                                <div className="control">
+                                    <input type="email" {...register("email_institucional", { required: true })} className="input" placeholder="example@unesum.edu.ec" />
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+                    <fieldset style={{ border: '1px solid ', padding: '10px', marginTop: '20px' }}>
+                        <legend className="has-text-weight-bold is-size-6 has-text-grey-dark">CONTACTO DE EMERGENCIA</legend>
+                    </fieldset>
+                    <fieldset style={{ border: '1px solid ', padding: '10px', marginTop: '20px' }}>
+                        <legend className="has-text-weight-bold is-size-6 has-text-grey-dark">INGRESO A LA INSTITUCION</legend>
 
 
-                </div>
+
+                        <div className="columns">
+                            <div className="column is-3">
+                                <label className="label is-small">FECHA INGRESO IES</label>
+                                {errors.fecha_ingreso_ies?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la fecha de ingreso a la institución!</span>}
+                                {errors.fecha_ingreso_ies?.type === 'max' && <span className="has-text-danger is-size-7 has-background-danger-light">¡La fecha de ingreso no puede ser mayor a la fecha actual!</span>}
+
+                                <div className="control">
+                                    <input type="date" {...register("fecha_ingreso_ies", { required: true })} className="input is-uppercase"
+                                        onChange={
+                                            ev => {
+                                                clearErrors('fecha_ingreso_ies')
+                                                if ((ev.target.value !== null || ev.target.value !== '') && new Date(ev.target.value) > new Date()) {
+                                                    setError("fecha_ingreso_ies", {
+                                                        type: 'max'
+
+                                                    })
+                                                }
+                                            }}
+
+                                    />
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                    <div className="field is-grouped mt-2" style={{ display: 'flex', justifyContent: 'center' }}>
+                        <div className="control has-text-centered">
+                            <Fragment>
+                                {children}
+                            </Fragment>
+
+                            <button type="submit" className="button is-success is-small mx-3">Guardar</button>
+
+                        </div>
+                    </div>
+                </form>
+
 
             </div>
+
+        </div>
         </div >
 
     )

@@ -120,7 +120,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                         <Select
 
                                             
-                                            placeholder="Selecione"
+                                            placeholder="Seleccione"
                                             isClearable
                                             
                                         
@@ -164,7 +164,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                     rules={{ required: true }}
                                     render={({ field }) => (
                                         <Select
-                                            placeholder="Selecione"
+                                            placeholder="Seleccione"
                                             isClearable
 
                                             {...field}
@@ -208,7 +208,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                             <div className="column">
                                 <div className="control">
                                     <label className="label is-small is-uppercase">Nivel Educativo</label>
-                                    {errors.nivel && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Selecione el nivel educativo!</span>}
+                                    {errors.nivel && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el nivel educativo!</span>}
                                 </div>
 
 
@@ -266,7 +266,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                             {nivelEdu === 'CUARTO NIVEL' && <div className="column is-6">
                                 <div className="control">
                                     <label className="label is-small is-uppercase">Grado</label>
-                                    {errors.grado && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Selecione el grado!</span>}
+                                    {errors.grado && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el grado!</span>}
                                 </div>
                                 <Controller
                                     control={control}
@@ -317,7 +317,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                     <label className="label is-small is-uppercase">Campo de estudio</label>
                                     {/* <input type="text" className="input" onChange={ev => filtrarCampos(ev.target.value)} /> */}
                                 </div>
-                                {errors.campoEstudio && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Selecione el campo de estudio!</span>}
+                                {errors.campoEstudio && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el campo de estudio!</span>}
 
                                 <Controller
                                     name="campoEstudio"
@@ -326,7 +326,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                     rules={{ required: true }}
                                     render={({ field }) => (
                                         <Select
-                                            placeholder="Selecione"
+                                            placeholder="Seleccione"
                                             isClearable
 
                                             {...field}
@@ -347,7 +347,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                             <div className="column">
                                 <div className="control">
                                     <label className="label is-small is-uppercase"> Estado</label>
-                                    {errors.estado && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Selecione el estado de la formación académica!</span>}
+                                    {errors.estado && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el estado de la formación académica!</span>}
                                 </div>
                                 <Controller
                                     name="estado"
@@ -468,7 +468,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                             </div>
                             {estadoFormacion === 'EN CURSO' && <div className="column">
                                 <label className="label is-small is-uppercase">Posee beca</label>
-                                {errors.poseeBeca && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, selecione una opción!</span>}
+                                {errors.poseeBeca && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione una opción!</span>}
                                 <Controller
                                     name="poseeBeca"
                                     control={control}
@@ -508,7 +508,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
 
                             {tieneBeca === 'SI' && <div className="column">
                                 <label className="label is-small is-uppercase">Tipo beca</label>
-                                {errors.tipoBeca && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, selecione el tipo de beca!</span>}
+                                {errors.tipoBeca && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el tipo de beca!</span>}
 
                                 <Controller
                                     name="tipoBeca"
@@ -562,7 +562,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                 <div className="column">
                                     <div className="control">
                                         <label className="label is-small is-uppercase">Tipo finaciamiento</label>
-                                        {errors.financiamiento && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, selecione el tipo de financiamiento!</span>}
+                                        {errors.financiamiento && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el tipo de financiamiento!</span>}
                                     </div>
                                     <Controller
                                         control={control}
@@ -572,7 +572,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                         render={
                                             ({ field }) =>
                                             (<Select
-                                                placeholder="Selecione"
+                                                placeholder="Seleccione"
                                                 isClearable
                                                 defaultValue ={ objeto?.financiamiento ? { label:objeto.financiamiento.financiamiento , value:objeto.financiamiento.id} : null}
                                                 {...field}
