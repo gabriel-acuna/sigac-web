@@ -26,7 +26,7 @@ const Accordion = ({ title, options }) => {
                                     <span className="icon"> {option.icon}</span>
                                 </Link> 
                             </p>:
-                             <button className="is-text m-1">
+                             <button className="is-text mb-1">
                                     <span> {option.title} </span>
                                     <span className="icon"> {option.icon}</span>
                                 </button> 

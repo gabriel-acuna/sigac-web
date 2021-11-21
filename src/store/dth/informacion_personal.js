@@ -104,30 +104,38 @@ export const postInformacionPersonal = createAsyncThunk(
                 segundo_apellido: datosPersonales.segundo_apellido.toUpperCase(),
                 sexo: datosPersonales.sexo,
                 fecha_nacimiento: datosPersonales.fecha_nacimiento,
-                pais_origen: datosPersonales.pais_origen,
+                pais_origen: datosPersonales.pais_origen.value,
                 estado_civil: datosPersonales.estado_civil,
-                discapacidad: datosPersonales.discapacidad,
+                discapacidad: datosPersonales.discapacidad.value,
                 carnet_conadis: datosPersonales.numero_conadis !== null ? datosPersonales.numero_conadis.toUpperCase() : datosPersonales.numero_conadis,
                 porcentaje_discapacidad: datosPersonales.porcentaje_discapacidad,
-                etnia: datosPersonales.etnia,
-                nacionalidad: datosPersonales.nacionalidad,
+                etnia: datosPersonales.etnia.value,
+                nacionalidad: datosPersonales.nacionalidad.value,
                 correo_institucional: datosPersonales.email_institucional,
                 correo_personal: datosPersonales.email_personal,
                 telefono_domicilio: datosPersonales.telefono_domicilio,
                 telefono_movil: datosPersonales.telefono_movil,
                 direccion_domicilio: {
-                    id_provincia: datosPersonales.id_provincia,
-                    id_canton: datosPersonales.id_canton,
+                    id_provincia: datosPersonales.id_provincia.value,
+                    id_canton: datosPersonales.id_canton.value,
                     parroquia: datosPersonales.parroquia.toUpperCase(),
                     calle1: datosPersonales.calle1.toUpperCase(),
                     calle2: datosPersonales.calle2.toUpperCase(),
                     referencia: datosPersonales.referencia.toUpperCase()
                 },
+                contacto_emergencia: {
+                    apellidos: datosPersonales.apellidosContacto.toUpperCase(),
+                    nombres: datosPersonales.nombresContacto.toUpperCase(),
+                    direccion: datosPersonales.direccionContacto.toUpperCase(),
+                    telefono_domicilio: datosPersonales.telefonoContacto,
+                    telefono_movil: datosPersonales.movilContacto
+                },
                 tipo_sangre: datosPersonales.tipo_sangre,
                 licencia_conduccion: datosPersonales.licencia_conduccion,
+                tipo_licencia: datosPersonales.tipo_licencia,
                 fecha_ingreso: datosPersonales.fecha_ingreso_ies
             }
-           
+
             let response = await Axios.post(`${API}/personal`, data,
                 {
                     headers: {
@@ -173,27 +181,35 @@ export const putInformacionPersonal = createAsyncThunk(
                 segundo_apellido: datosPersonales.segundo_apellido.toUpperCase(),
                 sexo: datosPersonales.sexo,
                 fecha_nacimiento: datosPersonales.fecha_nacimiento,
-                pais_origen: datosPersonales.pais_origen,
+                pais_origen: datosPersonales.pais_origen.value,
                 estado_civil: datosPersonales.estado_civil,
-                discapacidad: datosPersonales.discapacidad,
+                discapacidad: datosPersonales.discapacidad.value,
                 carnet_conadis: datosPersonales.numero_conadis !== null ? datosPersonales.numero_conadis.toUpperCase() : datosPersonales.numero_conadis,
                 porcentaje_discapacidad: datosPersonales.porcentaje_discapacidad,
-                etnia: datosPersonales.etnia,
-                nacionalidad: datosPersonales.nacionalidad,
+                etnia: datosPersonales.etnia.value,
+                nacionalidad: datosPersonales.nacionalidad.value,
                 correo_institucional: datosPersonales.email_institucional,
                 correo_personal: datosPersonales.email_personal,
                 telefono_domicilio: datosPersonales.telefono_domicilio,
                 telefono_movil: datosPersonales.telefono_movil,
                 direccion_domicilio: {
-                    id_provincia: datosPersonales.id_provincia,
-                    id_canton: datosPersonales.id_canton,
+                    id_provincia: datosPersonales.id_provincia.value,
+                    id_canton: datosPersonales.id_canton.value,
                     parroquia: datosPersonales.parroquia.toUpperCase(),
                     calle1: datosPersonales.calle1.toUpperCase(),
                     calle2: datosPersonales.calle2 !== null ? datosPersonales.calle2.toUpperCase() : datosPersonales.calle2,
                     referencia: datosPersonales.referencia !== null ? datosPersonales.referencia.toUpperCase() : datosPersonales.referencia
                 },
-                tipo_sangre: datosPersonales.tipo_sangre.toUpperCase(),
-                licencia_conduccion: datosPersonales.licencia_conduccion !== null ? datosPersonales.licencia_conduccion.toUpperCase() : datosPersonales.licencia_conduccion,
+                contacto_emergencia: {
+                    apellidos: datosPersonales.apellidosContacto.toUpperCase(),
+                    nombres: datosPersonales.nombresContacto.toUpperCase(),
+                    direccion: datosPersonales.direccionContacto.toUpperCase(),
+                    telefono_domicilio: datosPersonales.telefonoContacto,
+                    telefono_movil: datosPersonales.movilContacto
+                },
+                tipo_sangre: datosPersonales.tipo_sangre,
+                licencia_conduccion: datosPersonales.licencia_conduccion,
+                tipo_licencia: datosPersonales.tipo_licencia,
                 fecha_ingreso: datosPersonales.fecha_ingreso_ies
             }
 

@@ -53,8 +53,8 @@ let DTH = (props) => {
             )
     }
 
-    const deleteHandler = (id) => {
-        setId(id)
+    const deleteHandler = (obj) => {
+        setId(obj.identificacion)
         setShowConfirmDialog(true)
 
     }

@@ -26,7 +26,7 @@ let Admin = (props) => {
                 {
                     options.map((option, index) => (
 
-                        <div className="column is-3" key={index}>
+                        <div className="column is-4" key={index}>
                             <Accordion title={option.title} options={option.options} />
                         </div>
                     ))
