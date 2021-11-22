@@ -133,6 +133,11 @@ export const postInformacionPersonal = createAsyncThunk(
                 tipo_sangre: datosPersonales.tipo_sangre,
                 licencia_conduccion: datosPersonales.licencia_conduccion,
                 tipo_licencia: datosPersonales.tipo_licencia,
+                informacion_bancaria: {
+                    institucion_financiera: datosPersonales.institucion,
+                    tipo_cuenta: datosPersonales.tipoCuenta,
+                    numero_cuenta: datosPersonales.numeroCuenta
+                },
                 fecha_ingreso: datosPersonales.fecha_ingreso_ies
             }
 
@@ -210,6 +215,11 @@ export const putInformacionPersonal = createAsyncThunk(
                 tipo_sangre: datosPersonales.tipo_sangre,
                 licencia_conduccion: datosPersonales.licencia_conduccion,
                 tipo_licencia: datosPersonales.tipo_licencia,
+                informacion_bancaria: {
+                    institucion_financiera: datosPersonales.institucion,
+                    tipo_cuenta: datosPersonales.tipoCuenta,
+                    numero_cuenta: datosPersonales.numeroCuenta
+                },
                 fecha_ingreso: datosPersonales.fecha_ingreso_ies
             }
 

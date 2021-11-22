@@ -79,11 +79,14 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                     id_provincia: { label: person.direccion_domicilio.provincia.provincia, value: person.direccion_domicilio.provincia.id },
                     id_canton: { label: person.direccion_domicilio.canton.canton, value: person.direccion_domicilio.canton.id },
                     nacionalidad: { label: person.nacionalidad.nacionalidad, value: person.nacionalidad.id },
-                    apellidosContacto: person.contacto_emergencia.apellidos,
-                    nombresContacto: person.contacto_emergencia.nombres,
-                    telefonoContacto: person.contacto_emergencia.telefono_domicilio,
-                    movilContacto: person.contacto_emergencia.telefono_movil,
-                    direccionContacto: person.contacto_emergencia.direccion
+                    apellidosContacto: person.contacto_emergencia?.apellidos,
+                    nombresContacto: person.contacto_emergencia?.nombres,
+                    telefonoContacto: person.contacto_emergencia?.telefono_domicilio,
+                    movilContacto: person.contacto_emergencia?.telefono_movil,
+                    direccionContacto: person.contacto_emergencia?.direccion,
+                    institucion: person.informacion_bancaria?.institucion_financiera,
+                    tipoCuenta:person.informacion_bancaria?.tipo_cuenta,
+                    numeroCuenta: person.informacion_bancaria?.numero_cuenta
 
 
 
@@ -179,7 +182,6 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
 
     //     , [])
-    console.log(person);
     return (
 
         <div className="modal is-active">
@@ -193,7 +195,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                 <div className="modal-card-body">
                     <form className="mt-2 px-2" onSubmit={handleSubmit(handler)}>
 
-
+                        {/*datos personales*/}
                         <fieldset style={{ border: '1px solid ', padding: '10px' }}>
                             <legend className="has-text-weight-bold is-size-6 has-text-grey-dark">DATOS PERSONALES</legend>
 
@@ -657,6 +659,8 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                 </div>}
                             </div>
                         </fieldset>
+
+                        {/*direccion*/}
                         <fieldset style={{ border: '1px solid ', padding: '10px', marginTop: '20px' }}>
                             <legend className="has-text-weight-bold is-size-6 has-text-grey-dark">DIRECCION DOMICILIARIA</legend>
                             <div className="columns">
@@ -781,6 +785,8 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                 </div>
                             </div>
                         </fieldset>
+
+                        {/*contactos*/}
                         <fieldset style={{ border: '1px solid ', padding: '10px', marginTop: '20px' }}>
                             <legend className="has-text-weight-bold is-size-6 has-text-grey-dark">CONTACTOS</legend>
                             <div className="columns">
@@ -820,6 +826,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
                         </fieldset>
 
+                         {/*contacto emergencia*/}
                         <fieldset style={{ border: '1px solid ', padding: '10px', marginTop: '20px' }}>
                             <legend className="has-text-weight-bold is-size-6 has-text-grey-dark">CONTACTO DE EMERGENCIA</legend>
                             <div className="columns">
@@ -859,6 +866,63 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                 </div>
                             </div>
                         </fieldset>
+
+                        {/*informacion bancaria*/}
+                        <fieldset style={{ border: '1px solid ', padding: '10px', marginTop: '20px' }}>
+                            <legend className="has-text-weight-bold is-size-6 has-text-grey-dark">INFORMACION BANCARIA</legend>
+                            <div className="columns">
+                                <div className="column">
+                                    <label className="label is-small">INSTITUCION FINANCIERA</label>
+                                    {errors.institucion && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la institución financiera!</span>}
+                                    <input type="text" {...register('institucion', { required: true })} className="input is-uppercase" />
+                                </div>
+
+                           
+                                <div className="column">
+                                    <label className="label is-small">TIPO CUENTA</label>
+                                    {errors.institucion && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Escoja el tipo de cuenta!</span>}
+                                    <Controller
+                                        control={control}
+                                        name="tipoCuenta"
+                                        render={
+                                            ({ ...field }) => (
+                                                <RadioGroup
+                                                    aria-label="tipoCuenta"
+                                                    row
+                                                    defaultValue={ person?.informacion_bancaria ? person.informacion_bancaria.tipo_cuenta: '' }
+                                                    {...field}
+                                                    onChange={
+                                                        (ev) => setValue('tipoCuenta', ev.currentTarget.value ? ev.currentTarget.value : null, { shouldValidate: true })
+                                                    }>
+                                                    <FormControlLabel value="AHORRO" label="AHORRO" control={<Radio size="small" key="IU8dff5000" />} sx={{
+                                                        '& .MuiFormControlLabel-label': {
+                                                            fontSize: 14,
+                                                            fontWeight: 500
+                                                        },
+                                                    }} />
+                                                    <FormControlLabel value="CORRIENTE" label="CORRIENTE" control={<Radio size="small" key="RDRhro6567" />} sx={{
+                                                        '& .MuiFormControlLabel-label': {
+                                                            fontSize: 14,
+                                                            fontWeight: 500
+                                                        },
+                                                    }} />
+                                                </RadioGroup>
+
+                                            )
+                                        }
+                                    />
+
+                                </div>
+                                <div className="column">
+                                    <label className="label is-small"> NO. CUENTA</label>
+                                    {errors.institucion && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el número de cuenta!</span>}
+                                    <input type="text" className="input"  {...register("numeroCuenta")}/>
+                                </div>
+                            </div>
+
+
+                        </fieldset>
+                         {/*informacion bancaria*/}
                         <fieldset style={{ border: '1px solid ', padding: '10px', marginTop: '20px' }}>
                             <legend className="has-text-weight-bold is-size-6 has-text-grey-dark">INGRESO A LA INSTITUCION</legend>
 

@@ -1,4 +1,3 @@
-import ReactDatatable from '@yun548/bulma-react-datatable'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
@@ -11,6 +10,7 @@ import { postDetalleExpedienteFuncionario, postDetalleExpedienteProfesor, putDet
 import { logOut } from '../../store/user'
 import Alert from '../Alert'
 import ConfirmDialog from '../ConfirmDialog'
+import OptionCard from '../OptionCard'
 
 let ListaExpediente = (props) => {
     const location = useLocation()
@@ -39,46 +39,6 @@ let ListaExpediente = (props) => {
             setPersona(location.state)
         }, [location, persona]
     )
-
-
-    const columns = [
-        { key: 'numero_documento', text: 'No. Doc.', sortable: true },
-        { key: 'fecha_inicio', text: 'Inicio', sortable: true },
-        { key: 'fecha_fin', text: 'Fin', sortable: true },
-        { key: 'opciones', text: 'Opciones', sortable: false }
-    ]
-
-    let rows = expedienteState.detalle.map(
-
-
-
-        (row, index) => {
-            return {
-                id: row.id,
-                numero_documento: row.numero_documento,
-                fecha_inicio: row.fecha_inicio,
-                fecha_fin: row.fecha_fin,
-                opciones: [
-                    <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
-                        setObjeto(row)
-                        setShowModalForm(true)
-                    }}>
-                        <span className="icon">
-                            <FaRegEdit />
-                        </span>
-                    </button>,
-                    <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
-                        deleteHandler(row.id)
-                    }}>
-                        <span className="icon">
-                            <AiOutlineDelete />
-                        </span>
-                    </button>
-                ]
-            }
-        }
-    )
-
 
 
     const deleteHandler = (id) => {
@@ -178,11 +138,7 @@ let ListaExpediente = (props) => {
                                         <IoIosArrowBack />
                                     </span>
                                 </button>
-                                <button className="button  is-success mt-4 is-outlined" onClick={ev => setShowModalForm(true)}>
-                                    <span className="icon">
-                                        <IoIosAddCircleOutline />
-                                    </span>
-                                </button>
+
                             </header>
                             {persona && <section className="card-content">
                                 <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr' }}>
@@ -218,34 +174,52 @@ let ListaExpediente = (props) => {
                 </div>
                 <div className="columns is-centered">
                     <div className="column is-half mb-6">
-                        <ReactDatatable style={{ justifyContent: 'center' }}
-                            className="table is-bordered is-striped"
-                            tHeadClassName="is-info"
-                            config={{
-                                page_size: 10,
-                                length_menu: [10, 20, 50],
-                                show_pagination: true,
-                                pagination: 'advance',
-                                button: {
-                                    excel: false,
-                                    print: false
-                                },
-                                language: {
-                                    length_menu: "Mostrar _MENU_ registros laborales por página",
-                                    filter: "Buscar en registros ...",
-                                    no_data_text: "No hay regsitros laborales",
-                                    info: "Mostrando _START_ a _END_ de _TOTAL_ registros laborales",
-                                    pagination: {
-                                        first: "Primera",
-                                        previous: "Anterior",
-                                        next: "Siguiente",
-                                        last: "Ultima"
-                                    }
-                                }
-                            }}
-                            records={rows}
-                            columns={columns}
-                        />
+
+                        <OptionCard
+                            title="Registro laboral"
+                            columns={['No. Doc.', 'Inicio', 'Fin', 'Opciones']}
+                            expandir={false}
+                            rows={
+                                expedienteState?.detalle.map(
+
+
+
+                                    (row, index) => 
+                                        (<tr key={row.id}>
+                                            <td>{row.numero_documento}</td>
+                                            <td>{row.fecha_inicio}</td>
+                                            <td>{row.fecha_fin}</td>
+                                            <td>
+                                                <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
+                                                    setObjeto(row)
+                                                    setShowModalForm(true)
+                                                }}>
+                                                    <span className="icon">
+                                                        <FaRegEdit />
+                                                    </span>
+                                                </button>,
+                                                <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
+                                                    deleteHandler(row.id)
+                                                }}>
+                                                    <span className="icon">
+                                                        <AiOutlineDelete />
+                                                    </span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        )
+                                    
+                                )
+                            }
+                        >
+                            <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalForm(true)}>
+                                <span className="icon">
+                                    <IoIosAddCircleOutline />
+                                </span>
+                            </button>
+
+                        </OptionCard>
+
                     </div>
                 </div>
             </div>
@@ -273,8 +247,8 @@ let ListaExpediente = (props) => {
                                 loadExpedienteLaboral(location.state.identificacion)
                             )
                         }}
-                        key={atob(`C${location.state.identificacion}`)}
-                        
+                            key={atob(`C${location.state.identificacion}`)}
+
                         ></button>
                     </Alert>}
                     <button className="button is-small is-danger mx-3" onClick={ev => {
@@ -284,7 +258,7 @@ let ListaExpediente = (props) => {
 
                 </ModalForm>
             }
-            
+
             {
                 showConfirmDialog &&
                 <ConfirmDialog info="el registro" title="Eliminar registro">

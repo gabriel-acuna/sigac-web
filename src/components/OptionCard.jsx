@@ -1,34 +1,45 @@
-import { Link } from "react-router-dom";
-let OptionCard = ({ title, icon, content, url, size }) => {
-
+import { Fragment, useState } from 'react';
+import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai'
+let OptionCard = ({ title, columns, rows, children }) => {
+    const [expandir, setExpandir] = useState(false)
+    console.log(rows);
     return (
-        <div className={`column ${size}`}>
-            <Link to={url}>
-                <div className="card">
-                    <header className="card-header">
-                        <p className="card-header-title has-text-dark">
-                            {title}
-                           
-                        </p>
-                       
-                    </header>
-                    <div className="card-content">
-                        <div className="content">
-                           <p style={{fontSize:'.9rem', fontWeight:'600'}}> {content} </p>
-                           <p className="has-text-centered is-text-centered is-size-1">
-                           <span className="icon">
-                                {icon}
-                            </span>
-                           </p>
-                           
-
-                        </div>
+        <div className="card">
+            <header className="card-header" onClick={() => setExpandir(!expandir)}>
+                <p className="card-header-title" >{title}</p>
+                <button className="card-header-icon" aria-label="more options">
+                    <span className="icon">
+                        {expandir ? <AiOutlineMinus /> : <AiOutlinePlus />}
+                    </span>
+                </button>
+            </header>
+            {
+                expandir && <div className="card-content">
+                    <Fragment>
+                        {children}
+                    </Fragment>
+                    <div className="table-container mt-1">
+                        <table className="table is-bordered">
+                            <thead>
+                                <tr>
+                                    {
+                                        columns.map(
+                                            (col) => (
+                                                <th>{col}</th>
+                                            )
+                                        )
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    rows
+                                }
+                            </tbody>
+                        </table>
                     </div>
-                    <footer className="card-footer">
-
-                    </footer>
                 </div>
-            </Link>
+            }
 
         </div>
     )
