@@ -1,20 +1,20 @@
 import { useForm } from 'react-hook-form'
 import { Fragment, useEffect } from 'react'
- let IdiomaModalForm = ({ title, handler, children, objeto }) => {
+let IdiomaModalForm = ({ title, handler, children, objeto, persona }) => {
 
-    const comprension = [ 'Excelente', 'Buena', 'Limitada', 'Ninguna' ]
+    const comprension = ['Excelente', 'Buena', 'Limitada', 'Ninguna']
     const { register, reset, handleSubmit, formState: { errors } } = useForm()
 
     useEffect(
         () => {
-           
-                reset({
-                    idioma:objeto?.idioma,
-                    lugarEstudio: objeto?.lugar_estudio,
-                    nivel: objeto?.nivel_comprension
-                })
 
-            
+            reset({
+                idioma: objeto?.idioma,
+                lugarEstudio: objeto?.lugar_estudio,
+                nivel: objeto?.nivel_comprension
+            })
+
+
         }, [objeto, reset]
     )
 
@@ -24,7 +24,8 @@ import { Fragment, useEffect } from 'react'
             <div className="modal-background"></div>
             <div className="modal-card" style={{ width: '80%' }}>
                 <header className="modal-card-head">
-                    <span className="has-text-weight-bold is-italic">{title}</span>
+                    <span className="has-text-weight-bold is-italic" >{title} {persona && `${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`}</span>
+
 
                 </header>
                 <section className="modal-card-body">
@@ -59,7 +60,7 @@ import { Fragment, useEffect } from 'react'
                                         <option> </option>
                                         {
                                             comprension.map(
-                                               (nivel)=>(
+                                                (nivel) => (
                                                     <option value={nivel} >{nivel} </option>
                                                 )
                                             )
@@ -70,7 +71,7 @@ import { Fragment, useEffect } from 'react'
                             </div>
 
 
-                
+
 
 
 

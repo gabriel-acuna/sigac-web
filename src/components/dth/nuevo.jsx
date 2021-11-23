@@ -189,7 +189,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
             <div className="modal-card" style={{ width: '80%' }}>
                 <header className="modal-card-head">
-                    <span className="has-text-weight-bold is-italic" >{title} {person && `${person.primer_nombre} ${person.primer_apellido} ${person.segundo_apellido}`}</span>
+                    <span className="has-text-weight-bold is-italic" >{title} {person && `${person.primer_nombre} ${person.segundo_nombre} ${person.primer_apellido} ${person.segundo_apellido}`}</span>
 
                 </header>
                 <div className="modal-card-body">

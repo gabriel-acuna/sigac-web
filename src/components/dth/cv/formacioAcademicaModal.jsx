@@ -1,19 +1,19 @@
 import { useForm, Controller } from 'react-hook-form'
 import { Fragment, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { loadPaises } from '../../store/core/paises'
-import { loadNivelesEducativos } from '../../store/core/nivelesEducativos'
+import { loadPaises } from '../../../store/core/paises'
+import { loadNivelesEducativos } from '../../../store/core/nivelesEducativos'
 import { useSelector } from 'react-redux'
-import { loadTiposFinanciamientos } from '../../store/core/tipo_financiamiento'
-import { loadGrados } from '../../store/core/grado'
-import { loadTipoBecas } from '../../store/core/tipoBeca'
-import { loadIESNacionales } from '../../store/core/ies-nacionales'
-import { loadCamposEspecificos } from '../../store/core/campoEspecifico'
+import { loadTiposFinanciamientos } from '../../../store/core/tipo_financiamiento'
+import { loadGrados } from '../../../store/core/grado'
+import { loadTipoBecas } from '../../../store/core/tipoBeca'
+import { loadIESNacionales } from '../../../store/core/ies-nacionales'
+import { loadCamposEspecificos } from '../../../store/core/campoEspecifico'
 import Select from 'react-select/'
 import { Radio, RadioGroup, FormControlLabel } from "@mui/material"
 
 
-let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
+let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }) => {
 
 
     const { register, reset, handleSubmit, formState: { errors }, setValue, getValues, clearErrors, setError, control } = useForm()
@@ -96,8 +96,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
             <div className="modal-background"></div>
             <div className="modal-card" style={{ width: '80%' }}>
                 <header className="modal-card-head">
-                    <span className="has-text-weight-bold is-italic">{title}</span>
-
+                    <span className="has-text-weight-bold is-italic" >{title} {persona && `${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`}</span>
                 </header>
                 <section className="modal-card-body">
 

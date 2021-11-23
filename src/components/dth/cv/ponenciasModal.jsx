@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form'
 import { Fragment, useEffect } from 'react'
 
 
-let CapacitacionModalForm = ({ title, handler, children, objeto }) => {
+let CapacitacionModalForm = ({ title, handler, children, objeto , persona }) => {
 
 
     const { register, reset, handleSubmit, formState: { errors }, clearErrors, setError } = useForm()
@@ -30,7 +30,8 @@ let CapacitacionModalForm = ({ title, handler, children, objeto }) => {
             <div className="modal-background"></div>
             <div className="modal-card" style={{ width: '80%' }}>
                 <header className="modal-card-head">
-                    <span className="has-text-weight-bold is-italic">{title}</span>
+                <span className="has-text-weight-bold is-italic" >{title} {persona && `${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`}</span>
+
 
                 </header>
                 <section className="modal-card-body">
@@ -46,7 +47,8 @@ let CapacitacionModalForm = ({ title, handler, children, objeto }) => {
 
                             </div>
 
-
+                        </div>
+                        <div className="columns">
 
                             <div className="column">
                                 <label className="label is-small">Institución organizadora</label>

@@ -1,43 +1,43 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { IoIosArrowBack, IoIosAddCircleOutline } from 'react-icons/io'
 import { FaRegEdit } from 'react-icons/fa'
 
 import { AiOutlineMinus, AiOutlinePlus, AiOutlineDelete } from 'react-icons/ai'
 import { useDispatch } from 'react-redux'
-import { loadPersonaEmail } from '../../store/dth/informacion_personal'
+import { loadPersonaEmail } from '../../../store/dth/informacion_personal'
 import ReferenciaModalForm from './referenciasModal'
 
-import { postReferencias, putReferencias, deleteReferencias, loadReferencias } from '../../store/cv/referencia'
-import { postCapacitaciones, putCapacitaciones, deleteCapacitaciones, loadCapacitaciones } from '../../store/cv/capacitacion'
-import { loadCapacitacionesFacilitador, postCapacitacionesFacilitador, putCapacitacionesFacilitador, deleteCapacitacionesFacilitador } from '../../store/cv/capacitacion_facilitador'
+import { postReferencias, putReferencias, deleteReferencias, loadReferencias } from '../../../store/cv/referencia'
+import { postCapacitaciones, putCapacitaciones, deleteCapacitaciones, loadCapacitaciones } from '../../../store/cv/capacitacion'
+import { loadCapacitacionesFacilitador, postCapacitacionesFacilitador, putCapacitacionesFacilitador, deleteCapacitacionesFacilitador } from '../../../store/cv/capacitacion_facilitador'
 import {
     loadFormacionAcademica,
     postFormacionAcademica,
     putFormacionAcademica,
     deleteFormacionAcademica
-} from '../../store/cv/formacion_academica'
+} from '../../../store/cv/formacion_academica'
 
 import {
     loadPonencias, postPonencias, putPonencias, deletePonencia
-} from '../../store/cv/ponencia'
+} from '../../../store/cv/ponencia'
 
 import {
     loadExperienciaLaboral, postExperienciaLaboral, putExperienciaLaboral, deleteExperienciaLaboral
-} from '../../store/cv/experiencia_laboral'
+} from '../../../store/cv/experiencia_laboral'
 
 import {
     loadMeritos, postMeritos, putMeritos, deleteMeritos
-} from '../../store/cv/merito'
+} from '../../../store/cv/merito'
 
 import {
     loadIdiomas, postIdiomas, putIdiomas, deleteIdiomas
-} from '../../store/cv/compresion_idioma'
+} from '../../../store/cv/compresion_idioma'
 
-import Alert from '../Alert'
+import Alert from '../../Alert'
 import { useSelector } from 'react-redux'
-import { logOut } from '../../store/user'
-import ConfirmDialog from '../ConfirmDialog'
+import { logOut } from '../../../store/user'
+import ConfirmDialog from '../../ConfirmDialog'
 import FormacionAcademicaModalForm from './formacioAcademicaModal';
 import CapacitacionModalForm from './capacitacionesModal'
 import CapacitacionFacModalForm from './capacitacionesFacModal'
@@ -50,6 +50,7 @@ const CV = ({ email }) => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const location = useLocation()
 
     const [expandirReferencias, setExpandirReferencia] = useState(false)
     const [expandirCapacitaciones, setExpandirCapacitaciones] = useState(false)
@@ -70,7 +71,7 @@ const CV = ({ email }) => {
     const [showModalMerito, setShowModalMerito] = useState(false)
     const [showModalIdioma, setShowModalIdioma] = useState(false)
 
-    const [persona, setPersona] = useState(null)
+    const [persona, setPersona] = useState(location.state)
     const [objeto, setObjeto] = useState(null)
     const [response, setResponse] = useState(null)
     const [id, setId] = useState(null)
@@ -98,32 +99,27 @@ const CV = ({ email }) => {
 
     useEffect(
         () => {
-            dispatch(
-                loadPersonaEmail(email)
-            ).unwrap()
-                .then(
-                    resp => {
-                        setPersona(resp)
-                        dispatch(
-                            loadReferencias(resp.identificacion)
-                        )
-                        dispatch(
-                            loadCapacitaciones(resp.identificacion)
-                        )
-                        dispatch(
-                            loadCapacitacionesFacilitador(resp.identificacion)
-                        )
-                        dispatch(loadFormacionAcademica(resp.identificacion))
-                        dispatch(loadPonencias(resp.identificacion))
-                        dispatch(loadExperienciaLaboral(resp.identificacion))
-                        dispatch(loadMeritos(resp.identificacion))
-                        dispatch(loadIdiomas(resp.identificacion))
 
-                    }
-                )
+            dispatch(
+                loadReferencias(persona.identificacion)
+            )
+            dispatch(
+                loadCapacitaciones(persona.identificacion)
+            )
+            dispatch(
+                loadCapacitacionesFacilitador(persona.identificacion)
+            )
+            dispatch(loadFormacionAcademica(persona.identificacion))
+            dispatch(loadPonencias(persona.identificacion))
+            dispatch(loadExperienciaLaboral(persona.identificacion))
+            dispatch(loadMeritos(persona.identificacion))
+            dispatch(loadIdiomas(persona.identificacion))
+
+
+
 
         }, [
-        dispatch, email
+        dispatch, persona.identificacion
     ]
     )
 
@@ -905,15 +901,32 @@ const CV = ({ email }) => {
             <div className="container">
                 <div className="columns is-centered is-multiline">
                     <div className="column is-half">
-                        <button className="button is-info mt-4 mx-3 is-outlined"
-                            onClick={event => {
-                                navigate(-1);
+                        <div className="card mt-2">
+                            <button className="button is-info mt-4 mx-3 is-outlined"
+                                onClick={event => {
+                                    navigate(-1);
 
-                            }}>
-                            <span className="icon">
-                                <IoIosArrowBack />
-                            </span>
-                        </button>
+                                }}>
+                                <span className="icon">
+                                    <IoIosArrowBack />
+                                </span>
+                            </button>
+                            {persona && <section className="card-content">
+                                <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr' }}>
+                                    <div>
+                                        <span className="has-text-weight-medium">Nombres: </span> {persona.primer_nombre} {persona.segundo_nombre}
+                                    </div>
+                                    <div >
+                                        <span className="has-text-weight-medium">Apellidos: </span> {persona.primer_apellido} {persona.segundo_apellido}
+                                    </div>
+
+                                    <div><span className="has-text-weight-medium">Edad: </span> {persona?.edad.años}  años </div>
+                                    <div><span className="has-text-weight-medium">Estado civil: </span> {persona.estado_civil.estado_civil}</div>
+                                    <div><span className="has-text-weight-medium">Teléfono movil: </span> {persona.telefono_movil}</div>
+                                    <div><span className="has-text-weight-medium">Correo: </span> {persona.correo_personal}</div>
+                                </div>
+                            </section>}
+                        </div>
 
                     </div>
                     {respConfirmRef && respConfirmRef.type === 'warning' && <Alert type={'is-warning is-light'} content={respConfirmRef.content}>
@@ -1643,9 +1656,10 @@ const CV = ({ email }) => {
             {/* Modal formación académica */}
             {
                 showModalFormacionAcademica && <FormacionAcademicaModalForm
-                    title={objeto !== null ? 'Editando mi formación académica' : 'Registrando mi formación académica'}
+                    title={objeto !== null ? 'Editando formación académica de: ' : 'Registrando formación académica de: '}
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerFormacionAcademica : postHandlerFormacionAcademica}
+                    persona={persona}
                 >
                     <div className="columns is-centered">
                         <div className="column">
@@ -1677,9 +1691,10 @@ const CV = ({ email }) => {
             {/* Modal Capacitaciones*/}
             {
                 showModalCapacitacion && <CapacitacionModalForm
-                    title={objeto !== null ? 'Editando mi capacitación' : 'Registrando mi capacitación'}
+                    title={objeto !== null ? 'Editando capacitación de:' : 'Registrando  capacitación de:'}
                     objeto={objeto}
-                    handler={objeto !== null ? putHandlerCap : postHandlerCap}>
+                    handler={objeto !== null ? putHandlerCap : postHandlerCap}
+                    persona={persona}>
                     <div className="columns is-centered">
                         <div className="column">
                             {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
@@ -1710,7 +1725,7 @@ const CV = ({ email }) => {
             {/* Modal Capacitaciones Facilitador*/}
             {
                 showModalCapacitacionFac && <CapacitacionFacModalForm
-                    title={objeto !== null ? 'Editando mi capacitación (facilitador)' : 'Registrando mi capacitación (facilitador)'}
+                    title={objeto !== null ? 'Editando capacitación (facilitador)' : 'Registrando capacitación (facilitador)'}
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerCapFac : postHandlerCapFac}>
                     <div className="columns is-centered">
@@ -1743,9 +1758,10 @@ const CV = ({ email }) => {
             {/* Modal Ponencias*/}
             {
                 showModalPonencia && <PonenciaModalForm
-                    title={objeto !== null ? 'Editando mi ponencia' : 'Registrando mi ponencia'}
+                    title={objeto !== null ? 'Editando ponencia de:' : 'Registrando ponencia de:'}
                     objeto={objeto}
-                    handler={objeto !== null ? putHandlerPonencia : postHandlerPonencia}>
+                    handler={objeto !== null ? putHandlerPonencia : postHandlerPonencia}
+                    persona={persona}>
                     <div className="columns is-centered">
                         <div className="column">
                             {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
@@ -1776,9 +1792,10 @@ const CV = ({ email }) => {
 
             {/*Modal Experiencia Laboral*/}
             {showModalExperienciaLaboral && <ExperienciaLaboralModalForm
-                title={objeto !== null ? 'Editando mi experiencia laboral' : 'Registrando mi experiencia laboral'}
+                title={objeto !== null ? 'Editando experiencia laboral de: ' : 'Registrando experiencia laboral de: '}
                 objeto={objeto}
-                handler={objeto !== null ? putHandlerExperienciaLaboral : postHandlerExperienciaLaboral}>
+                handler={objeto !== null ? putHandlerExperienciaLaboral : postHandlerExperienciaLaboral}
+                persona={persona}>
                 <div className="columns is-centered">
                     <div className="column">
                         {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
@@ -1810,9 +1827,11 @@ const CV = ({ email }) => {
             {
                 showModalMerito &&
                 <MeritoModalForm
-                    title={objeto !== null ? 'Editando mi mérito' : 'Registrando mi mérito'}
+                    title={objeto !== null ? 'Editando mérito de: ' : 'Registrando mérito de: '}
                     objeto={objeto}
-                    handler={objeto !== null ? putHandlerMerito : postHandlerMerito}>
+                    handler={objeto !== null ? putHandlerMerito : postHandlerMerito}
+                    persona={persona}
+                >
                     <div className="columns is-centered">
                         <div className="column">
                             {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
@@ -1842,9 +1861,10 @@ const CV = ({ email }) => {
             {/*Modal Compresion de idiomas*/}
             {
                 showModalIdioma && <IdiomaModalForm
-                    title={objeto !== null ? 'Editando mi idioma' : 'Registrando mi idioma'}
+                    title={objeto !== null ? 'Editando idioma de: ' : 'Registrando idioma de: '}
                     objeto={objeto}
-                    handler={objeto !== null ? putHandlerIdioma : postHandlerIdioma}>
+                    handler={objeto !== null ? putHandlerIdioma : postHandlerIdioma}
+                    persona={persona}>
                     <div className="columns is-centered">
                         <div className="column">
                             {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
@@ -1875,9 +1895,10 @@ const CV = ({ email }) => {
             {/* Modal Referencia*/}
             {
                 showModalReferencia && <ReferenciaModalForm
-                    title={objeto !== null ? 'Editando mi referencia' : 'Registrando mi referencia'}
+                    title={objeto !== null ? 'Editando referencia de: ' : 'Registrando referencia de: '}
                     objeto={objeto}
-                    handler={objeto !== null ? putHandlerRef : postHandlerRef}>
+                    handler={objeto !== null ? putHandlerRef : postHandlerRef}
+                    persona={persona}>
                     <div className="columns is-centered">
                         <div className="column">
                             {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>

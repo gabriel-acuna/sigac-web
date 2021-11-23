@@ -1,11 +1,11 @@
 import { useForm } from 'react-hook-form'
-import { Fragment, useEffect } from 'react'
+import { Fragment } from 'react'
 
 
 let ModalForm = ({ title, handler, children, objeto }) => {
 
 
-    const { register, reset, handleSubmit, formState: { errors } } = useForm()
+    const { register, handleSubmit, formState: { errors } } = useForm()
 
 
 
@@ -24,7 +24,7 @@ let ModalForm = ({ title, handler, children, objeto }) => {
                         <div className="field">
                             <label className="label is-small">Grado</label>
                             <div className="control">
-                                <input type="text" {...register("grado", { required: true })} className="input"  defaultValue={objeto?.grado} />
+                                <input type="text" {...register("grado", { required: true })} className="input" defaultValue={objeto?.grado} />
                                 {errors.grado && <span className="has-text-danger">¡Por favor, Ingrese la grado!</span>}
 
 

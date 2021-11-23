@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form'
 import { Fragment, useEffect } from 'react'
 
 
-let CapacitacionModalForm = ({ title, handler, children, objeto }) => {
+let CapacitacionModalForm = ({ title, handler, children, objeto, persona }) => {
 
 
     const { register, reset, handleSubmit, formState: { errors }, setError, clearErrors, getValues } = useForm()
@@ -30,7 +30,8 @@ let CapacitacionModalForm = ({ title, handler, children, objeto }) => {
             <div className="modal-background"></div>
             <div className="modal-card" style={{ width: '80%' }}>
                 <header className="modal-card-head">
-                    <span className="has-text-weight-bold is-italic">{title}</span>
+                    <span className="has-text-weight-bold is-italic" >{title} {persona && `${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`}</span>
+
 
                 </header>
                 <div className="modal-card-body">
@@ -119,7 +120,7 @@ let CapacitacionModalForm = ({ title, handler, children, objeto }) => {
                                 {errors.fechaFin?.type === 'min' && <span className="has-text-danger is-size-7 has-background-danger-light">{errors.fechaFin.message}</span>}
                                 {errors.fechaFin?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, ingrese la fecha de finalización!</span>}
                                 <div className="control">
-                                    <input type="date" className="input" {...register('fechaFin',{ required:true})}
+                                    <input type="date" className="input" {...register('fechaFin', { required: true })}
 
                                         onChange={
                                             ev => {

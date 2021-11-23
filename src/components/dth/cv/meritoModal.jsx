@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form'
 import { Fragment, useEffect } from 'react'
 
 
-let MeritoModalForm = ({ title, handler, children, objeto }) => {
+let MeritoModalForm = ({ title, handler, children, objeto, persona }) => {
 
 
     const { register, reset, handleSubmit, formState: { errors }, getValues, clearErrors, setError } = useForm()
@@ -29,10 +29,11 @@ let MeritoModalForm = ({ title, handler, children, objeto }) => {
             <div className="modal-background"></div>
             <div className="modal-card" style={{ width: '80%' }}>
                 <header className="modal-card-head">
-                    <span className="has-text-weight-bold is-italic">{title}</span>
+                    <span className="has-text-weight-bold is-italic" >{title} {persona && `${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`}</span>
+
 
                 </header>
-                <section className="modal-card-body">
+                <section className="modal-card-body" style={{ display: 'flex', justifyContent: 'center' }}>
 
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
                         <div className="columns">

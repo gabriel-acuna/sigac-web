@@ -34,6 +34,7 @@ import ListadoGrados from "./components/admin/options/grados";
 import ListadoIESNacionales from "./components/admin/options/ies-nacionales";
 import DAC from './components/dac/index'
 import ReportesPeriodo from './components/dac/reportesPeriodo'
+import CV_DTH from './components/dth/cv'
 
 const routes = (user) => [
     {
@@ -318,7 +319,20 @@ const routes = (user) => [
                 element: <DTH />
             }, {
                 path: '/expediente',
-                element: <ListaExpediente />
+                element:<Outlet/>,
+                children: [
+                    { path:'/', element:  <ListaExpediente />},
+                    {
+                        path: '/cv',
+                        element: <Outlet />,
+                        children: [{
+                            path: '/',
+                            element: <CV_DTH />
+                        }]
+
+
+                    }
+                ]
             }
 
 
@@ -333,11 +347,11 @@ const routes = (user) => [
                 element: <DAC />
             }, {
                 path: '/periodo',
-                element:<Outlet/>,
-                children:[
+                element: <Outlet />,
+                children: [
                     {
-                        path:'/',
-                        element: <ReportesPeriodo/>
+                        path: '/',
+                        element: <ReportesPeriodo />
                     }
                 ]
             }]

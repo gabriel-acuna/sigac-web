@@ -2,7 +2,6 @@ import { Fragment, useState } from 'react';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai'
 let OptionCard = ({ title, columns, rows, children }) => {
     const [expandir, setExpandir] = useState(false)
-    console.log(rows);
     return (
         <div className="card">
             <header className="card-header" onClick={() => setExpandir(!expandir)}>

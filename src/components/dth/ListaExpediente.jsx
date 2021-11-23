@@ -1,7 +1,8 @@
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { IoIosArrowBack, IoIosAddCircleOutline } from 'react-icons/io'
+import { ImProfile } from 'react-icons/im'
 import { deleteItemDetalle, loadExpedienteLaboral } from '../../store/dth/expediente_laboral'
 import { FaRegEdit } from 'react-icons/fa'
 import { AiOutlineDelete } from 'react-icons/ai'
@@ -28,10 +29,10 @@ let ListaExpediente = (props) => {
 
     useEffect(
         () => {
-            dispatch(
+            location.state?.identificacion && dispatch(
                 loadExpedienteLaboral(location.state.identificacion)
             )
-        }, [dispatch]
+        }, [dispatch, location.state?.identificacion]
     )
 
     useEffect(
@@ -138,6 +139,7 @@ let ListaExpediente = (props) => {
                                         <IoIosArrowBack />
                                     </span>
                                 </button>
+                                <Link className="button is-primary mt-4 mx-3 is-outlined" to="cv" state={location.state}><span className="icon"><ImProfile/></span></Link>
 
                             </header>
                             {persona && <section className="card-content">
@@ -149,7 +151,7 @@ let ListaExpediente = (props) => {
                                         <span className="has-text-weight-medium">Apellidos: </span> {persona.primer_apellido} {persona.segundo_apellido}
                                     </div>
 
-                                    <div><span className="has-text-weight-medium">Edad: </span> {persona.edad.años}  años </div>
+                                    <div><span className="has-text-weight-medium">Edad: </span> {persona?.edad.años}  años </div>
                                     <div><span className="has-text-weight-medium">Estado civil: </span> {persona.estado_civil.estado_civil}</div>
                                     <div><span className="has-text-weight-medium">Teléfono movil: </span> {persona.telefono_movil}</div>
                                     <div><span className="has-text-weight-medium">Correo: </span> {persona.correo_personal}</div>
@@ -197,7 +199,7 @@ let ListaExpediente = (props) => {
                                                     <span className="icon">
                                                         <FaRegEdit />
                                                     </span>
-                                                </button>,
+                                                </button>
                                                 <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
                                                     deleteHandler(row.id)
                                                 }}>
@@ -226,8 +228,8 @@ let ListaExpediente = (props) => {
             {
                 showModalForm && <ModalForm title={
                     objeto === null ?
-                        `Registrando información laboral de: ${persona.primer_nombre} ${persona.primer_apellido}`
-                        : `Editando información laboral de: ${persona.primer_nombre} ${persona.primer_apellido}`
+                        `Registrando información laboral de: ${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`
+                        : `Editando información laboral de: ${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`
                 }
                     objeto={objeto} identificacion={location.state.identificacion}
                     handler={objeto === null ? postHandler : putHandler}>

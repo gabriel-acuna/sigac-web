@@ -22,7 +22,7 @@ let ListadoGrados = (props) => {
             dispatch(
                 loadGrados()
             ).unwrap()
-                .then(()=>setLoading(false))
+                .then(() => setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -69,9 +69,10 @@ let ListadoGrados = (props) => {
                 id: index,
                 grado: row.grado,
                 opciones: [
-                    <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev=>{
+                    <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
                         setObjeto(row)
-                        setShowModalForm(true)}}>
+                        setShowModalForm(true)
+                    }}>
                         <span className="icon">
                             <FaRegEdit />
                         </span>
@@ -100,10 +101,10 @@ let ListadoGrados = (props) => {
             })
             .catch(
                 (err) => {
-                    if (err.message.includes("undefined (reading 'data')")) { 
-                    console.error("No hay conexión con el backend");
-                    setError({'message':'No es posible establecer conexión, intente mas tarde.'})
-                 } else if (err.message === "Rejected") {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
                         )
@@ -123,7 +124,7 @@ let ListadoGrados = (props) => {
             putGrados(
                 {
                     id: objeto.id,
-                    ... data
+                    ...data
                 }
             )
         ).unwrap()
@@ -132,10 +133,10 @@ let ListadoGrados = (props) => {
             })
             .catch(
                 (err) => {
-                    if (err.message.includes("undefined (reading 'data')")) { 
-                    console.error("No hay conexión con el backend");
-                    setError({'message':'No es posible establecer conexión, intente mas tarde.'})
-                 } else if (err.message === "Rejected") {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
                         )
@@ -161,7 +162,7 @@ let ListadoGrados = (props) => {
                         </span>
                     </button>
 
-                    <button className="button  is-success mt-4 is-outlined" onClick={ev=>setShowModalForm(true)}>
+                    <button className="button  is-success mt-4 is-outlined" onClick={ev => setShowModalForm(true)}>
                         <span className="icon">
                             <IoIosAddCircleOutline />
                         </span>
@@ -230,15 +231,15 @@ let ListadoGrados = (props) => {
                             dispatch(
                                 loadGrados()
                             )
-                            }}></button>
+                        }}></button>
                     </Alert>}
                     {error && <Alert type={'is-danger is-light'} content={error.message}>
                         <button className="delete" onClick={event => setError(null)}></button>
                     </Alert>}
-                    <button className="button is-small is-danger mx-3" onClick={ev =>{ 
+                    <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalForm(false)
                         setObjeto(null)
-                        }}>Cancelar</button>
+                    }}>Cancelar</button>
                 </ModalForm>
             }
         </>
