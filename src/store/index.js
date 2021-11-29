@@ -38,7 +38,13 @@ import campoAmplioReducer from './core/campoAmplio';
 import campoDetalladoReducer from './core/campoDetallado'
 import campoEspecificoReducer from './core/campoEspecifico'
 import iesNacionalesReducer from './core/ies-nacionales'
-import peridoAcademicoReducer from './dac/perido_academico';
+import peridoAcademicoReducer from './dac/perido_academico'
+import tipoEventoReducer from './cv/tipo_evento'
+import tipoContratoReducer from './dth/tipo_contrato'
+import tipoNombramientoReducer from './dth/tipo_nombramiento'
+import declaracionReducer from './dth/declaracion_patrimonial'
+import familiarPersonalReducer from './dth/familiar_personal'
+import estadoSumarioReducer from './dth/estado_sumario'
 
 import {
     persistStore,
@@ -72,11 +78,11 @@ const reducer = combineReducers({
     categoriasDocentesLOSEP: categoriasDocentesLOSEPReducer,
     estadosCiviles: estadosCivilesReducer,
     informacionPersonal: informacionPersonalReducer,
-    expediente:expedienteLaboralReducer,
+    expediente: expedienteLaboralReducer,
     formacionAcademica: formacionAcademicaReducer,
     capacitaciones: capacitacionReducer,
-    capacitacionesFacilitador:capacitacionfacilitadorReducer,
-    ponencias:ponenciasReducer,
+    capacitacionesFacilitador: capacitacionfacilitadorReducer,
+    ponencias: ponenciasReducer,
     experienciaLaboral: experienciaLaboralReducer,
     meritos: meritosReducer,
     idiomas: idiomasReducer,
@@ -84,13 +90,19 @@ const reducer = combineReducers({
     estructuraInstitucional: estructuraInstitucionalReducer,
     areasInstitucionales: areaIstitucionalReducer,
     financiamientos: financiamientoReducer,
-    tipoBecas:tipoBecaReducer,
+    tipoBecas: tipoBecaReducer,
     grados: gradoReducer,
     camposAmplios: campoAmplioReducer,
     camposDetallados: campoDetalladoReducer,
-    camposEspecificos:campoEspecificoReducer,
+    camposEspecificos: campoEspecificoReducer,
     ies: iesNacionalesReducer,
-    periodosAcademicos: peridoAcademicoReducer
+    periodosAcademicos: peridoAcademicoReducer,
+    tiposEventos: tipoEventoReducer,
+    tiposContratos: tipoContratoReducer,
+    tiposNombramientos: tipoNombramientoReducer,
+    declaraciones: declaracionReducer,
+    familiares: familiarPersonalReducer,
+    estadoSumario: estadoSumarioReducer
 
 
 

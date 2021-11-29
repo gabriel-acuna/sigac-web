@@ -6,9 +6,9 @@ import {
 import Axios from 'axios'
 import { API } from '../../services/api'
 
-export const loadExperienciaLaboral = createAsyncThunk(
-    'experiencia-laboral/load',
-    async (id_persona, { getState }) => {
+export const loadEventos = createAsyncThunk(
+    'eventos/load',
+    async ( id_persona, { getState }) => {
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -17,7 +17,7 @@ export const loadExperienciaLaboral = createAsyncThunk(
         }
 
         try {
-            let response = await Axios.get(`${API}/experiencia-laboral/persona/${id_persona}`,
+            let response = await Axios.get(`${API}/eventos`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -31,8 +31,8 @@ export const loadExperienciaLaboral = createAsyncThunk(
     }
 )
 
-export const loadExperiencia = createAsyncThunk(
-    'experiencia/load',
+export const loadEvento = createAsyncThunk(
+    'capacitacion/load',
     async (id, { getState }) => {
         let token;
         try {
@@ -42,7 +42,7 @@ export const loadExperiencia = createAsyncThunk(
         }
 
         try {
-            let response = await Axios.get(`${API}/experiencia-laboral/${id}`,
+            let response = await Axios.get(`${API}/eventos/${id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -56,9 +56,9 @@ export const loadExperiencia = createAsyncThunk(
     }
 )
 
-export const postExperienciaLaboral = createAsyncThunk(
-    'experiencia-laboral/post',
-    async (experiencia, { getState }) => {
+export const postEventos = createAsyncThunk(
+    'eventos/post',
+    async ( capacitacion, { getState }) => {
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -68,21 +68,7 @@ export const postExperienciaLaboral = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            
-            let fechaInicio = new Date(experiencia.inicio)
-            let fechaFin = (experiencia.fin !== null && experiencia.fin !== '') ? new Date(experiencia.fin) : ''
-            let data = {
-                id_persona: experiencia.id_persona,
-                empresa: experiencia.empresa.toUpperCase(),
-                unidad_administrativa: experiencia.unidadAdministrativa.toUpperCase(),
-                lugar: experiencia.lugar.toUpperCase(),
-                cargo: experiencia.cargo.toUpperCase(),
-                inicio: new Date(fechaInicio.setDate(fechaInicio.getDate() + 1)).toISOString().slice(0, 10),
-                motivo_ingreso: experiencia.motivoIngreso,
-                fin: fechaFin !== '' ? new Date(fechaFin.setDate(fechaFin.getDate() + 1)).toISOString().slice(0, 10) : null,
-                motivo_salida: experiencia?.motivoSalida
-            }
-            let response = await Axios.post(`${API}/experiencia-laboral`, data,
+            let response = await Axios.post(`${API}/eventos`, capacitacion,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -92,6 +78,7 @@ export const postExperienciaLaboral = createAsyncThunk(
 
         } catch (error) {
             let err;
+            console.log(err);
             if (error.response.data.detail[0].msg)
                 err = error.response.data.detail[0].msg
             if (error.response.data.type)
@@ -103,9 +90,9 @@ export const postExperienciaLaboral = createAsyncThunk(
 
 )
 
-export const putExperienciaLaboral = createAsyncThunk(
-    'experiencia-laboral/put',
-    async (experiencia, { getState }) => {
+export const putEventos = createAsyncThunk(
+    'eventos/put',
+    async (capacitacion, { getState }) => {
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -115,20 +102,7 @@ export const putExperienciaLaboral = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let fechaInicio = new Date(experiencia.inicio)
-            let fechaFin = (experiencia.fin !== null && experiencia.fin !== '') ? new Date(experiencia.fin) : ''
-            let data = {
-                id: experiencia.id,
-                empresa: experiencia.empresa.toUpperCase(),
-                unidad_administrativa: experiencia.unidadAdministrativa.toUpperCase(),
-                lugar: experiencia.lugar.toUpperCase(),
-                cargo: experiencia.cargo.toUpperCase(),
-                inicio: new Date(fechaInicio.setDate(fechaInicio.getDate() + 1)).toISOString().slice(0, 10),
-                motivo_ingreso: experiencia.motivoIngreso,
-                fin: fechaFin !== '' ? new Date(fechaFin.setDate(fechaFin.getDate() + 1)).toISOString().slice(0, 10) : null,
-                motivo_salida: experiencia?.motivoSalida
-            }
-            let response = await Axios.put(`${API}/experiencia-laboral/`, data,
+            let response = await Axios.put(`${API}/eventos/${capacitacion.id}`, capacitacion.capacitacion,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -148,8 +122,8 @@ export const putExperienciaLaboral = createAsyncThunk(
     }
 )
 
-export const deleteExperienciaLaboral = createAsyncThunk(
-    'experiencia-laboral/delete',
+export const deleteEventos = createAsyncThunk(
+    'eventos/delete',
     async (id, { getState }) => {
         let token;
         try {
@@ -160,7 +134,7 @@ export const deleteExperienciaLaboral = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.delete(`${API}/experiencia-laboral/${id}`,
+            let response = await Axios.delete(`${API}/eventos/${id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -175,11 +149,11 @@ export const deleteExperienciaLaboral = createAsyncThunk(
     }
 )
 
-let experienciaLaboralSlice = createSlice({
-    name: 'experienciaLaboral',
+let eventosSlice = createSlice({
+    name: 'eventos',
     initialState: {
         data: {
-            experiencias: []
+            eventos: []  
         },
         status: ''
 
@@ -188,16 +162,16 @@ let experienciaLaboralSlice = createSlice({
 
         clearData: (state) => {
             state.data = {
-                experiencias: []
+                eventos: []
             }
         }
 
     },
     extraReducers: {
-        [loadExperienciaLaboral.fulfilled]: (state, action) => {
+        [loadEventos.fulfilled]: (state, action) => {
             state.status = 'success'
             state.data = {
-                experiencias: action.payload
+                eventos: action.payload
             }
         }
 
@@ -206,5 +180,5 @@ let experienciaLaboralSlice = createSlice({
 }
 )
 
-export const { clearData } = experienciaLaboralSlice.actions;
-export default experienciaLaboralSlice.reducer;
+export const { clearData } = eventosSlice.actions;
+export default eventosSlice.reducer;
