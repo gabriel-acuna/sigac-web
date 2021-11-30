@@ -171,20 +171,11 @@ const CV = ({ email }) => {
             .then(resp => {
                 setRespConfirmRef(resp)
                 dispatch(
-                    loadPersonaEmail(email))
-                    .unwrap()
-                    .then(
-                        resp => {
-                            setPersona(resp)
+                    loadFormacionAcademica(persona.identificacion)
+                )
+            }
 
-                            dispatch(
-                                loadFormacionAcademica(persona.identificacion)
-                            )
-                        }
-
-                    )
-
-            }).catch(
+            ).catch(
                 (err) => console.error(err)
             )
     }
@@ -196,18 +187,8 @@ const CV = ({ email }) => {
             .then(resp => {
                 setRespConfirmRef(resp)
                 dispatch(
-                    loadPersonaEmail(email))
-                    .unwrap()
-                    .then(
-                        resp => {
-                            setPersona(resp)
-
-                            dispatch(
-                                loadReferencias(persona.identificacion)
-                            )
-                        }
-
-                    )
+                    loadReferencias(persona.identificacion)
+                )
 
             }).catch(
                 (err) => console.error(err)
@@ -221,21 +202,12 @@ const CV = ({ email }) => {
         ).unwrap()
             .then(resp => {
                 setRespConfirmRef(resp)
+
                 dispatch(
-                    loadPersonaEmail(email))
-                    .unwrap()
-                    .then(
-                        resp => {
-                            setPersona(resp)
-
-                            dispatch(
-                                loadCapacitaciones(persona.identificacion)
-                            )
-                        }
-
-                    )
-
-            }).catch(
+                    loadCapacitaciones(persona.identificacion)
+                )
+            }
+            ).catch(
                 (err) => console.error(err)
             )
     }
@@ -247,19 +219,7 @@ const CV = ({ email }) => {
         ).unwrap()
             .then(resp => {
                 setRespConfirmRef(resp)
-                dispatch(
-                    loadPersonaEmail(email))
-                    .unwrap()
-                    .then(
-                        resp => {
-                            setPersona(resp)
-
-                            dispatch(
-                                loadCapacitacionesFacilitador(persona.identificacion)
-                            )
-                        }
-
-                    )
+                dispatch(loadCapacitacionesFacilitador(persona.identificacion))
 
             }).catch(
                 (err) => console.error(err)
@@ -274,19 +234,7 @@ const CV = ({ email }) => {
         ).unwrap()
             .then(resp => {
                 setRespConfirmRef(resp)
-                dispatch(
-                    loadPersonaEmail(email))
-                    .unwrap()
-                    .then(
-                        resp => {
-                            setPersona(resp)
-
-                            dispatch(
-                                loadPonencias(persona.identificacion)
-                            )
-                        }
-
-                    )
+                dispatch(loadPonencias(persona.identificacion))
 
             }).catch(
                 (err) => console.error(err)
@@ -300,21 +248,13 @@ const CV = ({ email }) => {
         ).unwrap()
             .then(resp => {
                 setRespConfirmRef(resp)
+
                 dispatch(
-                    loadPersonaEmail(email))
-                    .unwrap()
-                    .then(
-                        resp => {
-                            setPersona(resp)
+                    loadExperienciaLaboral(persona.identificacion)
+                )
+            }
 
-                            dispatch(
-                                loadExperienciaLaboral(persona.identificacion)
-                            )
-                        }
-
-                    )
-
-            }).catch(
+            ).catch(
                 (err) => console.error(err)
             )
     }
@@ -326,19 +266,7 @@ const CV = ({ email }) => {
         ).unwrap()
             .then(resp => {
                 setRespConfirmRef(resp)
-                dispatch(
-                    loadPersonaEmail(email))
-                    .unwrap()
-                    .then(
-                        resp => {
-                            setPersona(resp)
-
-                            dispatch(
-                                loadMeritos(persona.identificacion)
-                            )
-                        }
-
-                    )
+                dispatch(loadMeritos(persona.identificacion))
 
             }).catch(
                 (err) => console.error(err)
@@ -353,20 +281,10 @@ const CV = ({ email }) => {
             .then(resp => {
                 setRespConfirmRef(resp)
                 dispatch(
-                    loadPersonaEmail(email))
-                    .unwrap()
-                    .then(
-                        resp => {
-                            setPersona(resp)
-
-                            dispatch(
-                                loadIdiomas(persona.identificacion)
-                            )
-                        }
-
-                    )
-
-            }).catch(
+                    loadIdiomas(persona.identificacion)
+                )
+            }
+            ).catch(
                 (err) => console.error(err)
             )
     }
@@ -502,13 +420,18 @@ const CV = ({ email }) => {
     }
 
     let postHandlerCap = (data) => {
+        console.log(data);
         dispatch(
 
             postCapacitaciones(
                 {
                     id_persona: persona.identificacion,
                     tipo_certificado: data.tipoCertificado,
-                    tipo_evento: data.tipoEvento.toUpperCase(),
+                    funcion_evento:  data?.funcionEvento ? data?.funcionEvento.toUpperCase(): null,
+                    certificado: data?.certificado ? data.certificado.toUpperCase():null,
+                    tipo_evento: data?.tipoEvento.value,
+                    pais: data.pais.value,
+                    nombre: data.nombre.toUpperCase(),
                     institucion_organizadora: data.institucionOrganizadora.toUpperCase(),
                     lugar: data.lugar.toUpperCase(),
                     horas: data.horas,
@@ -547,7 +470,11 @@ const CV = ({ email }) => {
 
 
                         tipo_certificado: data.tipoCertificado,
-                        tipo_evento: data.tipoEvento.toUpperCase(),
+                        funcion_evento:  data?.funcionEvento ? data?.funcionEvento.toUpperCase(): null,
+                        certificado: data?.certificado ? data.certificado.toUpperCase():null,
+                        tipo_evento: data?.tipoEvento.value,
+                        pais: data.pais.value,
+                        nombre: data.nombre.toUpperCase(),
                         institucion_organizadora: data.institucionOrganizadora.toUpperCase(),
                         lugar: data.lugar.toUpperCase(),
                         horas: data.horas,
@@ -1061,7 +988,7 @@ const CV = ({ email }) => {
                                                     capacitacionesState.map(
                                                         (capacitacion) => (
                                                             <tr key={capacitacion.id}>
-                                                                <td>{capacitacion.tipo_evento} - {capacitacion.institucion_organizadora}</td>
+                                                                <td>{capacitacion.tipo_evento.evento} - {capacitacion.institucion_organizadora}</td>
                                                                 <td>{capacitacion.horas}</td>
                                                                 <td>
                                                                     <button className="button is-small is-primary mx-2 is-outlined" key={`${capacitacion.id}0`} onClick={ev => {
@@ -1099,7 +1026,7 @@ const CV = ({ email }) => {
                     </div>
 
                     {/*Capacitaciones Facilitadores*/}
-                    <div className="column is-half">
+                    {/* <div className="column is-half">
                         <div className="card">
                             <header className="card-header" onClick={() => {
                                 setExpandirCapacitacionesFac(!expandirCapacitacionesFac)
@@ -1173,7 +1100,7 @@ const CV = ({ email }) => {
                                 </div>
                             }
                         </div>
-                    </div>
+                    </div> */}
 
                     {/*Ponencias */}
                     <div className="column is-half">

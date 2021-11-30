@@ -47,20 +47,24 @@ let CapacitacionModalForm = ({ title, handler, children, objeto, persona }) => {
             dispatch(loadPaises())
             dispatch(loadEventos())
             if (objeto !== null) {
+                setTypeCert(objeto.tipo_certificado)
                 reset({
-                    tipoEvento: objeto.tipo_evento,
+                    tipoEvento:{ label: objeto.tipo_evento.evento, value: objeto.tipo_evento.id },
+                    nombre: objeto.nombre,
                     institucionOrganizadora: objeto.institucion_organizadora,
+                    funcionEvento: objeto.funcion_evento,
+                    pais: { label: objeto.pais.pais, value: objeto.pais.id },
                     lugar: objeto.lugar,
                     horas: objeto.horas,
                     fechaInicio: objeto.inicio,
                     fechaFin: objeto.fin,
-                    tipoCertificado: objeto.tipo_certificado
+                    tipoCertificado: objeto.tipo_certificado,
+                    certificado: objeto.certificado
 
                 })
             }
         }, [objeto, reset]
     )
-    console.log(respModal);
     return (
         <>
             {<div className="modal is-active">
@@ -119,10 +123,11 @@ let CapacitacionModalForm = ({ title, handler, children, objeto, persona }) => {
                                         name="tipoCertificado"
                                         control={control}
                                         rules={{ required: true }}
+                                        defaultValue={objeto?.tipo_certificado}
                                         render={
                                             ({ field }) => (
                                                 <RadioGroup aria-label="tipo certificado" {...field} row
-                                                    onChange={ev => { setValue("tiipoCertificado",ev.currentTarget.value, { shouldValidate: true })
+                                                    onChange={ev => { setValue("tipoCertificado",ev.currentTarget.value, { shouldValidate: true })
                                                     setTypeCert(ev?.currentTarget.value) }}>
                                                     <FormControlLabel value="ASISTENCIA" label="ASISTENCIA" control={<Radio size="small" />}
                                                         sx={{
@@ -159,14 +164,14 @@ let CapacitacionModalForm = ({ title, handler, children, objeto, persona }) => {
                                         <label className="label is-uppercase is-small">Función:</label>
                                         {errors.funcionEvento && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la función que desempeñó!</span>}
 
-                                        <input type="text" className="input" {...register('funcionEvento', {required:true})} />
+                                        <input type="text" className="input is-uppercase" {...register('funcionEvento', {required:true})} />
                                     </div>
 
                                     <div className="column">
                                         <label className="label is-uppercase is-small">Certificado:</label>
-                                        {errors.funcionEvento && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la función que desempeñó!</span>}
+                                        {errors.certificado && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese una descroción del certificado!</span>}
 
-                                        <input type="text" className="input" {...register('funcionEvento')} />
+                                        <input type="text" className="input is-uppercase" {...register('certificado')} />
                                     </div>
                                     
                                 </div>
