@@ -1,7 +1,7 @@
 import { useEffect, useState, Fragment } from "react"
 import Funcionario from './funcionarios/contrato'
 import Profesor from './profesores/contrato'
-import { useForm } from 'react-hook-form'
+import { useForm, Control, Controller } from 'react-hook-form'
 import { options } from './options'
 import { loadTiposDocumentos } from '../../store/core/tiposDocumentos'
 import { loadRelacionesIES } from '../../store/core/relacionesIES'
@@ -16,10 +16,14 @@ import { loadTiposFuncionarios } from '../../store/core/tiposFuncionarios'
 import { loadTiposDocentesLOES } from '../../store/core/tiposDocentes'
 import { loadCategoriasDocentesLOSEP } from '../../store/core/categoriasDocentes'
 
+import { Radio, RadioGroup, FormControlLabel } from '@mui/material'
+import Select from 'react-select'
+import { IoIosAdd } from 'react-icons/io'
+
 let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
 
     const [tipoFuncionario, setTipoFuncionario] = useState('')
-    const { register, handleSubmit, getValues, reset, setValue, setError, clearErrors, formState: { errors } } = useForm()
+    const { register, handleSubmit, getValues, reset, setValue, setError, clearErrors, control, formState: { errors } } = useForm()
     const dispatch = useDispatch()
     let tiposDocumentosState = useSelector(state => state.tiposDocumentos.data.tiposDocumentos)
     let relacionesIESState = useSelector(state => state.relacionesIES.data.relacionesIES)
@@ -30,6 +34,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
     const [docType, setDocType] = useState(null)
     const [relType, setRelType] = useState(null)
     const [actReason, setActReason] = useState(null)
+    const [showModalTipoContrato, setShowModalTipoContrato] =useState(false)
 
 
     useEffect(
@@ -103,7 +108,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                     area: objeto.area.id,
                     sub_area: objeto.sub_area !== null ? objeto.sub_area.id : '',
                     motivo_accion: objeto.motivo_accion,
-                   
+
                     cargo: objeto.cargo,
                     horas_laborables_semanales: objeto.horas_laborables_semanales
                 })
@@ -143,21 +148,53 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                             <div className="column">
                                 <label className="label is-small is-uppercase">Tipo personal</label>
                                 {errors.tipo_personal && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Seleccione el tipo!</span>}
-                                <div className="select">
-                                    <select onChange={ev => {
-                                        setTipoFuncionario(ev.target.value)
-                                        setValue("tipo_personal", ev.target.value)
+
+                                <Controller
+                                    name="tipo_personal"
+                                    rules={{ required: true }}
+                                    defaultValue={objeto?.tipo_personal}
+                                    control={control}
+                                    render={
+                                        ({ field }) =>
+                                        (<RadioGroup
+                                            row
+                                            aria-label="tipo personal"
+
+                                            {...field}
+
+                                            onChange={
+                                                ev => {
+                                                    setTipoFuncionario(ev.target.value)
+                                                    setValue("tipo_personal", ev.target.value)
+                                                }
+                                            } >
+                                            <FormControlLabel
+                                                value="FUNCIONARIO"
+                                                control={<Radio size="small" />}
+                                                label="FUNCIONARIO"
+                                                sx={{
+                                                    '& .MuiFormControlLabel-label': {
+                                                        fontSize: 14,
+                                                        fontWeight: 500
+                                                    },
+                                                }}
+                                            />
+
+                                            <FormControlLabel
+                                                value="PROFESOR"
+                                                control={<Radio size="small" />}
+                                                label="PROFESOR"
+                                                sx={{
+                                                    '& .MuiFormControlLabel-label': {
+                                                        fontSize: 14,
+                                                        fontWeight: 500
+                                                    },
+                                                }}
+                                            />
+                                        </RadioGroup>)
                                     }
+                                />
 
-                                    } className="input is-small"
-
-                                        defaultValue={objeto?.tipo_personal}>
-                                        <option></option>
-                                        <option>FUNCIONARIO</option>
-                                        <option>PROFESOR</option>
-                                    </select>
-                                    <input type="hidden"   {...register("tipo_personal", { required: true })} />
-                                </div>
 
                             </div>
 
@@ -167,44 +204,95 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                     <label className="label is-small">TIPO DOCUMENTO</label>
                                     {errors.tipo_documento && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Seleccione el tipo de documento!</span>}
                                 </div>
-                                <div className="select">
-                                    <select  {...register("tipo_documento", { required: true })}
-                                        defaultValue={tiposDocumentosState && objeto?.tipo_documento.id}
-                                        className="input is-small" onChange={ev => setDocType(ev.target.options[ev.target.selectedIndex].text)} >
-                                        <option> </option>
-                                        {
-                                            tiposDocumentosState.map(
-                                                (row, index) => (
-                                                    <option value={row.id}> {row.tipo_documento}</option>
-                                                )
-                                            )
-                                        }
-                                    </select>
+                                <Controller
+                                    name="tipo_documento"
+                                    rules={{ required: true }}
+                                    defaultValue={objeto?.tipo_personal}
+                                    control={control}
+                                    render={
+                                        ({ field }) =>
+                                        (<RadioGroup
+                                            row
+                                            aria-label="tipo documento"
 
-                                </div>
+                                            {...field}
+
+                                            onChange={
+                                                ev => {
+
+                                                    setDocType(tiposDocumentosState.find(t => (t.id === ev.target.value)))
+                                                    setValue("tipo_documento", ev.target.value, { shouldValidate: true })
+                                                }
+                                            } >
+                                            {tiposDocumentosState.map(
+                                                (row, index) => (<FormControlLabel
+                                                    value={row.id}
+                                                    key={row.id}
+                                                    control={<Radio size="small" />}
+                                                    label={row.tipo_documento}
+                                                    sx={{
+                                                        '& .MuiFormControlLabel-label': {
+                                                            fontSize: 14,
+                                                            fontWeight: 500
+                                                        },
+                                                    }}
+                                                />))
+
+                                            }
+                                        </RadioGroup>)
+                                    }
+                                />
+
+
+
                             </div>
-                            <div className="column">
-                                <label className="label is-small">MOTIVO ACCIÓN</label> 
+                            {docType?.tipo_documento === 'ACCION PERSONAL' && <div className="column">
+                                <label className="label is-small">MOTIVO ACCIÓN</label>
                                 {errors.motivo_accion?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, seleccione el motivo de la acción de personal!</span>}
-                                <div className="select">
-                                    <select {...register("motivo_accion", { required: docType === 'ACCION PERSONAL' })} className="input is-small" onChange={ev => setActReason(ev.target.value)}>
-                                        <option></option>
-                                        {
-                                            docType === 'ACCION PERSONAL' && options.map((op) => (
-                                                <option value={op}>{op}</option>
-                                            ))
-                                        }
-                                    </select>
+                                <Controller
+                                    name="motivo_accion"
+                                    control={control}
+                                    rules={{ required: docType?.tipo_documento === 'ACCION PERSONAL' }}
+                                    render={
+                                        ({ ...field }) => (
+                                            <Select
+                                                placeholder="Seleccione"
+                                                onChange={
+                                                    (ev) => {
+                                                        setActReason(ev.label)
+                                                        setValue('tipo_documento', ev)
+                                                    }
+                                                }
+                                                options={
+                                                    options.map((op, index) => ({ value: op, label: op, key: `act-${index}` }))
+                                                }
+                                            />
+                                        )
+                                    }
+                                />
 
-
-                                </div>
                                 <div className="control">
                                     {errors.descripcion?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, el motivo de la acción de personal!</span>}
                                 </div>
-                                {actReason === 'OTRO' && <input type="text"{...register("descripcion", { required: true })}  className="input is-small" defaultValue={ objeto?.descripcion}/>}
-                            </div>
+                                {actReason === 'OTRO' && <input type="text"{...register("descripcion", { required: true })} className="input is-small" defaultValue={objeto?.descripcion} />}
+                            </div>}
 
-
+                            {docType?.tipo_documento === 'CONTRATO' && <div className="column">
+                                <label className="label is-small">TIPO CONTRATO 
+                                    <span className="has-text-success has-text-weight-bold" style={{ cursor: 'pointer' }} onClick={() => setShowModalTipoContrato(true)}><IoIosAdd /></span></label>
+                                <Controller
+                                    name="tipoContrato"
+                                    control={control}
+                                    rules={{ required: true }}
+                                    render={
+                                        ({ ...field }) => (
+                                            <Select
+                                                placeholder="Seleccione"
+                                            />
+                                        )
+                                    }
+                                />
+                            </div>}
 
                             <div className="column">
                                 <label className="label is-small">
