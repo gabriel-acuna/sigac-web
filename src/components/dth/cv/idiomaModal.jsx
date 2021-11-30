@@ -1,9 +1,10 @@
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { Fragment, useEffect } from 'react'
+import { RadioGroup, Radio, FormControlLabel } from '@mui/material'
 let IdiomaModalForm = ({ title, handler, children, objeto, persona }) => {
 
     const comprension = ['Excelente', 'Buena', 'Limitada', 'Ninguna']
-    const { register, reset, handleSubmit, formState: { errors } } = useForm()
+    const { register, reset, handleSubmit, formState: { errors }, control, setValue } = useForm()
 
     useEffect(
         () => {
@@ -33,7 +34,7 @@ let IdiomaModalForm = ({ title, handler, children, objeto, persona }) => {
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
                         <div className="columns">
                             <div className="column">
-                                <label className="label is-small">Idioma</label>
+                                <label className="label is-small is-uppercase">Idioma</label>
                                 {errors.idioma && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la función desempeñada en el nivel!</span>}
                                 <div className="control">
                                     <input type="text" className="input is-uppercase" {...register('idioma', { required: true })} />
@@ -44,7 +45,7 @@ let IdiomaModalForm = ({ title, handler, children, objeto, persona }) => {
 
 
                             <div className="column">
-                                <label className="label is-small">Lugar estudio</label>
+                                <label className="label is-small is-uppercase">Lugar estudio</label>
                                 {errors.lugarEstudio && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el lugar de estudio!</span>}
                                 <div className="control">
                                     <input type="text" className="input input is-uppercase" {...register('lugarEstudio', { required: true })} />
@@ -53,20 +54,43 @@ let IdiomaModalForm = ({ title, handler, children, objeto, persona }) => {
                             </div>
 
                             <div className="column">
-                                <label className="label is-small">Nivel de comprensión</label>
+                                <label className="label is-small is-uppercase">Nivel de comprensión</label>
                                 {errors.nivel && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el nivel de comprensión!</span>}
-                                <div className="select">
-                                    <select type="text" className="input input is-uppercase" {...register('nivel', { required: true })} >
-                                        <option> </option>
-                                        {
-                                            comprension.map(
-                                                (nivel) => (
-                                                    <option value={nivel} >{nivel} </option>
-                                                )
-                                            )
-                                        }
-                                    </select>
-                                </div>
+                                <Controller
+                                    name="nivel"
+                                    rules={{ required: true }}
+                                    control={control}
+                                    defaultValue={objeto?.nivel_comprension}
+                                    render={
+                                        ({ field }) => (
+                                            <RadioGroup aria-label="nivel de compresión" {...field}
+                                                onChange={
+                                                    ev => {
+                                                        setValue('nivel', ev.currentTarget.value ? ev.currentTarget.value : null)
+                                                    }
+                                                }
+                                            >
+                                                {
+                                                    comprension.map(
+                                                        (nivel, index) => (<FormControlLabel
+                                                            value={nivel}
+                                                            control={<Radio size="small" />}
+                                                            key={`.lvl${index}`}
+                                                            label={nivel}
+                                                            sx={{
+                                                                '& .MuiFormControlLabel-label': {
+                                                                    fontSize: 14,
+                                                                    fontWeight: 500
+                                                                },
+                                                            }}
+                                                        />))
+
+                                                }
+
+                                            </RadioGroup>
+                                        )
+                                    }
+                                />
 
                             </div>
 

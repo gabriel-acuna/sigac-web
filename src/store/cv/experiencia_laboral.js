@@ -59,6 +59,7 @@ export const loadExperiencia = createAsyncThunk(
 export const postExperienciaLaboral = createAsyncThunk(
     'experiencia-laboral/post',
     async (experiencia, { getState }) => {
+        console.log(experiencia);
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -80,7 +81,7 @@ export const postExperienciaLaboral = createAsyncThunk(
                 inicio: new Date(fechaInicio.setDate(fechaInicio.getDate() + 1)).toISOString().slice(0, 10),
                 motivo_ingreso: experiencia.motivoIngreso,
                 fin: fechaFin !== '' ? new Date(fechaFin.setDate(fechaFin.getDate() + 1)).toISOString().slice(0, 10) : null,
-                motivo_salida: experiencia?.motivoSalida
+                motivo_salida: experiencia?.motivoSalida ? experiencia.motivoSalida.toUpperCase(): null
             }
             let response = await Axios.post(`${API}/experiencia-laboral`, data,
                 {
@@ -126,7 +127,7 @@ export const putExperienciaLaboral = createAsyncThunk(
                 inicio: new Date(fechaInicio.setDate(fechaInicio.getDate() + 1)).toISOString().slice(0, 10),
                 motivo_ingreso: experiencia.motivoIngreso,
                 fin: fechaFin !== '' ? new Date(fechaFin.setDate(fechaFin.getDate() + 1)).toISOString().slice(0, 10) : null,
-                motivo_salida: experiencia?.motivoSalida
+                motivo_salida: experiencia?.motivoSalida ? experiencia.motivoSalida.toUpperCase(): null
             }
             let response = await Axios.put(`${API}/experiencia-laboral/`, data,
                 {

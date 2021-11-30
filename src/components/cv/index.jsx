@@ -512,7 +512,11 @@ const CV = ({ email }) => {
                 {
                     id_persona: persona.identificacion,
                     tipo_certificado: data.tipoCertificado,
-                    tipo_evento: data.tipoEvento.toUpperCase(),
+                    funcion_evento: data?.funcionEvento ? data?.funcionEvento.toUpperCase() : null,
+                    certificado: data?.certificado ? data.certificado.toUpperCase() : null,
+                    tipo_evento: data?.tipoEvento.value,
+                    pais: data.pais.value,
+                    nombre: data.nombre.toUpperCase(),
                     institucion_organizadora: data.institucionOrganizadora.toUpperCase(),
                     lugar: data.lugar.toUpperCase(),
                     horas: data.horas,
@@ -548,10 +552,12 @@ const CV = ({ email }) => {
                 {
                     id: objeto.id,
                     capacitacion: {
-
-
                         tipo_certificado: data.tipoCertificado,
-                        tipo_evento: data.tipoEvento.toUpperCase(),
+                        funcion_evento: data?.funcionEvento ? data?.funcionEvento.toUpperCase() : null,
+                        certificado: data?.certificado ? data.certificado.toUpperCase() : null,
+                        tipo_evento: data?.tipoEvento.value,
+                        pais: data.pais.value,
+                        nombre: data.nombre.toUpperCase(),
                         institucion_organizadora: data.institucionOrganizadora.toUpperCase(),
                         lugar: data.lugar.toUpperCase(),
                         horas: data.horas,
@@ -1048,7 +1054,7 @@ const CV = ({ email }) => {
                                                     capacitacionesState.map(
                                                         (capacitacion) => (
                                                             <tr key={capacitacion.id}>
-                                                                <td>{capacitacion.tipo_evento} - {capacitacion.institucion_organizadora}</td>
+                                                                <td>{capacitacion.tipo_evento.evento} - {capacitacion.institucion_organizadora}</td>
                                                                 <td>{capacitacion.horas}</td>
                                                                 <td>
                                                                     <button className="button is-small is-primary mx-2 is-outlined" key={`${capacitacion.id}0`} onClick={ev => {
@@ -1086,7 +1092,7 @@ const CV = ({ email }) => {
                     </div>
 
                     {/*Capacitaciones Facilitadores*/}
-                    <div className="column is-half">
+                    {/* <div className="column is-half">
                         <div className="card">
                             <header className="card-header" onClick={() => {
                                 setExpandirCapacitacionesFac(!expandirCapacitacionesFac)
@@ -1160,7 +1166,7 @@ const CV = ({ email }) => {
                                 </div>
                             }
                         </div>
-                    </div>
+                    </div> */}
 
                     {/*Ponencias */}
                     <div className="column is-half">
@@ -1478,7 +1484,7 @@ const CV = ({ email }) => {
 
                     {/*Referencias*/}
                     <div className="column is-half">
-                        <div className="card">
+                        <div className="card mb-6">
                             <header className="card-header" onClick={() => {
                                 setExpandirReferencia(!expandirReferencias)
                             }}>

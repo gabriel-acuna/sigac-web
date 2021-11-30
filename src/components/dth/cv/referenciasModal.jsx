@@ -1,11 +1,13 @@
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { Fragment, useEffect } from 'react'
+import { Radio, RadioGroup, FormControlLabel } from "@mui/material"
+
 
 
 let ReferenciaModalForm = ({ title, handler, children, objeto, persona }) => {
 
 
-    const { register, reset, handleSubmit, formState: { errors } } = useForm()
+    const { register, reset, handleSubmit, formState: { errors }, control, setValue } = useForm()
 
     useEffect(
         () => {
@@ -30,7 +32,7 @@ let ReferenciaModalForm = ({ title, handler, children, objeto, persona }) => {
             <div className="modal-background"></div>
             <div className="modal-card" style={{ width: '80%' }}>
                 <header className="modal-card-head">
-                <span className="has-text-weight-bold is-italic" >{title} {persona && `${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`}</span>
+                    <span className="has-text-weight-bold is-italic" >{title} {persona && `${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`}</span>
 
 
                 </header>
@@ -39,31 +41,60 @@ let ReferenciaModalForm = ({ title, handler, children, objeto, persona }) => {
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
                         <div className="columns">
                             <div className="column">
-                                <label className="label is-small">Tipo referencia</label>
+                                <label className="label is-small is-uppercase">Tipo referencia</label>
                                 {errors.tipoReferencia && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, seleccione el tipo de referencia!</span>}
-                                <div className="select">
-                                    <select type="text" {...register("tipoReferencia", { required: true })} className="input" >
-                                        <option>PERSONAL </option>
-                                        <option> LABORAL</option>
-                                    </select>
-                                   
+
+                                <Controller name="tipoReferencia" control={control} rules={{ required: true }}
+                                    render={({ field }) =>
+                                    (<RadioGroup aria-label="tipo referencia"
+                                        defaultValue={objeto?.referencia}
+                                        row
+                                        {...field} onChange={(ev) => {
+
+                                            setValue('tipoReferencia', ev.currentTarget.value ? ev.currentTarget.value : null, { shouldValidate: true })
+
+                                        }}>
+
+                                        <FormControlLabel
+                                            value="PERSONAL"
+                                            control={<Radio size="small" />}
+                                            label="PERSONAL"
+                                            sx={{
+                                                '& .MuiFormControlLabel-label': {
+                                                    fontSize: 14,
+                                                    fontWeight: 500
+                                                },
+                                            }}
+                                        />
+                                        <FormControlLabel
+                                            value="LABORAL"
+                                            control={<Radio size="small" />}
+                                            label="LABORAL"
+                                            sx={{
+                                                '& .MuiFormControlLabel-label': {
+                                                    fontSize: 14,
+                                                    fontWeight: 500
+                                                },
+                                            }}
+                                        />
 
 
-
-                                </div>
+                                    </RadioGroup>)
+                                    }
+                                />
                             </div>
 
                             <div className="column">
-                                <label className="label is-small">Apellidos</label>
+                                <label className="label is-small is-uppercase">Apellidos</label>
                                 {errors.apellidos && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese los apellidos!</span>}
                                 <div className="control">
                                     <input type="text" className="input is-uppercase" {...register('apellidos', { required: true })} />
                                 </div>
-                               
+
                             </div>
 
                             <div className="column">
-                                <label className="label is-small">Nombres</label>
+                                <label className="label is-small is-uppercase">Nombres</label>
                                 {errors.nombres && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese los nombres!</span>}
 
                                 <div className="control">
@@ -73,40 +104,40 @@ let ReferenciaModalForm = ({ title, handler, children, objeto, persona }) => {
                         </div>
                         <div className="columns">
                             <div className="column">
-                                <label className="label is-small">Dirección</label>
+                                <label className="label is-small is-uppercase">Dirección</label>
                                 {errors.direccion && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la dirección!</span>}
                                 <div className="control">
                                     <input type="text" className="input is-uppercase" {...register('direccion', { required: true })} />
                                 </div>
-                                
+
                             </div>
                         </div>
                         <div className="columns">
                             <div className="column">
-                                <label className="label is-small">Correo electrónico</label>
+                                <label className="label is-small is-uppercase">Correo electrónico</label>
                                 {errors.correo_electronico && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese los apellidos!</span>}
                                 <div className="control">
                                     <input type="email" className="input" {...register('correo_electronico', { required: true })} />
                                 </div>
-                                
+
                             </div>
 
                             <div className="column">
-                                <label className="label is-small">Teléfono domicilio</label>
+                                <label className="label is-small is-uppercase">Teléfono domicilio</label>
                                 {errors.telefono_domicilio && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el telefono domicilio!</span>}
                                 <div className="control">
                                     <input type="tel" className="input" {...register('telefono_domicilio')} />
                                 </div>
-                                
+
                             </div>
 
                             <div className="column">
-                                <label className="label is-small">Teléfono movil</label>
+                                <label className="label is-small is-uppercase">Teléfono movil</label>
                                 {errors.telefono_movil && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el telefono movil!</span>}
                                 <div className="control">
                                     <input type="tel" className="input" {...register('telefono_movil', { required: true })} />
                                 </div>
-                               
+
                             </div>
                         </div>
                         <div className="field is-grouped" style={{ display: 'flex', justifyContent: 'center' }}>

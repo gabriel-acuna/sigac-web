@@ -420,15 +420,14 @@ const CV = ({ email }) => {
     }
 
     let postHandlerCap = (data) => {
-        console.log(data);
         dispatch(
 
             postCapacitaciones(
                 {
                     id_persona: persona.identificacion,
                     tipo_certificado: data.tipoCertificado,
-                    funcion_evento:  data?.funcionEvento ? data?.funcionEvento.toUpperCase(): null,
-                    certificado: data?.certificado ? data.certificado.toUpperCase():null,
+                    funcion_evento: data?.funcionEvento ? data?.funcionEvento.toUpperCase() : null,
+                    certificado: data?.certificado ? data.certificado.toUpperCase() : null,
                     tipo_evento: data?.tipoEvento.value,
                     pais: data.pais.value,
                     nombre: data.nombre.toUpperCase(),
@@ -470,8 +469,8 @@ const CV = ({ email }) => {
 
 
                         tipo_certificado: data.tipoCertificado,
-                        funcion_evento:  data?.funcionEvento ? data?.funcionEvento.toUpperCase(): null,
-                        certificado: data?.certificado ? data.certificado.toUpperCase():null,
+                        funcion_evento: data?.funcionEvento ? data?.funcionEvento.toUpperCase() : null,
+                        certificado: data?.certificado ? data.certificado.toUpperCase() : null,
                         tipo_evento: data?.tipoEvento.value,
                         pais: data.pais.value,
                         nombre: data.nombre.toUpperCase(),
@@ -856,18 +855,26 @@ const CV = ({ email }) => {
                         </div>
 
                     </div>
-                    {respConfirmRef && respConfirmRef.type === 'warning' && <Alert type={'is-warning is-light'} content={respConfirmRef.content}>
-                        <button className="delete" onClick={event => setRespConfirmRef(null)}></button>
-                    </Alert>}
-                    {respConfirmRef && respConfirmRef.type === 'success' && <Alert type={'is-success is-light'} content={respConfirmRef.content}>
-                        <button className="delete" onClick={event => {
-                            setRespConfirmRef(null)
 
-
-
-                        }}></button>
-                    </Alert>}
                 </div>
+                {
+                    respConfirmRef && <div className="columns is-centered is-multiline">
+                        <div className="column is-4">
+                            {respConfirmRef && respConfirmRef.type === 'warning' && <Alert type={'is-warning is-light'} content={respConfirmRef.content}>
+                                <button className="delete" onClick={event => setRespConfirmRef(null)}></button>
+                            </Alert>}
+                            {respConfirmRef && respConfirmRef.type === 'success' && <Alert type={'is-success is-light'} content={respConfirmRef.content}>
+                                <button className="delete" onClick={event => {
+                                    setRespConfirmRef(null)
+
+
+
+                                }}></button>
+                            </Alert>}
+
+                        </div>
+                    </div>
+                }
                 <div className="columns is-centered is-multiline">
 
                     {/*Formación Profesional */}
@@ -1418,7 +1425,7 @@ const CV = ({ email }) => {
 
                     {/*Referencias*/}
                     <div className="column is-half">
-                        <div className="card">
+                        <div className="card mb-6">
                             <header className="card-header" onClick={() => {
                                 setExpandirReferencia(!expandirReferencias)
                             }}>

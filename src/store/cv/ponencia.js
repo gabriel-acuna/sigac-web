@@ -71,11 +71,11 @@ export const postPonencias = createAsyncThunk(
             let fechaEvento= new Date(ponencia.fecha)
             let data = {
                 id_persona: ponencia.id_persona,
-                tema: ponencia.tema,
-                institucion_organizadora: ponencia.institucionOrganizadora,
+                tema: ponencia.tema.toUpperCase(),
+                institucion_organizadora: ponencia.institucionOrganizadora.toUpperCase(),
                 caracter: ponencia.caracter,
-                evento: ponencia.evento,
-                lugar: ponencia.lugar,
+                evento: ponencia.evento.toUpperCase(),
+                lugar: ponencia.lugar.toUpperCase(),
                 fecha: new Date(fechaEvento.setDate(fechaEvento.getDate()+1)).toISOString().slice(0, 10)
             }
             let response = await Axios.post(`${API}/ponencias`, data,
@@ -115,11 +115,11 @@ export const putPonencias = createAsyncThunk(
             let fechaEvento= new Date(ponencia.fecha)
             let data = {
                 id: ponencia.id,
-                tema: ponencia.tema,
-                institucion_organizadora: ponencia.institucionOrganizadora,
+                tema: ponencia.tema.toUpperCase(),
+                institucion_organizadora: ponencia.institucionOrganizadora.toUpperCase(),
                 caracter: ponencia.caracter,
-                evento: ponencia.evento,
-                lugar: ponencia.lugar,
+                evento: ponencia.evento.toUpperCase(),
+                lugar: ponencia.lugar.toUpperCase(),
                 fecha: new Date(fechaEvento.setDate(fechaEvento.getDate()+1)).toISOString().slice(0, 10)
             }
             let response = await Axios.put(`${API}/ponencias/`, data,
