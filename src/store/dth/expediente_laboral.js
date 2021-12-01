@@ -58,7 +58,7 @@ export const loadItemDetalle = createAsyncThunk(
 
 export const postDetalleExpedienteProfesor = createAsyncThunk(
     'expediente-laboral-profesor/post',
-    async ( detalleExpediente, { getState }) => {
+    async (detalleExpediente, { getState }) => {
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -68,7 +68,28 @@ export const postDetalleExpedienteProfesor = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.post(`${API}/expediente-laboral/profesor/${detalleExpediente.id_persona}`, detalleExpediente.detalle,
+            let response = await Axios.post(`${API}/expediente-laboral/profesor/${detalleExpediente.id_persona}`, {
+                tipo_personal: detalleExpediente.detalle.tipoPersonal,
+                tipo_documento: detalleExpediente.detalle.tipoDcumento,
+                tipo_contrato: detalleExpediente.detalle?.tipoContrato ? detalleExpediente.detalle.tipoContrato : null,
+                tipo_nombramiento: detalleExpediente.detalle?.tipoNombramiento ? detalleExpediente.detalle.tipoNombramiento : null,
+                motivo_accion: detalleExpediente.detalle?.motivoAccion ? detalleExpediente.detalle.expediente : null,
+                descripcion: detalleExpediente.detalle?.descripcion ? detalleExpediente.expediente.descripcion : null,
+                numero_documento: detalleExpediente.detalle.numeroDocumento,
+                contrato_relacionado: detalleExpediente.detalle?.contartoRelacionado,
+                ingreso_concurso: detalleExpediente.detalle.ingresoConcurso,
+                relacion_ies: detalleExpediente.detalle.relacionIES,
+                escalafon_nombramiento: detalleExpediente.detalle.escalafonNombramiento.value,
+                categoria_contrato: detalleExpediente.detalle.categoriaContrato.value,
+                tiempo_dedicacion: detalleExpediente.detalle.tiempoDedicacion,
+                remuneracion_mensual: detalleExpediente.detalle.remuneracionMensual,
+                remuneracion_hora: detalleExpediente.detalle.remuneracionHora,
+                fecha_inicio: detalleExpediente.detalle.fechaInicio,
+                fecha_fin: detalleExpediente.detalle?.fechaFin ? detalleExpediente.detalle.fechaFin : null,
+                area: detalleExpediente.detalle.area,
+                sub_area: detalleExpediente.detalle.subAre
+
+            },
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -91,7 +112,7 @@ export const postDetalleExpedienteProfesor = createAsyncThunk(
 
 export const postDetalleExpedienteFuncionario = createAsyncThunk(
     'expediente-laboral-funcionario/post',
-    async ( detalleExpediente, { getState }) => {
+    async (detalleExpediente, { getState }) => {
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -101,7 +122,30 @@ export const postDetalleExpedienteFuncionario = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.post(`${API}/expediente-laboral/funcionario/${detalleExpediente.id_persona}`, detalleExpediente.detalle,
+            let response = await Axios.post(`${API}/expediente-laboral/funcionario/${detalleExpediente.id_persona}`,
+                {
+                    tipo_personal: detalleExpediente.detalle.tipoPersonal,
+                    tipo_documento: detalleExpediente.detalle.tipoDcumento,
+                    tipo_contrato: detalleExpediente.detalle?.tipoContrato ? detalleExpediente.detalle.tipoContrato : null,
+                    tipo_nombramiento: detalleExpediente.detalle?.tipoNombramiento ? detalleExpediente.detalle.tipoNombramiento : null,
+                    motivo_accion: detalleExpediente.detalle?.motivoAccion ? detalleExpediente.detalle.expediente : null,
+                    descripcion: detalleExpediente.detalle?.descripcion ? detalleExpediente.expediente.descripcion : null,
+                    numero_documento: detalleExpediente.detalle.numeroDocumento,
+                    relacion_ies: detalleExpediente.detalle.relacionIES,
+                    fecha_inicio: detalleExpediente.detalle.fechaInicio,
+                    fecha_fin: detalleExpediente.detalle?.fechaFin ? detalleExpediente.detalle.fechaFin : null,
+                    ingreso_concurso: detalleExpediente.detalle.ingresoConcurso,
+                    remuneracion_mensual: detalleExpediente.detalle.remuneracionMensual,
+                    tipo_funcionario: detalleExpediente.detalle.tipoFuncionario.value,
+                    cargo: detalleExpediente.detalle.cargo,
+                    tipo_docente: detalleExpediente.detalle.tipoDocente.value,
+                    categoria_docente: detalleExpediente.detalle.categoriaDocente.value,
+                    puesto_jerarquico: detalleExpediente.detalle.puestoJerarquico,
+                    horas_laborables_semanales: detalleExpediente.detalle.horasLaborablesSemanales,
+                    area: detalleExpediente.detalle.area,
+                    sub_area: detalleExpediente.detalle?.subAre
+
+                },
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -188,8 +232,8 @@ let expedienteLaboralSlice = createSlice({
             expediente: {
                 id: null,
                 id_persona: null,
-                fecha_ingreso:'',
-                detalle:[]
+                fecha_ingreso: '',
+                detalle: []
             }
         },
         status: ''
@@ -202,8 +246,8 @@ let expedienteLaboralSlice = createSlice({
                 expediente: {
                     id: null,
                     id_persona: null,
-                    fecha_ingreso:'',
-                    detalle:[]
+                    fecha_ingreso: '',
+                    detalle: []
                 }
             }
         }
@@ -213,11 +257,11 @@ let expedienteLaboralSlice = createSlice({
         [loadExpedienteLaboral.fulfilled]: (state, action) => {
             state.status = 'success'
             state.data.expediente = {
-                    id: action.payload.id,
-                    id_persona: action.payload.id_persona,
-                    fecha_ingreso: action.payload.fecha_ingreso,
-                    detalle:action.payload.detalle
-                }
+                id: action.payload.id,
+                id_persona: action.payload.id_persona,
+                fecha_ingreso: action.payload.fecha_ingreso,
+                detalle: action.payload.detalle
+            }
         }
 
 

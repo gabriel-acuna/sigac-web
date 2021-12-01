@@ -1,7 +1,7 @@
 import { useEffect, useState, Fragment } from "react"
 import Funcionario from './funcionarios/contrato'
 import Profesor from './profesores/contrato'
-import { useForm, Control, Controller } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { options } from './options'
 import { loadTiposDocumentos } from '../../store/core/tiposDocumentos'
 import { loadRelacionesIES } from '../../store/core/relacionesIES'
@@ -71,7 +71,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
 
     let postNombramiento = data => {
         dispatch(
-            postTiposNombramientos({ contrato: data.contrato.toUpperCase() })
+            postTiposNombramientos({ nombramiento: data.nombramiento.toUpperCase() })
         ).unwrap().then(
             (resp) => setRespModal(resp)
         ).catch(
@@ -113,6 +113,8 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
             dispatch(loadTiposFuncionarios())
             dispatch(loadTiposDocentesLOES())
             dispatch(loadCategoriasDocentesLOSEP())
+            dispatch(loadTiposContratos())
+            dispatch(loadTiposNombramientos())
 
 
         }, [dispatch]
@@ -130,28 +132,28 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
             setActReason(objeto.motivo_accion)
             if (objeto.tipo_personal === 'FUNCIONARIO') {
                 reset({
-                    tipo_personal: objeto.tipo_personal,
+                    tipoPersonal: objeto.tipo_personal,
 
-                    fecha_inicio: objeto.fecha_inicio,
-                    fecha_fin: objeto.fecha_fin,
-                    ingreso_concurso: objeto.ingreso_concurso,
-                    remuneracion_mensual: objeto.remuneracion_mensual,
-                    area: objeto.area.id,
-                    sub_area: objeto.sub_area !== null ? objeto.sub_area.id : '',
-                    motivo_accion: objeto.motivo_accion,
+                    fechaInicio: objeto.fecha_inicio,
+                    fechaFin: objeto.fecha_fin,
+                    ingresoConcurso: objeto.ingreso_concurso,
+                    remuneracionMensual: objeto.remuneracion_mensual,
+                    area: {value:objeto.area.id, label: objeto.area.nombre},
+                    sub_area: objeto.sub_area !== null ? { label: objeto.sub_area.nombre, value:objeto.sub_area.id} : null,
+                    motivoAccion: objeto.motivo_accion,
 
                     cargo: objeto.cargo,
-                    horas_laborables_semanales: objeto.horas_laborables_semanales
+                    horasLaborablesSemanales: objeto.horas_laborables_semanales
                 })
             } else if (objeto.tipo_personal === 'PROFESOR') {
                 reset({
-                    motivo_accion: objeto.motivo_accion,
-                    tipo_personal: objeto.tipo_personal,
-                    fecha_inicio: objeto.fecha_inicio,
-                    fecha_fin: objeto.fecha_fin,
-                    ingreso_concurso: objeto.ingreso_concurso,
-                    area: objeto.area.id,
-                    sub_area: objeto.sub_area !== null ? objeto.sub_area.id : '',
+                    motivoAccion: objeto.motivo_accion,
+                    tipoPersonal: objeto.tipo_personal,
+                    fechaInicio: objeto.fecha_inicio,
+                    fechaFin: objeto.fecha_fin,
+                    ingresoConcurso: objeto.ingreso_concurso,
+                    area: {value:objeto.area.id, label: objeto.area.nombre},
+                    subArea: objeto.sub_area !== null ? { label: objeto.sub_area.nombre, value:objeto.sub_area.id} : null,
                     remuneracion_mensual: objeto.remuneracion_mensual,
                     remuneracion_hora: objeto.remuneracion_hora,
                     contrato_relacionado: objeto.contrato_relacionado
@@ -179,10 +181,10 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                             <div className="columns">
                                 <div className="column">
                                     <label className="label is-small is-uppercase">Tipo personal</label>
-                                    {errors.tipo_personal && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Seleccione el tipo!</span>}
+                                    {errors.tipoPersonal && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Seleccione el tipo!</span>}
 
                                     <Controller
-                                        name="tipo_personal"
+                                        name="tipoPersonal"
                                         rules={{ required: true }}
                                         defaultValue={objeto?.tipo_personal}
                                         control={control}
@@ -197,7 +199,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                                 onChange={
                                                     ev => {
                                                         setTipoFuncionario(ev.target.value)
-                                                        setValue("tipo_personal", ev.target.value)
+                                                        setValue("tipoPersonal", ev.target.value)
                                                     }
                                                 } >
                                                 <FormControlLabel
@@ -234,10 +236,10 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                 <div className="column">
                                     <div className="control">
                                         <label className="label is-small">TIPO DOCUMENTO</label>
-                                        {errors.tipo_documento && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Seleccione el tipo de documento!</span>}
+                                        {errors.tipoDocumento && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Seleccione el tipo de documento!</span>}
                                     </div>
                                     <Controller
-                                        name="tipo_documento"
+                                        name="tipoDocumento"
                                         rules={{ required: true }}
                                         defaultValue={objeto?.tipo_personal}
                                         control={control}
@@ -253,7 +255,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                                     ev => {
 
                                                         setDocType(tiposDocumentosState.find(t => (t.id === ev.target.value)))
-                                                        setValue("tipo_documento", ev.target.value, { shouldValidate: true })
+                                                        setValue("tipoDocumento", ev.target.value, { shouldValidate: true })
                                                     }
                                                 } >
                                                 {tiposDocumentosState.map(
@@ -280,9 +282,9 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                 </div>
                                 {docType?.tipo_documento === 'ACCION PERSONAL' && <div className="column">
                                     <label className="label is-small">MOTIVO ACCIÓN</label>
-                                    {errors.motivo_accion?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, seleccione el motivo de la acción de personal!</span>}
+                                    {errors.motivoAccion?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, seleccione el motivo de la acción de personal!</span>}
                                     <Controller
-                                        name="motivo_accion"
+                                        name="motivoAccion"
                                         control={control}
                                         rules={{ required: docType?.tipo_documento === 'ACCION PERSONAL' }}
                                         render={
@@ -293,7 +295,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                                     onChange={
                                                         (ev) => {
                                                             setActReason(ev.label)
-                                                            setValue('tipo_documento', ev)
+                                                            setValue('motivoAccion', ev)
                                                         }
                                                     }
                                                     options={
@@ -324,9 +326,9 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                                     {...field}
                                                     placeholder="Seleccione"
                                                     isClearable
-                                                    options = {
+                                                    options={
                                                         tiposContratosState.map(
-                                                            con => ({label: con.contrato, value: con.id , key: con.id})
+                                                            con => ({ label: con.contrato, value: con.id, key: con.id })
                                                         )
                                                     }
                                                 />
@@ -337,28 +339,28 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                 {
                                     (actReason === 'NOMBRAMIENTO' || relType === 'NOMBRAMIENTO') && <div className="column">
                                         <lable className="label is-small">TIPO NOMBRAMIENTO
-                                            <span className="has-text-success has-text-weight-bold" style={{ cursor: 'pointer' }} onClick={() => setShowModalTipoContrato(true)}><IoIosAdd /></span>
+                                            <span className="has-text-success has-text-weight-bold" style={{ cursor: 'pointer' }} onClick={() => setShowModalTipoNombramiento(true)}><IoIosAdd /></span>
                                         </lable>
                                         {errors.tipoNombramiento?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, seleccione el tipo de contrato!</span>}
-                                    <Controller
-                                        name="tipoNombramiento"
-                                        control={control}
-                                        rules={{ required: true }}
-                                        render={
-                                            ({ field }) => (
-                                                <Select
-                                                    {...field}
-                                                    placeholder="Seleccione"
-                                                    options = {
-                                                        tiposNombramientosState.map(
-                                                            (nom) =>({label: nom.nombramiento, value: nom.id, key: nom.id})
-                                                        )
-                                                    }
-                                                    
-                                                />
-                                            )
-                                        }
-                                    />
+                                        <Controller
+                                            name="tipoNombramiento"
+                                            control={control}
+                                            rules={{ required: true }}
+                                            render={
+                                                ({ field }) => (
+                                                    <Select
+                                                        {...field}
+                                                        placeholder="Seleccione"
+                                                        options={
+                                                            tiposNombramientosState.map(
+                                                                (nom) => ({ label: nom.nombramiento, value: nom.id, key: nom.id })
+                                                            )
+                                                        }
+
+                                                    />
+                                                )
+                                            }
+                                        />
 
                                     </div>
                                 }
@@ -368,14 +370,14 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                     <label className="label is-small">
                                         FECHA INICIO
                                     </label>
-                                    {errors.fecha_inicio?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la fecha de inicio!</span>}
-                                    {errors.fecha_inicio?.type === 'max' && <span className="has-text-danger is-size-7 has-background-danger-light">¡La fecha de ingreso no puede ser mayor a la fecha actual!</span>}
-                                    <input type="date" {...register("fecha_inicio", { required: true })} className="input" onChange={
+                                    {errors.fechaInicio?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la fecha de inicio!</span>}
+                                    {errors.fechaInicio?.type === 'max' && <span className="has-text-danger is-size-7 has-background-danger-light">¡La fecha de ingreso no puede ser mayor a la fecha actual!</span>}
+                                    <input type="date" {...register("fechaInicio", { required: true })} className="input" onChange={
                                         ev => {
                                             let fecha = new Date(ev.target.value)
-                                            clearErrors('fecha_inicio')
+                                            clearErrors('fechaInicio')
                                             if (fecha > new Date()) {
-                                                setError('fecha_inicio', {
+                                                setError('fechaInicio', {
                                                     type: 'max'
                                                 })
                                             }
@@ -387,12 +389,12 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                     <label className="label is-small">
                                         FECHA FIN
                                     </label>
-                                    {errors.fecha_fin?.type === 'min' && <span className="has-text-danger is-size-7 has-background-danger-light"> {errors.fecha_fin.message} </span>}
-                                    <input type="date" {...register("fecha_fin")} className="input" onChange={
+                                    {errors.fechaFin?.type === 'min' && <span className="has-text-danger is-size-7 has-background-danger-light"> {errors.fechaFin.message} </span>}
+                                    <input type="date" {...register("fechaFin")} className="input" onChange={
                                         ev => {
-                                            clearErrors('fecha_fin')
-                                            if ((ev.target.value !== null || ev.target.value !== '') && new Date(ev.target.value) < new Date(getValues('fecha_inicio'))) {
-                                                setError("fecha_fin", {
+                                            clearErrors('fechaFin')
+                                            if ((ev.target.value !== null || ev.target.value !== '') && new Date(ev.target.value) < new Date(getValues('fechaInicio'))) {
+                                                setError("fechaFin", {
                                                     type: 'min',
                                                     message: 'La fecha de fin debe ser mayor a la feha de inicio'
                                                 })
@@ -405,17 +407,17 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                 <div className="column">
                                     <div className="control">
                                         <label className="label is-small">INGRESO POR CONCURSO</label>
-                                        {errors.ingreso_concurso && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Seleccione si el ingreso fue por concurso!</span>}
+                                        {errors.ingresoConcurso && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Seleccione si el ingreso fue por concurso!</span>}
                                     </div>
                                     <Controller
-                                        name="ingreso_concurso"
+                                        name="ingresoConcurso"
                                         control={control}
                                         rules={{ required: true }}
                                         defaultValue={objeto?.ingreso_concurso}
                                         render={
                                             ({ field }) =>
                                             (<RadioGroup aria-label="ingreso_concurso" row {...field} onChange={(ev) => {
-                                                setValue('ingreso_concurso', ev.currentTarget.value ? ev.currentTarget.value : null, { shouldValidate: true })
+                                                setValue('ingresoConcurso', ev.currentTarget.value ? ev.currentTarget.value : null, { shouldValidate: true })
 
                                             }}>
 
@@ -451,37 +453,21 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
 
                                 <div className="column">
                                     <label className="label is-small">RELACION IES</label>
-                                    {errors.relacion_ies && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Seleccione si la relación!</span>}
-                                    {/* <div className="select">
-                                    <select {...register("relacion_ies", { required: true })} className="input" onChange={
-                                        ev => {
-                                            setRelType(ev.target.options[ev.target.selectedIndex].text)
-                                        }
-                                    }
-                                        defaultValue={relacionesIESState && objeto?.relacion_ies.id}>
-                                        <option></option>
-                                        {relacionesIESState.map(
-                                            (row, index) => (
-                                                <option value={row.id}> {row.relacion}</option>
-                                            )
-                                        )
-                                        }
-
-                                    </select> 
-                                </div>
-                                */}
+                                    {errors.relacionIES && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Seleccione si la relación!</span>}
+                    
 
                                     <Controller
-                                        name="relacion_ies"
+                                        name="relacionIES"
                                         control={control}
                                         rules={{ required: true }}
-                                        defaultValue={objeto?.ingreso_concurso}
+                                        defaultValue={objeto?.relacion_ies}
                                         render={
                                             ({ field }) =>
                                             (<RadioGroup aria-label="relacion_ies" row {...field} onChange={(ev) => {
                                                 let relacion = relacionesIESState.find(r => r.id === ev.target.value)
                                                 setRelType(relacion?.relacion)
-                                                setValue('relacion_ies', ev.target.value ? ev.target.value : null, { shouldValidate: true })
+                                                setValue('escalafonNombramiento', null)
+                                                setValue('relacionIESes', ev.target.value ? ev.target.value : null, { shouldValidate: true })
 
                                             }}>
 
@@ -505,9 +491,9 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                 </div>
                                 <div className="column">
                                     <label className="label is-small">NUMERO DOCUMENTO</label>
-                                    {errors.numero_documento && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Ingrese el número de documento!</span>}
+                                    {errors.numeroDocumento && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Ingrese el número de documento!</span>}
                                     <div className="control">
-                                        <input  {...register("numero_documento", { required: true })} className="input" defaultValue={
+                                        <input  {...register("numeroDocumento", { required: true })} className="input" defaultValue={
                                             objeto?.numero_documento
                                         } />
 
@@ -518,27 +504,27 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                             </div>
 
                             {
-                                tipoFuncionario === 'FUNCIONARIO' && <Funcionario register={register} errors={errors} objeto={objeto} conrtol={control} />
+                                tipoFuncionario === 'FUNCIONARIO' && <Funcionario register={register} errors={errors} objeto={objeto} control={control} setValue={setValue} />
                             }
                             {
-                                tipoFuncionario === 'PROFESOR' && <Profesor register={register} errors={errors} objeto={objeto} relacion={relType} conrtol={control} />
+                                tipoFuncionario === 'PROFESOR' && <Profesor register={register} errors={errors} objeto={objeto} relacion={relType} control={control} setValue={setValue} />
                             }
                             <div className="columns">
                                 <div className="column">
                                     <label className="label is-small">REMUNERACION MENSUAL</label>
-                                    {errors.remuneracion_mensual && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Seleccione si la remuneración mensual!</span>}
+                                    {errors.remuneracionMensual && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Seleccione si la remuneración mensual!</span>}
                                     <div className="control">
-                                        <input {...register("remuneracion_mensual", { required: true })} className="input" />
+                                        <input {...register("remuneracionMensual", { required: true })} className="input" />
 
 
                                     </div>
                                 </div>
                                 <div className="column">
-                                    <div className="control">
-                                        <label className="label is-small">AREA</label>
-                                        {errors.area && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Por favor seleccione el area institucional!</span>}
 
-                                    </div>
+                                    <label className="label is-small">AREA</label>
+                                    {errors.area && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Por favor seleccione el area institucional!</span>}
+
+
 
                                     <Controller
                                         name="area"
@@ -547,6 +533,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                         render={
                                             ({ field }) => (
                                                 <Select
+                                                    menuPlacement='auto'
                                                     aria-label="area institucional"
                                                     placeholder="Seleccione"
                                                     isClearable
@@ -564,16 +551,17 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                 </div>
 
                                 <div className="column">
-                                    <div className="control">
-                                        <label className="label is-small">SUB AREA</label>
-                                    </div>
+
+                                    <label className="label is-small">SUB AREA</label>
+
                                     <Controller
-                                        name="area"
+                                        name="subArea"
                                         control={control}
                                         rules={{ valueAsNumber: true }}
                                         render={
                                             ({ field }) => (
                                                 <Select
+                                                    menuPlacement='auto'
                                                     aria-label="area institucional"
                                                     placeholder="Seleccione"
                                                     isClearable

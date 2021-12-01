@@ -1,16 +1,63 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
+import { Controller } from 'react-hook-form'
+import Select from 'react-select'
+import { FormControlLabel, Radio, RadioGroup} from '@mui/material'
 
-let ContratoFuncionario = ({ objeto, register, errors }) => {
+let ContratoFuncionario = ({ objeto, register, errors, control, setValue }) => {
 
 
     let tiposFuncionariosState = useSelector(state => state.tiposFuncionarios.data.tiposFuncionarios)
     let tiposDocentesState = useSelector(state => state.tiposDocentesLOES.data.tiposDocentes)
     let categoriasDocentesState = useSelector(state => state.categoriasDocentesLOSEP.data.categoriasDocentes)
-    
-    const [funcType, setFuncType] = useState(null)
-  
-    
+
+    const [categories, setCategories] = useState([])
+    const [types, setTypes] = useState([])
+
+    let filtrarCategorias = (funcionario) => {
+        let options = []
+
+        if (funcionario === 'DOCENTE LOES') {
+            categoriasDocentesState.forEach(
+                cat => {
+                    if (cat.categoria_docente !== 'NO APLICA') {
+                        options.push(cat)
+                    }
+                }
+            )
+        } else if (funcionario !== 'DOCENTE LOES' && funcionario !== '') {
+            options.push(categoriasDocentesState.find(cat => cat.categoria_docente === 'NO APLICA'))
+        }
+
+
+        setCategories(options)
+
+
+    }
+
+    let filtrarTipos = (funcionario) => {
+        console.log(funcionario);
+        let options = []
+
+        if (funcionario === 'DOCENTE LOES') {
+            tiposDocentesState.forEach(
+                tipo => {
+                    if (tipo.tipo_docente !== 'NO APLICA') {
+                        options.push(tipo)
+                    }
+                }
+            )
+        } else if (funcionario !== 'DOCENTE LOES' && funcionario !== '' && funcionario !== undefined) {
+            options.push(tiposDocentesState.find(tipo => tipo.tipo_docente === 'NO APLICA'))
+        }
+
+
+        setTypes(options)
+
+
+    }
+
+
     return (
 
 
@@ -19,20 +66,36 @@ let ContratoFuncionario = ({ objeto, register, errors }) => {
             <div className="columns">
                 <div className="column">
                     <label className="label is-small">TIPO FUNCIONARIO</label>
-                    <div className="select">
-                        <select {...register("tipo_funcionario", { required: true })} className="input is-small" onChange={ev => setFuncType(ev.target.options[ev.target.selectedIndex].text)}>
-                            <option> </option>
-                            {
-                                tiposFuncionariosState.map(
-                                    (row) => (<option key={row.id} value={row.id}> {row.tipo} </option>)
-                                )
-                            }
-                        </select>
+                    {errors.tipoFuncionario && <span className="has-text-danger is-size-7">¡Por favor, Seleccione el tipo de funcionario!</span>}
 
+                    <Controller
+                        name="tipoFuncionario"
+                        rules={{ required: true }}
+                        control={control}
+                        render={
+                            ({ field }) => (
+                                <Select
+                                    placeholder="Seleccione"
+                                    {...field}
+                                    isClearable
+                                    onChange={
+                                        value => {
+                                            filtrarCategorias(value?.label)
+                                            filtrarTipos(value?.label)
+                                            setValue('tipoFuncionario', value)
+                                        }
+                                    }
+                                    options={
+                                        tiposFuncionariosState.map(
+                                            row => ({ label: row.tipo, value: row.id, key: row.id })
+                                        )
+                                    }
 
+                                />
+                            )
+                        }
+                    />
 
-                    </div>
-                    {errors.tipo_funcionario && <span className="has-text-danger is-size-7">¡Por favor, Seleccione el tipo de funcionario!</span>}
                 </div>
 
 
@@ -40,79 +103,120 @@ let ContratoFuncionario = ({ objeto, register, errors }) => {
                     <label htmlFor="" className="label is-small">
                         CARGO
                     </label>
-                    <div className="control"><input type="text" {...register("cargo", { required: true })} className="input is-small" />
+                    <div className="control"><input type="text" {...register("cargo", { required: true })} className="input" />
 
                     </div>
                     {errors.cargo && <span className="has-text-danger is-size-7">¡Por favor, Ingrese el cargo del funcionario!</span>}
                 </div>
                 <div className="column">
                     <label className="label is-small">TIPO DECENTE LOES</label>
-                    <div className="select">
-                        <select {...register("tipo_docente", { required: true })} className="input is-small is-uppercase">
-                            <option> </option>
-                            {
-                                funcType === 'DOCENTE LOES' ? tiposDocentesState.map(
-                                    (row) => (row.tipo_docente !== 'NO APLICA' && <option key={row.id} value={row.id}> {row.tipo_docente} </option>)
-                                ) :funcType !== null &&  funcType !== '' && tiposDocentesState.map(
-                                    (row) => (row.tipo_docente === 'NO APLICA' && <option key={row.id} value={row.id}> {row.tipo_docente} </option>)
-                                )
-                            }
-                        </select>
-
-
-
-                    </div>
-                    {errors.tipo_docente && <span className="has-text-danger is-size-7">¡Por favor, Seleccione el tipo de funcionario!</span>}
+                    {errors.tipoDocente && <span className="has-text-danger is-size-7">¡Por favor, Seleccione el tipo de funcionario!</span>}
+                    <Controller
+                        name="tipoDocente"
+                        control={control}
+                        rules={{ required: true }}
+                        render={
+                            ({ field }) => (
+                                <Select
+                                    isClearable
+                                    placeholder="Seleccione"
+                                    {...field}
+                                    options={
+                                        types.map(
+                                            t => ({ label: t.tipo_docente, value: t.id, key: t.id })
+                                        )
+                                    }
+                                />
+                            )
+                        }
+                    />
                 </div>
             </div>
             <div className="columns">
 
                 <div className="column">
                     <label className="label is-small">CATEGORIA DOCENTE</label>
-                    <div className="select">
-                        <select {...register("categoria_docente", { required: true })} className="input is-small">
-                            <option></option>
-                            {
-                                funcType === 'DOCENTE LOES' ? categoriasDocentesState.map(
-                                    (row) => (row.categoria_docente !== 'NO APLICA' && <option key={row.id} value={row.id}> {row.categoria_docente} </option>)
-                                ) : funcType !== null && funcType !== '' && categoriasDocentesState.map(
-                                    row => (row.categoria_docente === 'NO APLICA' && <option key={row.id} value={row.id} > {row.categoria_docente} </option>)
-                                )
-                            }
-                        </select>
+                    {errors.categoriaDocente && <span className="has-text-danger is-size-7">¡Por favor, Seleccione la categoria de docente!</span>}
 
+                    <Controller
+                        name="categoriaDocente"
+                        control={control}
+                        rules={{ required: true }}
+                        render={
+                            ({ field }) => (
+                                <Select
+                                    isClearable
+                                    placeholder="Seleccione"
+                                    {...field}
+                                    options={
+                                        categories.map(
+                                            cat => ({ label: cat.categoria_docente, value: cat.id, key: cat.id })
+                                        )
+                                    }
+                                />
+                            )
+                        }
+                    />
 
-
-                    </div>
-                    {errors.categoria_docente && <span className="has-text-danger is-size-7">¡Por favor, Seleccione la categoria de docente!</span>}
                 </div>
 
 
 
                 <div className="column">
                     <label className="label is-small">PUESTO JERARQUICO SUPERIOR</label>
-                    <div className="select">
-                        <select {...register("puesto_jerarquico", { required: true })} className="input is-small">
-                            <option></option>
-                            <option value="SI">SI</option>
-                            <option value="NO">NO</option>
+                    {errors.puestoJerarquico && <span className="has-text-danger is-size-7">¡Por favor, Seleccione una opción!</span>}
+                    <Controller
+                        name="puestoJererquico"
+                        control={control}
+                        rules={{ required: true }}
+                        render={
+                            ({field}) =>(
+                                <RadioGroup 
+                                    aria-label="puesto jerarquico"
+                                    row
+                                    {...field}
+                                    onChange={
+                                        ev=>setValue('puestoJeracquico', ev.target.value)
+                                    }
+                                    >
+                                         <FormControlLabel
+                                                    value="SI"
+                                                    control={<Radio size="small" />}
+                                                    label="SI"
+                                                    sx={{
+                                                        '& .MuiFormControlLabel-label': {
+                                                            fontSize: 14,
+                                                            fontWeight: 500
+                                                        },
+                                                    }}
+                                                />
+                                                <FormControlLabel
+                                                    value="NO"
+                                                    control={<Radio size="small" />}
+                                                    label="NO"
+                                                    sx={{
+                                                        '& .MuiFormControlLabel-label': {
+                                                            fontSize: 14,
+                                                            fontWeight: 500
+                                                        },
+                                                    }}
+                                                />
 
-                        </select>
+                                </RadioGroup>
+                            )
+                        }
+                    />
 
-
-
-                    </div>
-                    {errors.puesto_jerarquico && <span className="has-text-danger is-size-7">¡Por favor, Seleccione una opción!</span>}
                 </div>
                 <div className="column">
                     <label htmlFor="" className="label is-small">
                         HORAS LABORABLES SEMANA
                     </label>
                     <div className="control">
-                        <input type="text" {...register("horas_laborables_semanales", { required: true })} className="input is-small" />
+                        <input type="text" {...register("horasLaborablesSemanales", { required: true })} className="input" />
 
                     </div>
-                    {errors.horas_laborables_semanales && <span className="has-text-danger is-size-7">¡Por favor, Ingrese las horas laborables por semana!</span>}
+                    {errors.horasLaborablesSemanales && <span className="has-text-danger is-size-7">¡Por favor, Ingrese las horas laborables por semana!</span>}
                 </div>
             </div>
 
