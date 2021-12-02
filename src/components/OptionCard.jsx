@@ -23,8 +23,8 @@ let OptionCard = ({ title, columns, rows, children }) => {
                                 <tr>
                                     {
                                         columns.map(
-                                            (col) => (
-                                                <th>{col}</th>
+                                            (col,index) => (
+                                                <th key={`0${title}${index}`}>{col}</th>
                                             )
                                         )
                                     }

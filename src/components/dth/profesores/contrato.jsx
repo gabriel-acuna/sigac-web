@@ -157,7 +157,7 @@ let ContratoProfesor = ({ objeto, register, errors, relacion, control, setValue 
                                 <RadioGroup aria-label="tiempo dedicación"
                                     {...field}
                                     onChange={
-                                        ev => setValue('tiempoDedicacion', ev.target.value)
+                                        ev => setValue('nivel', ev.target.value)
                                     }
                                 >
                                     {
@@ -231,7 +231,7 @@ let ContratoProfesor = ({ objeto, register, errors, relacion, control, setValue 
                     </label>
                     {errors.remuneracionHora && <span>¡Por favor, Ingrese la remuneración por hora!</span>}
 
-                    <input type="text" {...register("remuneracionHora")} className="input" />
+                    <input type="number" defaultValue="0.00"  min="0" {...register("remuneracionHora")} className="input" />
 
 
                 </div>

@@ -50,7 +50,7 @@ let ListaExpediente = (props) => {
 
     let postHandler = (data) => {
         let detalle = { id_persona: location.state.identificacion, detalle: data }
-        if (data.tipo_personal === 'PROFESOR') {
+        if (data.tipoPersonal === 'PROFESOR') {
             dispatch(
                 postDetalleExpedienteProfesor(detalle)
             ).unwrap()
@@ -71,7 +71,7 @@ let ListaExpediente = (props) => {
                         else { setError(err) }
                     }
                 )
-        } else if (data.tipo_personal === 'FUNCIONARIO') {
+        } else if (data.tipoPersonal === 'FUNCIONARIO') {
             dispatch(
                 postDetalleExpedienteFuncionario(detalle))
                 .unwrap()
@@ -188,11 +188,11 @@ let ListaExpediente = (props) => {
 
                                     (row, index) => 
                                         (<tr key={row.id}>
-                                            <td>{row.numero_documento}</td>
-                                            <td>{row.fecha_inicio}</td>
-                                            <td>{row.fecha_fin}</td>
-                                            <td>
-                                                <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
+                                            <td key={`0${row.id}0`}>{row.numero_documento}</td>
+                                            <td key={`0${row.id}1`}>{row.fecha_inicio}</td>
+                                            <td key={`0${row.id}2`}>{row.fecha_fin}</td>
+                                            <td key={`0${row.id}3`}>
+                                                <button className="button is-small is-primary mx-2 is-outlined"   onClick={ev => {
                                                     setObjeto(row)
                                                     setShowModalForm(true)
                                                 }}>

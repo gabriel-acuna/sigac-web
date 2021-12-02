@@ -77,6 +77,7 @@ let ContratoFuncionario = ({ objeto, register, errors, control, setValue }) => {
                                 <Select
                                     placeholder="Seleccione"
                                     {...field}
+                                    defaultValue ={ objeto?.tipo_funcionario ? {label:objeto.tipo_funcionario.tipo, id: objeto.tipo_funcionario.id}: null}
                                     isClearable
                                     onChange={
                                         value => {
@@ -103,18 +104,20 @@ let ContratoFuncionario = ({ objeto, register, errors, control, setValue }) => {
                     <label htmlFor="" className="label is-small">
                         CARGO
                     </label>
+                    {errors.cargo && <span className="has-text-danger is-size-7">¡Por favor, Ingrese el cargo del funcionario!</span>}
                     <div className="control"><input type="text" {...register("cargo", { required: true })} className="input" />
 
                     </div>
-                    {errors.cargo && <span className="has-text-danger is-size-7">¡Por favor, Ingrese el cargo del funcionario!</span>}
+                    
                 </div>
                 <div className="column">
                     <label className="label is-small">TIPO DECENTE LOES</label>
-                    {errors.tipoDocente && <span className="has-text-danger is-size-7">¡Por favor, Seleccione el tipo de funcionario!</span>}
+                    {errors.tipoDocente && <span className="has-text-danger is-size-7">¡Por favor, Seleccione el tipo de docente!</span>}
                     <Controller
                         name="tipoDocente"
                         control={control}
                         rules={{ required: true }}
+                        defaultValue ={ objeto?.tipo_docente ? {label:objeto.tipo_docente.tipo_docente, id: objeto.tipo_docente.id}: null}
                         render={
                             ({ field }) => (
                                 <Select
@@ -142,6 +145,7 @@ let ContratoFuncionario = ({ objeto, register, errors, control, setValue }) => {
                         name="categoriaDocente"
                         control={control}
                         rules={{ required: true }}
+                        defaultValue ={ objeto?.categoria_docente ? {label:objeto.categoria_docente.categoria_docente, id: objeto.categoria_docente.id}: null}
                         render={
                             ({ field }) => (
                                 <Select
@@ -166,7 +170,7 @@ let ContratoFuncionario = ({ objeto, register, errors, control, setValue }) => {
                     <label className="label is-small">PUESTO JERARQUICO SUPERIOR</label>
                     {errors.puestoJerarquico && <span className="has-text-danger is-size-7">¡Por favor, Seleccione una opción!</span>}
                     <Controller
-                        name="puestoJererquico"
+                        name="puestoJerarquico"
                         control={control}
                         rules={{ required: true }}
                         render={
@@ -175,8 +179,9 @@ let ContratoFuncionario = ({ objeto, register, errors, control, setValue }) => {
                                     aria-label="puesto jerarquico"
                                     row
                                     {...field}
+                                    defaultValue={objeto?.puesto_jerarquico}
                                     onChange={
-                                        ev=>setValue('puestoJeracquico', ev.target.value)
+                                        ev=>setValue('puestoJerarquico', ev.target.value)
                                     }
                                     >
                                          <FormControlLabel
@@ -212,11 +217,12 @@ let ContratoFuncionario = ({ objeto, register, errors, control, setValue }) => {
                     <label htmlFor="" className="label is-small">
                         HORAS LABORABLES SEMANA
                     </label>
+                    {errors.horasLaborablesSemanales && <span className="has-text-danger is-size-7">¡Por favor, Ingrese las horas laborables por semana!</span>}
                     <div className="control">
                         <input type="text" {...register("horasLaborablesSemanales", { required: true })} className="input" />
 
                     </div>
-                    {errors.horasLaborablesSemanales && <span className="has-text-danger is-size-7">¡Por favor, Ingrese las horas laborables por semana!</span>}
+                    
                 </div>
             </div>
 

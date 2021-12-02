@@ -15,7 +15,7 @@ import { loadCategoriasContratoProfesores } from '../../store/core/categoriasCon
 import { loadTiposFuncionarios } from '../../store/core/tiposFuncionarios'
 import { loadTiposDocentesLOES } from '../../store/core/tiposDocentes'
 import { loadCategoriasDocentesLOSEP } from '../../store/core/categoriasDocentes'
-import { postTiposContratos, loadTipoContrato, loadTiposContratos } from '../../store/dth/tipo_contrato'
+import { postTiposContratos, loadTiposContratos } from '../../store/dth/tipo_contrato'
 import { postTiposNombramientos, loadTiposNombramientos } from '../../store/dth/tipo_nombramiento'
 import NombramientoModalFrom from './modalTipoNombramiento'
 import TipoContratoModal from "./modalTipoContrato"
@@ -128,25 +128,30 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
 
         if (objeto !== null) {
             setTipoFuncionario(objeto.tipo_personal)
-            setDocType(objeto.tipo_documento.tipo_documento)
+            setDocType(objeto.tipo_documento)
             setActReason(objeto.motivo_accion)
+            setRelType(objeto.relacion_ies.relacion)
             if (objeto.tipo_personal === 'FUNCIONARIO') {
                 reset({
                     tipoPersonal: objeto.tipo_personal,
-
+                    tipoDocumento: objeto.tipo_documento.id,
                     fechaInicio: objeto.fecha_inicio,
                     fechaFin: objeto.fecha_fin,
                     ingresoConcurso: objeto.ingreso_concurso,
                     remuneracionMensual: objeto.remuneracion_mensual,
                     area: {value:objeto.area.id, label: objeto.area.nombre},
-                    sub_area: objeto.sub_area !== null ? { label: objeto.sub_area.nombre, value:objeto.sub_area.id} : null,
+                    subArea: objeto.sub_area !== null ? { label: objeto.sub_area.nombre, value:objeto.sub_area.id} : null,
                     motivoAccion: objeto.motivo_accion,
-
+                    tipoContrato: objeto.tipo_contrato !== null ? { label: objeto.tipo_contrato.contrato, value:objeto.tipo_contrato.id} : null,
+                    tipoNombramiento: objeto.tipo_nombramiento !== null ? { label: objeto.tipo_nombramiento.nombramiento, value:objeto.tipo_nombramiento.id} : null,
+                    relacionIES: objeto.relacion_ies.id,
                     cargo: objeto.cargo,
-                    horasLaborablesSemanales: objeto.horas_laborables_semanales
+                    horasLaborablesSemanales: objeto.horas_laborables_semanales,
+                    puestoJerarquico: objeto.puesto_jerarquico
                 })
             } else if (objeto.tipo_personal === 'PROFESOR') {
                 reset({
+                    tipoDocumento: objeto.tipo_documento.id,
                     motivoAccion: objeto.motivo_accion,
                     tipoPersonal: objeto.tipo_personal,
                     fechaInicio: objeto.fecha_inicio,
@@ -203,6 +208,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                                     }
                                                 } >
                                                 <FormControlLabel
+                                                    key='type000'
                                                     value="FUNCIONARIO"
                                                     control={<Radio size="small" />}
                                                     label="FUNCIONARIO"
@@ -215,6 +221,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                                 />
 
                                                 <FormControlLabel
+                                                    key="type001"
                                                     value="PROFESOR"
                                                     control={<Radio size="small" />}
                                                     label="PROFESOR"
@@ -241,7 +248,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                     <Controller
                                         name="tipoDocumento"
                                         rules={{ required: true }}
-                                        defaultValue={objeto?.tipo_personal}
+                                        defaultValue={objeto?.tipo_documento.id}
                                         control={control}
                                         render={
                                             ({ field }) =>
@@ -320,6 +327,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                         name="tipoContrato"
                                         control={control}
                                         rules={{ required: true }}
+                                        defaultValue={objeto?.tipo_contrato}
                                         render={
                                             ({ field }) => (
                                                 <Select
@@ -422,6 +430,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                             }}>
 
                                                 <FormControlLabel
+                                                    key="in000"
                                                     value="SI"
                                                     control={<Radio size="small" />}
                                                     label="SI"
@@ -433,6 +442,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                                     }}
                                                 />
                                                 <FormControlLabel
+                                                    key="in001"
                                                     value="NO"
                                                     control={<Radio size="small" />}
                                                     label="NO"
@@ -460,18 +470,19 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                         name="relacionIES"
                                         control={control}
                                         rules={{ required: true }}
-                                        defaultValue={objeto?.relacion_ies}
+                                        defaultValue={objeto?.relacion_ies.id}
                                         render={
                                             ({ field }) =>
                                             (<RadioGroup aria-label="relacion_ies" row {...field} onChange={(ev) => {
                                                 let relacion = relacionesIESState.find(r => r.id === ev.target.value)
                                                 setRelType(relacion?.relacion)
                                                 setValue('escalafonNombramiento', null)
-                                                setValue('relacionIESes', ev.target.value ? ev.target.value : null, { shouldValidate: true })
+                                                setValue('relacionIES', ev.target.value ? ev.target.value : null, { shouldValidate: true })
 
                                             }}>
 
                                                 {relacionesIESState.map((rel) => (<FormControlLabel
+                                                    key={rel.id}
                                                     value={rel.id}
                                                     control={<Radio size="small" />}
                                                     label={rel.relacion}
@@ -514,7 +525,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                     <label className="label is-small">REMUNERACION MENSUAL</label>
                                     {errors.remuneracionMensual && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Seleccione si la remuneración mensual!</span>}
                                     <div className="control">
-                                        <input {...register("remuneracionMensual", { required: true })} className="input" />
+                                        <input type="number"  defaultValue="0.00"  min="0" {...register("remuneracionMensual", { required: true })} className="input" />
 
 
                                     </div>
@@ -529,7 +540,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                     <Controller
                                         name="area"
                                         control={control}
-                                        rules={{ required: true, valueAsNumber: true }}
+                                        rules={{ required: true}}
                                         render={
                                             ({ field }) => (
                                                 <Select
@@ -557,7 +568,6 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                     <Controller
                                         name="subArea"
                                         control={control}
-                                        rules={{ valueAsNumber: true }}
                                         render={
                                             ({ field }) => (
                                                 <Select

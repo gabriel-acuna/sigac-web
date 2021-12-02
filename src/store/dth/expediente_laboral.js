@@ -70,13 +70,13 @@ export const postDetalleExpedienteProfesor = createAsyncThunk(
         try {
             let response = await Axios.post(`${API}/expediente-laboral/profesor/${detalleExpediente.id_persona}`, {
                 tipo_personal: detalleExpediente.detalle.tipoPersonal,
-                tipo_documento: detalleExpediente.detalle.tipoDcumento,
-                tipo_contrato: detalleExpediente.detalle?.tipoContrato ? detalleExpediente.detalle.tipoContrato : null,
-                tipo_nombramiento: detalleExpediente.detalle?.tipoNombramiento ? detalleExpediente.detalle.tipoNombramiento : null,
+                tipo_documento: detalleExpediente.detalle.tipoDocumento,
+                tipo_contrato: detalleExpediente.detalle?.tipoContrato ? detalleExpediente.detalle.tipoContrato.value : null,
+                tipo_nombramiento: detalleExpediente.detalle?.tipoNombramiento ? detalleExpediente.detalle.tipoNombramiento.value : null,
                 motivo_accion: detalleExpediente.detalle?.motivoAccion ? detalleExpediente.detalle.expediente : null,
                 descripcion: detalleExpediente.detalle?.descripcion ? detalleExpediente.expediente.descripcion : null,
                 numero_documento: detalleExpediente.detalle.numeroDocumento,
-                contrato_relacionado: detalleExpediente.detalle?.contartoRelacionado,
+                contrato_relacionado: detalleExpediente.detalle?.contratoRelacionado,
                 ingreso_concurso: detalleExpediente.detalle.ingresoConcurso,
                 relacion_ies: detalleExpediente.detalle.relacionIES,
                 escalafon_nombramiento: detalleExpediente.detalle.escalafonNombramiento.value,
@@ -86,8 +86,9 @@ export const postDetalleExpedienteProfesor = createAsyncThunk(
                 remuneracion_hora: detalleExpediente.detalle.remuneracionHora,
                 fecha_inicio: detalleExpediente.detalle.fechaInicio,
                 fecha_fin: detalleExpediente.detalle?.fechaFin ? detalleExpediente.detalle.fechaFin : null,
-                area: detalleExpediente.detalle.area,
-                sub_area: detalleExpediente.detalle.subAre
+                area: parseInt(detalleExpediente.detalle.area.value),
+                sub_area: detalleExpediente.detalle?.subArea ? parseInt(detalleExpediente.detalle?.subArea.value): null,
+                nivel: detalleExpediente.detalle.nivel
 
             },
                 {
@@ -125,9 +126,9 @@ export const postDetalleExpedienteFuncionario = createAsyncThunk(
             let response = await Axios.post(`${API}/expediente-laboral/funcionario/${detalleExpediente.id_persona}`,
                 {
                     tipo_personal: detalleExpediente.detalle.tipoPersonal,
-                    tipo_documento: detalleExpediente.detalle.tipoDcumento,
-                    tipo_contrato: detalleExpediente.detalle?.tipoContrato ? detalleExpediente.detalle.tipoContrato : null,
-                    tipo_nombramiento: detalleExpediente.detalle?.tipoNombramiento ? detalleExpediente.detalle.tipoNombramiento : null,
+                    tipo_documento: detalleExpediente.detalle.tipoDocumento,
+                    tipo_contrato: detalleExpediente.detalle?.tipoContrato ? detalleExpediente.detalle.tipoContrato.value : null,
+                    tipo_nombramiento: detalleExpediente.detalle?.tipoNombramiento ? detalleExpediente.detalle.tipoNombramiento.value : null,
                     motivo_accion: detalleExpediente.detalle?.motivoAccion ? detalleExpediente.detalle.expediente : null,
                     descripcion: detalleExpediente.detalle?.descripcion ? detalleExpediente.expediente.descripcion : null,
                     numero_documento: detalleExpediente.detalle.numeroDocumento,
@@ -142,8 +143,8 @@ export const postDetalleExpedienteFuncionario = createAsyncThunk(
                     categoria_docente: detalleExpediente.detalle.categoriaDocente.value,
                     puesto_jerarquico: detalleExpediente.detalle.puestoJerarquico,
                     horas_laborables_semanales: detalleExpediente.detalle.horasLaborablesSemanales,
-                    area: detalleExpediente.detalle.area,
-                    sub_area: detalleExpediente.detalle?.subAre
+                    area: parseInt(detalleExpediente.detalle.area.value),
+                    sub_area: detalleExpediente.detalle?.subArea ? parseInt(detalleExpediente.detalle?.subArea.value): null
 
                 },
                 {
