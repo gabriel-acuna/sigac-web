@@ -24,7 +24,7 @@ let OptionCard = ({ title, columns, rows, children }) => {
                                     {
                                         columns.map(
                                             (col,index) => (
-                                                <th key={`0${title}${index}`}>{col}</th>
+                                                <th key={`0${title.substring(0,3)}${index}`}>{col}</th>
                                             )
                                         )
                                     }

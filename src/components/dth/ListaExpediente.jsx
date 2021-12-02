@@ -12,6 +12,7 @@ import { logOut } from '../../store/user'
 import Alert from '../Alert'
 import ConfirmDialog from '../ConfirmDialog'
 import OptionCard from '../OptionCard'
+import ModalDeclaracionPatrimonial from './modalDeclaracion'
 
 let ListaExpediente = (props) => {
     const location = useLocation()
@@ -21,6 +22,7 @@ let ListaExpediente = (props) => {
     const dispatch = useDispatch()
     const [objeto, setObjeto] = useState(null)
     const [showModalForm, setShowModalForm] = useState(false)
+    const [showDecModalForm, setShowDecModalForm] = useState(false)
     const [showConfirmDialog, setShowConfirmDialog] = useState(false)
     const [response, setResponse] = useState(null)
     const [deteteResponse, setDeleteResponse] = useState(null)
@@ -124,7 +126,7 @@ let ListaExpediente = (props) => {
 
     return (
         <>
-            <div className="continer">
+            <div className="container">
                 <div className="columns is-centered">
                     <div className="column is-half mt-3">
                         <div className="card">
@@ -139,7 +141,7 @@ let ListaExpediente = (props) => {
                                         <IoIosArrowBack />
                                     </span>
                                 </button>
-                                <Link className="button is-primary mt-4 mx-3 is-outlined" to="cv" state={location.state}><span className="icon"><ImProfile/></span></Link>
+                                <Link className="button is-primary mt-4 mx-3 is-outlined" to="cv" state={location.state}><span className="icon"><ImProfile /></span></Link>
 
                             </header>
                             {persona && <section className="card-content">
@@ -175,7 +177,7 @@ let ListaExpediente = (props) => {
                     </div>
                 </div>
                 <div className="columns is-centered">
-                    <div className="column is-half mb-6">
+                    <div className="column is-6 mb-6">
 
                         <OptionCard
                             title="Registro laboral"
@@ -186,31 +188,31 @@ let ListaExpediente = (props) => {
 
 
 
-                                    (row, index) => 
-                                        (<tr key={row.id}>
-                                            <td key={`0${row.id}0`}>{row.numero_documento}</td>
-                                            <td key={`0${row.id}1`}>{row.fecha_inicio}</td>
-                                            <td key={`0${row.id}2`}>{row.fecha_fin}</td>
-                                            <td key={`0${row.id}3`}>
-                                                <button className="button is-small is-primary mx-2 is-outlined"   onClick={ev => {
-                                                    setObjeto(row)
-                                                    setShowModalForm(true)
-                                                }}>
-                                                    <span className="icon">
-                                                        <FaRegEdit />
-                                                    </span>
-                                                </button>
-                                                <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
-                                                    deleteHandler(row.id)
-                                                }}>
-                                                    <span className="icon">
-                                                        <AiOutlineDelete />
-                                                    </span>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        )
-                                    
+                                    (row, index) =>
+                                    (<tr key={row.id}>
+                                        <td key={`0${row.id}0`}>{row.numero_documento}</td>
+                                        <td key={`0${row.id}1`}>{row.fecha_inicio}</td>
+                                        <td key={`0${row.id}2`}>{row.fecha_fin}</td>
+                                        <td key={`0${row.id}3`}>
+                                            <button className="button is-small is-primary mx-2 is-outlined" onClick={ev => {
+                                                setObjeto(row)
+                                                setShowModalForm(true)
+                                            }}>
+                                                <span className="icon">
+                                                    <FaRegEdit />
+                                                </span>
+                                            </button>
+                                            <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
+                                                deleteHandler(row.id)
+                                            }}>
+                                                <span className="icon">
+                                                    <AiOutlineDelete />
+                                                </span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    )
+
                                 )
                             }
                         >
@@ -223,8 +225,36 @@ let ListaExpediente = (props) => {
                         </OptionCard>
 
                     </div>
+
+                    <div className="column is-6 mb-6">
+                        <OptionCard title="Declaraciones Parimoniales"
+                            columns={['Tipo', 'Fecha presntación', 'Opciones']}
+                            expandir={false} >
+
+                            <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowDecModalForm(true)}>
+                                <span className="icon">
+                                    <IoIosAddCircleOutline />
+                                </span>
+                            </button>
+                        </OptionCard>
+
+                    </div>
+                </div>
+
+                <div className="columns is-centered">
+                    <div className="column">
+                        <OptionCard
+                            title="Familiares"
+                            columns={["Parentezco", "Apellidos", "Nombres", "Opciones"]}></OptionCard>
+                    </div>
+                    <div className="column">
+                        <OptionCard
+                            title="Régimen disciplicario"
+                            columns={["Año", "Mes", "Sanción", "Opciones"]}></OptionCard>
+                    </div>
                 </div>
             </div>
+            {/*modal registro laboral */}
             {
                 showModalForm && <ModalForm title={
                     objeto === null ?
@@ -260,7 +290,21 @@ let ListaExpediente = (props) => {
 
                 </ModalForm>
             }
+            {/*modal familiar*/}
+            {
+                showDecModalForm && <ModalDeclaracionPatrimonial 
+                title={
+                    objeto === null ?
+                        `Registrando declaración patrimonial de: ${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`
+                        : `Editando declaración patrimonial de : ${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`
+                }>
+                    <button className="button is-small is-danger mx-3" onClick={ev => {
+                        setShowDecModalForm(false)
+                        setObjeto(null)
+                    }}>Cancelar</button>
 
+                </ModalDeclaracionPatrimonial>
+            }
             {
                 showConfirmDialog &&
                 <ConfirmDialog info="el registro" title="Eliminar registro">

@@ -59,6 +59,7 @@ export const loadItemDetalle = createAsyncThunk(
 export const postDetalleExpedienteProfesor = createAsyncThunk(
     'expediente-laboral-profesor/post',
     async (detalleExpediente, { getState }) => {
+        console.log(detalleExpediente);
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -73,7 +74,7 @@ export const postDetalleExpedienteProfesor = createAsyncThunk(
                 tipo_documento: detalleExpediente.detalle.tipoDocumento,
                 tipo_contrato: detalleExpediente.detalle?.tipoContrato ? detalleExpediente.detalle.tipoContrato.value : null,
                 tipo_nombramiento: detalleExpediente.detalle?.tipoNombramiento ? detalleExpediente.detalle.tipoNombramiento.value : null,
-                motivo_accion: detalleExpediente.detalle?.motivoAccion ? detalleExpediente.detalle.expediente : null,
+                motivo_accion: detalleExpediente.detalle?.motivoAccion ? detalleExpediente.detalle.expediente.motivoAccion.value : null,
                 descripcion: detalleExpediente.detalle?.descripcion ? detalleExpediente.expediente.descripcion : null,
                 numero_documento: detalleExpediente.detalle.numeroDocumento,
                 contrato_relacionado: detalleExpediente.detalle?.contratoRelacionado,
@@ -87,7 +88,7 @@ export const postDetalleExpedienteProfesor = createAsyncThunk(
                 fecha_inicio: detalleExpediente.detalle.fechaInicio,
                 fecha_fin: detalleExpediente.detalle?.fechaFin ? detalleExpediente.detalle.fechaFin : null,
                 area: parseInt(detalleExpediente.detalle.area.value),
-                sub_area: detalleExpediente.detalle?.subArea ? parseInt(detalleExpediente.detalle?.subArea.value): null,
+                sub_area: detalleExpediente.detalle?.subArea ? parseInt(detalleExpediente.detalle?.subArea.value) : null,
                 nivel: detalleExpediente.detalle.nivel
 
             },
@@ -129,7 +130,7 @@ export const postDetalleExpedienteFuncionario = createAsyncThunk(
                     tipo_documento: detalleExpediente.detalle.tipoDocumento,
                     tipo_contrato: detalleExpediente.detalle?.tipoContrato ? detalleExpediente.detalle.tipoContrato.value : null,
                     tipo_nombramiento: detalleExpediente.detalle?.tipoNombramiento ? detalleExpediente.detalle.tipoNombramiento.value : null,
-                    motivo_accion: detalleExpediente.detalle?.motivoAccion ? detalleExpediente.detalle.expediente : null,
+                    motivo_accion: detalleExpediente.detalle?.motivoAccion ? detalleExpediente.detalle.expediente.value : null,
                     descripcion: detalleExpediente.detalle?.descripcion ? detalleExpediente.expediente.descripcion : null,
                     numero_documento: detalleExpediente.detalle.numeroDocumento,
                     relacion_ies: detalleExpediente.detalle.relacionIES,
@@ -144,7 +145,7 @@ export const postDetalleExpedienteFuncionario = createAsyncThunk(
                     puesto_jerarquico: detalleExpediente.detalle.puestoJerarquico,
                     horas_laborables_semanales: detalleExpediente.detalle.horasLaborablesSemanales,
                     area: parseInt(detalleExpediente.detalle.area.value),
-                    sub_area: detalleExpediente.detalle?.subArea ? parseInt(detalleExpediente.detalle?.subArea.value): null
+                    sub_area: detalleExpediente.detalle?.subArea ? parseInt(detalleExpediente.detalle?.subArea.value) : null
 
                 },
                 {
@@ -179,7 +180,58 @@ export const putDetalleExpediente = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.put(`${API}/expediente-laboral`, detalleExpediente,
+            let data;
+            if (detalleExpediente.tipoPersonal === 'FUNCIONARIO') {
+                data = {
+                    id: detalleExpediente.id,
+                    tipo_personal: detalleExpediente.tipoPersonal,
+                    tipo_documento: detalleExpediente.tipoDocumento,
+                    tipo_contrato: detalleExpediente?.tipoContrato ? detalleExpediente.tipoContrato.value : null,
+                    tipo_nombramiento: detalleExpediente?.tipoNombramiento ? detalleExpediente.tipoNombramiento.value : null,
+                    motivo_accion: detalleExpediente?.motivoAccion ? detalleExpediente.motivoAccion.value : null,
+                    descripcion: detalleExpediente?.descripcion ? detalleExpediente.descripcion : null,
+                    numero_documento: detalleExpediente.numeroDocumento,
+                    relacion_ies: detalleExpediente.relacionIES,
+                    fecha_inicio: detalleExpediente.fechaInicio,
+                    fecha_fin: detalleExpediente?.fechaFin ? detalleExpediente.fechaFin : null,
+                    ingreso_concurso: detalleExpediente.ingresoConcurso,
+                    remuneracion_mensual: detalleExpediente.remuneracionMensual,
+                    tipo_funcionario: detalleExpediente.tipoFuncionario.value,
+                    cargo: detalleExpediente.cargo,
+                    tipo_docente: detalleExpediente.tipoDocente.value,
+                    categoria_docente: detalleExpediente.categoriaDocente.value,
+                    puesto_jerarquico: detalleExpediente.puestoJerarquico,
+                    horas_laborables_semanales: detalleExpediente.horasLaborablesSemanales,
+                    area: parseInt(detalleExpediente.area.value),
+                    sub_area: detalleExpediente?.subArea ? parseInt(detalleExpediente?.subArea.value) : null
+                }
+            } else {
+                data = {
+                    id: detalleExpediente.id,
+                    tipo_personal: detalleExpediente.tipoPersonal,
+                    tipo_documento: detalleExpediente.tipoDocumento,
+                    tipo_contrato: detalleExpediente?.tipoContrato ? detalleExpediente.tipoContrato.value : null,
+                    tipo_nombramiento: detalleExpediente?.tipoNombramiento ? detalleExpediente.tipoNombramiento.value : null,
+                    motivo_accion: detalleExpediente?.motivoAccion ? detalleExpediente.motivoAccion.value : null,
+                    descripcion: detalleExpediente?.descripcion ? detalleExpediente.descripcion : null,
+                    numero_documento: detalleExpediente.numeroDocumento,
+                    contrato_relacionado: detalleExpediente?.contratoRelacionado,
+                    ingreso_concurso: detalleExpediente.ingresoConcurso,
+                    relacion_ies: detalleExpediente.relacionIES,
+                    escalafon_nombramiento: detalleExpediente.escalafonNombramiento.value,
+                    categoria_contrato: detalleExpediente.categoriaContrato.value,
+                    tiempo_dedicacion: detalleExpediente.tiempoDedicacion,
+                    remuneracion_mensual: detalleExpediente.remuneracionMensual,
+                    remuneracion_hora: detalleExpediente.remuneracionHora,
+                    fecha_inicio: detalleExpediente.fechaInicio,
+                    fecha_fin: detalleExpediente?.fechaFin ? detalleExpediente.fechaFin : null,
+                    area: parseInt(detalleExpediente.area.value),
+                    sub_area: detalleExpediente?.subArea ? parseInt(detalleExpediente?.subArea.value) : null,
+                    nivel: detalleExpediente.nivel
+                }
+            }
+            console.log(data, detalleExpediente.tipoPersonal === 'FUNCIONARIO');
+            let response = await Axios.put(`${API}/expediente-laboral`, data,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`

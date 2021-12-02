@@ -127,6 +127,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
 
 
         if (objeto !== null) {
+            console.log(objeto);
             setTipoFuncionario(objeto.tipo_personal)
             setDocType(objeto.tipo_documento)
             setActReason(objeto.motivo_accion)
@@ -139,11 +140,11 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                     fechaFin: objeto.fecha_fin,
                     ingresoConcurso: objeto.ingreso_concurso,
                     remuneracionMensual: objeto.remuneracion_mensual,
-                    area: {value:objeto.area.id, label: objeto.area.nombre},
-                    subArea: objeto.sub_area !== null ? { label: objeto.sub_area.nombre, value:objeto.sub_area.id} : null,
-                    motivoAccion: objeto.motivo_accion,
-                    tipoContrato: objeto.tipo_contrato !== null ? { label: objeto.tipo_contrato.contrato, value:objeto.tipo_contrato.id} : null,
-                    tipoNombramiento: objeto.tipo_nombramiento !== null ? { label: objeto.tipo_nombramiento.nombramiento, value:objeto.tipo_nombramiento.id} : null,
+                    area: { value: objeto.area.id, label: objeto.area.nombre },
+                    subArea: objeto.sub_area !== null ? { label: objeto.sub_area.nombre, value: objeto.sub_area.id } : null,
+                    motivoAccion: {label:objeto.motivo_accion, value: objeto.motivo_accion},
+                    tipoContrato: objeto.tipo_contrato !== null ? { label: objeto.tipo_contrato.contrato, value: objeto.tipo_contrato.id } : null,
+                    tipoNombramiento: objeto.tipo_nombramiento !== null ? { label: objeto.tipo_nombramiento.nombramiento, value: objeto.tipo_nombramiento.id } : null,
                     relacionIES: objeto.relacion_ies.id,
                     cargo: objeto.cargo,
                     horasLaborablesSemanales: objeto.horas_laborables_semanales,
@@ -152,16 +153,23 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
             } else if (objeto.tipo_personal === 'PROFESOR') {
                 reset({
                     tipoDocumento: objeto.tipo_documento.id,
-                    motivoAccion: objeto.motivo_accion,
+                    motivoAccion: {label:objeto.motivo_accion, value: objeto.motivo_accion},
                     tipoPersonal: objeto.tipo_personal,
                     fechaInicio: objeto.fecha_inicio,
                     fechaFin: objeto.fecha_fin,
                     ingresoConcurso: objeto.ingreso_concurso,
-                    area: {value:objeto.area.id, label: objeto.area.nombre},
-                    subArea: objeto.sub_area !== null ? { label: objeto.sub_area.nombre, value:objeto.sub_area.id} : null,
-                    remuneracion_mensual: objeto.remuneracion_mensual,
-                    remuneracion_hora: objeto.remuneracion_hora,
-                    contrato_relacionado: objeto.contrato_relacionado
+                    area: { value: objeto.area.id, label: objeto.area.nombre },
+                    subArea: objeto.sub_area !== null ? { label: objeto.sub_area.nombre, value: objeto.sub_area.id } : null,
+                    remuneracionMensual: objeto.remuneracion_mensual,
+                    remuneracionHora: objeto.remuneracion_hora ? objeto.remuneracion_hora: 0,
+                    relacionIES: objeto.relacion_ies.id,
+                    contratoRelacionado: objeto.contrato_relacionado,
+                    escalafonNombramiento: { label: objeto.escalafon_nombramiento?.escalafon_nombramiento, value: objeto.escalafon_nombramiento?.id },
+                    tipoContrato: objeto.tipo_contrato !== null ? { label: objeto.tipo_contrato.contrato, value: objeto.tipo_contrato.id } : null,
+                    tipoNombramiento: objeto.tipo_nombramiento !== null ? { label: objeto.tipo_nombramiento.nombramiento, value: objeto.tipo_nombramiento.id } : null,
+                    tiempoDedicacion: objeto.tiempo_dedicacion.id,
+                    nivel: objeto.nivel.id,
+                    categoriaContrato: {value:objeto.categoria_contrato.id, label: objeto.categoria_contrato.categoria_contrato }
 
 
 
@@ -464,7 +472,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                 <div className="column">
                                     <label className="label is-small">RELACION IES</label>
                                     {errors.relacionIES && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Seleccione si la relación!</span>}
-                    
+
 
                                     <Controller
                                         name="relacionIES"
@@ -525,7 +533,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                     <label className="label is-small">REMUNERACION MENSUAL</label>
                                     {errors.remuneracionMensual && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Seleccione si la remuneración mensual!</span>}
                                     <div className="control">
-                                        <input type="number"  defaultValue="0.00"  min="0" {...register("remuneracionMensual", { required: true })} className="input" />
+                                        <input type="number" defaultValue="0.00" min="0" {...register("remuneracionMensual", { required: true })} className="input" step="any" />
 
 
                                     </div>
@@ -540,7 +548,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                     <Controller
                                         name="area"
                                         control={control}
-                                        rules={{ required: true}}
+                                        rules={{ required: true }}
                                         render={
                                             ({ field }) => (
                                                 <Select

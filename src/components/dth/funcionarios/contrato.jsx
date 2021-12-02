@@ -72,12 +72,13 @@ let ContratoFuncionario = ({ objeto, register, errors, control, setValue }) => {
                         name="tipoFuncionario"
                         rules={{ required: true }}
                         control={control}
+                        defaultValue ={ objeto?.tipo_funcionario ? {label:objeto.tipo_funcionario.tipo, value: objeto.tipo_funcionario.id}: null}
                         render={
                             ({ field }) => (
                                 <Select
                                     placeholder="Seleccione"
                                     {...field}
-                                    defaultValue ={ objeto?.tipo_funcionario ? {label:objeto.tipo_funcionario.tipo, id: objeto.tipo_funcionario.id}: null}
+                                   
                                     isClearable
                                     onChange={
                                         value => {
@@ -117,7 +118,7 @@ let ContratoFuncionario = ({ objeto, register, errors, control, setValue }) => {
                         name="tipoDocente"
                         control={control}
                         rules={{ required: true }}
-                        defaultValue ={ objeto?.tipo_docente ? {label:objeto.tipo_docente.tipo_docente, id: objeto.tipo_docente.id}: null}
+                        defaultValue ={ objeto?.tipo_docente ? {label:objeto.tipo_docente.tipo_docente, value: objeto.tipo_docente.id}: null}
                         render={
                             ({ field }) => (
                                 <Select
@@ -145,7 +146,7 @@ let ContratoFuncionario = ({ objeto, register, errors, control, setValue }) => {
                         name="categoriaDocente"
                         control={control}
                         rules={{ required: true }}
-                        defaultValue ={ objeto?.categoria_docente ? {label:objeto.categoria_docente.categoria_docente, id: objeto.categoria_docente.id}: null}
+                        defaultValue ={ objeto?.categoria_docente ? {label:objeto.categoria_docente.categoria_docente, value: objeto.categoria_docente.id}: null}
                         render={
                             ({ field }) => (
                                 <Select

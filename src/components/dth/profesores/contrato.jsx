@@ -13,6 +13,10 @@ let ContratoProfesor = ({ objeto, register, errors, relacion, control, setValue 
     let categoriasContratosState = useSelector(state => state.categoriasContratos.data.categoriasContrato)
     let tiemposDedicacionesState = useSelector(state => state.tiemposDedicaciones.data.tiemposDedicaciones)
     const [scaleType, setScaleType] = useState(null)
+    
+    useEffect(()=>{
+        setScaleType(objeto?.escalafon_nombramiento?.escalafon_nombramiento)
+    },[])
 
 
     let filtarEscalafones = () => {
@@ -26,8 +30,8 @@ let ContratoProfesor = ({ objeto, register, errors, relacion, control, setValue 
             })
 
         } else if (relacion !== null && relacion !== '') {
-            let es = tiposEscalafonesState.find(es => es.escalafon_nombramiento === 'NO APLICA')
-            options.push({ label: es.escalafon_nombramiento, id: es.id, key: es.id })
+            let es = tiposEscalafonesState.find(es => es?.escalafon_nombramiento === 'NO APLICA')
+            options.push({ label: es?.escalafon_nombramiento, value: es?.id, key: es?.id })
         }
         return options
     }
