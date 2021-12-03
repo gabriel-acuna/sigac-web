@@ -142,7 +142,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                     remuneracionMensual: objeto.remuneracion_mensual,
                     area: { value: objeto.area.id, label: objeto.area.nombre },
                     subArea: objeto.sub_area !== null ? { label: objeto.sub_area.nombre, value: objeto.sub_area.id } : null,
-                    motivoAccion: {label:objeto.motivo_accion, value: objeto.motivo_accion},
+                    motivoAccion: { label: objeto.motivo_accion, value: objeto.motivo_accion },
                     tipoContrato: objeto.tipo_contrato !== null ? { label: objeto.tipo_contrato.contrato, value: objeto.tipo_contrato.id } : null,
                     tipoNombramiento: objeto.tipo_nombramiento !== null ? { label: objeto.tipo_nombramiento.nombramiento, value: objeto.tipo_nombramiento.id } : null,
                     relacionIES: objeto.relacion_ies.id,
@@ -153,7 +153,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
             } else if (objeto.tipo_personal === 'PROFESOR') {
                 reset({
                     tipoDocumento: objeto.tipo_documento.id,
-                    motivoAccion: {label:objeto.motivo_accion, value: objeto.motivo_accion},
+                    motivoAccion: { label: objeto.motivo_accion, value: objeto.motivo_accion },
                     tipoPersonal: objeto.tipo_personal,
                     fechaInicio: objeto.fecha_inicio,
                     fechaFin: objeto.fecha_fin,
@@ -161,7 +161,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                     area: { value: objeto.area.id, label: objeto.area.nombre },
                     subArea: objeto.sub_area !== null ? { label: objeto.sub_area.nombre, value: objeto.sub_area.id } : null,
                     remuneracionMensual: objeto.remuneracion_mensual,
-                    remuneracionHora: objeto.remuneracion_hora ? objeto.remuneracion_hora: 0,
+                    remuneracionHora: objeto.remuneracion_hora ? objeto.remuneracion_hora : 0,
                     relacionIES: objeto.relacion_ies.id,
                     contratoRelacionado: objeto.contrato_relacionado,
                     escalafonNombramiento: { label: objeto.escalafon_nombramiento?.escalafon_nombramiento, value: objeto.escalafon_nombramiento?.id },
@@ -169,7 +169,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                     tipoNombramiento: objeto.tipo_nombramiento !== null ? { label: objeto.tipo_nombramiento.nombramiento, value: objeto.tipo_nombramiento.id } : null,
                     tiempoDedicacion: objeto.tiempo_dedicacion.id,
                     nivel: objeto.nivel.id,
-                    categoriaContrato: {value:objeto.categoria_contrato.id, label: objeto.categoria_contrato.categoria_contrato }
+                    categoriaContrato: { value: objeto.categoria_contrato.id, label: objeto.categoria_contrato.categoria_contrato }
 
 
 
@@ -199,7 +199,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                     <Controller
                                         name="tipoPersonal"
                                         rules={{ required: true }}
-                                        defaultValue={objeto?.tipo_personal}
+                                        defaultValue={objeto?.tipo_personal ? objeto.tipo_persona : ''}
                                         control={control}
                                         render={
                                             ({ field }) =>
@@ -256,7 +256,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                     <Controller
                                         name="tipoDocumento"
                                         rules={{ required: true }}
-                                        defaultValue={objeto?.tipo_documento.id}
+                                        defaultValue={objeto?.tipo_documento.id ? objeto.tipo_documento : ''}
                                         control={control}
                                         render={
                                             ({ field }) =>
@@ -429,7 +429,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                         name="ingresoConcurso"
                                         control={control}
                                         rules={{ required: true }}
-                                        defaultValue={objeto?.ingreso_concurso}
+                                        defaultValue={objeto?.ingreso_concurso ? objeto.ingreso_concurso : ''}
                                         render={
                                             ({ field }) =>
                                             (<RadioGroup aria-label="ingreso_concurso" row {...field} onChange={(ev) => {
@@ -478,7 +478,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                         name="relacionIES"
                                         control={control}
                                         rules={{ required: true }}
-                                        defaultValue={objeto?.relacion_ies.id}
+                                        defaultValue={objeto?.relacion_ies ? objeto.relacion_ies.id : ''}
                                         render={
                                             ({ field }) =>
                                             (<RadioGroup aria-label="relacion_ies" row {...field} onChange={(ev) => {

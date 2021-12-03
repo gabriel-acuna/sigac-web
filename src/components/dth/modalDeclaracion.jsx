@@ -19,16 +19,16 @@ let DeclaracionPtrimonialModal = ({ title, handler, children, objeto }) => {
                             name="tipoDeclaracion"
                             control={control}
                             rules={{ required: true }}
-                            defaultValue={objeto?.tipo_declaracion}
+                            defaultValue={objeto?.tipo_declaracion ? objeto.tipo_declaracion : ''}
                             render={
                                 ({ field }) => (
                                     <RadioGroup row {...field} onChange={(ev) => setValue("tipoDeclaracion", ev.target.value)}>
                                         {
                                             TYPES_DEC.map(
-                                                t => (
+                                                (t, ind) => (
                                                     <FormControlLabel
-                                                        key="type-dec-001"
-                                                        value={title}
+                                                        key={`type-dec-000${ind}`}
+                                                        value={t}
                                                         control={<Radio size="small" />}
                                                         label={t}
                                                         sx={{
@@ -47,7 +47,7 @@ let DeclaracionPtrimonialModal = ({ title, handler, children, objeto }) => {
 
                         />
 
-                        <labe className="label is-small">Fecha presentación</labe>
+                        <label className="label is-small">Fecha presentación</label>
                         <input type="date" {...register("fechaPresentacion")} className="input" />
 
                         <div className="field is-grouped" style={{ display: 'flex', justifyContent: 'center' }}>

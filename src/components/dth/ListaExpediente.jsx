@@ -226,7 +226,7 @@ let ListaExpediente = (props) => {
 
                     </div>
 
-                    <div className="column is-6 mb-6">
+                    {expedienteState?.detalle && expedienteState?.detalle.length > 0 && <div className="column is-6 mb-6">
                         <OptionCard title="Declaraciones Parimoniales"
                             columns={['Tipo', 'Fecha presentación', 'Opciones']}
                             expandir={false} >
@@ -238,21 +238,32 @@ let ListaExpediente = (props) => {
                             </button>
                         </OptionCard>
 
-                    </div>
+                    </div>}
                 </div>
 
-                <div className="columns is-centered">
+                {expedienteState?.detalle && expedienteState?.detalle.length > 0 && <div className="columns is-centered">
                     <div className="column">
                         <OptionCard
                             title="Familiares"
-                            columns={["Parentezco", "Apellidos", "Nombres", "Opciones"]}></OptionCard>
+                            columns={["Parentezco", "Apellidos", "Nombres", "Opciones"]}>
+                            <button className="button  is-success mx-3 is-outlined">
+                                <span className="icon">
+                                    <IoIosAddCircleOutline />
+                                </span>
+                            </button></OptionCard>
+
                     </div>
                     <div className="column">
                         <OptionCard
                             title="Régimen disciplicario"
-                            columns={["Año", "Mes", "Sanción", "Opciones"]}></OptionCard>
+                            columns={["Año", "Mes", "Sanción", "Opciones"]}>
+                            <button className="button  is-success mx-3 is-outlined">
+                                <span className="icon">
+                                    <IoIosAddCircleOutline />
+                                </span>
+                            </button></OptionCard>
                     </div>
-                </div>
+                </div>}
             </div>
             {/*modal registro laboral */}
             {
@@ -292,12 +303,12 @@ let ListaExpediente = (props) => {
             }
             {/*modal familiar*/}
             {
-                showDecModalForm && <ModalDeclaracionPatrimonial 
-                title={
-                    objeto === null ?
-                        `Registrando declaración patrimonial de: ${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`
-                        : `Editando declaración patrimonial de : ${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`
-                }>
+                showDecModalForm && <ModalDeclaracionPatrimonial
+                    title={
+                        objeto === null ?
+                            `Registrando declaración patrimonial de: ${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`
+                            : `Editando declaración patrimonial de : ${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`
+                    }>
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowDecModalForm(false)
                         setObjeto(null)
