@@ -228,7 +228,7 @@ let ListaExpediente = (props) => {
 
                     <div className="column is-6 mb-6">
                         <OptionCard title="Declaraciones Parimoniales"
-                            columns={['Tipo', 'Fecha presntación', 'Opciones']}
+                            columns={['Tipo', 'Fecha presentación', 'Opciones']}
                             expandir={false} >
 
                             <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowDecModalForm(true)}>

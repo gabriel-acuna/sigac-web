@@ -53,7 +53,7 @@ const CV = ({ email }) => {
 
     const [expandirReferencias, setExpandirReferencia] = useState(false)
     const [expandirCapacitaciones, setExpandirCapacitaciones] = useState(false)
-    const [expandirCapacitacionesFac, setExpandirCapacitacionesFac] = useState(false)
+    //const [expandirCapacitacionesFac, setExpandirCapacitacionesFac] = useState(false)
     const [expandirFormacion, setExpandirFormacion] = useState(false)
     const [expandirPonencias, setExpandirPonencias] = useState(false)
     const [expandirExperienciaLaboral, setExpandirExperienciaLaboral] = useState(false)
@@ -89,7 +89,7 @@ const CV = ({ email }) => {
 
     let referenciasState = useSelector(state => state.referencias.data.referencias)
     let capacitacionesState = useSelector(state => state.capacitaciones.data.capacitaciones)
-    let capacitacionFacState = useSelector(state => state.capacitacionesFacilitador.data.capacitaciones)
+    //let capacitacionFacState = useSelector(state => state.capacitacionesFacilitador.data.capacitaciones)
     let formacionState = useSelector(state => state.formacionAcademica.data.formacionAcademica)
     let ponenciasState = useSelector(state => state.ponencias.data.ponencias)
     let experienciasState = useSelector(state => state.experienciaLaboral.data.experiencias)
@@ -142,11 +142,11 @@ const CV = ({ email }) => {
 
     }
 
-    let deleteHandlerCapFac = (id) => {
-        setShowModalDelCapFac(true)
-        setId(id)
+    // let deleteHandlerCapFac = (id) => {
+    //     setShowModalDelCapFac(true)
+    //     setId(id)
 
-    }
+    // }
     let deleteHandlerPon = (id) => {
         setShowModalDelPon(true)
         setId(id)

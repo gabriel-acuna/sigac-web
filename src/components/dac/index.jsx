@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { loadPeridosAcademicos } from '../../store/dac/perido_academico'
@@ -12,7 +12,7 @@ let DAC = (props) => {
     useEffect(
         () => dispatch(loadPeridosAcademicos())
 
-        , []
+        , [dispatch]
     )
 
     return (<div className="container">

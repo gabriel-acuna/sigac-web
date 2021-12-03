@@ -1,6 +1,6 @@
 
-import { useSelector } from "react-redux"
-import { IoIosArrowBack } from 'react-icons/io'
+// import { useSelector } from "react-redux"
+// import { IoIosArrowBack } from 'react-icons/io'
 import { useLocation } from 'react-router-dom'
 import Accordion from '../Accordion'
 import { options } from './options'

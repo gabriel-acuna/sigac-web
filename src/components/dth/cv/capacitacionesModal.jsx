@@ -16,7 +16,7 @@ let CapacitacionModalForm = ({ title, handler, children, objeto, persona }) => {
     const [respModal, setRespModal] = useState(null)
     const [errorModal, setErrorModal] = useState(null)
     const [typeCert, setTypeCert] = useState(null)
-    
+
     const dispatch = useDispatch()
     const { register, reset, handleSubmit, formState: { errors }, setError, control, clearErrors, getValues, setValue } = useForm()
     let eventosState = useSelector(state => state.tiposEventos.data.eventos)
@@ -49,7 +49,7 @@ let CapacitacionModalForm = ({ title, handler, children, objeto, persona }) => {
             if (objeto !== null) {
                 setTypeCert(objeto.tipo_certificado)
                 reset({
-                    tipoEvento:{ label: objeto.tipo_evento.evento, value: objeto.tipo_evento.id },
+                    tipoEvento: { label: objeto.tipo_evento.evento, value: objeto.tipo_evento.id },
                     nombre: objeto.nombre,
                     institucionOrganizadora: objeto.institucion_organizadora,
                     funcionEvento: objeto.funcion_evento,
@@ -63,7 +63,7 @@ let CapacitacionModalForm = ({ title, handler, children, objeto, persona }) => {
 
                 })
             }
-        }, [objeto, reset]
+        }, [objeto, reset, dispatch]
     )
     return (
         <>
@@ -127,8 +127,10 @@ let CapacitacionModalForm = ({ title, handler, children, objeto, persona }) => {
                                         render={
                                             ({ field }) => (
                                                 <RadioGroup aria-label="tipo certificado" {...field} row
-                                                    onChange={ev => { setValue("tipoCertificado",ev.currentTarget.value, { shouldValidate: true })
-                                                    setTypeCert(ev?.currentTarget.value) }}>
+                                                    onChange={ev => {
+                                                        setValue("tipoCertificado", ev.currentTarget.value, { shouldValidate: true })
+                                                        setTypeCert(ev?.currentTarget.value)
+                                                    }}>
                                                     <FormControlLabel value="ASISTENCIA" label="ASISTENCIA" control={<Radio size="small" />}
                                                         sx={{
                                                             '& .MuiFormControlLabel-label': {
@@ -158,13 +160,13 @@ let CapacitacionModalForm = ({ title, handler, children, objeto, persona }) => {
                                 </div>
                             </div>
                             {
-                                typeCert ==='PARTICIPACIÓN' && 
+                                typeCert === 'PARTICIPACIÓN' &&
                                 <div className="columns">
                                     <div className="column">
                                         <label className="label is-uppercase is-small">Función:</label>
                                         {errors.funcionEvento && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la función que desempeñó!</span>}
 
-                                        <input type="text" className="input is-uppercase" {...register('funcionEvento', {required:true})} />
+                                        <input type="text" className="input is-uppercase" {...register('funcionEvento', { required: true })} />
                                     </div>
 
                                     <div className="column">
@@ -173,9 +175,9 @@ let CapacitacionModalForm = ({ title, handler, children, objeto, persona }) => {
 
                                         <input type="text" className="input is-uppercase" {...register('certificado')} />
                                     </div>
-                                    
+
                                 </div>
-                                
+
                             }
                             <div className="columns">
                                 <div className="column">

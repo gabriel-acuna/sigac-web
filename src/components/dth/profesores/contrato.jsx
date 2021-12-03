@@ -16,7 +16,7 @@ let ContratoProfesor = ({ objeto, register, errors, relacion, control, setValue 
     
     useEffect(()=>{
         setScaleType(objeto?.escalafon_nombramiento?.escalafon_nombramiento)
-    },[])
+    },[objeto])
 
 
     let filtarEscalafones = () => {
@@ -47,7 +47,7 @@ let ContratoProfesor = ({ objeto, register, errors, relacion, control, setValue 
                 })
         }
         else if (relacion === 'NOMBRAMIENTO' && scaleType === 'LABORAL ACTUAL') {
-            categoriasContratosState.map(
+            categoriasContratosState.forEach(
                 (row) => {
                     if (row.categoria_contrato.startsWith('PRINCIPAL')
                         || row.categoria_contrato.startsWith('AGREGADO')
@@ -56,13 +56,13 @@ let ContratoProfesor = ({ objeto, register, errors, relacion, control, setValue 
             )
         }
         else if (scaleType !== null && scaleType !== '') {
-            categoriasContratosState.map(
+            categoriasContratosState.forEach(
                 (row) => {
                     if (row.categoria_contrato.startsWith('OCASIONAL')
                         || row.categoria_contrato.startsWith('HONORARIO')
                         || row.categoria_contrato.startsWith('INVITADO')
                         || row.categoria_contrato.startsWith('NO TITULAR'))
-                        options.push({ label: row.categoria_contrato, value: row.id, key: row.id })
+                       { options.push({ label: row.categoria_contrato, value: row.id, key: row.id })}
                 }
             )
         }

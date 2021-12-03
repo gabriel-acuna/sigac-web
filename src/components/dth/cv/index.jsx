@@ -5,7 +5,6 @@ import { FaRegEdit } from 'react-icons/fa'
 
 import { AiOutlineMinus, AiOutlinePlus, AiOutlineDelete } from 'react-icons/ai'
 import { useDispatch } from 'react-redux'
-import { loadPersonaEmail } from '../../../store/dth/informacion_personal'
 import ReferenciaModalForm from './referenciasModal'
 
 import { postReferencias, putReferencias, deleteReferencias, loadReferencias } from '../../../store/cv/referencia'
@@ -46,7 +45,7 @@ import ExperienciaLaboralModalForm from './experienciaLaboralModal'
 import MeritoModalForm from './meritoModal'
 import IdiomaModalForm from './idiomaModal';
 
-const CV = ({ email }) => {
+const CV = (props) => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -54,7 +53,6 @@ const CV = ({ email }) => {
 
     const [expandirReferencias, setExpandirReferencia] = useState(false)
     const [expandirCapacitaciones, setExpandirCapacitaciones] = useState(false)
-    const [expandirCapacitacionesFac, setExpandirCapacitacionesFac] = useState(false)
     const [expandirFormacion, setExpandirFormacion] = useState(false)
     const [expandirPonencias, setExpandirPonencias] = useState(false)
     const [expandirExperienciaLaboral, setExpandirExperienciaLaboral] = useState(false)
@@ -71,7 +69,7 @@ const CV = ({ email }) => {
     const [showModalMerito, setShowModalMerito] = useState(false)
     const [showModalIdioma, setShowModalIdioma] = useState(false)
 
-    const [persona, setPersona] = useState(location.state)
+    const [persona] = useState(location.state)
     const [objeto, setObjeto] = useState(null)
     const [response, setResponse] = useState(null)
     const [id, setId] = useState(null)
@@ -90,7 +88,6 @@ const CV = ({ email }) => {
 
     let referenciasState = useSelector(state => state.referencias.data.referencias)
     let capacitacionesState = useSelector(state => state.capacitaciones.data.capacitaciones)
-    let capacitacionFacState = useSelector(state => state.capacitacionesFacilitador.data.capacitaciones)
     let formacionState = useSelector(state => state.formacionAcademica.data.formacionAcademica)
     let ponenciasState = useSelector(state => state.ponencias.data.ponencias)
     let experienciasState = useSelector(state => state.experienciaLaboral.data.experiencias)
@@ -138,11 +135,6 @@ const CV = ({ email }) => {
 
     }
 
-    let deleteHandlerCapFac = (id) => {
-        setShowModalDelCapFac(true)
-        setId(id)
-
-    }
     let deleteHandlerPon = (id) => {
         setShowModalDelPon(true)
         setId(id)
