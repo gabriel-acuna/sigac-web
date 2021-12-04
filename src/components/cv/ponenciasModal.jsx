@@ -73,7 +73,7 @@ let CapacitacionModalForm = ({ title, handler, children, objeto }) => {
                                     name="caracter"
                                     rules={{ required: true }}
                                     control={control}
-                                    defaultValue={ objeto?.caracter}
+                                    defaultValue={ objeto?.caracter ? objeto.caracter : ''}
                                     render={
                                         ({ field }) =>
                                         (<RadioGroup aria-label="caracter evento"  row {...field} onChange={(ev) => {

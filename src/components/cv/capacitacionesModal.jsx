@@ -150,7 +150,7 @@ let CapacitacionModalForm = ({ title, handler, children, objeto }) => {
                                         name="tipoCertificado"
                                         control={control}
                                         rules={{ required: true }}
-                                        defaultValue={objeto?.tipo_certificado}
+                                        defaultValue={objeto?.tipo_certificado ? objeto.tipo_certificado : ''}
                                         render={
                                             ({ field }) => (
                                                 <RadioGroup aria-label="tipo certificado" {...field} row

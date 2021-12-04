@@ -353,13 +353,12 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                     name="estado"
                                     control={control}
                                     rules={{ required: true }}
-                                    defaultValue={objeto?.estado}
+                                    defaultValue={objeto?.estado ? objeto.estado : ''}
                                     render={
                                         ({ field }) =>
                                         (<RadioGroup aria-label="estado" {...field} onChange={(ev) => {
-                                            setEstadoFormacion(ev.currentTarget.value)
-                                            console.log(ev.currentTarget.value);
-                                            setValue('estado', ev.currentTarget.value, { shouldValidate: true })
+                                            setEstadoFormacion(ev.target.value)
+                                            setValue('estado', ev.target.value, { shouldValidate: true })
 
                                         }}>
                                             {Object.entries(opciones).map((op) => (
@@ -479,6 +478,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                     name="poseeBeca"
                                     control={control}
                                     rules={{ required: true }}
+                                    defaultValue=''
                                     render={
                                         ({ field }) =>
                                         (<RadioGroup aria-label="poseeBeca" {...field} onChange={(ev) => {
@@ -489,6 +489,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
 
                                             <FormControlLabel
                                                 value="SI"
+                                                key="ti-bec001"
                                                 control={<Radio size="small" />}
                                                 label="SI"
                                                 sx={{
@@ -499,6 +500,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                                 }}
                                             />
                                             <FormControlLabel
+                                                key="ti-bec002"
                                                 value="NO"
                                                 control={<Radio size="small" />}
                                                 label="NO"
@@ -532,7 +534,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                     name="tipoBeca"
                                     control={control}
                                     rules={{ required: true }}
-                                    defaultValue={objeto?.tipo_beca.id}
+                                    defaultValue={objeto?.tipo_beca ? objeto.tipo_beca.id : ''}
                                     render={
                                         ({ field }) =>
                                         (<RadioGroup aria-label="tipoBeca" {...field} onChange={(ev) => {
@@ -541,6 +543,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                                         }}>
 
                                             {tipoBecasState.map((tipo) => (<FormControlLabel
+                                                key={tipo.id}
                                                 value={tipo.id}
                                                 control={<Radio size="small" />}
                                                 label={tipo.tipo_beca}

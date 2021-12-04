@@ -38,7 +38,7 @@ import Alert from '../Alert'
 import { useSelector } from 'react-redux'
 import { logOut } from '../../store/user'
 import ConfirmDialog from '../ConfirmDialog'
-import FormacionAcademicaModalForm from './formacioAcademicaModal';
+import FormacionAcademicaModalForm from './formacionAcademicaModal';
 import CapacitacionModalForm from './capacitacionesModal'
 import CapacitacionFacModalForm from './capacitacionesFacModal'
 import PonenciaModalForm from './ponenciasModal'
