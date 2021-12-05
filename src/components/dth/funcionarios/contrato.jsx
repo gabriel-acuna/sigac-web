@@ -174,13 +174,14 @@ let ContratoFuncionario = ({ objeto, register, errors, control, setValue }) => {
                         name="puestoJerarquico"
                         control={control}
                         rules={{ required: true }}
+                        defaultValue={objeto?.puesto_jerarquico ? objeto.puesto_jerarquico : '' }
                         render={
                             ({field}) =>(
                                 <RadioGroup 
                                     aria-label="puesto jerarquico"
                                     row
                                     {...field}
-                                    defaultValue={objeto?.puesto_jerarquico}
+                                    
                                     onChange={
                                         ev=>setValue('puestoJerarquico', ev.target.value)
                                     }

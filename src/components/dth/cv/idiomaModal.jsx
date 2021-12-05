@@ -10,9 +10,9 @@ let IdiomaModalForm = ({ title, handler, children, objeto, persona }) => {
         () => {
 
             reset({
-                idioma: objeto?.idioma,
-                lugarEstudio: objeto?.lugar_estudio,
-                nivel: objeto?.nivel_comprension
+                idioma: objeto?.idioma ? objeto.idioma: '',
+                lugarEstudio: objeto?.lugar_estudio ? objeto.lugar_estudio : '',
+                nivel: objeto?.nivel_comprension ? objeto.nivel_comprension: ''
             })
 
 
@@ -60,7 +60,7 @@ let IdiomaModalForm = ({ title, handler, children, objeto, persona }) => {
                                     name="nivel"
                                     rules={{ required: true }}
                                     control={control}
-                                    defaultValue={objeto?.nivel_comprension}
+                                    defaultValue={objeto?.nivel_comprension ? objeto.nivel_comprension : ''}
                                     render={
                                         ({ field }) => (
                                             <RadioGroup aria-label="nivel de compresión" {...field}

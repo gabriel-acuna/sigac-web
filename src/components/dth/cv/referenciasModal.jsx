@@ -45,13 +45,14 @@ let ReferenciaModalForm = ({ title, handler, children, objeto, persona }) => {
                                 {errors.tipoReferencia && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, seleccione el tipo de referencia!</span>}
 
                                 <Controller name="tipoReferencia" control={control} rules={{ required: true }}
+                                    defaultValue={objeto?.referencia ? objeto.referencia : ''}
                                     render={({ field }) =>
                                     (<RadioGroup aria-label="tipo referencia"
-                                        defaultValue={objeto?.referencia}
+                                        
                                         row
                                         {...field} onChange={(ev) => {
 
-                                            setValue('tipoReferencia', ev.currentTarget.value ? ev.currentTarget.value : null, { shouldValidate: true })
+                                            setValue('tipoReferencia', ev.target.value , { shouldValidate: true })
 
                                         }}>
 

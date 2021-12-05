@@ -352,7 +352,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
                                     name="estado"
                                     control={control}
                                     rules={{ required: true }}
-                                    defaultValue={objeto?.estado}
+                                    defaultValue={objeto?.estado ? objeto.estado : ''}
                                     render={
                                         ({ field }) =>
                                         (<RadioGroup aria-label="estado" {...field} onChange={(ev) => {
@@ -478,6 +478,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
                                     name="poseeBeca"
                                     control={control}
                                     rules={{ required: true }}
+                                    defaultValue=''
                                     render={
                                         ({ field }) =>
                                         (<RadioGroup aria-label="poseeBeca" {...field} onChange={(ev) => {
@@ -488,6 +489,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
 
                                             <FormControlLabel
                                                 value="SI"
+                                                key={`has-bec-001`}
                                                 control={<Radio size="small" />}
                                                 label="SI"
                                                 sx={{
@@ -498,6 +500,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
                                                 }}
                                             />
                                             <FormControlLabel
+                                                key={`has-bec-002`}
                                                 value="NO"
                                                 control={<Radio size="small" />}
                                                 label="NO"
@@ -531,7 +534,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
                                     name="tipoBeca"
                                     control={control}
                                     rules={{ required: true }}
-                                    defaultValue={objeto?.tipo_beca.id}
+                                    defaultValue={objeto?.tipo_beca ? objeto.tipo_beca.id : ''}
                                     render={
                                         ({ field }) =>
                                         (<RadioGroup aria-label="tipoBeca" {...field} onChange={(ev) => {
@@ -543,6 +546,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
                                                 value={tipo.id}
                                                 control={<Radio size="small" />}
                                                 label={tipo.tipo_beca}
+                                                key={tipo.id}
                                                 sx={{
                                                     '& .MuiFormControlLabel-label': {
                                                         fontSize: 14,

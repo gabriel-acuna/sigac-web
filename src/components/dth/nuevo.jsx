@@ -48,18 +48,19 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
     useEffect(
         () => {
-            if (person) {
+            
+            if (person !== null ) {
 
                 reset({
                     fecha_ingreso_ies: person.fecha_ingreso,
-                    tipo_identificacion: person?.tipo_identificacion,
+                    tipo_identificacion: person?.tipo_identificacion ? person.tipo_identificacion : '',
                     identificacion: person.identificacion,
                     primer_apellido: person.primer_apellido,
                     segundo_apellido: person.segundo_apellido,
                     primer_nombre: person.primer_nombre,
                     segundo_nombre: person.segundo_nombre,
-                    sexo: person?.sexo,
-                    estado_civil: person?.estado_civil.id,
+                    sexo: person?.sexo ? person.sexo : '',
+                    estado_civil: person?.estado_civil ? person?.estado_civil.id: '',
                     fecha_nacimiento: person.fecha_nacimiento,
                     email_institucional: person.correo_institucional,
                     email_personal: person.correo_personal,
@@ -85,7 +86,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                     movilContacto: person.contacto_emergencia?.telefono_movil,
                     direccionContacto: person.contacto_emergencia?.direccion,
                     institucion: person.informacion_bancaria?.institucion_financiera,
-                    tipoCuenta: person.informacion_bancaria?.tipo_cuenta,
+                    tipoCuenta: person?.informacion_bancaria?.tipo_cuenta ? person.informacion_bancaria.tipo_cuenta : '', 
                     numeroCuenta: person.informacion_bancaria?.numero_cuenta
 
 
@@ -98,10 +99,15 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
             } else {
                 reset({
-                    porcentaje_discapacidad: 0
+                    porcentaje_discapacidad: 0,
+                    tipo_identificacion: '',
+                    sexo: '',
+                    tipoCuenta:'',
+                    estado_civil: '',
+                    licencia_conduccion: ''
                 })
             }
-
+            
         }, [person, reset]
     )
     let paisesState = useSelector(
@@ -210,7 +216,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                         control={control}
                                         name="tipo_identificacion"
                                         rules={{ required: true }}
-                                        defaultValue={person?.tipo_identificacion}
+                                        defaultValue={''}
                                         render={
                                             ({ field }) => (
                                                 <RadioGroup
@@ -218,21 +224,23 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                                     aria-label="tipo_identificacion"
                                                     {...field}
                                                     onChange={(ev) => {
-                                                        setValue('tipo_identificacion', ev.currentTarget.value ? ev.currentTarget.value : null, { shouldValidate: true })
+                                                        setValue('tipo_identificacion', ev.target.value , { shouldValidate: true })
                                                     }}
                                                 >
-                                                    <FormControlLabel value="CEDULA" label="CEDULA" control={<Radio size="small" key="dff5000" />} sx={{
-                                                        '& .MuiFormControlLabel-label': {
-                                                            fontSize: 14,
-                                                            fontWeight: 500
-                                                        },
-                                                    }} />
-                                                    <FormControlLabel value="PASAPORTE" label="PASAPORTE" control={<Radio size="small" key="hro6567" />} sx={{
-                                                        '& .MuiFormControlLabel-label': {
-                                                            fontSize: 14,
-                                                            fontWeight: 500
-                                                        },
-                                                    }} />
+                                                    <FormControlLabel value="CEDULA" label="CEDULA" key="type-id-0001"
+                                                        control={<Radio size="small" />} sx={{
+                                                            '& .MuiFormControlLabel-label': {
+                                                                fontSize: 14,
+                                                                fontWeight: 500
+                                                            },
+                                                        }} />
+                                                    <FormControlLabel value="PASAPORTE" label="PASAPORTE" control={<Radio size="small"
+                                                        key="type-id-0002" />} sx={{
+                                                            '& .MuiFormControlLabel-label': {
+                                                                fontSize: 14,
+                                                                fontWeight: 500
+                                                            },
+                                                        }} />
                                                 </RadioGroup>
                                             )
                                         }
@@ -307,7 +315,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                     <Controller
                                         control={control}
                                         name="sexo"
-                                        defaultValue={person?.sexo}
+                                        defaultValue={''}
                                         rules={{ required: true }}
                                         render={
                                             ({ field }) => (
@@ -316,16 +324,22 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                                     aria-label="sexo"
                                                     {...field}
                                                     onChange={(ev) => {
-                                                        setValue('sexo', ev.currentTarget.value ? ev.currentTarget.value : null, { shouldValidate: true })
+                                                        setValue('sexo', ev.target.value , { shouldValidate: true })
                                                     }}
                                                 >
-                                                    <FormControlLabel value="HOMBRE" label="HOMBRE" control={<Radio size="small" />} sx={{
+                                                    <FormControlLabel value="HOMBRE" label="HOMBRE" 
+                                                        key="sex-00001"
+                                                        control={<Radio size="small" />} 
+                                                        sx={{
                                                         '& .MuiFormControlLabel-label': {
                                                             fontSize: 14,
                                                             fontWeight: 500
                                                         },
                                                     }} />
-                                                    <FormControlLabel value="MUJER" label="MUJER" control={<Radio size="small" />} sx={{
+                                                    <FormControlLabel value="MUJER" label="MUJER"
+                                                        key="type-id-0002" 
+                                                        control={<Radio size="small" />} 
+                                                        sx={{
                                                         '& .MuiFormControlLabel-label': {
                                                             fontSize: 14,
                                                             fontWeight: 500
@@ -371,12 +385,12 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                     <Controller
                                         control={control}
                                         rules={{ required: true }}
-                                        defaultValue={person?.estado_civil ? person?.estado_civil.id : ''}
+                                        defaultValue={person?.estado_civil ? person.estado_civil.id : ''}
                                         name="estado_civil"
                                         render={
                                             ({ field }) =>
                                             (<RadioGroup aria-label="estado_civil" {...field} onChange={(ev) => {
-                                                setValue('estado_civil', ev.currentTarget.value ? ev.currentTarget.value : null, { shouldValidate: true })
+                                                setValue('estado_civil', ev.target.value , { shouldValidate: true })
 
                                             }}>
 
@@ -387,6 +401,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                                             fontWeight: 500
                                                         },
                                                     }}
+                                                    key={estado.id}
                                                     value={estado.id}
                                                     control={<Radio size="small" />}
                                                     label={estado.estado_civil}
@@ -607,16 +622,16 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                                     aria-label="licencia_conduccion"
                                                     {...field}
                                                     onChange={(ev) => {
-                                                        setValue('licencia_conduccion', ev.currentTarget.value ? ev.currentTarget.value : null, { shouldValidate: true })
+                                                        setValue('licencia_conduccion', ev.target.value, { shouldValidate: true })
                                                     }}
                                                 >
-                                                    <FormControlLabel value="SI" label="SI" control={<Radio size="small" />} sx={{
+                                                    <FormControlLabel value="SI" label="SI" key="has-lic-0001" control={<Radio size="small" />} sx={{
                                                         '& .MuiFormControlLabel-label': {
                                                             fontSize: 14,
                                                             fontWeight: 500
                                                         },
                                                     }} />
-                                                    <FormControlLabel value="NO" label="NO" control={<Radio size="small" />} sx={{
+                                                    <FormControlLabel value="NO" label="NO"  key="has-lic-0002" control={<Radio size="small" />} sx={{
                                                         '& .MuiFormControlLabel-label': {
                                                             fontSize: 14,
                                                             fontWeight: 500
@@ -642,10 +657,10 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                                 aria-label="tipo_licencia"
                                                 {...field}
                                                 onChange={(ev) => {
-                                                    setValue('tipo_licencia', ev.currentTarget.value ? ev.currentTarget.value : null, { shouldValidate: true })
+                                                    setValue('tipo_licencia', ev.target.value , { shouldValidate: true })
                                                 }}
                                             >
-                                                {TIPO_LICENCIA.map((t) => (<FormControlLabel value={t} label={t} control={<Radio size="small" />} sx={{
+                                                {TIPO_LICENCIA.map((t, ind) => (<FormControlLabel value={t} label={t} key={`type-lic-000${ind}`} control={<Radio size="small" />} sx={{
                                                     '& .MuiFormControlLabel-label': {
                                                         fontSize: 14,
                                                         fontWeight: 500
@@ -885,15 +900,16 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                     <Controller
                                         control={control}
                                         name="tipoCuenta"
+                                        defaultValue={''}
                                         render={
-                                            ({ ...field }) => (
+                                            ({ field }) => (
                                                 <RadioGroup
                                                     aria-label="tipoCuenta"
                                                     row
-                                                    defaultValue={person?.informacion_bancaria ? person.informacion_bancaria.tipo_cuenta : ''}
+                                                    
                                                     {...field}
                                                     onChange={
-                                                        (ev) => setValue('tipoCuenta', ev.currentTarget.value ? ev.currentTarget.value : null, { shouldValidate: true })
+                                                        (ev) => setValue('tipoCuenta', ev.target.value , { shouldValidate: true })
                                                     }>
                                                     <FormControlLabel value="AHORRO" label="AHORRO" control={<Radio size="small" key="IU8dff5000" />} sx={{
                                                         '& .MuiFormControlLabel-label': {

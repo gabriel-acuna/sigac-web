@@ -354,9 +354,9 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                 </div>}
                                 {
                                     (actReason === 'NOMBRAMIENTO' || relType === 'NOMBRAMIENTO') && <div className="column">
-                                        <lable className="label is-small">TIPO NOMBRAMIENTO
+                                        <label className="label is-small">TIPO NOMBRAMIENTO
                                             <span className="has-text-success has-text-weight-bold" style={{ cursor: 'pointer' }} onClick={() => setShowModalTipoNombramiento(true)}><IoIosAdd /></span>
-                                        </lable>
+                                        </label>
                                         {errors.tipoNombramiento?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, seleccione el tipo de contrato!</span>}
                                         <Controller
                                             name="tipoNombramiento"

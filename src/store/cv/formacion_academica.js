@@ -59,7 +59,6 @@ export const loadFormacion = createAsyncThunk(
 export const postFormacionAcademica = createAsyncThunk(
     'formacion-academica/post',
     async (formacion, { getState }) => {
-        console.log(formacion);
         let token;
         try {
             token = getState().user.user.jwt.token;
