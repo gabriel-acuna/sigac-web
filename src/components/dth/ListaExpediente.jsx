@@ -245,7 +245,7 @@ let ListaExpediente = (props) => {
                     </div>
                 </div>
                 <div className="columns is-centered">
-                    <div className="column is-6 mb-6">
+                    <div className="column is-6">
 
                         <OptionCard
                             title="Registro laboral"
@@ -294,7 +294,7 @@ let ListaExpediente = (props) => {
 
                     </div>
 
-                    {expedienteState?.detalle && expedienteState?.detalle.length > 0 && <div className="column is-6 mb-6">
+                    {expedienteState?.detalle && expedienteState?.detalle.length > 0 && <div className="column is-6">
                         <OptionCard title="Declaraciones Patrimoniales"
                             columns={['Tipo', 'Fecha presentación', 'Opciones']}
                             expandir={false}
@@ -340,7 +340,7 @@ let ListaExpediente = (props) => {
                 </div>
 
                 {expedienteState?.detalle && expedienteState?.detalle.length > 0 && <div className="columns is-centered">
-                    <div className="column">
+                    <div className="column is-6">
                         <OptionCard
                             title="Familiares"
                             columns={["Parentezco", "Apellidos", "Nombres", "Opciones"]}>
@@ -351,7 +351,7 @@ let ListaExpediente = (props) => {
                             </button></OptionCard>
 
                     </div>
-                    <div className="column">
+                    <div className="column i-6 mb-6">
                         <OptionCard
                             title="Régimen disciplicario"
                             columns={["Año", "Mes", "Sanción", "Opciones"]}>

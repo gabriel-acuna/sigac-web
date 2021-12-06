@@ -20,8 +20,23 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso }) => {
 
                             <div className="column">
                                 <label className="label is-small">Año</label>
-                                {errors.año && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, ingrese el año!</span>}
-                                <input type="number" {...register("año", { required: true })} className="input" min={ingreso} />
+                                {errors.año?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, ingrese el año!</span>}
+                                {errors.año?.type === 'min' && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡El año no puede ser menor al año que ingresó a la institución!</span>}
+                                {errors.año?.type === 'max' && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡El año no puede ser mayor al año actual!</span>}
+
+                                <input type="number" {...register("año", { required: true })} className="input" onChange={
+                                    ev => {
+                                        clearErrors("año")
+                                        if (ev.target.value !== null && ev.target.value !== '' && parseInt(ev.target.value) < parseInt(ingreso)) {
+                                            setError("año", {
+                                                type: 'min'
+                                            })
+                                        } else if (ev.target.value !== null && ev.target.value !== '' && parseInt(ev.target.value) > new Date().getFullYear()) {
+                                            setError("año", {
+                                                type: 'max'
+                                            })
+                                        }
+                                    }} />
 
                             </div>
                             <div className="column">

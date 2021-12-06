@@ -651,7 +651,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                 </TipoContratoModal>
             }
             {
-                showModalTipoNombramiento && <NombramientoModalFrom title="Registar tipo nombramiento" handler={postNombramiento}>
+                showModalTipoNombramiento && <NombramientoModalFrom title="Registrar tipo nombramiento" handler={postNombramiento}>
                     <div className="columns is-centered">
                         <div className="column">
                             {

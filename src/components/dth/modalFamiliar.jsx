@@ -54,8 +54,21 @@ let FamiliarModalForm = ({ title, handler, children, objeto }) => {
 
                             <div className="column">
                                 <label className="label is-small">Identificación</label>
-                                {errors.identificacion && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, ingrese el número de identificación!</span>}
-                                <input type="text" {...register("identificacion", { required: true })} className="input" />
+                                {errors.identificacion?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, ingrese el número de identificación!</span>}
+                                {errors.identificacion?.type === 'maxLength' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Máximo 10 caracteres!</span>}
+                                <input type="text" {...register("identificacion", { required: true })} className="input" onChange={
+                                    ev => {
+                                        clearErrors("identificacion")
+                                        if (ev.target.value.length > 10) {
+                                            setError(
+                                                "identificacion",
+                                                {
+                                                    type: 'maxLength'
+                                                }
+                                            )
+                                        }
+                                    }
+                                } />
 
                             </div>
                             <div className="column">
@@ -118,7 +131,18 @@ let FamiliarModalForm = ({ title, handler, children, objeto }) => {
                                 {errors.fechaNacimiento && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione la fecha de nacimiento!</span>}
 
                                 <label className="label is-small">Fecha de nacimiento</label>
-                                <input type="date" {...register("fechaNacimiento", { required: true })} className="input" defaultValue={objeto?.fecha_nacimiento ? objeto.fecha_nacimiento : ''} />
+                                {errors.fecha_nacimiento?.type === "required" && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la fecha de nacimiento!</span>}
+                                {errors.fecha_nacimiento?.type === "max" && <span className="has-text-danger is-size-7 has-background-danger-light">¡La fecha de nacimiento no puede ser mayor a la fecha actual!</span>}
+                                <input type="date" {...register("fechaNacimiento", { required: true })} className="input" defaultValue={objeto?.fecha_nacimiento ? objeto.fecha_nacimiento : ''}
+                                onChange={
+                                   ev=>{
+                                    clearErrors("fechaNacimiento")
+                                    if (ev.target.value !== null && ev.target.value !=='' && ev.target.valueAsDate > new Date()){
+                                        setError("fecha_nacimiento", { type:'max'})
+                                    }
+                                   }
+
+                                } />
 
                             </div>
                         </div>
