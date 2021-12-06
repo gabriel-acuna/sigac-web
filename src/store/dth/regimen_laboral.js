@@ -6,8 +6,8 @@ import {
 import Axios from 'axios'
 import { API } from '../../services/api'
 
-export const loadDeclaraciones = createAsyncThunk(
-    'declaraciones/load',
+export const loadRegimenes = createAsyncThunk(
+    'regimenes/load',
     async (_, { getState }) => {
         let token;
         try {
@@ -17,7 +17,7 @@ export const loadDeclaraciones = createAsyncThunk(
         }
 
         try {
-            let response = await Axios.get(`${API}/declaraciones-patrimoniales`,
+            let response = await Axios.get(`${API}/regimenes-laborales`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -31,8 +31,8 @@ export const loadDeclaraciones = createAsyncThunk(
     }
 )
 
-export const loadDeclaracionesPersona = createAsyncThunk(
-    'declaraciones/load',
+export const loadRegimen = createAsyncThunk(
+    'regimenes/load',
     async (id, { getState }) => {
         let token;
         try {
@@ -42,7 +42,7 @@ export const loadDeclaracionesPersona = createAsyncThunk(
         }
 
         try {
-            let response = await Axios.get(`${API}/declaraciones-patrimoniales/personal/${id}`,
+            let response = await Axios.get(`${API}/regimenes-laborales/${id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -56,34 +56,9 @@ export const loadDeclaracionesPersona = createAsyncThunk(
     }
 )
 
-export const loadDeclaracion = createAsyncThunk(
-    'declaracion/load',
-    async (id, { getState }) => {
-        let token;
-        try {
-            token = getState().user.user.jwt.token;
-        } catch (e) {
-            throw e;
-        }
-
-        try {
-            let response = await Axios.get(`${API}/declaraciones-patrimoniales/${id}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                })
-            return response.data
-
-        } catch (error) {
-            throw error.response.detail
-        }
-    }
-)
-
-export const postDeclaraciones = createAsyncThunk(
-    'declaraciones/post',
-    async (declaracion, { getState }) => {
+export const postRegimenes = createAsyncThunk(
+    'regimenes/post',
+    async (regimen, { getState }) => {
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -93,8 +68,8 @@ export const postDeclaraciones = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.post(`${API}/declaraciones-patrimoniales`,
-                { persona: declaracion.persona, tipo_declaracion: declaracion.tipoDeclaracion, fecha_presentacion: declaracion.fechaPresentacion },
+            let response = await Axios.post(`${API}/regimenes-laborales`,
+               regimen,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -115,9 +90,9 @@ export const postDeclaraciones = createAsyncThunk(
 
 )
 
-export const putDeclaraciones = createAsyncThunk(
-    'declaraciones/put',
-    async (declaracion, { getState }) => {
+export const putRegimenes = createAsyncThunk(
+    'regimenes/put',
+    async (regimen, { getState }) => {
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -127,8 +102,8 @@ export const putDeclaraciones = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.put(`${API}/declaraciones-patrimoniales`,
-                { id: declaracion.id, tipo_declaracion: declaracion.tipoDeclaracion, fecha_presentacion: declaracion.fechaPresentacion },
+            let response = await Axios.put(`${API}/regimenes-laborales`,regimen
+              ,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -148,8 +123,8 @@ export const putDeclaraciones = createAsyncThunk(
     }
 )
 
-export const deleteDeclaraciones = createAsyncThunk(
-    'declaraciones/delete',
+export const deleteRegimenes = createAsyncThunk(
+    'regimenes/delete',
     async (id, { getState }) => {
         let token;
         try {
@@ -160,7 +135,7 @@ export const deleteDeclaraciones = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.delete(`${API}/declaraciones-patrimoniales/${id}`,
+            let response = await Axios.delete(`${API}/regimenes-laborales/${id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -175,11 +150,11 @@ export const deleteDeclaraciones = createAsyncThunk(
     }
 )
 
-let decalacionesSlice = createSlice({
-    name: 'declaraciones',
+let regimenesSlice = createSlice({
+    name: 'regimenes',
     initialState: {
         data: {
-            declaraciones: []
+            regimenes: []
         },
         status: ''
 
@@ -188,24 +163,24 @@ let decalacionesSlice = createSlice({
 
         clearData: (state) => {
             state.data = {
-                declaraciones: []
+                regimenes: []
 
             }
         }
 
     },
     extraReducers: {
-        [loadDeclaraciones.fulfilled]: (state, action) => {
+        [loadRegimenes.fulfilled]: (state, action) => {
             state.status = 'success'
             state.data = {
-                declaraciones: action.payload
+                regimenes: action.payload
             }
 
         },
-        [loadDeclaracionesPersona.fulfilled]: (state, action) => {
+        [loadRegimenesPersona.fulfilled]: (state, action) => {
             state.status = 'success'
             state.data = {
-                declaraciones: action.payload
+                regimenes: action.payload
             }
 
         }
@@ -215,5 +190,5 @@ let decalacionesSlice = createSlice({
 }
 )
 
-export const { clearData } = decalacionesSlice.actions;
-export default decalacionesSlice.reducer;
+export const { clearData } = regimenesSlice.actions;
+export default regimenesSlice.reducer;
