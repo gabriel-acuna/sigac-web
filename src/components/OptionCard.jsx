@@ -1,24 +1,52 @@
 import { Fragment, useState } from 'react';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai'
-let OptionCard = ({ title, columns, rows, children }) => {
-    const [expandir, setExpandir] = useState(false)
+import ReactDatatable from '@yun548/bulma-react-datatable'
+let OptionCard = ({ title, columns, rows, children, desc }) => {
+
     return (
-        <div className="card">
-            <header className="card-header" onClick={() => setExpandir(!expandir)}>
-                <p className="card-header-title" >{title}</p>
-                <button className="card-header-icon" aria-label="more options">
-                    <span className="icon">
-                        {expandir ? <AiOutlineMinus /> : <AiOutlinePlus />}
-                    </span>
-                </button>
-            </header>
-            {
-                expandir && <div className="card-content">
+        <>
+
+            <div className="columns is-centered">
+                <div className="column is-6">
                     <Fragment>
                         {children}
                     </Fragment>
-                    <div className="table-container mt-1">
-                        <table className="table is-bordered">
+                </div>
+            </div>
+            <div className="columns is-centered mb-6">
+                <div className="column is-8">
+
+                    <ReactDatatable style={{ justifyContent: 'center' }}
+                        className="table is-bordered is-striped"
+                        tHeadClassName="is-info"
+                        config={{
+                            page_size: 10,
+                            length_menu: [10, 20, 50],
+                            show_pagination: true,
+                            pagination: 'advance',
+                            button: {
+                                excel: false,
+                                print: false
+                            },
+                            language: {
+                                length_menu: `Mostrar _MENU_ ${desc} por página`,
+                                filter: "Buscar en registros ...",
+                                no_data_text: `No hay ${desc} registradas`,
+                                info: `Mostrando _START_ a _END_ de _TOTAL_ ${desc}`,
+                                pagination: {
+                                    first: "Primera",
+                                    previous: "Anterior",
+                                    next: "Siguiente",
+                                    last: "Ultima"
+                                }
+
+                            }
+                        }}
+                        records={rows}
+                        columns={columns}
+
+                    />
+                    {/* <table className="table is-bordered">
                             <thead>
                                 <tr>
                                     {
@@ -35,12 +63,13 @@ let OptionCard = ({ title, columns, rows, children }) => {
                                     rows
                                 }
                             </tbody>
-                        </table>
-                    </div>
+                        </table> */}
                 </div>
-            }
+            </div>
 
-        </div>
+
+
+        </>
     )
 }
 

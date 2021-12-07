@@ -94,7 +94,7 @@ export const postDeclaraciones = createAsyncThunk(
         if (!token) return Promise.reject('There is not token')
         try {
             let response = await Axios.post(`${API}/declaraciones-patrimoniales`,
-                { persona: declaracion.persona, tipo_declaracion: declaracion.tipoDeclaracion, fecha_presentacion: declaracion.fechaPresentacion },
+                { persona: declaracion.persona, tipo_declaracion: declaracion.tipoDeclaracion, numero_declaracion: declaracion.numeroDeclaracion, fecha_presentacion: declaracion.fechaPresentacion },
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -128,7 +128,7 @@ export const putDeclaraciones = createAsyncThunk(
         if (!token) return Promise.reject('There is not token')
         try {
             let response = await Axios.put(`${API}/declaraciones-patrimoniales`,
-                { id: declaracion.id, tipo_declaracion: declaracion.tipoDeclaracion, fecha_presentacion: declaracion.fechaPresentacion },
+                { id: declaracion.id, tipo_declaracion: declaracion.tipoDeclaracion, numero_declaracion: declaracion.numeroDeclaracion, fecha_presentacion: declaracion.fechaPresentacion },
                 {
                     headers: {
                         Authorization: `Bearer ${token}`

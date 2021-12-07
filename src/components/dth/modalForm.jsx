@@ -199,7 +199,7 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                                     <Controller
                                         name="tipoPersonal"
                                         rules={{ required: true }}
-                                        defaultValue={objeto?.tipo_personal ? objeto.tipo_persona : ''}
+                                        defaultValue={objeto?.tipo_personal ? objeto.tipo_personal : ''}
                                         control={control}
                                         render={
                                             ({ field }) =>

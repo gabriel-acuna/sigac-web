@@ -52,6 +52,23 @@ let DeclaracionPatrimonialModal = ({ title, handler, children, objeto }) => {
                                 />
                             </div>
                             <div className="column">
+                                <label className="label is-small">Número de declaración</label>
+                                {errors.numeroDeclaracion?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, ingrese el número de declaración!</span>}
+                                {errors.numeroDeclaracion?.type === 'pattern' && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Formato incorrecto este campo debe ser númerico y debe contener entre 5 a 10 dígitos!</span>}
+                                <input type="text" {...register("numeroDeclaracion", {required:true})}  className="input" defaultValue={ objeto?.numero_declaracion ? objeto.numero_declaracion : ''}
+                                    onChange={
+                                        ev=>{
+                                            clearErrors("numeroDeclaracion")
+                                           if (ev.target.value!=='' && ev.target.value!== null & /([0-9]{5,10})/.test(ev.target.value) ===false){
+                                               setError("numeroDeclaracion", {
+                                                   type:"pattern"
+                                               })
+                                           }
+                                        }
+                                    }
+                                 />
+                            </div>
+                            <div className="column">
                                 <label className="label is-small">Fecha presentación</label>
                                 {errors.fechaPresentacion && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione la fecha de presentación!</span>}
 

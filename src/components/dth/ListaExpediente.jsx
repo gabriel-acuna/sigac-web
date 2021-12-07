@@ -15,6 +15,10 @@ import OptionCard from '../OptionCard'
 import ModalDeclaracionPatrimonial from './modalDeclaracion'
 import RegimenModalForm from './modalRegimen'
 import FamiliarModalForm from './modalFamiliar'
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+import TabPanel from '../TabPanel';
 
 let ListaExpediente = (props) => {
     const location = useLocation()
@@ -23,6 +27,7 @@ let ListaExpediente = (props) => {
     const navigate = useNavigate()
     const [persona] = useState(location.state)
     const dispatch = useDispatch()
+    const [activeTab, setActiveTab] = useState(0)
     const [objeto, setObjeto] = useState(null)
     const [showModalForm, setShowModalForm] = useState(false)
     const [showDecModalForm, setShowDecModalForm] = useState(false)
@@ -34,6 +39,13 @@ let ListaExpediente = (props) => {
     const [deteteResponse, setDeleteResponse] = useState(null)
     const [error, setError] = useState(null)
     const [id, setId] = useState(null)
+
+    function a11yProps(index) {
+        return {
+            id: `simple-tab-${index}`,
+            'aria-controls': `simple-tabpanel-${index}`,
+        };
+    }
 
     useEffect(
         () => {
@@ -197,40 +209,57 @@ let ListaExpediente = (props) => {
             <div className="container">
                 <div className="columns is-centered">
                     <div className="column is-half mt-3">
-                        <div className="card">
-                            <header>
-                                <button className="button is-info mt-4 mx-3 is-outlined"
+                        <div className=" panel is-info">
+                            <p className="panel-heading is-size-6">
+                                <span className="icon" style={{ cursor: 'pointer' }}
                                     onClick={event => {
                                         dispatch(clearData())
                                         navigate(-1)
 
                                     }}>
-                                    <span className="icon">
-                                        <IoIosArrowBack />
-                                    </span>
-                                </button>
-                                <Link className="button is-primary mt-4 mx-3 is-outlined" to="cv" state={location.state}><span className="icon"><ImProfile /></span></Link>
 
-                            </header>
-                            {persona && <section className="card-content">
-                                <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr' }}>
-                                    <div>
-                                        <span className="has-text-weight-medium">Nombres: </span> {persona.primer_nombre} {persona.segundo_nombre}
-                                    </div>
-                                    <div >
-                                        <span className="has-text-weight-medium">Apellidos: </span> {persona.primer_apellido} {persona.segundo_apellido}
-                                    </div>
+                                    <IoIosArrowBack />
 
-                                    <div><span className="has-text-weight-medium">Edad: </span> {persona?.edad.años}  años </div>
-                                    <div><span className="has-text-weight-medium">Estado civil: </span> {persona.estado_civil.estado_civil}</div>
-                                    <div><span className="has-text-weight-medium">Teléfono movil: </span> {persona.telefono_movil}</div>
-                                    <div><span className="has-text-weight-medium">Correo: </span> {persona.correo_personal}</div>
-                                </div>
-                            </section>}
+
+                                </span>
+                                Datos personales <span style={{ cursor: 'pointer' }}><Link to="cv" state={location.state}><span className="icon"><ImProfile /></span></Link></span></p>
+                            <div className="panel-block has-background-info-light">
+                                {persona &&
+                                    <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr', padding: '20px' }}>
+
+                                        <div>
+                                            <span className="has-text-weight-medium">Nombres: </span> {persona.primer_nombre} {persona.segundo_nombre}
+                                        </div>
+                                        <div >
+                                            <span className="has-text-weight-medium">Apellidos: </span> {persona.primer_apellido} {persona.segundo_apellido}
+                                        </div>
+
+                                        <div><span className="has-text-weight-medium">Edad: </span> {persona?.edad.años}  años </div>
+                                        <div><span className="has-text-weight-medium">Estado civil: </span> {persona.estado_civil.estado_civil}</div>
+                                        <div><span className="has-text-weight-medium">Teléfono movil: </span> {persona.telefono_movil}</div>
+                                        <div><span className="has-text-weight-medium">Correo: </span> {persona.correo_personal}</div>
+                                    </div>
+                                }
+                            </div>
+
                         </div>
                     </div>
 
                 </div>
+                <hr style={{ backgroundColor: "#b3e6cc" }} />
+                <Box sx={{ width: '100%' }}>
+
+                    <Tabs aria-label="basic tabs example"
+                        value={activeTab} onChange={(ev, newVal) => setActiveTab(newVal)}
+                        variant="scrollable"
+                        scrollButtons="auto" >
+                        <Tab label="Registro laboral" {...a11yProps(0)} sx={{ textTransform: 'none' }} />
+                        {expedienteState?.detalle && expedienteState?.detalle.length && <Tab label="Declaraciones patrimoniales" {...a11yProps(1)} sx={{ textTransform: 'none' }} />}
+                        {expedienteState?.detalle && expedienteState?.detalle.length && <Tab label="Familiares" {...a11yProps(2)} sx={{ textTransform: 'none' }} />}
+                        {expedienteState?.detalle && expedienteState?.detalle.length && <Tab label="Régimen disciplinario" {...a11yProps(3)} sx={{ textTransform: 'none' }} />}
+                    </Tabs>
+
+                </Box>
                 <div className="columns is-centered">
                     <div className="column  is-3">
                         {deteteResponse && deteteResponse.type === 'warning' && <Alert type={'is-warning is-light'} content={deteteResponse.content}>
@@ -244,124 +273,134 @@ let ListaExpediente = (props) => {
                         </Alert>}
                     </div>
                 </div>
-                <div className="columns is-centered">
-                    <div className="column is-6">
-
-                        <OptionCard
-                            title="Registro laboral"
-                            columns={['No. Doc.', 'Inicio', 'Fin', 'Opciones']}
-                            expandir={false}
-                            rows={
-                                expedienteState?.detalle.map(
+                <TabPanel value={activeTab} index={0}>
 
 
+                    <OptionCard
+                        title="Registro laboral"
+                        desc="registros laborales"
+                        columns={[
+                            { key: 'numero_documento', text: 'No. Doc.' },
+                            { key: 'fecha_inicio', text: 'Inicio', sortable: true },
+                            { key: 'fecha_fin', text: 'Fin' },
+                            { key: 'opciones', text: 'Opciones' }
 
-                                    (row, index) =>
-                                    (<tr key={row.id}>
-                                        <td key={`0${row.id}0`}>{row.numero_documento}</td>
-                                        <td key={`0${row.id}1`}>{row.fecha_inicio}</td>
-                                        <td key={`0${row.id}2`}>{row.fecha_fin}</td>
-                                        <td key={`0${row.id}3`}>
-                                            <button className="button is-small is-primary mx-2 is-outlined" onClick={ev => {
-                                                setObjeto(row)
-                                                setShowModalForm(true)
-                                            }}>
-                                                <span className="icon">
-                                                    <FaRegEdit />
-                                                </span>
-                                            </button>
-                                            <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
-                                                deleteHandler(row.id)
-                                            }}>
-                                                <span className="icon">
-                                                    <AiOutlineDelete />
-                                                </span>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    )
+                        ]}
 
+                        expandir={false}
+                        rows={
+                            expedienteState?.detalle.map(
+
+
+
+                                (row, index) =>
+                                {return {
+                                    id: row.id,
+                                    numero_documento:row.numero_documento,
+                                    fecha_inicio: row.fecha_inicio,
+                                    fecha_fin:row.fecha_fin,
+                                    
+                                        opciones:[<button className="button is-small is-primary mx-2 is-outlined"  key={`${row.id}0`} onClick={ev => {
+                                            setObjeto(row)
+                                            setShowModalForm(true)
+                                        }}>
+                                            <span className="icon">
+                                                <FaRegEdit />
+                                            </span>
+                                        </button>,
+                                        <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
+                                            deleteHandler(row.id)
+                                        }}>
+                                            <span className="icon">
+                                                <AiOutlineDelete />
+                                            </span>
+                                        </button>]
+                                    
+                                    }
+                        }
+
+                            )
+                        }
+                    >
+                        <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalForm(true)}>
+                            <span className="icon">
+                                <IoIosAddCircleOutline />
+                            </span>
+                        </button>
+
+                    </OptionCard>
+
+
+                </TabPanel>
+                <TabPanel value={activeTab} index={1}>
+
+                    <OptionCard title="Declaraciones patrimoniales"
+                        columns={['Tipo', 'Fecha presentación', 'Opciones']}
+                        expandir={false}
+                        rows={
+                            declaracionesState.map(
+
+                                (row) =>
+                                (<tr key={row.id}>
+                                    <td key={`0${row.id}0`}>{row.tipo_declaracion}</td>
+                                    <td key={`0${row.id}1`}>{row.fecha_presentacion}</td>
+                                    <td key={`0${row.id}2`}>
+                                        <button className="button is-small is-primary mx-2 is-outlined" onClick={ev => {
+                                            setObjeto(row)
+                                            setShowDecModalForm(true)
+                                        }}>
+                                            <span className="icon">
+                                                <FaRegEdit />
+                                            </span>
+                                        </button>
+                                        <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
+                                            deleteDecHandler(row.id)
+                                        }}>
+                                            <span className="icon">
+                                                <AiOutlineDelete />
+                                            </span>
+                                        </button>
+                                    </td>
+                                </tr>
                                 )
-                            }
-                        >
-                            <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalForm(true)}>
-                                <span className="icon">
-                                    <IoIosAddCircleOutline />
-                                </span>
-                            </button>
 
-                        </OptionCard>
+                            )
+                        }
+                    >
 
-                    </div>
+                        <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowDecModalForm(true)}>
+                            <span className="icon">
+                                <IoIosAddCircleOutline />
+                            </span>
+                        </button>
+                    </OptionCard>
 
-                    {expedienteState?.detalle && expedienteState?.detalle.length > 0 && <div className="column is-6">
-                        <OptionCard title="Declaraciones Patrimoniales"
-                            columns={['Tipo', 'Fecha presentación', 'Opciones']}
-                            expandir={false}
-                            rows={
-                                declaracionesState.map(
+                </TabPanel>
 
-                                    (row) =>
-                                    (<tr key={row.id}>
-                                        <td key={`0${row.id}0`}>{row.tipo_declaracion}</td>
-                                        <td key={`0${row.id}1`}>{row.fecha_presentacion}</td>
-                                        <td key={`0${row.id}2`}>
-                                            <button className="button is-small is-primary mx-2 is-outlined" onClick={ev => {
-                                                setObjeto(row)
-                                                setShowDecModalForm(true)
-                                            }}>
-                                                <span className="icon">
-                                                    <FaRegEdit />
-                                                </span>
-                                            </button>
-                                            <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
-                                                deleteDecHandler(row.id)
-                                            }}>
-                                                <span className="icon">
-                                                    <AiOutlineDelete />
-                                                </span>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    )
 
-                                )
-                            }
-                        >
+                <TabPanel value={activeTab} index={2}>
 
-                            <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowDecModalForm(true)}>
-                                <span className="icon">
-                                    <IoIosAddCircleOutline />
-                                </span>
-                            </button>
-                        </OptionCard>
+                    <OptionCard
+                        title="Familiares"
+                        columns={["Parentezco", "Apellidos", "Nombres", "Opciones"]}>
+                        <button className="button  is-success mx-3 is-outlined" onClick={() => setShowFamModalForm(true)}>
+                            <span className="icon">
+                                <IoIosAddCircleOutline />
+                            </span>
+                        </button></OptionCard>
 
-                    </div>}
-                </div>
+                </TabPanel>
+                <TabPanel value={activeTab} index={3}>
+                    <OptionCard
+                        title="Régimen disciplicario"
+                        columns={["Año", "Mes", "Sanción", "Opciones"]}>
+                        <button className="button  is-success mx-3 is-outlined" onClick={() => setShowRegModalForm(true)}>
+                            <span className="icon">
+                                <IoIosAddCircleOutline />
+                            </span>
+                        </button></OptionCard>
+                </TabPanel>
 
-                {expedienteState?.detalle && expedienteState?.detalle.length > 0 && <div className="columns is-centered">
-                    <div className="column is-6">
-                        <OptionCard
-                            title="Familiares"
-                            columns={["Parentezco", "Apellidos", "Nombres", "Opciones"]}>
-                            <button className="button  is-success mx-3 is-outlined" onClick={() => setShowFamModalForm(true)}>
-                                <span className="icon">
-                                    <IoIosAddCircleOutline />
-                                </span>
-                            </button></OptionCard>
-
-                    </div>
-                    <div className="column i-6 mb-6">
-                        <OptionCard
-                            title="Régimen disciplicario"
-                            columns={["Año", "Mes", "Sanción", "Opciones"]}>
-                            <button className="button  is-success mx-3 is-outlined" onClick={() => setShowRegModalForm(true)}>
-                                <span className="icon">
-                                    <IoIosAddCircleOutline />
-                                </span>
-                            </button></OptionCard>
-                    </div>
-                </div>}
             </div>
             {/*modal registro laboral */}
             {
@@ -463,7 +502,7 @@ let ListaExpediente = (props) => {
                             : `Editando régimen disciplinario de : ${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`
                     }
                     objeto={objeto}
-                    ingreso={persona.fecha_ingreso.slice(0,4)}
+                    ingreso={persona.fecha_ingreso.slice(0, 4)}
                 >
                     <button className="button is-small is-danger mx-3"
                         onClick={() => {
