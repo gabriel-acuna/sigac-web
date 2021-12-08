@@ -40,7 +40,7 @@ let ExperienciaLaboralModal = ({ title, handler, children, objeto, persona }) =>
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
                         <div className="columns">
                             <div className="column">
-                                <label className="label is-small is-uppercase">Empresa/Institución</label>
+                                <label className="label is-small">Empresa/Institución</label>
                                 {errors.empresa && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la empresa en la que laboró!</span>}
                                 <div className="control">
                                     <input type="text" className="input is-uppercase" {...register('empresa', { required: true })} />
@@ -48,7 +48,7 @@ let ExperienciaLaboralModal = ({ title, handler, children, objeto, persona }) =>
 
                             </div>
                             <div className="column">
-                                <label className="label is-small is-uppercase">Unidad administrativa</label>
+                                <label className="label is-small">Unidad administrativa</label>
                                 {errors.unidadAdministrativa && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la unidad administrativa en la que laboró!</span>}
                                 <div className="control">
                                     <input type="text" className="input is-uppercase" {...register('unidadAdministrativa', { required: true })} />
@@ -58,7 +58,7 @@ let ExperienciaLaboralModal = ({ title, handler, children, objeto, persona }) =>
 
 
                             <div className="column">
-                                <label className="label is-small is-uppercase">Lugar</label>
+                                <label className="label is-small">Lugar</label>
                                 {errors.lugar && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el lugar donde laboró!</span>}
                                 <div className="control">
                                     <input type="text" className="input input is-uppercase" {...register('lugar', { required: true })} />
@@ -67,7 +67,7 @@ let ExperienciaLaboralModal = ({ title, handler, children, objeto, persona }) =>
                             </div>
 
                             <div className="column">
-                                <label className="label is-small is-uppercase">Cargo</label>
+                                <label className="label is-small">Cargo</label>
                                 {errors.evento && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el cargo !</span>}
                                 <div className="control">
                                     <input type="text" className="input input is-uppercase" {...register('cargo', { required: true })} />
@@ -81,7 +81,7 @@ let ExperienciaLaboralModal = ({ title, handler, children, objeto, persona }) =>
 
 
                             <div className="column">
-                                <label className="label is-small is-uppercase">Incio</label>
+                                <label className="label is-small">Incio</label>
                                 {errors.inicio && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la fecha de inicio del evento!</span>}
                                 <div className="control">
                                     <input type="month" className="input" {...register('inicio', { required: true })}
@@ -102,7 +102,7 @@ let ExperienciaLaboralModal = ({ title, handler, children, objeto, persona }) =>
 
                             </div>
                             <div className="column">
-                                <label className="label is-small is-uppercase">Motivo ingreso</label>
+                                <label className="label is-small">Motivo ingreso</label>
                                 {errors.motivoIngreso && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el motivo de salida!</span>}
                                 <div className="control">
                                     <input type="text" className="input is-uppercase" {...register('motivoIngreso', { required: true })} />
@@ -111,7 +111,7 @@ let ExperienciaLaboralModal = ({ title, handler, children, objeto, persona }) =>
                             </div>
 
                             <div className="column">
-                                <label className="label is-small is-uppercase">Fin</label>
+                                <label className="label is-small">Fin</label>
                                 {errors.fin && <span className="has-text-danger is-size-7 has-background-danger-light">{errors.fin.message}</span>}
                                 <div className="control">
                                     <input type="month" className="input" {...register('fin')}
@@ -133,7 +133,7 @@ let ExperienciaLaboralModal = ({ title, handler, children, objeto, persona }) =>
 
                             </div>
                             <div className="column">
-                                <label className="label is-small is-uppercase">Motivo salida</label>
+                                <label className="label is-small">Motivo salida</label>
                                 {errors.motivoSalida && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el motivo de salida!</span>}
                                 <div className="control">
                                     <input type="text" className="input is-uppercase" {...register('motivoSalida', { required: getValues('fin') !== '' })} />

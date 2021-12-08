@@ -40,7 +40,7 @@ let CapacitacionModalForm = ({ title, handler, children, objeto, persona }) => {
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
                         <div className="columns">
                             <div className="column">
-                                <label className="label is-small is-uppercase">Tema</label>
+                                <label className="label is-small">Tema</label>
                                 {errors.tema && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la función desempeñada en el evento!</span>}
                                 <div className="control">
                                     <input type="text" className="input is-uppercase" {...register('tema', { required: true })} />
@@ -52,7 +52,7 @@ let CapacitacionModalForm = ({ title, handler, children, objeto, persona }) => {
                         <div className="columns">
 
                             <div className="column">
-                                <label className="label is-small is-uppercase">Institución organizadora</label>
+                                <label className="label is-small">Institución organizadora</label>
                                 {errors.institucionOrganizadora && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la institucion organizadora!</span>}
                                 <div className="control">
                                     <input type="text" className="input input is-uppercase" {...register('institucionOrganizadora', { required: true })} />
@@ -61,7 +61,7 @@ let CapacitacionModalForm = ({ title, handler, children, objeto, persona }) => {
                             </div>
 
                             <div className="column">
-                                <label className="label is-small is-uppercase">Evento</label>
+                                <label className="label is-small">Evento</label>
                                 {errors.evento && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el evento!</span>}
                                 <div className="control">
                                     <input type="text" className="input input is-uppercase" {...register('evento', { required: true })} />
@@ -70,7 +70,7 @@ let CapacitacionModalForm = ({ title, handler, children, objeto, persona }) => {
                             </div>
 
                             <div className="column">
-                                <label className="label is-small is-uppercase">Caracter</label>
+                                <label className="label is-small">Caracter</label>
                                 {errors.caracter && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleecione el caracter del evento!</span>}
                                 <Controller
                                     name="caracter"
@@ -120,7 +120,7 @@ let CapacitacionModalForm = ({ title, handler, children, objeto, persona }) => {
                         <div className="columns">
                             <div className="column">
 
-                                <label className="label is-small is-uppercase">Lugar</label>
+                                <label className="label is-small">Lugar</label>
                                 {errors.lugar && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el lugar donde se llevó a cabo el evento!</span>}
                                 <div className="control">
                                     <input type="text" className="input is-uppercase" {...register('lugar', { required: true })} />
@@ -130,7 +130,7 @@ let CapacitacionModalForm = ({ title, handler, children, objeto, persona }) => {
 
 
                             <div className="column">
-                                <label className="label is-small is-uppercase">Fecha</label>
+                                <label className="label is-small">Fecha</label>
                                 {errors.fecha && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la fecha de inicio del evento!</span>}
                                 <div className="control">
                                     <input type="month" className="input" {...register('fecha', { required: true })}

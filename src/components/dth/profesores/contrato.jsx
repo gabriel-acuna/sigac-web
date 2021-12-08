@@ -13,10 +13,10 @@ let ContratoProfesor = ({ objeto, register, errors, relacion, control, setValue 
     let categoriasContratosState = useSelector(state => state.categoriasContratos.data.categoriasContrato)
     let tiemposDedicacionesState = useSelector(state => state.tiemposDedicaciones.data.tiemposDedicaciones)
     const [scaleType, setScaleType] = useState(null)
-    
-    useEffect(()=>{
+
+    useEffect(() => {
         setScaleType(objeto?.escalafon_nombramiento?.escalafon_nombramiento)
-    },[objeto])
+    }, [objeto])
 
 
     let filtarEscalafones = () => {
@@ -61,8 +61,7 @@ let ContratoProfesor = ({ objeto, register, errors, relacion, control, setValue 
                     if (row.categoria_contrato.startsWith('OCASIONAL')
                         || row.categoria_contrato.startsWith('HONORARIO')
                         || row.categoria_contrato.startsWith('INVITADO')
-                        || row.categoria_contrato.startsWith('NO TITULAR'))
-                       { options.push({ label: row.categoria_contrato, value: row.id, key: row.id })}
+                        || row.categoria_contrato.startsWith('NO TITULAR')) { options.push({ label: row.categoria_contrato, value: row.id, key: row.id }) }
                 }
             )
         }
@@ -76,7 +75,7 @@ let ContratoProfesor = ({ objeto, register, errors, relacion, control, setValue 
 
             <div className="columns">
                 <div className="column">
-                    <label className="label is-small">CONTRATO RELACIONADO</label>
+                    <label className="label is-small">Contrato relacionado</label>
                     <div className="control">
                         <input  {...register("contratoRelacionado")} className="input" />
 
@@ -84,10 +83,10 @@ let ContratoProfesor = ({ objeto, register, errors, relacion, control, setValue 
                     </div>
                 </div>
                 <div className="column">
-                    <div className="control">
-                        <label className="label is-small">TIPO ESCALAFON</label>
-                        {errors.escalafonNombramiento && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el tipo de escalafón!</span>}
-                    </div>
+
+                    <label className="label is-small">Tipo escalafón</label>
+                    {errors.escalafonNombramiento && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el tipo de escalafón!</span>}
+
                     <Controller
                         name="escalafonNombramiento"
                         control={control}
@@ -113,10 +112,10 @@ let ContratoProfesor = ({ objeto, register, errors, relacion, control, setValue 
                 </div>
 
                 <div className="column">
-                    <div className="control">
-                        <label className="label is-small">CATEGORIA</label>
-                        {errors.categoriaContrato && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione la categoria contrato!</span>}
-                    </div>
+
+                    <label className="label is-small">Categoría</label>
+                    {errors.categoriaContrato && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione la categoria contrato!</span>}
+
                     <Controller
                         name="categoriaContrato"
                         control={control}
@@ -148,7 +147,7 @@ let ContratoProfesor = ({ objeto, register, errors, relacion, control, setValue 
             <div className="columns">
                 <div className="column">
                     <div className="control">
-                        <label className="label is-small">NIVEL</label>
+                        <label className="label is-small">Nivel</label>
                         {errors.nivel && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el nivel educativo en el que dicta clase el profesor!</span>}
                     </div>
 
@@ -191,7 +190,7 @@ let ContratoProfesor = ({ objeto, register, errors, relacion, control, setValue 
                 </div>
                 <div className="column">
                     <div className="control">
-                        <label className="label is-small">TIEMPO DEDICACION</label>
+                        <label className="label is-small">Tiempo dedicación</label>
                         {errors.tiempoDedicacion && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el timepo de decicación!</span>}
                     </div>
                     <Controller
@@ -233,11 +232,11 @@ let ContratoProfesor = ({ objeto, register, errors, relacion, control, setValue 
                 <div className="column">
 
                     <label className="label is-small">
-                        REMUNERACION HORA
+                        Remuneración hora
                     </label>
                     {errors.remuneracionHora && <span>¡Por favor, Ingrese la remuneración por hora!</span>}
 
-                    <input type="number" defaultValue="0.00"  min="0" {...register("remuneracionHora")} className="input" />
+                    <input type="number" defaultValue="0.00" min="0" {...register("remuneracionHora")} className="input" />
 
 
                 </div>

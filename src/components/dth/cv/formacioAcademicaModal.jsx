@@ -62,13 +62,13 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
 
     useEffect(
         () => {
-            if(pais?.label){
+            if (pais?.label) {
                 dispatch(loadIESNacionales())
             }
             if (objeto !== null) {
 
 
-               
+
                 setNivelEdu(objeto.nivel_educativo.nivel)
                 setEstadoFormacion(objeto.estado)
                 setTipoFin(objeto.financiamiento?.financiamiento)
@@ -107,7 +107,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
                         <div className="columns">
                             <div className="column is-5">
 
-                                <label className="label is-small is-uppercase">País estudio</label>
+                                <label className="label is-small">País estudio</label>
 
                                 {errors.paisEstudio && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el país donde realizó o está realizado sus estudios!</span>}
 
@@ -156,9 +156,9 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
                         <div className="columns">
                             {pais?.label === 'ECUADOR' && <div className="column">
                                 <div className="control">
-                                    <label className="label is-small is-uppercase">IES</label>
+                                    <label className="label is-small">IES</label>
                                     {/* <input type="text" className="input is-uppercase" onChange={ev => filtrarIES(ev.target.value)} /> */}
-                                    {errors.ies && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, seleecione la IES en la está realizado o realizó su formación!</span>}
+                                    {errors.ies && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, seleecione la IES en la que está realizado o realizó su formación!</span>}
                                 </div>
                                 <Controller
                                     name="ies"
@@ -198,7 +198,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
                             </div>}
 
                             {pais?.label !== 'ECUADOR' && <div className="column">
-                                <label className="label is-small is-uppercase">Nombre IES</label>
+                                <label className="label is-small">Nombre IES</label>
                                 {errors.nombreIES && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el nombre de la IES Internacional!</span>}
                                 <div className="control">
                                     <input type="text" className="input is-uppercase" {...register('nombreIES', { required: true })} />
@@ -209,10 +209,10 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
                         </div>
                         <div className="columns is-multiline">
                             <div className="column is-4">
-                                <div className="control">
-                                    <label className="label is-small is-uppercase">Nivel Educativo</label>
-                                    {errors.nivel && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el nivel educativo!</span>}
-                                </div>
+
+                                <label className="label is-small">Nivel educativo</label>
+                                {errors.nivel && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el nivel educativo!</span>}
+
 
 
                                 <Controller
@@ -267,10 +267,10 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
                             </div>
 
                             {nivelEdu === 'CUARTO NIVEL' && <div className="column is-6">
-                                <div className="control">
-                                    <label className="label is-small is-uppercase">Grado</label>
-                                    {errors.grado && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el grado!</span>}
-                                </div>
+
+                                <label className="label is-small">Grado</label>
+                                {errors.grado && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el grado!</span>}
+
                                 <Controller
                                     control={control}
                                     name="grado"
@@ -307,7 +307,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
                         </div>
                         <div className="columns">
                             <div className="column is-6">
-                                <label className="label is-small is-uppercase">Título</label>
+                                <label className="label is-small">Título</label>
                                 {errors.titulo && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el título!</span>}
                                 <div className="control">
                                     <input className="input is-uppercase" {...register('titulo', { required: true })} />
@@ -316,10 +316,10 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
                             </div>
 
                             <div className="column">
-                                <div className="control">
-                                    <label className="label is-small is-uppercase">Campo de estudio</label>
-                                    {/* <input type="text" className="input" onChange={ev => filtrarCampos(ev.target.value)} /> */}
-                                </div>
+
+                                <label className="label is-small">Campo de estudio</label>
+                                {/* <input type="text" className="input" onChange={ev => filtrarCampos(ev.target.value)} /> */}
+
                                 {errors.campoEstudio && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el campo de estudio!</span>}
 
                                 <Controller
@@ -348,10 +348,10 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
 
                         <div className="columns">
                             <div className="column">
-                                <div className="control">
-                                    <label className="label is-small is-uppercase"> Estado</label>
-                                    {errors.estado && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el estado de la formación académica!</span>}
-                                </div>
+
+                                <label className="label is-small"> Estado</label>
+                                {errors.estado && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el estado de la formación académica!</span>}
+
                                 <Controller
                                     name="estado"
                                     control={control}
@@ -361,7 +361,6 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
                                         ({ field }) =>
                                         (<RadioGroup aria-label="estado" {...field} onChange={(ev) => {
                                             setEstadoFormacion(ev.currentTarget.value)
-                                            console.log(ev.currentTarget.value);
                                             setValue('estado', ev.currentTarget.value, { shouldValidate: true })
 
                                         }}>
@@ -394,7 +393,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
 
                             </div>
                             <div className="column">
-                                <label className="label is-small is-uppercase">Fecha inicio</label>
+                                <label className="label is-small">Fecha inicio</label>
                                 {errors.fechaInicio && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la fecha de inicio del evento!</span>}
                                 {errors.fecha_ingreso_ies?.type === 'max' && <span className="has-text-danger is-size-7 has-background-danger-light">¡La fecha de inicio no puede ser mayor a la fecha actual!</span>}
                                 <div className="control">
@@ -416,7 +415,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
                             </div>
 
                             {estadoFormacion === 'FINALIZADO' && <div className="column">
-                                <label className="label is-small is-uppercase">Fecha fin</label>
+                                <label className="label is-small">Fecha fin</label>
                                 {errors.fechaFin && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la fecha de finalización del evento!</span>}
                                 {errors.fechaFin?.type === 'min' && <span className="has-text-danger is-size-7 has-background-danger-light">{errors.fechaFin.message}</span>}
 
@@ -436,7 +435,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
                             </div>}
 
                             {estadoFormacion === 'FINALIZADO' && <div className="column">
-                                <label className="label is-small is-uppercase">No Registro Senescyst</label>
+                                <label className="label is-small">No registro SENESCYT</label>
                                 {errors.registroSenescyt && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, ingrese el número registro Senescyt!</span>}
                                 <div className="control">
                                     <input type="text" className="input" {...register('registroSenescyt', { required: true })} />
@@ -448,10 +447,10 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
                         </div>
                         <div className="columns">
                             {estadoFormacion === 'FINALIZADO' && <div className="column">
-                                <div className="control">
-                                    <label className="label is-small is-uppercase">Fecha Obtención título</label>
-                                    {errors.fechaObtencionTitulo?.type === 'min' && <span className="has-text-danger is-size-7 has-background-danger-light">{errors.fechaObtencionTitulo.message}</span>}
-                                </div>
+
+                                <label className="label is-small">Fecha obtención título</label>
+                                {errors.fechaObtencionTitulo?.type === 'min' && <span className="has-text-danger is-size-7 has-background-danger-light">{errors.fechaObtencionTitulo.message}</span>}
+
                                 <div className="control">
                                     <input type="date" className="input" {...register('fechaObtencionTitulo', { required: true })} onChange={
                                         ev => {
@@ -468,7 +467,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
                             </div>
                             }
                             <div className="column">
-                                <label className="label is-small is-uppercase">Lugar</label>
+                                <label className="label is-small">Lugar</label>
                                 {errors.lugar && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el lugar donde relizó su formación académica!</span>}
                                 <div className="control">
                                     <input type="text" className="input is-uppercase" {...register('lugar', { required: true })} />
@@ -476,7 +475,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
 
                             </div>
                             {estadoFormacion === 'EN CURSO' && <div className="column">
-                                <label className="label is-small is-uppercase">Posee beca</label>
+                                <label className="label is-small">Posee beca</label>
                                 {errors.poseeBeca && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione una opción!</span>}
                                 <Controller
                                     name="poseeBeca"
@@ -531,7 +530,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
                             </div>}
 
                             {tieneBeca === 'SI' && <div className="column">
-                                <label className="label is-small is-uppercase">Tipo beca</label>
+                                <label className="label is-small">Tipo beca</label>
                                 {errors.tipoBeca && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el tipo de beca!</span>}
 
                                 <Controller
@@ -574,7 +573,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
                         <div className="columns">
                             {tieneBeca === 'SI' &&
                                 <div className="column">
-                                    <label className="label is-small is-uppercase">Monto beca</label>
+                                    <label className="label is-small">Monto beca</label>
                                     {errors.montoBeca?.type === "required" && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, ingrese el monto de la beca!</span>}
                                     {errors.montoBeca?.type === "min" && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, ingrese un monto correcto!</span>}
                                     <input type="number" className="input" {...register('montoBeca', { required: true })} onChange={
@@ -591,10 +590,10 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
                             }
                             {tieneBeca === 'SI' &&
                                 <div className="column">
-                                    <div className="control">
-                                        <label className="label is-small is-uppercase">Tipo finaciamiento</label>
-                                        {errors.financiamiento && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el tipo de financiamiento!</span>}
-                                    </div>
+
+                                    <label className="label is-small">Tipo finaciamiento</label>
+                                    {errors.financiamiento && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el tipo de financiamiento!</span>}
+
                                     <Controller
                                         control={control}
                                         name="financiamiento"
@@ -639,10 +638,10 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
                                 </div>
                             }
                             {tieneBeca === 'SI' && tipoFin === 'OTRO' && <div className="column">
-                                <div className="control">
-                                    <label className="label is-small is-uppercase">Descripción</label>
-                                    {errors.financiamiento && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, describa el tipo de financiamiento!</span>}
-                                </div>
+
+                                <label className="label is-small">Descripción</label>
+                                {errors.financiamiento && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, describa el tipo de financiamiento!</span>}
+
                                 <div className="control">
                                     <input className="input" {...register('descripcion', { required: true })} />
 

@@ -38,7 +38,7 @@ let CapacitacionFacilitadorModalForm = ({ title, handler, children, objeto }) =>
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
                         <div className="columns">
                             <div className="column">
-                                <label className="label is-small">Función Evento</label>
+                                <label className="label is-small">Función evento</label>
                                 {errors.funcionEvento && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la función desempeñada en el evento!</span>}
                                 <div className="control">
                                     <input type="text" className="input is-uppercase" {...register('funcionEvento', { required: true })} />

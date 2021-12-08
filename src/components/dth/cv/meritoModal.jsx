@@ -38,7 +38,7 @@ let MeritoModalForm = ({ title, handler, children, objeto, persona }) => {
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
                         <div className="columns">
                             <div className="column">
-                                <label className="label is-small is-uppercase">Titulo</label>
+                                <label className="label is-small">Titulo</label>
                                 {errors.titulo && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la función desempeñada en el funcion!</span>}
                                 <div className="control">
                                     <input type="text" className="input is-uppercase" {...register('titulo', { required: true })} />
@@ -49,7 +49,7 @@ let MeritoModalForm = ({ title, handler, children, objeto, persona }) => {
 
 
                             <div className="column">
-                                <label className="label is-small is-uppercase">Institución auspiciante</label>
+                                <label className="label is-small">Institución auspiciante</label>
                                 {errors.institucionAuspiciante && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la institucion asuspiciante!</span>}
                                 <div className="control">
                                     <input type="text" className="input input is-uppercase" {...register('institucionAuspiciante', { required: true })} />
@@ -58,7 +58,7 @@ let MeritoModalForm = ({ title, handler, children, objeto, persona }) => {
                             </div>
 
                             <div className="column">
-                                <label className="label is-small is-uppercase">Funcion</label>
+                                <label className="label is-small">Funcion</label>
                                 {errors.funcion && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la funcion!</span>}
                                 <div className="control">
                                     <input type="text" className="input input is-uppercase" {...register('funcion', { required: true })} />
@@ -68,7 +68,7 @@ let MeritoModalForm = ({ title, handler, children, objeto, persona }) => {
 
 
                             <div className="column">
-                                <label className="label is-small is-uppercase">Inicio</label>
+                                <label className="label is-small">Inicio</label>
                                 {errors.inicio && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la fecha de inicio del mérito!</span>}
                                 <div className="control">
                                     <input type="date" className="input" {...register('inicio', { required: true })}
@@ -89,7 +89,7 @@ let MeritoModalForm = ({ title, handler, children, objeto, persona }) => {
                             </div>
 
                             <div className="column">
-                                <label className="label is-small is-uppercase">Fin</label>
+                                <label className="label is-small">Fin</label>
                                 {errors.fin && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese fecha de finalización del mérito!</span>}
                                 <div className="control">
                                     <input type="date" className="input" {...register('fin', { required: true })}
