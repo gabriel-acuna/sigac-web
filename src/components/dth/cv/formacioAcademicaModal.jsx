@@ -20,7 +20,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
     const opciones = { TERMINADA: "FINALIZADO", CURSANDO: "EN CURSO" }
     const [estadoFormacion, setEstadoFormacion] = useState(null)
     const [nivelEdu, setNivelEdu] = useState(null)
-    const [pais, setPais] = useState(null)
+    const [pais, setPais] = useState({ label: objeto?.pais_estudio.pais, value: objeto?.pais_estudio.id })
     const [tieneBeca, setTieneBeca] = useState(null)
     const [tipoFin, setTipoFin] = useState(null)
     const dispatch = useDispatch()
@@ -62,10 +62,13 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
 
     useEffect(
         () => {
+            if(pais?.label){
+                dispatch(loadIESNacionales())
+            }
             if (objeto !== null) {
 
 
-                setPais({ label: objeto.pais_estudio.pais, value: objeto.pais_estudio.id })
+               
                 setNivelEdu(objeto.nivel_educativo.nivel)
                 setEstadoFormacion(objeto.estado)
                 setTipoFin(objeto.financiamiento?.financiamiento)
@@ -88,7 +91,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
 
                 })
             }
-        }, [objeto, reset]
+        }, [objeto, reset, dispatch, pais]
     )
 
     return (
@@ -101,13 +104,13 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
                 <section className="modal-card-body">
 
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
-                        <div className="columns is-multiline">
-                            <div className="column is-full">
-                                <div className="control">
-                                    <label className="label is-small is-uppercase">País estudio</label>
+                        <div className="columns">
+                            <div className="column is-5">
 
-                                    {errors.paisEstudio && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el país donde realizó o está realizado sus estudios!</span>}
-                                </div>
+                                <label className="label is-small is-uppercase">País estudio</label>
+
+                                {errors.paisEstudio && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el país donde realizó o está realizado sus estudios!</span>}
+
 
 
                                 <Controller
@@ -147,9 +150,10 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
 
 
                             </div>
+                        </div>
 
 
-
+                        <div className="columns">
                             {pais?.label === 'ECUADOR' && <div className="column">
                                 <div className="control">
                                     <label className="label is-small is-uppercase">IES</label>
@@ -204,7 +208,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto, persona }
                             }
                         </div>
                         <div className="columns is-multiline">
-                            <div className="column">
+                            <div className="column is-4">
                                 <div className="control">
                                     <label className="label is-small is-uppercase">Nivel Educativo</label>
                                     {errors.nivel && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el nivel educativo!</span>}

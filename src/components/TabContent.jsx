@@ -1,7 +1,7 @@
-import { Fragment, useState } from 'react';
-import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai'
+import { Fragment } from 'react';
+
 import ReactDatatable from '@yun548/bulma-react-datatable'
-let OptionCard = ({ title, columns, rows, children, desc, noData }) => {
+let TabContent = ({ title, columns, rows, children, desc, noData }) => {
 
     return (
         <>
@@ -73,4 +73,4 @@ let OptionCard = ({ title, columns, rows, children, desc, noData }) => {
     )
 }
 
-export default OptionCard;
+export default TabContent;

@@ -11,7 +11,7 @@ import { postDeclaraciones, putDeclaraciones, deleteDeclaraciones, loadDeclaraci
 import { logOut } from '../../store/user'
 import Alert from '../Alert'
 import ConfirmDialog from '../ConfirmDialog'
-import OptionCard from '../OptionCard'
+import TabContent from '../TabContent'
 import ModalDeclaracionPatrimonial from './modalDeclaracion'
 import RegimenModalForm from './modalRegimen'
 import FamiliarModalForm from './modalFamiliar'
@@ -276,7 +276,7 @@ let ListaExpediente = (props) => {
                 <TabPanel value={activeTab} index={0}>
 
 
-                    <OptionCard
+                    <TabContent
                         title="Registro laboral"
                         desc="registros laborales"
                         noData="No hay registros laborales"
@@ -300,7 +300,6 @@ let ListaExpediente = (props) => {
                                         numero_documento: row.numero_documento,
                                         fecha_inicio: row.fecha_inicio,
                                         fecha_fin: row.fecha_fin,
-
                                         opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
                                             setObjeto(row)
                                             setShowModalForm(true)
@@ -329,13 +328,13 @@ let ListaExpediente = (props) => {
                             </span>
                         </button>
 
-                    </OptionCard>
+                    </TabContent>
 
 
                 </TabPanel>
                 <TabPanel value={activeTab} index={1}>
 
-                    <OptionCard title="Declaraciones patrimoniales"
+                    <TabContent title="Declaraciones patrimoniales"
                         columns={[
                             { key: 'tipo_declaracion', text: 'Tipo' },
                             { key: 'fecha_presentacion', text: 'Fecha presentación' },
@@ -378,14 +377,14 @@ let ListaExpediente = (props) => {
                                 <IoIosAddCircleOutline />
                             </span>
                         </button>
-                    </OptionCard>
+                    </TabContent>
 
                 </TabPanel>
 
 
                 <TabPanel value={activeTab} index={2}>
 
-                    <OptionCard
+                    <TabContent
                         title="Familiares"
                         desc="familiares"
                         noData="No hay familiares registrados"
@@ -400,11 +399,11 @@ let ListaExpediente = (props) => {
                             <span className="icon">
                                 <IoIosAddCircleOutline />
                             </span>
-                        </button></OptionCard>
+                        </button></TabContent>
 
                 </TabPanel>
                 <TabPanel value={activeTab} index={3}>
-                    <OptionCard
+                    <TabContent
                         title="Régimen disciplicario"
                         desc="sanciones"
                         noData="No hay sanciones registradas"
@@ -417,7 +416,7 @@ let ListaExpediente = (props) => {
                             <span className="icon">
                                 <IoIosAddCircleOutline />
                             </span>
-                        </button></OptionCard>
+                        </button></TabContent>
                 </TabPanel>
 
             </div>
