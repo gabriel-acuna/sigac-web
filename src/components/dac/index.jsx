@@ -18,7 +18,7 @@ let DAC = (props) => {
     return (<div className="container">
         <div style={{ display: 'flex', justifyContent: 'center' }}>
             <div className="field mt-4">
-                <label className="label"> Periodos Académicos</label>
+                <label className="label">Periodos Académicos</label>
 
 
                 <div className="select">
@@ -34,7 +34,7 @@ let DAC = (props) => {
                     }>
                         <option></option>
                         {
-                            periodosState.map((p) => (<option value={p.id} key={p.id}> {p.nombre} </option>))
+                            periodosState.map((p) => (<option value={p.id} key={p.id}> {p.nombre} ({p.inicio} - {p.fin})</option>))
                         }
 
                     </select>
