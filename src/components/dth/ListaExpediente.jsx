@@ -279,6 +279,7 @@ let ListaExpediente = (props) => {
                     <OptionCard
                         title="Registro laboral"
                         desc="registros laborales"
+                        noData="No hay registros laborales"
                         columns={[
                             { key: 'numero_documento', text: 'No. Doc.' },
                             { key: 'fecha_inicio', text: 'Inicio', sortable: true },
@@ -293,14 +294,14 @@ let ListaExpediente = (props) => {
 
 
 
-                                (row, index) =>
-                                {return {
-                                    id: row.id,
-                                    numero_documento:row.numero_documento,
-                                    fecha_inicio: row.fecha_inicio,
-                                    fecha_fin:row.fecha_fin,
-                                    
-                                        opciones:[<button className="button is-small is-primary mx-2 is-outlined"  key={`${row.id}0`} onClick={ev => {
+                                (row, index) => {
+                                    return {
+                                        id: row.id,
+                                        numero_documento: row.numero_documento,
+                                        fecha_inicio: row.fecha_inicio,
+                                        fecha_fin: row.fecha_fin,
+
+                                        opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
                                             setObjeto(row)
                                             setShowModalForm(true)
                                         }}>
@@ -315,9 +316,9 @@ let ListaExpediente = (props) => {
                                                 <AiOutlineDelete />
                                             </span>
                                         </button>]
-                                    
+
                                     }
-                        }
+                                }
 
                             )
                         }
@@ -335,34 +336,38 @@ let ListaExpediente = (props) => {
                 <TabPanel value={activeTab} index={1}>
 
                     <OptionCard title="Declaraciones patrimoniales"
-                        columns={['Tipo', 'Fecha presentación', 'Opciones']}
-                        expandir={false}
+                        columns={[
+                            { key: 'tipo_declaracion', text: 'Tipo' },
+                            { key: 'fecha_presentacion', text: 'Fecha presentación' },
+                            { key: 'opciones', text: 'Opciones' }]}
+                        desc="declaraciones"
+                        noData="No hay declaraciones patrimoniales registradas"
                         rows={
                             declaracionesState.map(
 
-                                (row) =>
-                                (<tr key={row.id}>
-                                    <td key={`0${row.id}0`}>{row.tipo_declaracion}</td>
-                                    <td key={`0${row.id}1`}>{row.fecha_presentacion}</td>
-                                    <td key={`0${row.id}2`}>
-                                        <button className="button is-small is-primary mx-2 is-outlined" onClick={ev => {
+                                (row) => {
+                                    return {
+                                        id: row.id,
+                                        tipo_declaracion: row.tipo_declaracion,
+                                        fecha_presentacion: row.fecha_presentacion,
+                                        opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
                                             setObjeto(row)
                                             setShowDecModalForm(true)
                                         }}>
                                             <span className="icon">
                                                 <FaRegEdit />
                                             </span>
-                                        </button>
+                                        </button>,
                                         <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
                                             deleteDecHandler(row.id)
                                         }}>
                                             <span className="icon">
                                                 <AiOutlineDelete />
                                             </span>
-                                        </button>
-                                    </td>
-                                </tr>
-                                )
+                                        </button>]
+
+                                    }
+                                }
 
                             )
                         }
@@ -382,7 +387,15 @@ let ListaExpediente = (props) => {
 
                     <OptionCard
                         title="Familiares"
-                        columns={["Parentezco", "Apellidos", "Nombres", "Opciones"]}>
+                        desc="familiares"
+                        noData="No hay familiares registrados"
+                        columns={[{ key: "parentezco", text: "Parentezco" },
+                        { key: "apellidos", text: "Apellidos" },
+                        { key: "nombres", text: "Nombres" },
+                        { key: "opciones", text: "Opciones" }]}
+                        rows={[]}
+                    >
+
                         <button className="button  is-success mx-3 is-outlined" onClick={() => setShowFamModalForm(true)}>
                             <span className="icon">
                                 <IoIosAddCircleOutline />
@@ -393,7 +406,13 @@ let ListaExpediente = (props) => {
                 <TabPanel value={activeTab} index={3}>
                     <OptionCard
                         title="Régimen disciplicario"
-                        columns={["Año", "Mes", "Sanción", "Opciones"]}>
+                        desc="sanciones"
+                        noData="No hay sanciones registradas"
+                        columns={[{ key: "anio_sancion", text: "Año" },
+                        { key: "mes_sancion", text: "Mes" },
+                        { key: "sancion", text: "Sanción" },
+                        { key: "opciones", text: "Opciones" }]}
+                        rows={[]}>
                         <button className="button  is-success mx-3 is-outlined" onClick={() => setShowRegModalForm(true)}>
                             <span className="icon">
                                 <IoIosAddCircleOutline />

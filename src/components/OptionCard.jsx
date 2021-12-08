@@ -1,7 +1,7 @@
 import { Fragment, useState } from 'react';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai'
 import ReactDatatable from '@yun548/bulma-react-datatable'
-let OptionCard = ({ title, columns, rows, children, desc }) => {
+let OptionCard = ({ title, columns, rows, children, desc, noData }) => {
 
     return (
         <>
@@ -31,7 +31,7 @@ let OptionCard = ({ title, columns, rows, children, desc }) => {
                             language: {
                                 length_menu: `Mostrar _MENU_ ${desc} por página`,
                                 filter: "Buscar en registros ...",
-                                no_data_text: `No hay ${desc} registradas`,
+                                no_data_text: noData,
                                 info: `Mostrando _START_ a _END_ de _TOTAL_ ${desc}`,
                                 pagination: {
                                     first: "Primera",
