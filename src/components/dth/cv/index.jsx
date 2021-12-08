@@ -16,6 +16,7 @@ import {
     putFormacionAcademica,
     deleteFormacionAcademica
 } from '../../../store/cv/formacion_academica'
+import TabPanel from '../../TabPanel'
 
 import {
     loadPonencias, postPonencias, putPonencias, deletePonencia
@@ -43,13 +44,22 @@ import CapacitacionFacModalForm from './capacitacionesFacModal'
 import PonenciaModalForm from './ponenciasModal'
 import ExperienciaLaboralModalForm from './experienciaLaboralModal'
 import MeritoModalForm from './meritoModal'
-import IdiomaModalForm from './idiomaModal';
+import IdiomaModalForm from './idiomaModal'
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
 
 const CV = (props) => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const location = useLocation()
+    let a11yProps = (index) => {
+        return {
+            id: `simple-tab-${index}`,
+            'aria-controls': `simple-tabpanel-${index}`,
+        };
+    }
 
     const [expandirReferencias, setExpandirReferencia] = useState(false)
     const [expandirCapacitaciones, setExpandirCapacitaciones] = useState(false)
@@ -58,6 +68,7 @@ const CV = (props) => {
     const [expandirExperienciaLaboral, setExpandirExperienciaLaboral] = useState(false)
     const [expandirMeritos, setExpandirMeritos] = useState(false)
     const [expandirIdiomas, setExpandirIdiomas] = useState(false)
+    const [activeTab, setActiveTab] = useState(0)
 
 
     const [showModalReferencia, setShowModalReferencia] = useState(false)
@@ -818,37 +829,62 @@ const CV = (props) => {
         <>
             <div className="container">
                 <div className="columns is-centered is-multiline">
-                    <div className="column is-half">
-                        <div className="card mt-2">
-                            <button className="button is-info mt-4 mx-3 is-outlined"
-                                onClick={event => {
-                                    navigate(-1);
+                    <div className="column is-half mt-3">
+                        <div className=" panel is-info">
+                            <p className="panel-heading is-size-6">
+                                <span className="icon" style={{ cursor: 'pointer' }}
+                                    onClick={event => {
+            
+                                        navigate(-1)
 
-                                }}>
-                                <span className="icon">
+                                    }}>
+
                                     <IoIosArrowBack />
-                                </span>
-                            </button>
-                            {persona && <section className="card-content">
-                                <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr' }}>
-                                    <div>
-                                        <span className="has-text-weight-medium">Nombres: </span> {persona.primer_nombre} {persona.segundo_nombre}
-                                    </div>
-                                    <div >
-                                        <span className="has-text-weight-medium">Apellidos: </span> {persona.primer_apellido} {persona.segundo_apellido}
-                                    </div>
 
-                                    <div><span className="has-text-weight-medium">Edad: </span> {persona?.edad.años}  años </div>
-                                    <div><span className="has-text-weight-medium">Estado civil: </span> {persona.estado_civil.estado_civil}</div>
-                                    <div><span className="has-text-weight-medium">Teléfono movil: </span> {persona.telefono_movil}</div>
-                                    <div><span className="has-text-weight-medium">Correo: </span> {persona.correo_personal}</div>
-                                </div>
-                            </section>}
+
+                                </span>
+                                Datos personales </p>
+                            <div className="panel-block has-background-info-light">
+                                {persona &&
+                                    <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr', padding: '20px' }}>
+
+                                        <div>
+                                            <span className="has-text-weight-medium">Nombres: </span> {persona.primer_nombre} {persona.segundo_nombre}
+                                        </div>
+                                        <div >
+                                            <span className="has-text-weight-medium">Apellidos: </span> {persona.primer_apellido} {persona.segundo_apellido}
+                                        </div>
+
+                                        <div><span className="has-text-weight-medium">Edad: </span> {persona?.edad.años}  años </div>
+                                        <div><span className="has-text-weight-medium">Estado civil: </span> {persona.estado_civil.estado_civil}</div>
+                                        <div><span className="has-text-weight-medium">Teléfono movil: </span> {persona.telefono_movil}</div>
+                                        <div><span className="has-text-weight-medium">Correo: </span> {persona.correo_personal}</div>
+                                    </div>
+                                }
+                            </div>
+
                         </div>
 
                     </div>
 
                 </div>
+                <hr style={{ backgroundColor: "#b3e6cc" }} />
+                <Box sx={{ width: '100%' }}>
+
+                    <Tabs aria-label="basic tabs example"
+                        value={activeTab} onChange={(ev, newVal) => setActiveTab(newVal)}
+                        variant="scrollable"
+                        scrollButtons="auto" >
+                        <Tab label="Formación Académica" {...a11yProps(0)} sx={{ textTransform: 'none' }} />
+                        <Tab label="Capacitaciones" {...a11yProps(1)} sx={{ textTransform: 'none' }} />
+                        <Tab label="Ponencias" {...a11yProps(2)} sx={{ textTransform: 'none' }} />
+                        <Tab label="Experiencia Laboral" {...a11yProps(3)} sx={{ textTransform: 'none' }} />
+                        <Tab label="Méritos y distinciones" {...a11yProps(4)} sx={{ textTransform: 'none' }} />
+                        <Tab label="Compresión de idiomas" {...a11yProps(5)} sx={{ textTransform: 'none' }} />
+                        <Tab label="Referencias" {...a11yProps(5)} sx={{ textTransform: 'none' }} />
+                    </Tabs>
+
+                </Box>
                 {
                     respConfirmRef && <div className="columns is-centered is-multiline">
                         <div className="column is-4">
