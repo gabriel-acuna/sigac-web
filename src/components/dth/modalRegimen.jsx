@@ -202,7 +202,7 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
                                                 />
 
                                                 <FormControlLabel
-                                                    key={`ap-sum-0001`}
+                                                    key={`ap-sum-0002`}
                                                     value="NO"
                                                     control={<Radio size="small" />}
                                                     label="NO"

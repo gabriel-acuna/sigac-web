@@ -23,7 +23,7 @@ let ModalForm = ({ title, handler, children, objeto }) => {
             <div className="modal-background"></div>
             <div className="modal-card">
                 <header className="modal-card-head">
-                    <span className="modal-card-title">{title}</span>
+                    <span className="has-text-weight-bold is-italic">{title}</span>
 
                 </header>
                 <section className="modal-card-body" style={{ display: 'flex', justifyContent: 'center' }}>
