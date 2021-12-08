@@ -2,7 +2,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { Fragment } from 'react'
 import { Radio, RadioGroup, FormControlLabel } from '@mui/material'
 
-let FamiliarModalForm = ({ title, handler, children, objeto }) => {
+let FamiliarModalForm = ({ title, handler, children, objeto, persona }) => {
     const { register, handleSubmit, formState: { errors }, setValue, getValues, clearErrors, control, setError } = useForm()
     const REL_TYPES = ["CONYUGUE", "HIJO/A", "CONVIVIENTE"]
     return (
@@ -10,7 +10,9 @@ let FamiliarModalForm = ({ title, handler, children, objeto }) => {
             <div className="modal-background"></div>
             <div className="modal-card" style={{ width: '80%' }}>
                 <header className="modal-card-head">
-                    <span className="has-text-weight-bold is-italic" >{title}</span>
+                    <p className="has-text-weight-bold is-italic" >{title}
+                        <span className="has-text-weight-bold is-italic has-text-info">{persona && `  ${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`}</span>
+                    </p>
                 </header>
                 <section className="modal-card-body">
                     <form className="field" onSubmit={handleSubmit(handler)}>
@@ -134,15 +136,15 @@ let FamiliarModalForm = ({ title, handler, children, objeto }) => {
                                 {errors.fecha_nacimiento?.type === "required" && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la fecha de nacimiento!</span>}
                                 {errors.fecha_nacimiento?.type === "max" && <span className="has-text-danger is-size-7 has-background-danger-light">¡La fecha de nacimiento no puede ser mayor a la fecha actual!</span>}
                                 <input type="date" {...register("fechaNacimiento", { required: true })} className="input" defaultValue={objeto?.fecha_nacimiento ? objeto.fecha_nacimiento : ''}
-                                onChange={
-                                   ev=>{
-                                    clearErrors("fechaNacimiento")
-                                    if (ev.target.value !== null && ev.target.value !=='' && ev.target.valueAsDate > new Date()){
-                                        setError("fecha_nacimiento", { type:'max'})
-                                    }
-                                   }
+                                    onChange={
+                                        ev => {
+                                            clearErrors("fechaNacimiento")
+                                            if (ev.target.value !== null && ev.target.value !== '' && ev.target.valueAsDate > new Date()) {
+                                                setError("fecha_nacimiento", { type: 'max' })
+                                            }
+                                        }
 
-                                } />
+                                    } />
 
                             </div>
                         </div>

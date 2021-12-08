@@ -10,9 +10,9 @@ let IdiomaModalForm = ({ title, handler, children, objeto, persona }) => {
         () => {
 
             reset({
-                idioma: objeto?.idioma ? objeto.idioma: '',
+                idioma: objeto?.idioma ? objeto.idioma : '',
                 lugarEstudio: objeto?.lugar_estudio ? objeto.lugar_estudio : '',
-                nivel: objeto?.nivel_comprension ? objeto.nivel_comprension: ''
+                nivel: objeto?.nivel_comprension ? objeto.nivel_comprension : ''
             })
 
 
@@ -25,9 +25,9 @@ let IdiomaModalForm = ({ title, handler, children, objeto, persona }) => {
             <div className="modal-background"></div>
             <div className="modal-card" style={{ width: '80%' }}>
                 <header className="modal-card-head">
-                    <span className="has-text-weight-bold is-italic" >{title} {persona && `${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`}</span>
-
-
+                    <p className="has-text-weight-bold is-italic" >{title}
+                        <span className="has-text-weight-bold is-italic has-text-info">{persona && `  ${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`}</span>
+                    </p>
                 </header>
                 <section className="modal-card-body">
 

@@ -424,11 +424,11 @@ let ListaExpediente = (props) => {
             {
                 showModalForm && <ModalForm title={
                     objeto === null ?
-                        `Registrando información laboral de: ${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`
-                        : `Editando información laboral de: ${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`
+                        `Registrando información laboral de: `
+                        : `Editando información laboral de: `
                 }
                     objeto={objeto} identificacion={location.state.identificacion}
-                    handler={objeto === null ? postHandler : putHandler}>
+                    handler={objeto === null ? postHandler : putHandler}persona={persona}>
 
                     {error && <Alert type={'is-danger is-light'} content={error.message}>
                         <button className="delete" onClick={event => setError(null)} key={atob(`A${location.state.identificacion}`)}></button>
@@ -461,10 +461,11 @@ let ListaExpediente = (props) => {
                 showDecModalForm && <ModalDeclaracionPatrimonial
                     title={
                         objeto === null ?
-                            `Registrando declaración patrimonial de: ${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`
-                            : `Editando declaración patrimonial de : ${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`
+                            `Registrando declaración patrimonial de: `
+                            : `Editando declaración patrimonial de : `
                     }
                     objeto={objeto}
+                    persona={persona}
                     handler={objeto === null ? postDeclaracion : putDeclaracion}
                 >   {error && <Alert type={'is-danger is-light'} content={error.message}>
                     <button className="delete" onClick={event => setError(null)} key={atob(`A${location.state.identificacion}`)}></button>
@@ -498,10 +499,11 @@ let ListaExpediente = (props) => {
                 <FamiliarModalForm
                     title={
                         objeto === null ?
-                            `Registrando familiar de: ${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`
-                            : `Editando familiar de : ${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`
+                            `Registrando familiar de: `
+                            : `Editando familiar de : `
                     }
                     objeto={objeto}
+                    persona={persona}
                 >
                     <button className="button is-small is-danger mx-3"
                         onClick={ev => {
@@ -516,10 +518,11 @@ let ListaExpediente = (props) => {
                 <RegimenModalForm
                     title={
                         objeto === null ?
-                            `Registrando régimen disciplinario de: ${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`
-                            : `Editando régimen disciplinario de : ${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`
+                            `Registrando régimen disciplinario de: `
+                            : `Editando régimen disciplinario de : `
                     }
                     objeto={objeto}
+                    persona={persona}
                     ingreso={persona.fecha_ingreso.slice(0, 4)}
                 >
                     <button className="button is-small is-danger mx-3"

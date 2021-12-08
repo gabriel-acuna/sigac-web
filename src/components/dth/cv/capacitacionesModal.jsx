@@ -71,9 +71,9 @@ let CapacitacionModalForm = ({ title, handler, children, objeto, persona }) => {
                 <div className="modal-background"></div>
                 <div className="modal-card" style={{ width: '80%' }}>
                     <header className="modal-card-head">
-                        <span className="has-text-weight-bold is-italic" >{title} {persona && `${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`}</span>
-
-
+                        <p className="has-text-weight-bold is-italic" >{title}
+                            <span className="has-text-weight-bold is-italic has-text-info">{persona && `  ${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`}</span>
+                        </p>
                     </header>
                     <div className="modal-card-body">
 

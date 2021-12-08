@@ -27,7 +27,7 @@ import Alert from '../Alert'
 import { logOut } from '../../store/user'
 
 
-let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
+let ModalForm = ({ title, children, handler, objeto, persona }) => {
 
     const [tipoFuncionario, setTipoFuncionario] = useState('')
     const { register, handleSubmit, getValues, reset, setValue, setError, clearErrors, control, formState: { errors } } = useForm()
@@ -186,8 +186,9 @@ let ModalForm = ({ title, children, handler, objeto, identificacion }) => {
                 <div className="modal-background"></div>
                 <div className="modal-card" style={{ width: '80%' }}>
                     <header className="modal-card-head">
-                        <span className="has-text-weight-bold is-italic">{title}</span>
-
+                        <p className="has-text-weight-bold is-italic" >{title}
+                            <span className="has-text-weight-bold is-italic has-text-info">{persona && `  ${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`}</span>
+                        </p>
                     </header>
                     <section className="modal-card-body">
                         <form onSubmit={handleSubmit(handler)}>

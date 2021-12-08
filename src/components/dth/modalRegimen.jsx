@@ -3,7 +3,7 @@ import { Fragment } from 'react'
 import { Radio, RadioGroup, FormControlLabel } from '@mui/material'
 import Select from 'react-select'
 
-let RegimenModalForm = ({ title, handler, children, objeto, ingreso }) => {
+let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) => {
     const { register, handleSubmit, formState: { errors }, setValue, getValues, clearErrors, control, setError } = useForm()
     const SAN_TYPES = ["LEVES", "GRAVES"]
     const MESES = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"]
@@ -12,7 +12,9 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso }) => {
             <div className="modal-background"></div>
             <div className="modal-card" style={{ width: '80%' }}>
                 <header className="modal-card-head">
-                    <span className="has-text-weight-bold is-italic" >{title}</span>
+                    <p className="has-text-weight-bold is-italic" >{title}
+                        <span className="has-text-weight-bold is-italic has-text-info">{persona && `  ${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`}</span>
+                    </p>
                 </header>
                 <section className="modal-card-body">
                     <form className="field" onSubmit={handleSubmit(handler)}>

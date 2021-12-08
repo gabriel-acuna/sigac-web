@@ -2,7 +2,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { Fragment } from 'react'
 import { Radio, RadioGroup, FormControlLabel } from '@mui/material'
 
-let DeclaracionPatrimonialModal = ({ title, handler, children, objeto }) => {
+let DeclaracionPatrimonialModal = ({ title, handler, children, objeto, persona }) => {
     const { register, handleSubmit, formState: { errors }, setValue, getValues, clearErrors, control, setError } = useForm()
     const TYPES_DEC = ["INICIO DE GESTION", "PERIODICA", "FIN DE GESTION"]
     return (
@@ -10,7 +10,9 @@ let DeclaracionPatrimonialModal = ({ title, handler, children, objeto }) => {
             <div className="modal-background"></div>
             <div className="modal-card">
                 <header className="modal-card-head">
-                    <span className="has-text-weight-bold is-italic" >{title}</span>
+                    <p className="has-text-weight-bold is-italic" >{title}
+                        <span className="has-text-weight-bold is-italic has-text-info">{persona && `  ${persona.primer_nombre} ${persona.segundo_nombre} ${persona.primer_apellido} ${persona.segundo_apellido}`}</span>
+                    </p>
                 </header>
                 <section className="modal-card-body">
                     <form className="field" onSubmit={handleSubmit(handler)}>
@@ -55,18 +57,18 @@ let DeclaracionPatrimonialModal = ({ title, handler, children, objeto }) => {
                                 <label className="label is-small">Número de declaración</label>
                                 {errors.numeroDeclaracion?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, ingrese el número de declaración!</span>}
                                 {errors.numeroDeclaracion?.type === 'pattern' && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Formato incorrecto este campo debe ser númerico y debe contener entre 5 a 10 dígitos!</span>}
-                                <input type="text" {...register("numeroDeclaracion", {required:true})}  className="input" defaultValue={ objeto?.numero_declaracion ? objeto.numero_declaracion : ''}
+                                <input type="text" {...register("numeroDeclaracion", { required: true })} className="input" defaultValue={objeto?.numero_declaracion ? objeto.numero_declaracion : ''}
                                     onChange={
-                                        ev=>{
+                                        ev => {
                                             clearErrors("numeroDeclaracion")
-                                           if (ev.target.value!=='' && ev.target.value!== null & /([0-9]{5,10})/.test(ev.target.value) ===false){
-                                               setError("numeroDeclaracion", {
-                                                   type:"pattern"
-                                               })
-                                           }
+                                            if (ev.target.value !== '' && ev.target.value !== null & /([0-9]{5,10})/.test(ev.target.value) === false) {
+                                                setError("numeroDeclaracion", {
+                                                    type: "pattern"
+                                                })
+                                            }
                                         }
                                     }
-                                 />
+                                />
                             </div>
                             <div className="column">
                                 <label className="label is-small">Fecha presentación</label>
