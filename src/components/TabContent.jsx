@@ -16,6 +16,7 @@ let TabContent = ({ title, columns, rows, children, desc, noData }) => {
             <div className="columns is-centered mb-6">
                 <div className="column is-8">
 
+
                     <ReactDatatable style={{ justifyContent: 'center' }}
                         className="table is-bordered is-striped"
                         tHeadClassName="is-info"
@@ -46,6 +47,7 @@ let TabContent = ({ title, columns, rows, children, desc, noData }) => {
                         columns={columns}
 
                     />
+
                     {/* <table className="table is-bordered">
                             <thead>
                                 <tr>

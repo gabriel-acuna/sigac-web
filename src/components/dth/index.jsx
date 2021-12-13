@@ -184,8 +184,8 @@ let DTH = (props) => {
                     </div>
                 </div>
                 <div className="columns is-centered">
-                    <div className="column mt-4" style={{ overflowX: "scroll" }}>
-                        <ReactDatatable style={{ justifyContent: 'center' }}
+                    <div className="column mt-4">
+                        <ReactDatatable style={{ justifyContent: 'center', overFlowX:'auto' }}
                             className="table is-bordered is-striped"
                             tHeadClassName="is-info"
                             config={{

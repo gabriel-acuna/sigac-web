@@ -69,7 +69,15 @@ export const postFamiliar = createAsyncThunk(
         }
 
         try {
-            let response = await Axios.post(`${API}/familiares-personal/`, familiar,
+            let response = await Axios.post(`${API}/familiares-personal/`, {
+                id_persona: familiar.idPersona,
+                parentesco: familiar.parentesco,
+                identificacion: familiar.identificacion,
+                nombres: familiar.nombres.toUpperCase(),
+                apellidos: familiar.apellidos.toUpperCase(),
+                sexo: familiar.sexo,
+                fecha_nacimiento: familiar.fechaNacimiento
+            },
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -94,7 +102,15 @@ export const putFamiliar = createAsyncThunk(
         }
 
         try {
-            let response = await Axios.put(`${API}/familiares-personal/`, familiar,
+            let response = await Axios.put(`${API}/familiares-personal/`,{
+                id: familiar.id,
+                parentesco: familiar.parentesco,
+                identificacion: familiar.identificacion,
+                nombres: familiar.nombres.toUpperCase(),
+                apellidos: familiar.apellidos.toUpperCase(),
+                sexo: familiar.sexo,
+                fecha_nacimiento: familiar.fechaNacimiento
+            },
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -119,7 +135,7 @@ export const deleteFamiliar = createAsyncThunk(
         }
 
         try {
-            let response = await Axios.put(`${API}/familiares-personal/${id}`,
+            let response = await Axios.delete(`${API}/familiares-personal/${id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`

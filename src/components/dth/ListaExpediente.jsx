@@ -8,6 +8,7 @@ import { AiOutlineDelete } from 'react-icons/ai'
 import ModalForm from './modalForm'
 import { postDetalleExpedienteFuncionario, postDetalleExpedienteProfesor, putDetalleExpediente, clearData, deleteItemDetalle, loadExpedienteLaboral } from '../../store/dth/expediente_laboral'
 import { postDeclaraciones, putDeclaraciones, deleteDeclaraciones, loadDeclaracionesPersona } from '../../store/dth/declaracion_patrimonial'
+import { postFamiliar, putFamiliar, deleteFamiliar, loadFamiliares } from '../../store/dth/familiar_personal'
 import { logOut } from '../../store/user'
 import Alert from '../Alert'
 import ConfirmDialog from '../ConfirmDialog'
@@ -24,6 +25,7 @@ let ListaExpediente = (props) => {
     const location = useLocation()
     let expedienteState = useSelector(state => state.expediente.data.expediente)
     let declaracionesState = useSelector(state => state.declaraciones.data.declaraciones)
+    let familiaresState = useSelector(state => state.familiares.data.familiares)
     const navigate = useNavigate()
     const [persona] = useState(location.state)
     const dispatch = useDispatch()
@@ -35,6 +37,7 @@ let ListaExpediente = (props) => {
     const [showRegModalForm, setShowRegModalForm] = useState(false)
     const [showConfirmDialog, setShowConfirmDialog] = useState(false)
     const [showConfirmDialogDec, setShowConfirmDialogDec] = useState(false)
+    const [showConfirmDialogFam, setShowConfirmDialogFam] = useState(false)
     const [response, setResponse] = useState(null)
     const [deteteResponse, setDeleteResponse] = useState(null)
     const [error, setError] = useState(null)
@@ -55,6 +58,9 @@ let ListaExpediente = (props) => {
             location.state?.identificacion && dispatch(
                 loadDeclaracionesPersona(location.state.identificacion)
             )
+            location.state?.identificacion && dispatch(
+                loadFamiliares(location.state.identificacion)
+            )
         }, [dispatch, location.state?.identificacion]
     )
 
@@ -72,6 +78,10 @@ let ListaExpediente = (props) => {
         setShowConfirmDialogDec(true)
     }
 
+    const deleteFamHandler = (id) => {
+        setId(id)
+        setShowConfirmDialogFam(true)
+    }
     let postHandler = (data) => {
         let detalle = { id_persona: location.state.identificacion, detalle: data }
         if (data.tipoPersonal === 'PROFESOR') {
@@ -162,6 +172,22 @@ let ListaExpediente = (props) => {
             )
     }
 
+    let doDeleteFam = () => {
+        dispatch(
+            deleteFamiliar(id)
+
+        ).unwrap()
+            .then(resp => {
+                setDeleteResponse(resp)
+                dispatch(
+                    loadFamiliares(persona.identificacion)
+                )
+
+
+            }).catch(
+                (err) => console.error(err)
+            )
+    }
     let postDeclaracion = (data) => {
         dispatch(postDeclaraciones({ persona: location.state.identificacion, ...data })).unwrap()
             .then(
@@ -204,6 +230,49 @@ let ListaExpediente = (props) => {
             )
     }
 
+    let postFamiliarHandler = (data) => {
+        dispatch(
+            postFamiliar({ idPersona: persona.identificacion, ...data })
+        ).unwrap().then(
+            (resp) => setResponse(resp)
+        ).catch(
+            (err) => {
+                if (err.message.includes("undefined (reading 'data')")) {
+                    console.error("No hay conexión con el backend");
+                    setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                } else if (err.message === "Rejected") {
+                    dispatch(
+                        logOut()
+                    )
+                }
+
+                else { setError(err) }
+            }
+        )
+    }
+
+    let putFamiliarHandler = (data) => {
+        dispatch(
+            putFamiliar({ id: objeto.id, ...data })
+        ).unwrap()
+            .then(
+                (resp) => setResponse(resp)
+            ).catch(
+                (err) => {
+                    console.log(err);
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+    }
     return (
         <>
             <div className="container">
@@ -388,11 +457,37 @@ let ListaExpediente = (props) => {
                         title="Familiares"
                         desc="familiares"
                         noData="No hay familiares registrados"
-                        columns={[{ key: "parentezco", text: "Parentezco" },
+                        columns={[{ key: "parentesco", text: "Parentesco" },
                         { key: "apellidos", text: "Apellidos" },
                         { key: "nombres", text: "Nombres" },
                         { key: "opciones", text: "Opciones" }]}
-                        rows={[]}
+                        rows={
+                            familiaresState.map(
+                                row => {
+                                    return {
+                                        id: row.id,
+                                        parentesco: row.parentesco,
+                                        apellidos: row.apellidos,
+                                        nombres: row.nombres,
+                                        opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
+                                            setObjeto(row)
+                                            setShowFamModalForm(true)
+                                        }}>
+                                            <span className="icon">
+                                                <FaRegEdit />
+                                            </span>
+                                        </button>,
+                                        <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
+                                            deleteFamHandler(row.id)
+                                        }}>
+                                            <span className="icon">
+                                                <AiOutlineDelete />
+                                            </span>
+                                        </button>]
+                                    }
+                                }
+                            )
+                        }
                     >
 
                         <button className="button  is-success mx-3 is-outlined" onClick={() => setShowFamModalForm(true)}>
@@ -428,7 +523,7 @@ let ListaExpediente = (props) => {
                         : `Editando información laboral de: `
                 }
                     objeto={objeto} identificacion={location.state.identificacion}
-                    handler={objeto === null ? postHandler : putHandler}persona={persona}>
+                    handler={objeto === null ? postHandler : putHandler} persona={persona}>
 
                     {error && <Alert type={'is-danger is-light'} content={error.message}>
                         <button className="delete" onClick={event => setError(null)} key={atob(`A${location.state.identificacion}`)}></button>
@@ -504,7 +599,28 @@ let ListaExpediente = (props) => {
                     }
                     objeto={objeto}
                     persona={persona}
+                    handler={objeto === null ? postFamiliarHandler : putFamiliarHandler}
                 >
+                    {error && <Alert type={'is-danger is-light'} content={error.message}>
+                        <button className="delete" onClick={event => setError(null)} key={atob(`A${location.state.identificacion}`)}></button>
+                    </Alert>}
+                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                        <button className="delete" onClick={event => setResponse(null)} key={atob(`B${location.state.identificacion}`)}></button >
+                    </Alert>}
+                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                        <button className="delete" onClick={event => {
+                            setResponse(null)
+                            setObjeto(null)
+                            setShowFamModalForm(false)
+                            dispatch(
+                                loadFamiliares(location.state.identificacion)
+                            )
+                        }}
+                            key={atob(`C${location.state.identificacion}`)}
+
+                        ></button>
+                    </Alert>}
+
                     <button className="button is-small is-danger mx-3"
                         onClick={ev => {
                             setShowFamModalForm(false)
@@ -549,6 +665,17 @@ let ListaExpediente = (props) => {
                     <button className="button is-small is-danger is-pulled-left" onClick={event => setShowConfirmDialogDec(false)}> Cancelar</button>
                     <button className="button is-small is-success is-pulled-rigth" onClick={event => {
                         setShowConfirmDialogDec(false); doDeleteDec();
+                    }}>Confirmar</button>
+                </ConfirmDialog>
+
+            }
+            {
+                showConfirmDialogFam &&
+                <ConfirmDialog info="el familiar" title="Eliminar familiar">
+
+                    <button className="button is-small is-danger is-pulled-left" onClick={event => setShowConfirmDialogFam(false)}> Cancelar</button>
+                    <button className="button is-small is-success is-pulled-rigth" onClick={event => {
+                        setShowConfirmDialogFam(false); doDeleteFam();
                     }}>Confirmar</button>
                 </ConfirmDialog>
 

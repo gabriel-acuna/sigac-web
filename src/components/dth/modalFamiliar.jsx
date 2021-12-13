@@ -3,7 +3,7 @@ import { Fragment } from 'react'
 import { Radio, RadioGroup, FormControlLabel } from '@mui/material'
 
 let FamiliarModalForm = ({ title, handler, children, objeto, persona }) => {
-    const { register, handleSubmit, formState: { errors }, setValue, getValues, clearErrors, control, setError } = useForm()
+    const { register, handleSubmit, formState: { errors }, setValue, clearErrors, control, setError } = useForm()
     const REL_TYPES = ["CONYUGUE", "HIJO/A", "CONVIVIENTE"]
     return (
         <div className="modal is-active">
@@ -18,17 +18,17 @@ let FamiliarModalForm = ({ title, handler, children, objeto, persona }) => {
                     <form className="field" onSubmit={handleSubmit(handler)}>
                         <div className="columns">
                             <div className="column">
-                                <label className="label is-small">Parentezco </label>
-                                {errors.parentezco && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione el parentezco!</span>}
+                                <label className="label is-small">Parentesco </label>
+                                {errors.parentesco && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione el parentesco!</span>}
 
                                 <Controller
-                                    name="parentezco"
+                                    name="parentesco"
                                     control={control}
                                     rules={{ required: true }}
-                                    defaultValue={objeto?.parentezco ? objeto.parentezco : ''}
+                                    defaultValue={objeto?.parentesco ? objeto.parentesco : ''}
                                     render={
                                         ({ field }) => (
-                                            <RadioGroup row {...field} onChange={(ev) => setValue("parentezco", ev.target.value)}>
+                                            <RadioGroup row {...field} onChange={(ev) => setValue("parentesco", ev.target.value)}>
                                                 {
                                                     REL_TYPES.map(
                                                         (t, ind) => (
@@ -70,13 +70,15 @@ let FamiliarModalForm = ({ title, handler, children, objeto, persona }) => {
                                             )
                                         }
                                     }
-                                } />
+                                }
+                                    defaultValue={objeto?.identificacion ? objeto.identificacion : ''}
+                                />
 
                             </div>
                             <div className="column">
                                 <label className="label is-small">Nombres</label>
                                 {errors.nombres && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, ingrese los nombres!</span>}
-                                <input type="text" {...register("nombres", { required: true })} className="input" />
+                                <input type="text" {...register("nombres", { required: true })} className="input is-uppercase" defaultValue={objeto?.nombres ? objeto.nombres : ''} />
 
                             </div>
                         </div>
@@ -84,7 +86,7 @@ let FamiliarModalForm = ({ title, handler, children, objeto, persona }) => {
                             <div className="column">
                                 <label className="label is-small">Apellidos</label>
                                 {errors.apellidos && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, ingrese los apellidos!</span>}
-                                <input type="text" {...register("apellidos", { required: true })} className="input" />
+                                <input type="text" {...register("apellidos", { required: true })} className="input is-uppercase" defaultValue={objeto?.apellidos ? objeto?.apellidos : ''} />
 
                             </div>
                             <div className="column">
@@ -93,7 +95,7 @@ let FamiliarModalForm = ({ title, handler, children, objeto, persona }) => {
                                 <Controller
                                     control={control}
                                     name="sexo"
-                                    defaultValue={''}
+                                    defaultValue={ objeto?.sexo ? objeto.sexo: ''}
                                     rules={{ required: true }}
                                     render={
                                         ({ field }) => (
