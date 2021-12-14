@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form'
 import { Fragment } from 'react'
 
 let TipoEventoModal = ({ title, handler, children, objeto }) => {
-    const { register, reset, handleSubmit, formState: { errors } } = useForm()
+    const { register, handleSubmit, formState: { errors } } = useForm()
 
     return (
         <div className="modal is-active">

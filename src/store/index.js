@@ -45,6 +45,10 @@ import tipoNombramientoReducer from './dth/tipo_nombramiento'
 import declaracionReducer from './dth/declaracion_patrimonial'
 import familiarPersonalReducer from './dth/familiar_personal'
 import estadoSumarioReducer from './dth/estado_sumario'
+import regimenReducer from './dth/regimen_laboral'
+import sancionReducer from './dth/sanciones'
+import modalidadContractualReducer from './dth/modalidad_contractual'
+import regimenDisciplinarioReducer from './dth/regimen_disciplinario'
 
 import {
     persistStore,
@@ -102,8 +106,11 @@ const reducer = combineReducers({
     tiposNombramientos: tipoNombramientoReducer,
     declaraciones: declaracionReducer,
     familiares: familiarPersonalReducer,
-    estadoSumario: estadoSumarioReducer
-
+    estadoSumario: estadoSumarioReducer,
+    regimenesLaborales: regimenReducer,
+    modalidadesContractuales: modalidadContractualReducer,
+    sanciones: sancionReducer,
+    regimenesDisciplinarios: regimenDisciplinarioReducer
 
 
 });

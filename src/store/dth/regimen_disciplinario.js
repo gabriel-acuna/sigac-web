@@ -6,9 +6,9 @@ import {
 import Axios from 'axios'
 import { API } from '../../services/api'
 
-export const loadRegimenesDisciplinarios = createAsyncThunk(
+export const loadRegimenesDisciplinariosPorAño = createAsyncThunk(
     'regimenes-disciplinarios/load',
-    async (_, { getState }) => {
+    async (año, { getState }) => {
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -17,7 +17,7 @@ export const loadRegimenesDisciplinarios = createAsyncThunk(
         }
 
         try {
-            let response = await Axios.get(`${API}/regimenes-disciplinarios`,
+            let response = await Axios.get(`${API}/regimenes-disciplinarios/${año}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -31,9 +31,9 @@ export const loadRegimenesDisciplinarios = createAsyncThunk(
     }
 )
 
-export const loadRegimen = createAsyncThunk(
-    'regimen-disciplinario/load',
-    async (id, { getState }) => {
+export const loadRegimenesDisciplinariosPorAñoMes = createAsyncThunk(
+    'regimenes-disciplinarios/load',
+    async (año, mes, { getState }) => {
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -42,7 +42,7 @@ export const loadRegimen = createAsyncThunk(
         }
 
         try {
-            let response = await Axios.get(`${API}/regimenes-disciplinarios/${id}`,
+            let response = await Axios.get(`${API}/regimenes-disciplinarios/${año}/${mes}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -56,6 +56,30 @@ export const loadRegimen = createAsyncThunk(
     }
 )
 
+export const loadRegimenesDisciplinariosPorPersona = createAsyncThunk(
+    'regimenes-disciplinarios/load',
+    async (idPersona, { getState }) => {
+        let token;
+        try {
+            token = getState().user.user.jwt.token;
+        } catch (e) {
+            throw e;
+        }
+
+        try {
+            let response = await Axios.get(`${API}/regimenes-disciplinarios/${idPersona}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+            return response.data
+
+        } catch (error) {
+            throw error.response.detail
+        }
+    }
+)
 export const postRegimenes = createAsyncThunk(
     'regimenes-disciplinarios/post',
     async (regimen, { getState }) => {
@@ -69,7 +93,7 @@ export const postRegimenes = createAsyncThunk(
         if (!token) return Promise.reject('There is not token')
         try {
             let response = await Axios.post(`${API}/regimenes-disciplinarios`,
-               regimen,
+                regimen,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -102,8 +126,8 @@ export const putRegimenes = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.put(`${API}/regimenes-disciplinarios`,regimen
-              ,
+            let response = await Axios.put(`${API}/regimenes-disciplinarios`, regimen
+                ,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -170,14 +194,21 @@ let regimenesSlice = createSlice({
 
     },
     extraReducers: {
-        [loadRegimenesDisciplinarios.fulfilled]: (state, action) => {
+        [loadRegimenesDisciplinariosPorAño.fulfilled]: (state, action) => {
             state.status = 'success'
             state.data = {
                 regimenes: action.payload
             }
 
         },
-        [loadRegimenesDisciplinariosPersona.fulfilled]: (state, action) => {
+        [loadRegimenesDisciplinariosPorAñoMes.fulfilled]: (state, action) => {
+            state.status = 'success'
+            state.data = {
+                regimenes: action.payload
+            }
+
+        },
+        [loadRegimenesDisciplinariosPorPersona.fulfilled]: (state, action) => {
             state.status = 'success'
             state.data = {
                 regimenes: action.payload

@@ -31,7 +31,7 @@ export const loadSanciones = createAsyncThunk(
     }
 )
 
-export const loadSanacion= createAsyncThunk(
+export const loadSancion= createAsyncThunk(
     'sancion/load',
     async (id, { getState }) => {
         let token;

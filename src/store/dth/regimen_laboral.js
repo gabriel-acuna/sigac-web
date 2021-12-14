@@ -176,13 +176,6 @@ let regimenesSlice = createSlice({
                 regimenes: action.payload
             }
 
-        },
-        [loadRegimenesPersona.fulfilled]: (state, action) => {
-            state.status = 'success'
-            state.data = {
-                regimenes: action.payload
-            }
-
         }
 
 
