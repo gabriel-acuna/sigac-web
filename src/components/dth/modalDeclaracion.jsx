@@ -3,7 +3,7 @@ import { Fragment } from 'react'
 import { Radio, RadioGroup, FormControlLabel } from '@mui/material'
 
 let DeclaracionPatrimonialModal = ({ title, handler, children, objeto, persona }) => {
-    const { register, handleSubmit, formState: { errors }, setValue, getValues, clearErrors, control, setError } = useForm()
+    const { register, handleSubmit, formState: { errors }, setValue, clearErrors, control, setError } = useForm()
     const TYPES_DEC = ["INICIO DE GESTION", "PERIODICA", "FIN DE GESTION"]
     return (
         <div className="modal is-active">

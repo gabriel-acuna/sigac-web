@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form'
-import { Fragment, useEffect } from 'react'
+import { Fragment } from 'react'
 
 let TipoNombramientoModal = ({ title, handler, children, objeto }) => {
-    const { register, reset, handleSubmit, formState: { errors }, setValue, getValues, clearErrors, setError } = useForm()
+    const { register, handleSubmit, formState: { errors } } = useForm()
 
     return (
         <div className="modal is-active">
@@ -13,8 +13,10 @@ let TipoNombramientoModal = ({ title, handler, children, objeto }) => {
                 </header>
                 <section className="modal-card-body">
                     <form className="field" onSubmit={handleSubmit(handler)}>
-                        <label  className="label is-small">Tipo nombramiento </label>
-                        <input type="text" className="input is-uppercase" {...register('nombramiento', { required: true })} />
+                        <label className="label is-small">Tipo nombramiento </label>
+                        {errors.nombramiento && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione el tipo de nombramiento!</span>}
+
+                        <input type="text" className="input is-uppercase" {...register('nombramiento', { required: true })} defaultValue={objeto?.nombramiento ? objeto.nombramiento : ''} />
 
                         <div className="field is-grouped" style={{ display: 'flex', justifyContent: 'center' }}>
                             <div className="control has-text-centered">

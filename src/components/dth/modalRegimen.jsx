@@ -2,11 +2,19 @@ import { useForm, Controller } from 'react-hook-form'
 import { Fragment } from 'react'
 import { Radio, RadioGroup, FormControlLabel } from '@mui/material'
 import Select from 'react-select'
+import { IoIosAdd } from 'react-icons/io'
+import { useState } from 'react'
 
 let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) => {
+
     const { register, handleSubmit, formState: { errors }, setValue, getValues, clearErrors, control, setError } = useForm()
     const SAN_TYPES = ["LEVES", "GRAVES"]
     const MESES = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"]
+    const [showModalRegimen, setShowModalRegimen] = useState(false)
+    const [showModalModalidad, setShowModalModalidad] = useState(false)
+    const [showModalSancion, setShowModalSancion] = useState(false)
+    const [showModalEstado, setShowModalEstado] = useState(false)
+
     return (
         <div className="modal is-active">
             <div className="modal-background"></div>
@@ -38,7 +46,9 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
                                                 type: 'max'
                                             })
                                         }
-                                    }} />
+                                    }} 
+                                    defaultValue={objeto?.anio_sancion ? objeto?.anio_sancion : new Date().getFullYear()}
+                                    />
 
                             </div>
                             <div className="column">
@@ -69,7 +79,7 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
 
 
                             <div className="column">
-                                <label className="label is-small">Régimen laboral</label>
+                                <label className="label is-small">Régimen laboral <span className="has-text-success has-text-weight-bold" style={{ cursor: 'pointer' }} onClick={() => setShowModalRegimen(true)}><IoIosAdd /></span></label>
                                 {errors.modalidadContractual && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione el régimen laboral!</span>}
                                 <Controller
                                     name="modalidadContractual"
@@ -93,7 +103,7 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
                         </div>
                         <div className="columns">
                             <div className="column">
-                                <label className="label is-small">Modalidad contractual</label>
+                                <label className="label is-small">Modalidad contractual <span className="has-text-success has-text-weight-bold" style={{ cursor: 'pointer' }} onClick={() => setShowModalModalidad(true)}><IoIosAdd /></span></label>
                                 {errors.modalidadContractual && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione la modalidad contractual!</span>}
                                 <Controller
                                     name="modalidadContractual"
@@ -152,7 +162,7 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
                             </div>
 
                             <div className="column">
-                                <label className="label is-small">Sanción</label>
+                                <label className="label is-small">Sanción <span className="has-text-success has-text-weight-bold" style={{ cursor: 'pointer' }} onClick={() => setShowModalSancion(true)}><IoIosAdd /></span></label>
                                 {errors.sancion && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione la sanción!</span>}
                                 <Controller
                                     name="sancion"
@@ -222,7 +232,7 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
                                 />
                             </div>
                             <div className="column">
-                                <label className="label is-small">Estado sumario</label>
+                                <label className="label is-small">Estado sumario <span className="has-text-success has-text-weight-bold" style={{ cursor: 'pointer' }} onClick={() => setShowModalEstado(true)}><IoIosAdd /></span></label>
                                 {errors.estadoSumario && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione la sanción!</span>}
                                 <Controller
                                     name="estadoSumario"
@@ -247,23 +257,7 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
                             <div className="column">
                                 <label className="label is-small">Número de sentencia</label>
                                 {errors.numeroSentencia && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione la sanción!</span>}
-                                <Controller
-                                    name="numeroSentencia"
-                                    control={control}
-                                    rules={{ required: true }}
-                                    defaultValue={objeto?.numero_sentencia ? objeto.numero_sentencia : ''}
-                                    render={
-                                        ({ field }) => (
-                                            <Select
-                                                {...field}
-                                                placeholder="Seleccione"
-                                                options={
-                                                    []
-                                                }
-                                            />
-                                        )
-                                    }
-                                />
+                                <input type="text" className="input" {...register("numeroSentencia",{required:true})} />
 
                             </div>
 

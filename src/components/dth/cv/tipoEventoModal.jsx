@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form'
-import { Fragment, useEffect } from 'react'
+import { Fragment } from 'react'
 
 let TipoEventoModal = ({ title, handler, children, objeto }) => {
-    const { register, reset, handleSubmit, formState: { errors }, setValue, getValues, clearErrors, setError, control } = useForm()
+    const { register, reset, handleSubmit, formState: { errors } } = useForm()
 
     return (
         <div className="modal is-active">
@@ -13,8 +13,10 @@ let TipoEventoModal = ({ title, handler, children, objeto }) => {
                 </header>
                 <section className="modal-card-body">
                     <form className="field" onSubmit={handleSubmit(handler)}>
-                        <label  className="label is-small">Tipo evento </label>
-                        <input type="text" className="input is-uppercase" {...register('evento', { required: true })} />
+                        <label className="label is-small">Tipo evento </label>
+                        {errors.evento && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, ingrese el tipo de evento!</span>}
+
+                        <input type="text" className="input is-uppercase" {...register('evento', { required: true })} defaultValue={objeto?.evento ? objeto.evento : ''} />
 
                         <div className="field is-grouped" style={{ display: 'flex', justifyContent: 'center' }}>
                             <div className="control has-text-centered">
