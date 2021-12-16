@@ -9,6 +9,7 @@ import ModalForm from './modalForm'
 import { postDetalleExpedienteFuncionario, postDetalleExpedienteProfesor, putDetalleExpediente, clearData, deleteItemDetalle, loadExpedienteLaboral } from '../../store/dth/expediente_laboral'
 import { postDeclaraciones, putDeclaraciones, deleteDeclaraciones, loadDeclaracionesPersona } from '../../store/dth/declaracion_patrimonial'
 import { postFamiliar, putFamiliar, deleteFamiliar, loadFamiliares } from '../../store/dth/familiar_personal'
+import { postRegimenes, putRegimenes, loadRegimenesDisciplinariosPorPersona, deleteRegimenes } from '../../store/dth/regimen_disciplinario'
 import { logOut } from '../../store/user'
 import Alert from '../Alert'
 import ConfirmDialog from '../ConfirmDialog'
@@ -26,6 +27,7 @@ let ListaExpediente = (props) => {
     let expedienteState = useSelector(state => state.expediente.data.expediente)
     let declaracionesState = useSelector(state => state.declaraciones.data.declaraciones)
     let familiaresState = useSelector(state => state.familiares.data.familiares)
+    let regimenDisciplinarioState = useSelector(state => state.regimenesDisciplinarios.data.regimenes)
     const navigate = useNavigate()
     const [persona] = useState(location.state)
     const dispatch = useDispatch()
@@ -38,6 +40,7 @@ let ListaExpediente = (props) => {
     const [showConfirmDialog, setShowConfirmDialog] = useState(false)
     const [showConfirmDialogDec, setShowConfirmDialogDec] = useState(false)
     const [showConfirmDialogFam, setShowConfirmDialogFam] = useState(false)
+    const [showConfirmDialogReg, setShowConfirmDialogReg] = useState(false)
     const [response, setResponse] = useState(null)
     const [deteteResponse, setDeleteResponse] = useState(null)
     const [error, setError] = useState(null)
@@ -82,6 +85,12 @@ let ListaExpediente = (props) => {
         setId(id)
         setShowConfirmDialogFam(true)
     }
+
+    const deleteRegHandler = (id) => {
+        setId(id)
+        setShowConfirmDialogReg(true)
+    }
+
     let postHandler = (data) => {
         let detalle = { id_persona: location.state.identificacion, detalle: data }
         if (data.tipoPersonal === 'PROFESOR') {
@@ -188,6 +197,24 @@ let ListaExpediente = (props) => {
                 (err) => console.error(err)
             )
     }
+
+    let doDeleteReg = () => {
+        dispatch(
+            deleteRegimenes(id)
+
+        ).unwrap()
+            .then(resp => {
+                setDeleteResponse(resp)
+                dispatch(
+                    loadRegimenesDisciplinariosPorPersona(persona.identificacion)
+                )
+
+
+            }).catch(
+                (err) => console.error(err)
+            )
+    }
+
     let postDeclaracion = (data) => {
         dispatch(postDeclaraciones({ persona: location.state.identificacion, ...data })).unwrap()
             .then(
@@ -676,6 +703,18 @@ let ListaExpediente = (props) => {
                     <button className="button is-small is-danger is-pulled-left" onClick={event => setShowConfirmDialogFam(false)}> Cancelar</button>
                     <button className="button is-small is-success is-pulled-rigth" onClick={event => {
                         setShowConfirmDialogFam(false); doDeleteFam();
+                    }}>Confirmar</button>
+                </ConfirmDialog>
+
+            }
+
+            {
+                showConfirmDialogReg &&
+                <ConfirmDialog info="la sanción" title="Eliminar régimen disciplinario">
+
+                    <button className="button is-small is-danger is-pulled-left" onClick={event => setShowConfirmDialogReg(false)}> Cancelar</button>
+                    <button className="button is-small is-success is-pulled-rigth" onClick={event => {
+                        setShowConfirmDialogReg(false); doDeleteReg();
                     }}>Confirmar</button>
                 </ConfirmDialog>
 
