@@ -152,7 +152,7 @@ let sancionesSlice = createSlice({
     name: 'sanciones',
     initialState: {
         data: {
-            sancions: []
+            sanciones: []
         },
         status: ''
 
@@ -161,7 +161,7 @@ let sancionesSlice = createSlice({
 
         clearData: (state) => {
             state.data = {
-                sancions: []
+                sanciones: []
                
             }
         }
@@ -171,7 +171,7 @@ let sancionesSlice = createSlice({
         [loadSanciones.fulfilled]: (state, action) => {
             state.status = 'success'
             state.data = {
-                sancions: action.payload
+                sanciones: action.payload
             }
 
         }

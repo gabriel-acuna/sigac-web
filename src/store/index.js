@@ -106,7 +106,7 @@ const reducer = combineReducers({
     tiposNombramientos: tipoNombramientoReducer,
     declaraciones: declaracionReducer,
     familiares: familiarPersonalReducer,
-    estadoSumario: estadoSumarioReducer,
+    estadosSumarios: estadoSumarioReducer,
     regimenesLaborales: regimenReducer,
     modalidadesContractuales: modalidadContractualReducer,
     sanciones: sancionReducer,

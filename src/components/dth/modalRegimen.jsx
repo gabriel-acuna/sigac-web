@@ -1,5 +1,5 @@
 import { useForm, Controller } from 'react-hook-form'
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import { Radio, RadioGroup, FormControlLabel } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 import Select from 'react-select'
@@ -18,7 +18,7 @@ import { logOut } from '../../store/user'
 
 let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) => {
 
-    const { register, handleSubmit, formState: { errors }, setValue, getValues, clearErrors, control, setError } = useForm()
+    const { register, handleSubmit, formState: { errors }, setValue, clearErrors, control, setError } = useForm()
     const SAN_TYPES = ["LEVES", "GRAVES"]
     const MESES = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"]
     const [showModalRegimen, setShowModalRegimen] = useState(false)
@@ -27,9 +27,20 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
     const [showModalEstado, setShowModalEstado] = useState(false)
     const [respModal, setRespModal] = useState(null)
     const [errorModal, setErrorModal] = useState(null)
+    const [santion, setSantion] = useState(null)
     const dispatch = useDispatch()
 
-    let regimenesState = useSelector( state=>state.regimenesLaborales.data.regimenes)
+    let regimenesState = useSelector(state => state.regimenesLaborales.data.regimenes)
+    let modalidadesState = useSelector(state => state.modalidadesContractuales.data.modalidades)
+    let sancionesState = useSelector(state => state.sanciones.data.sanciones)
+    let estadosSumariosState = useSelector(state => state.estadosSumarios.data.estados)
+
+    useEffect(() => {
+        dispatch(loadRegimenes())
+        dispatch(loadModalidadesContractuales())
+        dispatch(loadSanciones())
+        dispatch(loadEstadosSumarios())
+    }, [dispatch])
 
     let postRegimenlaboral = (data) => {
         dispatch(
@@ -105,22 +116,22 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
         dispatch(
             postEstadosSumarios({
                 estado: data.estado.toUpperCase()
-            }).unwrap().then(
-                (resp) => setRespModal(resp)
-            ).catch(
-                (err) => {
-                    if (err.message.includes("undefined (reading 'data')")) {
-                        console.error("No hay conexión con el backend");
-                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
-                    } else if (err.message === "Rejected") {
-                        dispatch(
-                            logOut()
-                        )
-                    }
-
-                    else { setError(err) }
+            })
+        ).unwrap().then(
+            (resp) => setRespModal(resp)
+        ).catch(
+            (err) => {
+                if (err.message.includes("undefined (reading 'data')")) {
+                    console.error("No hay conexión con el backend");
+                    setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                } else if (err.message === "Rejected") {
+                    dispatch(
+                        logOut()
+                    )
                 }
-            )
+
+                else { setError(err) }
+            }
         )
     }
     return (
@@ -201,7 +212,9 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
                                                     {...field}
                                                     placeholder="Seleccione"
                                                     options={
-                                                        []
+                                                        regimenesState.map(
+                                                            regimen => ({ label: regimen.regimen, value: regimen.id })
+                                                        )
                                                     }
                                                 />
                                             )
@@ -225,7 +238,9 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
                                                     {...field}
                                                     placeholder="Seleccione"
                                                     options={
-                                                        []
+                                                        modalidadesState.map(
+                                                            modalidad => ({ label: modalidad.modalidad, value: modalidad.id })
+                                                        )
                                                     }
                                                 />
                                             )
@@ -283,8 +298,14 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
                                                 <Select
                                                     {...field}
                                                     placeholder="Seleccione"
+                                                    onChange={ value=>{
+                                                        setSantion(value)
+                                                        setValue("sancion", value, {shouldValidate:true})
+                                                    }}
                                                     options={
-                                                        []
+                                                        sancionesState.map(
+                                                            sancion => ({ label: sancion.sancion, value: sancion.id })
+                                                        )
                                                     }
                                                 />
                                             )
@@ -354,7 +375,9 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
                                                     {...field}
                                                     placeholder="Seleccione"
                                                     options={
-                                                        []
+                                                        estadosSumariosState.map(
+                                                            estado => ({ label: estado.estado, value: estado.id })
+                                                        )
                                                     }
                                                 />
                                             )
@@ -363,12 +386,12 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
 
                                 </div>
 
-                                <div className="column">
+                              {santion?.label === 'DESTITUCIÓN'  && <div className="column">
                                     <label className="label is-small">Número de sentencia</label>
                                     {errors.numeroSentencia && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione la sanción!</span>}
                                     <input type="text" className="input" {...register("numeroSentencia", { required: true })} />
 
-                                </div>
+                                </div>}
 
                             </div>
                             <div className="field is-grouped" style={{ display: 'flex', justifyContent: 'center' }}>
