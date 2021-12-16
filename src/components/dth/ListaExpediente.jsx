@@ -10,6 +10,7 @@ import { postDetalleExpedienteFuncionario, postDetalleExpedienteProfesor, putDet
 import { postDeclaraciones, putDeclaraciones, deleteDeclaraciones, loadDeclaracionesPersona } from '../../store/dth/declaracion_patrimonial'
 import { postFamiliar, putFamiliar, deleteFamiliar, loadFamiliares } from '../../store/dth/familiar_personal'
 import { postRegimenes, putRegimenes, loadRegimenesDisciplinariosPorPersona, deleteRegimenes } from '../../store/dth/regimen_disciplinario'
+import { postEvaluacionesPersonal, putEvaluacionesPersonal, deleteEvaluacionesPersonal, loadEvaluacionesPersonal } from '../../store/dth/evaluacion_desempeño'
 import { logOut } from '../../store/user'
 import Alert from '../Alert'
 import ConfirmDialog from '../ConfirmDialog'
@@ -28,6 +29,7 @@ let ListaExpediente = (props) => {
     let declaracionesState = useSelector(state => state.declaraciones.data.declaraciones)
     let familiaresState = useSelector(state => state.familiares.data.familiares)
     let regimenDisciplinarioState = useSelector(state => state.regimenesDisciplinarios.data.regimenes)
+    let evaluacionesState = useSelector(state => state.evaluacionesPersonal.data.evaluaciones)
     const navigate = useNavigate()
     const [persona] = useState(location.state)
     const dispatch = useDispatch()
@@ -66,6 +68,9 @@ let ListaExpediente = (props) => {
             )
             location.state?.identificacion && dispatch(
                 loadRegimenesDisciplinariosPorPersona(location.state.identificacion)
+            )
+            location.state?.identificacion && dispatch(
+                loadEvaluacionesPersonal(location.state.identificacion)
             )
         }, [dispatch, location.state?.identificacion]
     )
@@ -396,6 +401,7 @@ let ListaExpediente = (props) => {
                         {expedienteState?.detalle && expedienteState?.detalle.length && <Tab label="Declaraciones patrimoniales" {...a11yProps(1)} sx={{ textTransform: 'none' }} />}
                         {expedienteState?.detalle && expedienteState?.detalle.length && <Tab label="Familiares" {...a11yProps(2)} sx={{ textTransform: 'none' }} />}
                         {expedienteState?.detalle && expedienteState?.detalle.length && <Tab label="Régimen disciplinario" {...a11yProps(3)} sx={{ textTransform: 'none' }} />}
+                        {expedienteState?.detalle && expedienteState?.detalle.length && <Tab label="Evaluaciones de desempeño" {...a11yProps(4)} sx={{ textTransform: 'none' }} />}
                     </Tabs>
 
                 </Box>
@@ -604,6 +610,48 @@ let ListaExpediente = (props) => {
                             )
                         }>
                         <button className="button  is-success mx-3 is-outlined" onClick={() => setShowRegModalForm(true)}>
+                            <span className="icon">
+                                <IoIosAddCircleOutline />
+                            </span>
+                        </button></TabContent>
+                </TabPanel>
+                <TabPanel value={activeTab} index={4}>
+                    <TabContent
+                        title="Evaluaciones de desempeño"
+                        desc="evaluaciones"
+                        noData="No hay evaluaciones registradas"
+                        columns={[{ key: "desde", text: "Desde" },
+                        { key: "hasta", text: "Hasta" },
+                        { key: "puntaje", text: "Pun    taje" },
+                        { key: "opciones", text: "Opciones" }]}
+                        rows={
+                            evaluacionesState.map(
+                                row => {
+                                    return {
+                                        id: row.id,
+                                        desde: row.desde,
+                                        hasta: row.hasta,
+                                        puntaje: row.puntaje,
+                                        opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
+                                            setObjeto(row)
+
+                                        }}>
+                                            <span className="icon">
+                                                <FaRegEdit />
+                                            </span>
+                                        </button>,
+                                        <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
+                                            console.log(row);
+                                        }}>
+                                            <span className="icon">
+                                                <AiOutlineDelete />
+                                            </span>
+                                        </button>]
+                                    }
+                                }
+                            )
+                        }>
+                        <button className="button  is-success mx-3 is-outlined">
                             <span className="icon">
                                 <IoIosAddCircleOutline />
                             </span>

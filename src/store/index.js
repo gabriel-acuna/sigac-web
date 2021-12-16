@@ -49,6 +49,7 @@ import regimenReducer from './dth/regimen_laboral'
 import sancionReducer from './dth/sanciones'
 import modalidadContractualReducer from './dth/modalidad_contractual'
 import regimenDisciplinarioReducer from './dth/regimen_disciplinario'
+import evaluacionReducer from './dth/evaluacion_desempeño'
 
 import {
     persistStore,
@@ -110,7 +111,8 @@ const reducer = combineReducers({
     regimenesLaborales: regimenReducer,
     modalidadesContractuales: modalidadContractualReducer,
     sanciones: sancionReducer,
-    regimenesDisciplinarios: regimenDisciplinarioReducer
+    regimenesDisciplinarios: regimenDisciplinarioReducer,
+    evaluacionesPersonal: evaluacionReducer
 
 
 });
