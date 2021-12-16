@@ -64,6 +64,9 @@ let ListaExpediente = (props) => {
             location.state?.identificacion && dispatch(
                 loadFamiliares(location.state.identificacion)
             )
+            location.state?.identificacion && dispatch(
+                loadRegimenesDisciplinariosPorPersona(location.state.identificacion)
+            )
         }, [dispatch, location.state?.identificacion]
     )
 
@@ -287,6 +290,46 @@ let ListaExpediente = (props) => {
             ).catch(
                 (err) => {
                     console.log(err);
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+    }
+
+    let postRegimenHandler = (data) => {
+        dispatch(postRegimenes({ persona: persona.identificacion, ...data }))
+            .unwrap().then(
+                (resp) => setResponse(resp)
+            ).catch(
+                (err) => {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+    }
+
+    let putRegimenHandler = (data) => {
+        dispatch(putRegimenes({ id: objeto.id, persona: persona.identificacion, ...data }))
+            .unwrap().then(
+                (resp) => setResponse(resp)
+            ).catch(
+                (err) => {
                     if (err.message.includes("undefined (reading 'data')")) {
                         console.error("No hay conexión con el backend");
                         setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
@@ -533,7 +576,33 @@ let ListaExpediente = (props) => {
                         { key: "mes_sancion", text: "Mes" },
                         { key: "sancion", text: "Sanción" },
                         { key: "opciones", text: "Opciones" }]}
-                        rows={[]}>
+                        rows={
+                            regimenDisciplinarioState.map(
+                                row => {
+                                    return {
+                                        id: row.id,
+                                        anio_sancion: row.anio_sancion,
+                                        mes_sancion: row.mes_sancion,
+                                        sancion: row.sancion.sancion,
+                                        opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
+                                            setObjeto(row)
+                                            setShowRegModalForm(true)
+                                        }}>
+                                            <span className="icon">
+                                                <FaRegEdit />
+                                            </span>
+                                        </button>,
+                                        <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
+                                            deleteRegHandler(row.id)
+                                        }}>
+                                            <span className="icon">
+                                                <AiOutlineDelete />
+                                            </span>
+                                        </button>]
+                                    }
+                                }
+                            )
+                        }>
                         <button className="button  is-success mx-3 is-outlined" onClick={() => setShowRegModalForm(true)}>
                             <span className="icon">
                                 <IoIosAddCircleOutline />
@@ -667,7 +736,27 @@ let ListaExpediente = (props) => {
                     objeto={objeto}
                     persona={persona}
                     ingreso={persona.fecha_ingreso.slice(0, 4)}
+                    handler={objeto === null ? postRegimenHandler : putRegimenHandler}
                 >
+                    {error && <Alert type={'is-danger is-light'} content={error.message}>
+                        <button className="delete" onClick={event => setError(null)} key={atob(`X${location.state.identificacion}`)}></button>
+                    </Alert>}
+                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                        <button className="delete" onClick={event => setResponse(null)} key={atob(`O${location.state.identificacion}`)}></button >
+                    </Alert>}
+                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                        <button className="delete" onClick={event => {
+                            setResponse(null)
+                            setObjeto(null)
+                            setShowRegModalForm(false)
+                            dispatch(
+                                loadRegimenesDisciplinariosPorPersona(location.state.identificacion)
+                            )
+                        }}
+                            key={atob(`L${location.state.identificacion}`)}
+
+                        ></button>
+                    </Alert>}
                     <button className="button is-small is-danger mx-3"
                         onClick={() => {
                             setShowRegModalForm(false)

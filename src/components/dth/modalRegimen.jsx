@@ -178,7 +178,7 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
                                         name="mesSancion"
                                         control={control}
                                         rules={{ required: true }}
-                                        defaultValue={objeto?.mes_sancion ? objeto.mes_sancion : ''}
+                                        defaultValue={objeto?.mes_sancion ? { label: objeto.mes_sancion, value: objeto.mes_sancion } : null}
                                         render={
                                             ({ field }) => (
                                                 <Select
@@ -202,10 +202,10 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
                                     <label className="label is-small">Régimen laboral <span className="has-text-success has-text-weight-bold" style={{ cursor: 'pointer' }} onClick={() => setShowModalRegimen(true)}><IoIosAdd /></span></label>
                                     {errors.modalidadContractual && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione el régimen laboral!</span>}
                                     <Controller
-                                        name="modalidadContractual"
+                                        name="regimenLaboral"
                                         control={control}
                                         rules={{ required: true }}
-                                        defaultValue={objeto?.modalidad_contractual ? objeto.modalidad_contractual : ''}
+                                        defaultValue={objeto?.regimen_laboral ? { label: objeto.regimen_laboral.regimen, value: objeto.regimen_laboral.id } : null}
                                         render={
                                             ({ field }) => (
                                                 <Select
@@ -231,7 +231,7 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
                                         name="modalidadContractual"
                                         control={control}
                                         rules={{ required: true }}
-                                        defaultValue={objeto?.modalidad_contractual ? objeto.modalidad_contractual : ''}
+                                        defaultValue={objeto?.modalidad_contractual ? { label: objeto.modalidad_contractual.modalidad, value: objeto.modalidad_contractual.id } : null}
                                         render={
                                             ({ field }) => (
                                                 <Select
@@ -292,15 +292,15 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
                                         name="sancion"
                                         control={control}
                                         rules={{ required: true }}
-                                        defaultValue={objeto?.sancion ? objeto.sancion : ''}
+                                        defaultValue={objeto?.sancion ? { label: objeto.sancion.sancion, value: objeto.sancion.id } : null}
                                         render={
                                             ({ field }) => (
                                                 <Select
                                                     {...field}
                                                     placeholder="Seleccione"
-                                                    onChange={ value=>{
+                                                    onChange={value => {
                                                         setSantion(value)
-                                                        setValue("sancion", value, {shouldValidate:true})
+                                                        setValue("sancion", value, { shouldValidate: true })
                                                     }}
                                                     options={
                                                         sancionesState.map(
@@ -368,7 +368,7 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
                                         name="estadoSumario"
                                         control={control}
                                         rules={{ required: true }}
-                                        defaultValue={objeto?.estado_sumario ? objeto.estado_sumario : ''}
+                                        defaultValue={objeto?.estado_sumario ? { label: objeto.estado_sumario.estado, value: objeto.estado_sumario.id } : null}
                                         render={
                                             ({ field }) => (
                                                 <Select
@@ -386,7 +386,7 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
 
                                 </div>
 
-                              {santion?.label === 'DESTITUCIÓN'  && <div className="column">
+                                {santion?.label === 'DESTITUCIÓN' && <div className="column">
                                     <label className="label is-small">Número de sentencia</label>
                                     {errors.numeroSentencia && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione la sanción!</span>}
                                     <input type="text" className="input" {...register("numeroSentencia", { required: true })} />

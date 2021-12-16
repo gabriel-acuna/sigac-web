@@ -17,7 +17,7 @@ export const loadRegimenesDisciplinariosPorAño = createAsyncThunk(
         }
 
         try {
-            let response = await Axios.get(`${API}/regimenes-disciplinarios/${año}`,
+            let response = await Axios.get(`${API}/regimenes-disciplinarios/?anio=${año}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -42,7 +42,8 @@ export const loadRegimenesDisciplinariosPorAñoMes = createAsyncThunk(
         }
 
         try {
-            let response = await Axios.get(`${API}/regimenes-disciplinarios/${año}/${mes}`,
+            let response = await Axios.get(`${API}/regimenes-disciplinarios/?anio=${año}&
+            mes=${mes}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -67,7 +68,7 @@ export const loadRegimenesDisciplinariosPorPersona = createAsyncThunk(
         }
 
         try {
-            let response = await Axios.get(`${API}/regimenes-disciplinarios/${idPersona}`,
+            let response = await Axios.get(`${API}/regimenes-disciplinarios/personal/${idPersona}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -93,7 +94,19 @@ export const postRegimenes = createAsyncThunk(
         if (!token) return Promise.reject('There is not token')
         try {
             let response = await Axios.post(`${API}/regimenes-disciplinarios`,
-                regimen,
+                {
+                    anio_sancion: regimen.año,
+                    mes_sancion: regimen.mesSancion.value,
+                    persona: regimen.persona,
+                    regimen_laboral: regimen.regimenLaboral.value,
+                    modalidad_contractual: regimen.modalidadContractual.value,
+                    tipo_falta: regimen.tipoFalta,
+                    sancion: regimen.sancion.value,
+                    aplica_sumario: regimen.aplicaSumario,
+                    estado_sumario: regimen.estadoSumario.value,
+                    numero_sentencia: regimen?.numeroSantencia ? regimen.numeroSantencia : null
+
+                },
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -117,6 +130,7 @@ export const postRegimenes = createAsyncThunk(
 export const putRegimenes = createAsyncThunk(
     'regimenes-disciplinarios/put',
     async (regimen, { getState }) => {
+        console.log(regimen);
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -126,7 +140,19 @@ export const putRegimenes = createAsyncThunk(
         }
         if (!token) return Promise.reject('There is not token')
         try {
-            let response = await Axios.put(`${API}/regimenes-disciplinarios`, regimen
+            let response = await Axios.put(`${API}/regimenes-disciplinarios`, {
+                id: regimen.id,
+                anio_sancion: regimen.año,
+                mes_sancion: regimen.mesSancion.value,
+                persona: regimen.persona,
+                regimen_laboral: regimen.regimenLaboral.value,
+                modalidad_contractual: regimen.modalidadContractual.value,
+                tipo_falta: regimen.tipoFalta,
+                sancion: regimen.sancion.value,
+                aplica_sumario: regimen.aplicaSumario,
+                estado_sumario: regimen.estadoSumario.value,
+                numero_sentencia: regimen?.numeroSantencia ? regimen.numeroSantencia : null
+            }
                 ,
                 {
                     headers: {
