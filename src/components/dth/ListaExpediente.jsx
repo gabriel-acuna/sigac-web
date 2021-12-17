@@ -9,6 +9,7 @@ import ModalForm from './modalForm'
 import { postDetalleExpedienteFuncionario, postDetalleExpedienteProfesor, putDetalleExpediente, clearData, deleteItemDetalle, loadExpedienteLaboral } from '../../store/dth/expediente_laboral'
 import { postDeclaraciones, putDeclaraciones, deleteDeclaraciones, loadDeclaracionesPersona } from '../../store/dth/declaracion_patrimonial'
 import { postFamiliar, putFamiliar, deleteFamiliar, loadFamiliares } from '../../store/dth/familiar_personal'
+import { postInformacionReproductiva, putInformacionReproductiva, deleteInformacionReproductiva, loadInfoReproductiva } from '../../store/dth/informacion_reproductiva'
 import { postRegimenes, putRegimenes, loadRegimenesDisciplinariosPorPersona, deleteRegimenes } from '../../store/dth/regimen_disciplinario'
 import { postEvaluacionesPersonal, putEvaluacionesPersonal, deleteEvaluacionesPersonal, loadEvaluacionesPersonal } from '../../store/dth/evaluacion_desempeño'
 import { logOut } from '../../store/user'
@@ -29,6 +30,7 @@ let ListaExpediente = (props) => {
     let expedienteState = useSelector(state => state.expediente.data.expediente)
     let declaracionesState = useSelector(state => state.declaraciones.data.declaraciones)
     let familiaresState = useSelector(state => state.familiares.data.familiares)
+    let informacionReproductivaState = useSelector(state => state.informacionReproductiva.data.informacion)
     let regimenDisciplinarioState = useSelector(state => state.regimenesDisciplinarios.data.regimenes)
     let evaluacionesState = useSelector(state => state.evaluacionesPersonal.data.evaluaciones)
     const navigate = useNavigate()
@@ -39,11 +41,13 @@ let ListaExpediente = (props) => {
     const [showModalForm, setShowModalForm] = useState(false)
     const [showDecModalForm, setShowDecModalForm] = useState(false)
     const [showFamModalForm, setShowFamModalForm] = useState(false)
+    const [showInfModalForm, setShowInfModalForm] = useState(false)
     const [showRegModalForm, setShowRegModalForm] = useState(false)
     const [showEvaModalForm, setShowEvaModalForm] = useState(false)
     const [showConfirmDialog, setShowConfirmDialog] = useState(false)
     const [showConfirmDialogDec, setShowConfirmDialogDec] = useState(false)
     const [showConfirmDialogFam, setShowConfirmDialogFam] = useState(false)
+    const [showConfirmDialogInf, setShowConfirmDialogInf] = useState(false)
     const [showConfirmDialogReg, setShowConfirmDialogReg] = useState(false)
     const [showConfirmDialogEva, setShowConfirmDialogEva] = useState(false)
     const [response, setResponse] = useState(null)
@@ -95,6 +99,11 @@ let ListaExpediente = (props) => {
     const deleteFamHandler = (id) => {
         setId(id)
         setShowConfirmDialogFam(true)
+    }
+
+    const deleteInfHandler = (id) => {
+        setId(id)
+        setShowConfirmDialogInf(true)
     }
 
     const deleteRegHandler = (id) => {
@@ -205,6 +214,23 @@ let ListaExpediente = (props) => {
                 setDeleteResponse(resp)
                 dispatch(
                     loadFamiliares(persona.identificacion)
+                )
+
+
+            }).catch(
+                (err) => console.error(err)
+            )
+    }
+
+    let doDeleteInf = () => {
+        dispatch(
+            deleteInformacionReproductiva(id)
+
+        ).unwrap()
+            .then(resp => {
+                setDeleteResponse(resp)
+                dispatch(
+                    loadInfoReproductiva(persona.identificacion)
                 )
 
 
@@ -333,6 +359,48 @@ let ListaExpediente = (props) => {
             )
     }
 
+    let postInfromacionHandler = (data) => {
+        dispatch(
+            postInformacionReproductiva({ id_persona: persona.identificacion, ...data })
+        ).unwrap().then(
+            (resp) => setResponse(resp)
+        ).catch(
+            (err) => {
+                if (err.message.includes("undefined (reading 'data')")) {
+                    console.error("No hay conexión con el backend");
+                    setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                } else if (err.message === "Rejected") {
+                    dispatch(
+                        logOut()
+                    )
+                }
+
+                else { setError(err) }
+            }
+        )
+    }
+
+    let putInfromacionHandler = (data) => {
+        dispatch(
+            putInformacionReproductiva({ id: objeto.id, id_persona: persona.identificacion, ...data })
+        ).unwrap().then(
+            (resp) => setResponse(resp)
+        ).catch(
+            (err) => {
+                if (err.message.includes("undefined (reading 'data')")) {
+                    console.error("No hay conexión con el backend");
+                    setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                } else if (err.message === "Rejected") {
+                    dispatch(
+                        logOut()
+                    )
+                }
+
+                else { setError(err) }
+            }
+        )
+    }
+
     let postRegimenHandler = (data) => {
         dispatch(postRegimenes({ persona: persona.identificacion, ...data }))
             .unwrap().then(
@@ -455,7 +523,7 @@ let ListaExpediente = (props) => {
 
                 </div>
                 <hr style={{ backgroundColor: "#b3e6cc" }} />
-                <Box sx={{ width: '100%' }}>
+                <Box>
 
                     <Tabs aria-label="basic tabs example"
                         value={activeTab} onChange={(ev, newVal) => setActiveTab(newVal)}
@@ -464,8 +532,9 @@ let ListaExpediente = (props) => {
                         <Tab label="Registro laboral" {...a11yProps(0)} sx={{ textTransform: 'none' }} />
                         {expedienteState?.detalle && expedienteState?.detalle.length && <Tab label="Declaraciones patrimoniales" {...a11yProps(1)} sx={{ textTransform: 'none' }} />}
                         {expedienteState?.detalle && expedienteState?.detalle.length && <Tab label="Familiares" {...a11yProps(2)} sx={{ textTransform: 'none' }} />}
-                        {expedienteState?.detalle && expedienteState?.detalle.length && <Tab label="Régimen disciplinario" {...a11yProps(3)} sx={{ textTransform: 'none' }} />}
-                        {expedienteState?.detalle && expedienteState?.detalle.length && <Tab label="Evaluaciones de desempeño" {...a11yProps(4)} sx={{ textTransform: 'none' }} />}
+                        {expedienteState?.detalle && expedienteState?.detalle.length && persona.sexo === 'MUJER' && <Tab label="Información reproductiva" {...a11yProps(3)} sx={{ textTransform: 'none' }} />}
+                        {expedienteState?.detalle && expedienteState?.detalle.length && <Tab label="Régimen disciplinario" {...a11yProps(4)} sx={{ textTransform: 'none' }} />}
+                        {expedienteState?.detalle && expedienteState?.detalle.length && <Tab label="Evaluaciones de desempeño" {...a11yProps(5)} sx={{ textTransform: 'none' }} />}
                     </Tabs>
 
                 </Box>
@@ -637,7 +706,55 @@ let ListaExpediente = (props) => {
                         </button></TabContent>
 
                 </TabPanel>
+
                 <TabPanel value={activeTab} index={3}>
+
+                    <TabContent
+                        title="Información reproductiva"
+                        desc="información"
+                        noData="No hay información reproductiva"
+                        columns={[{ key: "estado", text: "Estado" },
+                        { key: "inicio", text: "Inicio" },
+                        { key: "fin", text: "Fin" },
+                        { key: "opciones", text: "Opciones" }]}
+                        rows={
+                            informacionReproductivaState.map(
+                                row => {
+                                    return {
+                                        id: row.id,
+                                        estado: row.estado,
+                                        inicio: row.inicio,
+                                        fin: row.fin,
+                                        opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
+                                            setObjeto(row)
+                                            setShowInfModalForm(true)
+                                        }}>
+                                            <span className="icon">
+                                                <FaRegEdit />
+                                            </span>
+                                        </button>,
+                                        <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
+                                            deleteInfHandler(row.id)
+                                        }}>
+                                            <span className="icon">
+                                                <AiOutlineDelete />
+                                            </span>
+                                        </button>]
+                                    }
+                                }
+                            )
+                        }
+                    >
+
+                        <button className="button  is-success mx-3 is-outlined" onClick={() => setShowInfModalForm(true)}>
+                            <span className="icon">
+                                <IoIosAddCircleOutline />
+                            </span>
+                        </button></TabContent>
+
+                </TabPanel>
+
+                <TabPanel value={activeTab} index={4}>
                     <TabContent
                         title="Régimen disciplicario"
                         desc="sanciones"
@@ -679,14 +796,14 @@ let ListaExpediente = (props) => {
                             </span>
                         </button></TabContent>
                 </TabPanel>
-                <TabPanel value={activeTab} index={4}>
+                <TabPanel value={activeTab} index={5}>
                     <TabContent
                         title="Evaluaciones de desempeño"
                         desc="evaluaciones"
                         noData="No hay evaluaciones registradas"
                         columns={[{ key: "desde", text: "Desde" },
                         { key: "hasta", text: "Hasta" },
-                        { key: "puntaje", text: "Pun    taje" },
+                        { key: "puntaje", text: "Puntaje" },
                         { key: "opciones", text: "Opciones" }]}
                         rows={
                             evaluacionesState.map(
@@ -943,6 +1060,17 @@ let ListaExpediente = (props) => {
                     <button className="button is-small is-danger is-pulled-left" onClick={event => setShowConfirmDialogFam(false)}> Cancelar</button>
                     <button className="button is-small is-success is-pulled-rigth" onClick={event => {
                         setShowConfirmDialogFam(false); doDeleteFam();
+                    }}>Confirmar</button>
+                </ConfirmDialog>
+
+            }
+            {
+                showConfirmDialogInf &&
+                <ConfirmDialog info="la información reproductiva" title="Eliminar información reproductiva">
+
+                    <button className="button is-small is-danger is-pulled-left" onClick={event => setShowConfirmDialogInf(false)}> Cancelar</button>
+                    <button className="button is-small is-success is-pulled-rigth" onClick={event => {
+                        setShowConfirmDialogInf(false); doDeleteInf();
                     }}>Confirmar</button>
                 </ConfirmDialog>
 
