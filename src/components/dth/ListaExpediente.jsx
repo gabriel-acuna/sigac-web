@@ -18,6 +18,7 @@ import TabContent from '../TabContent'
 import ModalDeclaracionPatrimonial from './modalDeclaracion'
 import RegimenModalForm from './modalRegimen'
 import FamiliarModalForm from './modalFamiliar'
+import EvaluacionModalForm from './modalEvaluacion'
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
@@ -39,6 +40,7 @@ let ListaExpediente = (props) => {
     const [showDecModalForm, setShowDecModalForm] = useState(false)
     const [showFamModalForm, setShowFamModalForm] = useState(false)
     const [showRegModalForm, setShowRegModalForm] = useState(false)
+    const [showEvaModalForm, setShowEvaModalForm] = useState(false)
     const [showConfirmDialog, setShowConfirmDialog] = useState(false)
     const [showConfirmDialogDec, setShowConfirmDialogDec] = useState(false)
     const [showConfirmDialogFam, setShowConfirmDialogFam] = useState(false)
@@ -640,8 +642,9 @@ let ListaExpediente = (props) => {
                                                 <FaRegEdit />
                                             </span>
                                         </button>,
-                                        <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
-                                            console.log(row);
+                                        <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={() => {
+                                            setObjeto(row)
+                                            setShowEvaModalForm(true)
                                         }}>
                                             <span className="icon">
                                                 <AiOutlineDelete />
@@ -651,7 +654,7 @@ let ListaExpediente = (props) => {
                                 }
                             )
                         }>
-                        <button className="button  is-success mx-3 is-outlined">
+                        <button className="button  is-success mx-3 is-outlined" onClick={()=>{setShowEvaModalForm(true)}}>
                             <span className="icon">
                                 <IoIosAddCircleOutline />
                             </span>
@@ -811,6 +814,43 @@ let ListaExpediente = (props) => {
                             setObjeto(null)
                         }}>Cancelar</button>
                 </RegimenModalForm>
+            }
+            {/*Evaluación de desempeño*/}
+            {
+                showEvaModalForm &&
+                <EvaluacionModalForm title={
+                    objeto === null ?
+                        `Registrando evaluación de desempeño de: `
+                        : `Editando evaluación de desempeño de : `
+                }
+                    objeto={objeto}
+                    persona={persona}
+                >
+                     {error && <Alert type={'is-danger is-light'} content={error.message}>
+                        <button className="delete" onClick={event => setError(null)} key={atob(`TT${location.state.identificacion}`)}></button>
+                    </Alert>}
+                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                        <button className="delete" onClick={event => setResponse(null)} key={atob(`N${location.state.identificacion}`)}></button >
+                    </Alert>}
+                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                        <button className="delete" onClick={event => {
+                            setResponse(null)
+                            setObjeto(null)
+                            setShowEvaModalForm(false)
+                            dispatch(
+                                loadEvaluacionesPersonal(location.state.identificacion)
+                            )
+                        }}
+                            key={atob(`W${location.state.identificacion}`)}
+
+                        ></button>
+                    </Alert>}
+                    <button className="button is-small is-danger mx-3"
+                        onClick={() => {
+                            setShowEvaModalForm(false)
+                            setObjeto(null)
+                        }}>Cancelar</button>
+                </EvaluacionModalForm>
             }
             {
                 showConfirmDialog &&
