@@ -45,6 +45,7 @@ let ListaExpediente = (props) => {
     const [showConfirmDialogDec, setShowConfirmDialogDec] = useState(false)
     const [showConfirmDialogFam, setShowConfirmDialogFam] = useState(false)
     const [showConfirmDialogReg, setShowConfirmDialogReg] = useState(false)
+    const [showConfirmDialogEva, setShowConfirmDialogEva] = useState(false)
     const [response, setResponse] = useState(null)
     const [deteteResponse, setDeleteResponse] = useState(null)
     const [error, setError] = useState(null)
@@ -99,6 +100,10 @@ let ListaExpediente = (props) => {
     const deleteRegHandler = (id) => {
         setId(id)
         setShowConfirmDialogReg(true)
+    }
+    const deleteEvaHandler = (id) => {
+        setId(id)
+        setShowConfirmDialogEva(true)
     }
 
     let postHandler = (data) => {
@@ -225,6 +230,23 @@ let ListaExpediente = (props) => {
             )
     }
 
+    let doDeleteEva = () => {
+        dispatch(
+            deleteEvaluacionesPersonal(id)
+
+        ).unwrap()
+            .then(resp => {
+                setDeleteResponse(resp)
+                dispatch(
+                    loadEvaluacionesPersonal(persona.identificacion)
+                )
+
+
+            }).catch(
+                (err) => console.error(err)
+            )
+    }
+
     let postDeclaracion = (data) => {
         dispatch(postDeclaraciones({ persona: location.state.identificacion, ...data })).unwrap()
             .then(
@@ -333,6 +355,46 @@ let ListaExpediente = (props) => {
 
     let putRegimenHandler = (data) => {
         dispatch(putRegimenes({ id: objeto.id, persona: persona.identificacion, ...data }))
+            .unwrap().then(
+                (resp) => setResponse(resp)
+            ).catch(
+                (err) => {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+    }
+
+    let postEvaluacionHandler = (data) => {
+        dispatch(postEvaluacionesPersonal({ id_persona: persona.identificacion, ...data }))
+            .unwrap().then(
+                (resp) => setResponse(resp)
+            ).catch(
+                (err) => {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+    }
+
+    let putEvaluacionHandler = (data) => {
+        dispatch(putEvaluacionesPersonal({ id: objeto.id, id_persona: persona.identificacion, ...data }))
             .unwrap().then(
                 (resp) => setResponse(resp)
             ).catch(
@@ -636,6 +698,7 @@ let ListaExpediente = (props) => {
                                         puntaje: row.puntaje,
                                         opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
                                             setObjeto(row)
+                                            setShowEvaModalForm(true)
 
                                         }}>
                                             <span className="icon">
@@ -643,8 +706,7 @@ let ListaExpediente = (props) => {
                                             </span>
                                         </button>,
                                         <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={() => {
-                                            setObjeto(row)
-                                            setShowEvaModalForm(true)
+                                            deleteEvaHandler(row.id)
                                         }}>
                                             <span className="icon">
                                                 <AiOutlineDelete />
@@ -654,7 +716,7 @@ let ListaExpediente = (props) => {
                                 }
                             )
                         }>
-                        <button className="button  is-success mx-3 is-outlined" onClick={()=>{setShowEvaModalForm(true)}}>
+                        <button className="button  is-success mx-3 is-outlined" onClick={() => { setShowEvaModalForm(true) }}>
                             <span className="icon">
                                 <IoIosAddCircleOutline />
                             </span>
@@ -825,8 +887,9 @@ let ListaExpediente = (props) => {
                 }
                     objeto={objeto}
                     persona={persona}
+                    handler={objeto === null ? postEvaluacionHandler : putEvaluacionHandler}
                 >
-                     {error && <Alert type={'is-danger is-light'} content={error.message}>
+                    {error && <Alert type={'is-danger is-light'} content={error.message}>
                         <button className="delete" onClick={event => setError(null)} key={atob(`TT${location.state.identificacion}`)}></button>
                     </Alert>}
                     {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
@@ -892,6 +955,17 @@ let ListaExpediente = (props) => {
                     <button className="button is-small is-danger is-pulled-left" onClick={event => setShowConfirmDialogReg(false)}> Cancelar</button>
                     <button className="button is-small is-success is-pulled-rigth" onClick={event => {
                         setShowConfirmDialogReg(false); doDeleteReg();
+                    }}>Confirmar</button>
+                </ConfirmDialog>
+
+            }
+            {
+                showConfirmDialogEva &&
+                <ConfirmDialog info="la sanción" title="Eliminar régimen disciplinario">
+
+                    <button className="button is-small is-danger is-pulled-left" onClick={() => setShowConfirmDialogEva(false)}> Cancelar</button>
+                    <button className="button is-small is-success is-pulled-rigth" onClick={() => {
+                        setShowConfirmDialogEva(false); doDeleteEva();
                     }}>Confirmar</button>
                 </ConfirmDialog>
 

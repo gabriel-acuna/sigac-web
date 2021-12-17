@@ -17,19 +17,19 @@ let ModalEvaluacion = ({ title, objeto, handler, persona, children }) => {
                 <section className="modal-card-body">
                     <form className="field" onSubmit={handleSubmit(handler)}>
                         <fieldset style={{ border: '1px solid ', padding: '10px' }}>
-                            <legend className="has-text-weight-bold is-size-6 has-text-grey-dark is-uppercase">Periodo de evalaución</legend>
+                            <legend className="has-text-weight-bold is-size-6 has-text-grey-dark is-uppercase">Periodo de evaluación</legend>
                             <div className="columns">
                                 <div className="column">
                                     <label className="label is-small">Desde</label>
                                     {errors.desde?.type === "required" && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, selecione fecha de inicio del perido de eveluación</span>}
 
-                                    <input type="date" className='input' {...register("desde", { required: true })} />
+                                    <input type="date" className='input' {...register("desde", { required: true })} defaultValue={objeto?.desde ? objeto.desde : ''} />
                                 </div>
                                 <div className="column">
                                     <label className="label is-small">Hasta</label>
                                     {errors.desde?.type === "required" && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, selecione fecha de fin del perido de eveluación!</span>}
 
-                                    <input type="date" className='input'{...register("hasta", { required: true })} />
+                                    <input type="date" className='input'{...register("hasta", { required: true })} defaultValue={objeto?.hasta ? objeto.hasta : ''} />
                                 </div>
                             </div>
                         </fieldset>
@@ -61,7 +61,7 @@ let ModalEvaluacion = ({ title, objeto, handler, persona, children }) => {
                                     <label className="label is-small">Calificación</label>
                                     <Controller
                                         name='calificacion'
-                                        defaultValue={objeto?.califiacion ? objeto.califiacion : ''}
+                                        defaultValue={objeto?.calificacion ? objeto.calificacion : ''}
                                         control={control}
                                         render={
                                             ({ field }) => (
@@ -75,11 +75,11 @@ let ModalEvaluacion = ({ title, objeto, handler, persona, children }) => {
                                                 >
                                                     {
                                                         SCORE.map(
-                                                            (s,ind) =>(
+                                                            (s, ind) => (
                                                                 <FormControlLabel
                                                                     value={s}
                                                                     label={s}
-                                                                    key={`score-opt-000${ind +1}`}
+                                                                    key={`score-opt-000${ind + 1}`}
                                                                     control={<Radio size="small" />}
                                                                     sx={{
                                                                         '& .MuiFormControlLabel-label': {
