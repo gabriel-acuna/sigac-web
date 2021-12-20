@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { loadNacionalidades, clearData, deleteNacionalidades, postNacionalidades, putNacionalidades } from '../../../../store/core/nacionalidades'
 import ConfirmDialog from '../../../ConfirmDialog'
-import Alert from '../../../Alert'
+import AlertModal from '../../../AlertModal'
 import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
 import { logOut } from '../../../../store/user'
 import { FaRegEdit } from 'react-icons/fa'
@@ -22,7 +22,7 @@ let ListadoNacionalidades = (props) => {
             dispatch(
                 loadNacionalidades()
             ).unwrap()
-                .then(()=>setLoading(false))
+                .then(() => setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -79,7 +79,7 @@ let ListadoNacionalidades = (props) => {
                             <FaRegEdit />
                         </span>
                     </button>,
-                    <button className="button is-small is-danger mx-2 is-outlined"  key={`${row.id}i`} onClick={()=> {
+                    <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}i`} onClick={() => {
                         deleteHandler(row.id)
                     }}>
                         <span className="icon">
@@ -100,7 +100,11 @@ let ListadoNacionalidades = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    loadNacionalidades()
+                    setShowModalForm(false)
+                }
             })
             .catch(
                 (err) => {
@@ -130,7 +134,12 @@ let ListadoNacionalidades = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    loadNacionalidades()
+                    setShowModalForm(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
@@ -150,103 +159,97 @@ let ListadoNacionalidades = (props) => {
 
     }
     return (
+        <>
+            <div className="conatiner">
+                <div className="columns is-centered">
+                    <div className="column is-half">
+                        <button className="button is-info mt-4 mx-3 is-outlined"
+                            onClick={event => {
+                                navigate(-1);
+                                dispatch(clearData())
+                            }}>
+                            <span className="icon">
+                                <IoIosArrowBack />
+                            </span>
+                        </button>
 
-        <div className="conatiner">
-            <div className="columns is-centered">
-                <div className="column is-half">
-                    <button className="button is-info mt-4 mx-3 is-outlined"
-                        onClick={event => {
-                            navigate(-1);
-                            dispatch(clearData())
-                        }}>
-                        <span className="icon">
-                            <IoIosArrowBack />
-                        </span>
-                    </button>
+                        <button className="button is-success mt-4 is-outlined" onClick={() => setShowModalForm(true)}>
+                            <span className="icon">
+                                <IoIosAddCircleOutline />
+                            </span>
+                        </button>
+                    </div>
 
-                    <button className="button is-success mt-4 is-outlined" onClick={() => setShowModalForm(true)}>
-                        <span className="icon">
-                            <IoIosAddCircleOutline />
-                        </span>
-                    </button>
                 </div>
-                {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                    <button className="delete" onClick={() => setResponse(null)}></button>
-                </Alert>}
-            </div>
-            <div className="columns is-centered">
+                <div className="columns is-centered">
 
 
-                <div className="column is-half mb-6">
-                    <ReactDatatable style={{ justifyContent: 'center' }}
-                        className="table is-bordered is-striped"
-                        tHeadClassName="is-info"
-                        config={{
-                            page_size: 10,
-                            length_menu: [10, 20, 50],
-                            show_pagination: true,
-                            pagination: 'advance',
-                            button: {
-                                excel: false,
-                                print: false
-                            },
-                            language: {
-                                length_menu: "Mostrar _MENU_ nacionalidades por página",
-                                filter: "Buscar en registros ...",
-                                no_data_text: "No hay nacionalidades registradas",
-                                info: "Mostrando _START_ a _END_ de _TOTAL_ nacionalidades",
-                                pagination: {
-                                    first: "Primera",
-                                    previous: "Anterior",
-                                    next: "Siguiente",
-                                    last: "Ultima"
+                    <div className="column is-half mb-6">
+                        <ReactDatatable style={{ justifyContent: 'center' }}
+                            className="table is-bordered is-striped"
+                            tHeadClassName="is-info"
+                            config={{
+                                page_size: 10,
+                                length_menu: [10, 20, 50],
+                                show_pagination: true,
+                                pagination: 'advance',
+                                button: {
+                                    excel: false,
+                                    print: false
                                 },
-                                loading_text: 'cargando ...'
-                            }
-                        }}
-                        records={rows}
-                        columns={columns}
-                        loading={loading}
-                    />
+                                language: {
+                                    length_menu: "Mostrar _MENU_ nacionalidades por página",
+                                    filter: "Buscar en registros ...",
+                                    no_data_text: "No hay nacionalidades registradas",
+                                    info: "Mostrando _START_ a _END_ de _TOTAL_ nacionalidades",
+                                    pagination: {
+                                        first: "Primera",
+                                        previous: "Anterior",
+                                        next: "Siguiente",
+                                        last: "Ultima"
+                                    },
+                                    loading_text: 'cargando ...'
+                                }
+                            }}
+                            records={rows}
+                            columns={columns}
+                            loading={loading}
+                        />
+                    </div>
                 </div>
-            </div>
-            {
-                showModal &&
-                <ConfirmDialog info="la nacionalidad" title="Eliminar nacionalidad">
+                {
+                    showModal &&
+                    <ConfirmDialog info="la nacionalidad" title="Eliminar nacionalidad">
 
-                    <button className="button is-small is-danger is-pulled-left" onClick={() => setShowModal(false)}> Cancelar</button>
-                    <button className="button is-small is-success is-pulled-rigth" onClick={() => {
-                        setShowModal(false); doDelete();
-                    }}>Confirmar</button>
-                </ConfirmDialog>
-            }
-            {
-                showModalForm && <RegistrarNacionalidad
-                    title={objeto !== null ? 'Editar nacionalidad' : 'Registrar nacionalidad'}
-                    objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={() => setResponse(null)}></button>
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={() => {
-                            setResponse(null)
+                        <button className="button is-small is-danger is-pulled-left" onClick={() => setShowModal(false)}> Cancelar</button>
+                        <button className="button is-small is-success is-pulled-rigth" onClick={() => {
+                            setShowModal(false); doDelete();
+                        }}>Confirmar</button>
+                    </ConfirmDialog>
+                }
+                {
+                    showModalForm && <RegistrarNacionalidad
+                        title={objeto !== null ? 'Editar nacionalidad' : 'Registrar nacionalidad'}
+                        objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
+
+                        <button className="button is-small is-danger mx-3" onClick={() => {
                             setShowModalForm(false)
                             setObjeto(null)
-                            dispatch(
-                                loadNacionalidades()
-                            )
-                        }}></button>
-                    </Alert>}
-                    {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={() => setError(null)}></button>
-                    </Alert>}
-                    <button className="button is-small is-danger mx-3" onClick={() => {
-                        setShowModalForm(false)
-                        setObjeto(null)
-                    }}>Cancelar</button>
-                </RegistrarNacionalidad>
+                        }}>Cancelar</button>
+                    </RegistrarNacionalidad>
+                }
+            </div >
+            {
+                response?.type && <AlertModal type={response.type} message={response.content}>
+                    <button className="delete" aria-label="close" onClick={() => setResponse(null)}></button>
+                </AlertModal>
             }
-        </div >
+            {
+                error?.message && <AlertModal type={'danger'} message={error.message}>
+                    <button className="delete" aria-label="close" onClick={() => setError(null)}></button>
+                </AlertModal>
+            }
+        </>
     )
 }
 

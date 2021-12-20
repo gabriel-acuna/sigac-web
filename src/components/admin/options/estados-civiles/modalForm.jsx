@@ -1,21 +1,13 @@
 import { useForm } from 'react-hook-form'
-import { Fragment, useEffect } from 'react'
+import { Fragment } from 'react'
 
 
 let ModalForm = ({ title, handler, children, objeto }) => {
 
 
-    const { register,reset, handleSubmit, formState: { errors } } = useForm()
+    const { register, handleSubmit, formState: { errors } } = useForm()
 
-    useEffect(
-        ()=>{
-            if(objeto!==null){
-                reset({
-                    estadoCivil: objeto.estado_civil
-                })
-            }
-        },[objeto, reset]
-    )
+
 
 
     return (
@@ -26,16 +18,17 @@ let ModalForm = ({ title, handler, children, objeto }) => {
                     <span className="has-text-weight-bold is-italic">{title}</span>
 
                 </header>
-                <section className="modal-card-body" style={{ display: 'flex', justifyContent: 'center' }}>
+                <section className="modal-card-body">
 
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
-                        <div className="field">
-                            <label className="label is-small">Estado Civil</label>
-                            <div className="control">
-                                <input type="text" {...register("estadoCivil", { required: true })} className="input is-samll is-uppercase" />
-                                {errors.etnia && <span className="has-text-danger">¡Por favor, Ingrese el estado civil!</span>}
-                               
+                        <div className="columns is-centered">
+                            <div className="column is-8">
+                                <label className="label is-small has-text-info">Estado Civil</label>
+                                {errors.estadoCivil && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el estado civil!</span>}
+                                <input type="text" {...register("estadoCivil", { required: true })} className="input is-uppercase" defaultValue={objeto?.estado_civil ? objeto.estado_civil : ''} />
                                 
+
+
 
                             </div>
                         </div>

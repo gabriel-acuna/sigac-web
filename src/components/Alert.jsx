@@ -9,7 +9,7 @@ let Alert = (props) => {
                 {props.children}
             </Fragment>
 
-            <div>
+            <div className='has-text-centered'>
                 {props.content}
             </div>
         </div >

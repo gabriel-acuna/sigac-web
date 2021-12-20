@@ -7,7 +7,7 @@ import { loadCantonesProvincia, postCantones, putCantones, deleteCantones } from
 import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
 import { FaRegEdit } from 'react-icons/fa'
 import { AiOutlineDelete } from 'react-icons/ai'
-import Alert from '../../../Alert'
+import AlertModal from '../../../AlertModal'
 import ModalForm from './modalCanton'
 import { logOut } from '../../../../store/user'
 import ConfirmDialog from '../../../ConfirmDialog'
@@ -39,7 +39,6 @@ let ListadoCantonesProvincias = (props) => {
     const [showModalForm, setShowModalForm] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [response, setResponse] = useState(null)
-    const [delResponse, setDelResponse] = useState(null)
     const [error, setError] = useState(null)
     const [id, setId] = useState(null)
 
@@ -93,7 +92,11 @@ let ListadoCantonesProvincias = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    loadCantonesProvincia(location.state.id)
+                    setShowModalForm(false)
+                }
             })
             .catch(
                 (err) => {
@@ -128,7 +131,12 @@ let ListadoCantonesProvincias = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    loadCantonesProvincia(location.state.id)
+                    setShowModalForm(false)
+                    setObjeto(false)
+                }
             })
             .catch(
                 (err) => {
@@ -153,7 +161,7 @@ let ListadoCantonesProvincias = (props) => {
 
         ).unwrap()
             .then(resp => {
-                setDelResponse(resp)
+                setResponse(resp)
                 dispatch(
                     loadCantonesProvincia(location.state.id))
                     .unwrap()
@@ -189,17 +197,7 @@ let ListadoCantonesProvincias = (props) => {
                             <IoIosAddCircleOutline />
                         </span>
                     </button>
-                    {delResponse && delResponse.type === 'warning' && <Alert type={'is-warning is-light'} content={delResponse.content}>
-                        <button className="delete" onClick={event => setDelResponse(null)}></button>
-                    </Alert>}
-                    {delResponse && delResponse.type === 'success' && <Alert type={'is-success is-light'} content={delResponse.content}>
-                        <button className="delete" onClick={event => {
-                            setDelResponse(null)
 
-
-
-                        }}></button>
-                    </Alert>}
                 </div>
             </div>
             <div className="columns is-centered">
@@ -247,31 +245,22 @@ let ListadoCantonesProvincias = (props) => {
             }
             {
                 showModalForm && <ModalForm title={objeto !== null ? 'Editar cantón' : 'Registrar cantón'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={() => setResponse(null)}></button>
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={() => {
-                            setResponse(null)
-                            setShowModalForm(false)
-                            setObjeto(null)
-                            dispatch(
-                                loadCantonesProvincia(location.state.id)
 
-                            ).unwrap()
-                                .then(
-                                    resp => setCantonesProvincia(resp)
-                                )
-                        }}></button>
-                    </Alert>}
-                    {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={() => setError(null)}></button>
-                    </Alert>}
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalForm(false)
                         setObjeto(null)
                     }}>Cancelar</button>
                 </ModalForm>
+            }
+            {
+                response?.type && <AlertModal type={response.type} message={response.content}>
+                    <button className="delete" aria-label="close" onClick={() => setResponse(null)}></button>
+                </AlertModal>
+            }
+            {
+                error?.message && <AlertModal type={'danger'} message={error.message}>
+                    <button className="delete" aria-label="close" onClick={() => setError(null)}></button>
+                </AlertModal>
             }
         </>
     )

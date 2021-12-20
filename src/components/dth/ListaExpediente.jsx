@@ -9,7 +9,7 @@ import ModalForm from './modalForm'
 import { postDetalleExpedienteFuncionario, postDetalleExpedienteProfesor, putDetalleExpediente, clearData, deleteItemDetalle, loadExpedienteLaboral } from '../../store/dth/expediente_laboral'
 import { postDeclaraciones, putDeclaraciones, deleteDeclaraciones, loadDeclaracionesPersona } from '../../store/dth/declaracion_patrimonial'
 import { postFamiliar, putFamiliar, deleteFamiliar, loadFamiliares } from '../../store/dth/familiar_personal'
-import { postInformacionReproductiva, putInformacionReproductiva, deleteInformacionReproductiva, loadInfoReproductiva, loadInformacionReproductivaPersonal } from '../../store/dth/informacion_reproductiva'
+import { postInformacionReproductiva, putInformacionReproductiva, deleteInformacionReproductiva, loadInformacionReproductivaPersonal } from '../../store/dth/informacion_reproductiva'
 import { postRegimenes, putRegimenes, loadRegimenesDisciplinariosPorPersona, deleteRegimenes } from '../../store/dth/regimen_disciplinario'
 import { postEvaluacionesPersonal, putEvaluacionesPersonal, deleteEvaluacionesPersonal, loadEvaluacionesPersonal } from '../../store/dth/evaluacion_desempeño'
 import { logOut } from '../../store/user'
@@ -83,7 +83,7 @@ let ListaExpediente = (props) => {
             location.state?.identificacion && dispatch(
                 loadEvaluacionesPersonal(location.state.identificacion)
             )
-        }, [dispatch, location.state?.identificacion]
+        }, [dispatch, location.state?.identificacion, location.state?.sexo]
     )
 
 

@@ -7,7 +7,7 @@ import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
 import { logOut } from '../../../../store/user'
 import { FaRegEdit } from 'react-icons/fa'
 import { HiViewList } from 'react-icons/hi'
-import Alert from '../../../Alert'
+import AlertModal from '../../../AlertModal'
 import ModalForm from './modalProvincia'
 
 
@@ -22,7 +22,7 @@ let ListadoProvincias = (props) => {
                 loadProvincias()
 
             ).unwrap()
-                .then( ()=>setLoading(false))
+                .then(() => setLoading(false))
                 .catch(
                     (err) => console.error(err)
                 )
@@ -54,6 +54,10 @@ let ListadoProvincias = (props) => {
         ).unwrap()
             .then((resp) => {
                 setResponse(resp);
+                if (resp?.type === 'success') {
+                    loadProvincias()
+                    setShowModalForm(false)
+                }
             })
             .catch(
                 (err) => {
@@ -88,6 +92,11 @@ let ListadoProvincias = (props) => {
         ).unwrap()
             .then((resp) => {
                 setResponse(resp);
+                if (resp?.type === 'success') {
+                    loadProvincias()
+                    setShowModalForm(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
@@ -126,85 +135,82 @@ let ListadoProvincias = (props) => {
         }
     )
     return (
-        <div className="container">
-            <div className="columns is-centered">
-                <div className="column is-half">
-                    <button className="button is-info mt-4 mx-3 is-outlined"
-                        onClick={() => {
-                            navigate(-1);
-                            dispatch(clearData())
-                        }}>
-                        <span className="icon">
-                            <IoIosArrowBack />
-                        </span>
-                    </button>
+        <>
+            <div className="container">
+                <div className="columns is-centered">
+                    <div className="column is-half">
+                        <button className="button is-info mt-4 mx-3 is-outlined"
+                            onClick={() => {
+                                navigate(-1);
+                                dispatch(clearData())
+                            }}>
+                            <span className="icon">
+                                <IoIosArrowBack />
+                            </span>
+                        </button>
 
-                    <button className="button  is-success mt-4 is-outlined" onClick={() => setShowModalForm(true)}>
-                        <span className="icon">
-                            <IoIosAddCircleOutline />
-                        </span>
-                    </button>
+                        <button className="button  is-success mt-4 is-outlined" onClick={() => setShowModalForm(true)}>
+                            <span className="icon">
+                                <IoIosAddCircleOutline />
+                            </span>
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div className="columns is-centered">
-                <div className="column is-half mb-6">
-                    <ReactDatatable style={{ justifyContent: 'center' }}
-                        className="table is-bordered is-striped is-fullwidth"
-                        config={{
-                            page_size: 10,
-                            length_menu: [10, 20, 50],
-                            show_pagination: true,
-                            pagination: 'advance',
-                            button: {
-                                excel: false,
-                                print: false
-                            },
-                            sort: { column: 'provincia', order: 'asc' },
-                            language: {
-                                length_menu: "Mostrar _MENU_ provincias por página",
-                                filter: "Buscar en registros ...",
-                                info: "Mostrando _START_ a _END_ de _TOTAL_ provincias",
-                                no_data_text: "No hay provincias registradas",
-                                pagination: {
-                                    first: "Primera",
-                                    previous: "Anterior",
-                                    next: "Siguiente",
-                                    last: "Ultima"
+                <div className="columns is-centered">
+                    <div className="column is-half mb-6">
+                        <ReactDatatable style={{ justifyContent: 'center' }}
+                            className="table is-bordered is-striped is-fullwidth"
+                            config={{
+                                page_size: 10,
+                                length_menu: [10, 20, 50],
+                                show_pagination: true,
+                                pagination: 'advance',
+                                button: {
+                                    excel: false,
+                                    print: false
                                 },
-                                loading_text: 'cargando ...'
-                            }
-                        }}
-                        records={rows}
-                        columns={columns}
-                        loading={loading}
-                    />
+                                sort: { column: 'provincia', order: 'asc' },
+                                language: {
+                                    length_menu: "Mostrar _MENU_ provincias por página",
+                                    filter: "Buscar en registros ...",
+                                    info: "Mostrando _START_ a _END_ de _TOTAL_ provincias",
+                                    no_data_text: "No hay provincias registradas",
+                                    pagination: {
+                                        first: "Primera",
+                                        previous: "Anterior",
+                                        next: "Siguiente",
+                                        last: "Ultima"
+                                    },
+                                    loading_text: 'cargando ...'
+                                }
+                            }}
+                            records={rows}
+                            columns={columns}
+                            loading={loading}
+                        />
+                    </div>
                 </div>
-            </div>
-            {
-                showModalForm && <ModalForm title={objeto !== null ? 'Editar provincia' : 'Registrar provincia'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={() => setResponse(null)}></button>
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={() => {
-                            setResponse(null)
+                {
+                    showModalForm && <ModalForm title={objeto !== null ? 'Editar provincia' : 'Registrar provincia'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
+
+                        <button className="button is-small is-danger mx-3" onClick={ev => {
                             setShowModalForm(false)
                             setObjeto(null)
-                            dispatch(
-                                loadProvincias()
-                            )
-                        }}></button>
-                    </Alert>}
-                    {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={() => setError(null)}></button>
-                    </Alert>}
-                    <button className="button is-small is-danger mx-3" onClick={ev => {
-                        setShowModalForm(false)
-                        setObjeto(null)
-                    }}>Cancelar</button>
-                </ModalForm>
+                        }}>Cancelar</button>
+                    </ModalForm>
+                }
+            </div>
+            {
+                response?.type && <AlertModal type={response.type} message={response.content}>
+                    <button className="delete" aria-label="close" onClick={() => setResponse(null)}></button>
+                </AlertModal>
             }
-        </div>
+            {
+                error?.message && <AlertModal type={'danger'} message={error.message}>
+                    <button className="delete" aria-label="close" onClick={() => setError(null)}></button>
+                </AlertModal>
+            }
+        </>
     )
 }
 

@@ -1,25 +1,13 @@
 import { useForm } from 'react-hook-form'
-import { Fragment, useEffect} from 'react'
+import { Fragment } from 'react'
 
 
 
 
-let RegistrarDiscapacidad = ({title, handler, children, objeto}) => {
+let RegistrarDiscapacidad = ({ title, handler, children, objeto }) => {
 
-    
-    const { register,reset, handleSubmit, formState: { errors } } = useForm()
-    useEffect(
-        ()=>{
-            if(objeto !== null){
-                reset({
-                    discapacidad: objeto.discapacidad
-                })
-            }
-        },[objeto, reset]
-    )
 
- 
-
+    const { register, handleSubmit, formState: { errors } } = useForm()
 
     return (
         <div className="modal is-active">
@@ -29,28 +17,29 @@ let RegistrarDiscapacidad = ({title, handler, children, objeto}) => {
                     <span className="has-text-weight-bold is-italic">{title}</span>
 
                 </header>
-                <section className="modal-card-body" style={{ display: 'flex', justifyContent: 'center' }}>
+                <section className="modal-card-body">
 
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
-                        <div className="field">
-                            <label className="label is-small">Discapacidad</label>
-                            <div className="control">
-                                <input type="text" {...register("discapacidad", { required: true })} className="input is-samll is-uppercase" />
-                                {errors.discapacidad && <span className="has-text-danger">¡Por favor, Ingrese la discapacidad!</span>}
+                        <div className="columns is-centered">
+                            <div className="column is-8">
+                                <label className="label is-small has-text-info">Discapacidad</label>
+                                {errors.discapacidad && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la discapacidad!</span>}
+
+                                <input type="text" {...register("discapacidad", { required: true })} className="input is-uppercase" defaultValue={objeto?.discapacidad ? objeto.discapacidad : ''} />
                                
 
                             </div>
                         </div>
                         <div className="field is-grouped" style={{ display: 'flex', justifyContent: 'center' }}>
-                        <div className="control has-text-centered">
-                            <Fragment>
-                                {children}
-                            </Fragment>
+                            <div className="control has-text-centered">
+                                <Fragment>
+                                    {children}
+                                </Fragment>
 
-                            <button type="submit" className="button is-success is-small mx-3">Guardar</button>
+                                <button type="submit" className="button is-success is-small mx-3">Guardar</button>
 
+                            </div>
                         </div>
-                    </div>
                     </form>
                 </section>
             </div>

@@ -4,12 +4,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { loadEstadosCiviles, clearData, deleteEstadosCiviles, postEstadoCivil, putEstadosCiviles } from '../../../../store/core/estado_civil'
 import ConfirmDialog from '../../../ConfirmDialog'
-import Alert from '../../../Alert'
 import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
 import { logOut } from '../../../../store/user'
 import { FaRegEdit } from 'react-icons/fa'
 import { AiOutlineDelete } from 'react-icons/ai'
 import ModalForm from './modalForm'
+import AlertModal from '../../../AlertModal'
 
 
 let ListadoEstadosCiviles = (props) => {
@@ -21,7 +21,7 @@ let ListadoEstadosCiviles = (props) => {
             dispatch(
                 loadEstadosCiviles()
             ).unwrap()
-                .then(()=>setLoading(false))
+                .then(() => setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -68,16 +68,18 @@ let ListadoEstadosCiviles = (props) => {
     let rows = eatdosCivilesState.map(
         (row, index) => {
             return {
+                id: row.id,
                 estado_civil: row.estado_civil,
                 opciones: [
-                    <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev=>{
+                    <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
                         setObjeto(row)
-                        setShowModalForm(true)}}>
+                        setShowModalForm(true)
+                    }}>
                         <span className="icon">
                             <FaRegEdit />
                         </span>
                     </button>,
-                    <button className="button is-small is-danger mx-2 is-outlined" onClick={event => {
+                    <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
                         deleteHandler(row.id)
                     }}>
                         <span className="icon">
@@ -98,13 +100,17 @@ let ListadoEstadosCiviles = (props) => {
         ).unwrap()
             .then((resp) => {
                 setResponse(resp);
+                if (resp.type === 'success') {
+                    loadEstadosCiviles()
+                    setShowModalForm(false)
+                }
             })
             .catch(
                 (err) => {
-                    if (err.message.includes("undefined (reading 'data')")) { 
-                    console.error("No hay conexión con el backend");
-                    setError({'message':'No es posible establecer conexión, intente mas tarde.'})
-                 } else if (err.message === "Rejected") {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
                         )
@@ -129,14 +135,19 @@ let ListadoEstadosCiviles = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    loadEstadosCiviles()
+                    setShowModalForm(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
-                    if (err.message.includes("undefined (reading 'data')")) { 
-                    console.error("No hay conexión con el backend");
-                    setError({'message':'No es posible establecer conexión, intente mas tarde.'})
-                 } else if (err.message === "Rejected") {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
                         )
@@ -162,15 +173,13 @@ let ListadoEstadosCiviles = (props) => {
                         </span>
                     </button>
 
-                    <button className="button  is-success mt-4 is-outlined" onClick={()=>setShowModalForm(true)}>
+                    <button className="button  is-success mt-4 is-outlined" onClick={() => setShowModalForm(true)}>
                         <span className="icon">
                             <IoIosAddCircleOutline />
                         </span>
                     </button>
                 </div>
-                {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                    <button className="delete" onClick={() => setResponse(null)}></button>
-                </Alert>}
+               
             </div>
             <div className="columns is-centered">
 
@@ -220,29 +229,26 @@ let ListadoEstadosCiviles = (props) => {
             }
             {
                 showModalForm && <ModalForm title={objeto !== null ? 'Editar estado civil' : 'Registrar estado civil'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={event => setResponse(null)}></button>
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={event => {
-                            setResponse(null)
-                            setShowModalForm(false)
-                            setObjeto(null)
-                            dispatch(
-                                loadEstadosCiviles()
-                            )
-                            }}></button>
-                    </Alert>}
-                    {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={event => setError(null)}></button>
-                    </Alert>}
-                    <button className="button is-small is-danger mx-3" onClick={ev =>{ 
+
+                    <button className="button is-small is-danger mx-3 is-pulled-rigth" onClick={ev => {
                         setShowModalForm(false)
                         setObjeto(null)
-                        }}>Cancelar</button>
+                    }}>Cancelar</button>
                 </ModalForm>
             }
+            {
+                response?.type && <AlertModal type={response.type} message={response.content}>
+                    <button className="delete" aria-label="close" onClick={() => setResponse(null)}></button>
+                </AlertModal>
+            }
+            {
+                error?.message && <AlertModal type={'danger'} message={error.message}>
+                    <button className="delete" aria-label="close" onClick={() => setError(null)}></button>
+                </AlertModal>
+            }
         </>
+
+
     )
 }
 

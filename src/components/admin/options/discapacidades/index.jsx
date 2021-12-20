@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { loadDiscapacidades, clearData, deleteDiscapacidades, postDiscapacidades, putDiscapacidades } from '../../../../store/core/discapacidades'
 import ConfirmDialog from '../../../ConfirmDialog'
-import Alert from '../../../Alert'
+import AlertModal from '../../../AlertModal'
 import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
 import RegistrarDiscapacidad from './RegistrarDiscapacidad'
 import { logOut } from '../../../../store/user'
@@ -27,7 +27,7 @@ let ListadoDiscapacidades = (props) => {
                 loadDiscapacidades()
             ).unwrap()
                 .then(
-                    ()=>setLoadning(false)
+                    () => setLoadning(false)
                 )
                 .catch(
                     (err) => console.log(err)
@@ -106,7 +106,11 @@ let ListadoDiscapacidades = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    loadDiscapacidades()
+                    setShowModalForm(false)
+                }
             })
             .catch(
                 (err) => {
@@ -137,7 +141,12 @@ let ListadoDiscapacidades = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    loadDiscapacidades()
+                    setShowModalForm(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
@@ -157,103 +166,95 @@ let ListadoDiscapacidades = (props) => {
 
     }
     return (
+        <>
+            <div className="conatiner">
+                <div className="columns is-centered">
+                    <div className="column is-half">
+                        <button className="button is-info is-outlined mt-4 mx-3"
+                            onClick={event => {
+                                navigate(-1);
+                                dispatch(clearData())
+                            }}>
+                            <span className="icon">
+                                <IoIosArrowBack />
+                            </span>
+                        </button>
 
-        <div className="conatiner">
-            <div className="columns is-centered">
-                <div className="column is-half">
-                    <button className="button is-info is-outlined mt-4 mx-3"
-                        onClick={event => {
-                            navigate(-1);
-                            dispatch(clearData())
-                        }}>
-                        <span className="icon">
-                            <IoIosArrowBack />
-                        </span>
-                    </button>
+                        <button className="button is-success is-outlined mt-4" onClick={ev => setShowModalForm(true)}>
+                            <span className="icon">
+                                <IoIosAddCircleOutline />
+                            </span>
+                        </button>
+                    </div>
 
-                    <button className="button is-success is-outlined mt-4" onClick={ev => setShowModalForm(true)}>
-                        <span className="icon">
-                            <IoIosAddCircleOutline />
-                        </span>
-                    </button>
                 </div>
-                {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                    <button className="delete" onClick={event => setResponse(null)}></button>
-                </Alert>}
-            </div>
-            <div className="columns is-centered">
+                <div className="columns is-centered">
 
 
-                <div className="column is-half mb-6">
-                    <ReactDatatable style={{ justifyContent: 'center' }}
-                        className="table is-bordered is-striped"
-                        tHeadClassName="is-info"
-                        config={{
-                            page_size: 10,
-                            length_menu: [10, 20, 50],
-                            show_pagination: true,
-                            pagination: 'advance',
-                            button: {
-                                excel: false,
-                                print: false
-                            },
-                            language: {
-                                length_menu: "Mostrar _MENU_ discapacidades por página",
-                                filter: "Buscar en registros ...",
-                                no_data_text: "No hay discapacidades registradas",
-                                info: "Mostrando _START_ a _END_ de _TOTAL_ discapacidades",
-                                pagination: {
-                                    first: "Primera",
-                                    previous: "Anterior",
-                                    next: "Siguiente",
-                                    last: "Ultima"
+                    <div className="column is-half mb-6">
+                        <ReactDatatable style={{ justifyContent: 'center' }}
+                            className="table is-bordered is-striped"
+                            tHeadClassName="is-info"
+                            config={{
+                                page_size: 10,
+                                length_menu: [10, 20, 50],
+                                show_pagination: true,
+                                pagination: 'advance',
+                                button: {
+                                    excel: false,
+                                    print: false
                                 },
-                                loading_text: 'cargando ...'
-                            }
-                        }}
-                        records={rows}
-                        columns={columns}
-                        loading={loading}
-                    />
+                                language: {
+                                    length_menu: "Mostrar _MENU_ discapacidades por página",
+                                    filter: "Buscar en registros ...",
+                                    no_data_text: "No hay discapacidades registradas",
+                                    info: "Mostrando _START_ a _END_ de _TOTAL_ discapacidades",
+                                    pagination: {
+                                        first: "Primera",
+                                        previous: "Anterior",
+                                        next: "Siguiente",
+                                        last: "Ultima"
+                                    },
+                                    loading_text: 'cargando ...'
+                                }
+                            }}
+                            records={rows}
+                            columns={columns}
+                            loading={loading}
+                        />
+                    </div>
                 </div>
-            </div>
-            {
-                showModal &&
-                <ConfirmDialog info="la discapacidad" title="Eliminar discapacidad">
+                {
+                    showModal &&
+                    <ConfirmDialog info="la discapacidad" title="Eliminar discapacidad">
 
-                    <button className="button is-small is-danger is-pulled-left" onClick={event => setShowModal(false)}> Cancelar</button>
-                    <button className="button is-small is-success is-pulled-rigth" onClick={event => {
-                        setShowModal(false); doDelete();
-                    }}>Confirmar</button>
-                </ConfirmDialog>
-            }
-            {
-                showModalForm && <RegistrarDiscapacidad title={objeto !== null ? "Editar discapacidad" : "Registrar discapacidad"} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
-                    {
-                        error && <Alert type={'is-danger is-light'} content={error.message}>
-                            <button className="delete" onClick={event => setError(null)}></button>
-                        </Alert>
-                    }
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={event => setResponse(null)}></button>
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={event => {
-                            setResponse(null)
+                        <button className="button is-small is-danger is-pulled-left" onClick={event => setShowModal(false)}> Cancelar</button>
+                        <button className="button is-small is-success is-pulled-rigth" onClick={event => {
+                            setShowModal(false); doDelete();
+                        }}>Confirmar</button>
+                    </ConfirmDialog>
+                }
+                {
+                    showModalForm && <RegistrarDiscapacidad title={objeto !== null ? "Editar discapacidad" : "Registrar discapacidad"} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
+
+                        <button className="button is-small is-danger mx-3" onClick={ev => {
                             setShowModalForm(false)
                             setObjeto(null)
-                            dispatch(
-                                loadDiscapacidades()
-                            )
-                        }}></button>
-                    </Alert>}
-                    <button className="button is-small is-danger mx-3" onClick={ev => {
-                        setShowModalForm(false)
-                        setObjeto(null)
-                    }}>Cancelar</button>
-                </RegistrarDiscapacidad>
+                        }}>Cancelar</button>
+                    </RegistrarDiscapacidad>
+                }
+            </div >
+            {
+                response?.type && <AlertModal type={response.type} message={response.content}>
+                    <button className="delete" aria-label="close" onClick={() => setResponse(null)}></button>
+                </AlertModal>
             }
-        </div >
+            {
+                error?.message && <AlertModal type={'danger'} message={error.message}>
+                    <button className="delete" aria-label="close" onClick={() => setError(null)}></button>
+                </AlertModal>
+            }
+        </>
     )
 }
 
