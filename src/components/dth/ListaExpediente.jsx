@@ -9,7 +9,7 @@ import ModalForm from './modalForm'
 import { postDetalleExpedienteFuncionario, postDetalleExpedienteProfesor, putDetalleExpediente, clearData, deleteItemDetalle, loadExpedienteLaboral } from '../../store/dth/expediente_laboral'
 import { postDeclaraciones, putDeclaraciones, deleteDeclaraciones, loadDeclaracionesPersona } from '../../store/dth/declaracion_patrimonial'
 import { postFamiliar, putFamiliar, deleteFamiliar, loadFamiliares } from '../../store/dth/familiar_personal'
-import { postInformacionReproductiva, putInformacionReproductiva, deleteInformacionReproductiva, loadInfoReproductiva } from '../../store/dth/informacion_reproductiva'
+import { postInformacionReproductiva, putInformacionReproductiva, deleteInformacionReproductiva, loadInfoReproductiva, loadInformacionReproductivaPersonal } from '../../store/dth/informacion_reproductiva'
 import { postRegimenes, putRegimenes, loadRegimenesDisciplinariosPorPersona, deleteRegimenes } from '../../store/dth/regimen_disciplinario'
 import { postEvaluacionesPersonal, putEvaluacionesPersonal, deleteEvaluacionesPersonal, loadEvaluacionesPersonal } from '../../store/dth/evaluacion_desempeño'
 import { logOut } from '../../store/user'
@@ -19,6 +19,7 @@ import TabContent from '../TabContent'
 import ModalDeclaracionPatrimonial from './modalDeclaracion'
 import RegimenModalForm from './modalRegimen'
 import FamiliarModalForm from './modalFamiliar'
+import InformacionModal from './modalInformacionReproductiva'
 import EvaluacionModalForm from './modalEvaluacion'
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -72,6 +73,9 @@ let ListaExpediente = (props) => {
             )
             location.state?.identificacion && dispatch(
                 loadFamiliares(location.state.identificacion)
+            )
+            location.state?.identificacion && location.state.sexo === 'MUJER' && dispatch(
+                loadInformacionReproductivaPersonal(location.state.identificacion)
             )
             location.state?.identificacion && dispatch(
                 loadRegimenesDisciplinariosPorPersona(location.state.identificacion)
@@ -230,7 +234,7 @@ let ListaExpediente = (props) => {
             .then(resp => {
                 setDeleteResponse(resp)
                 dispatch(
-                    loadInfoReproductiva(persona.identificacion)
+                    loadInformacionReproductivaPersonal(persona.identificacion)
                 )
 
 
@@ -501,7 +505,7 @@ let ListaExpediente = (props) => {
                                 Datos personales <span style={{ cursor: 'pointer' }}><Link to="cv" state={location.state}><span className="icon"><ImProfile /></span></Link></span></p>
                             <div className="panel-block has-background-info-light">
                                 {persona &&
-                                    <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr', padding: '20px' }}>
+                                    <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr', padding: '20px', columnGap: '50px' }}>
 
                                         <div>
                                             <span className="has-text-weight-medium">Nombres: </span> {persona.primer_nombre} {persona.segundo_nombre}
@@ -953,6 +957,47 @@ let ListaExpediente = (props) => {
                             setObjeto(null)
                         }}>Cancelar</button>
                 </FamiliarModalForm>
+            }
+
+            {/*Modal infromación reproductiva */}
+            {
+                showInfModalForm &&
+                <InformacionModal
+                    title={
+                        objeto === null ?
+                            `Registrando infromación reproductiva de: `
+                            : `Editando infromación reproductiva de : `
+                    }
+                    objeto={objeto}
+                    persona={persona}
+                    handler={objeto === null ? postInfromacionHandler : putInfromacionHandler}
+                >
+                    {error && <Alert type={'is-danger is-light'} content={error.message}>
+                        <button className="delete" onClick={() => setError(null)} key={atob(`L${location.state.identificacion}`)}></button>
+                    </Alert>}
+                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
+                        <button className="delete" onClick={() => setResponse(null)} key={atob(`K${location.state.identificacion}`)}></button >
+                    </Alert>}
+                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
+                        <button className="delete" onClick={() => {
+                            setResponse(null)
+                            setObjeto(null)
+                            setShowInfModalForm(false)
+                            dispatch(
+                                loadInformacionReproductivaPersonal(location.state.identificacion)
+                            )
+                        }}
+                            key={atob(`C${location.state.identificacion}`)}
+
+                        ></button>
+                    </Alert>}
+
+                    <button className="button is-small is-danger mx-3"
+                        onClick={() => {
+                            setShowInfModalForm(false)
+                            setObjeto(null)
+                        }}>Cancelar</button>
+                </InformacionModal>
             }
             {/*Régimen disciplinario*/}
             {

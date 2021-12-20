@@ -19,35 +19,38 @@ let ModalInformacionReproductiva = ({ title, handler, children, objeto, persona 
                         <div className="columns">
                             <div className="column">
                                 <label className="label is-small">Estado</label>
+                                {errors.estado && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione el estado!</span>}
+
                                 <Controller
                                     control={control}
                                     name="estado"
                                     defaultValue={objeto?.estado ? objeto.estado : ''}
+                                    rules={{ required: true }}
                                     render={
-                                        ({field}) =>(
-                                            <RadioGroup {...field} 
+                                        ({ field }) => (
+                                            <RadioGroup {...field}
                                                 aria-label="estado"
                                                 onChange={
-                                                    ev=>{
-                                                        setValue("estado", ev.target.value, { shouldValidate: true})
+                                                    ev => {
+                                                        setValue("estado", ev.target.value, { shouldValidate: true })
                                                     }
                                                 }
                                             >
                                                 {
                                                     OPTIONS.map(
-                                                        (opt, ind) =>(
+                                                        (opt, ind) => (
                                                             <FormControlLabel
-                                                                    value={opt}
-                                                                    label={opt}
-                                                                    key={`state-opt-000${ind + 1}`}
-                                                                    control={<Radio size="small" />}
-                                                                    sx={{
-                                                                        '& .MuiFormControlLabel-label': {
-                                                                            fontSize: 14,
-                                                                            fontWeight: 500
-                                                                        },
-                                                                    }}
-                                                                />
+                                                                value={opt}
+                                                                label={opt}
+                                                                key={`state-opt-000${ind + 1}`}
+                                                                control={<Radio size="small" />}
+                                                                sx={{
+                                                                    '& .MuiFormControlLabel-label': {
+                                                                        fontSize: 14,
+                                                                        fontWeight: 500
+                                                                    },
+                                                                }}
+                                                            />
                                                         )
                                                     )
                                                 }
@@ -58,11 +61,15 @@ let ModalInformacionReproductiva = ({ title, handler, children, objeto, persona 
                             </div>
                             <div className="column">
                                 <label className="label is-small">Inicio</label>
-                                <input type="date" {...register("inicio", {required:true})}  defaultValue={objeto?.inicio ? objeto.inicio : ''}/>
+                                {errors.inicio && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione la fecha de inicio!</span>}
+
+                                <input type="date" className="input" {...register("inicio", { required: true })} defaultValue={objeto?.inicio ? objeto.inicio : ''} />
                             </div>
                             <div className="column">
                                 <label className="label is-small">Fin</label>
-                                <input type="date" {...register("inicio", {required:true})}  defaultValue={objeto?.inicio ? objeto.inicio : ''}/>
+                                {errors.fin && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione la fecha de fin!</span>}
+
+                                <input type="date" className="input" {...register("fin", { required: true })} defaultValue={objeto?.inicio ? objeto.inicio : ''} />
                             </div>
                         </div>
 

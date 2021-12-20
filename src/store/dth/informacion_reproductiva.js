@@ -156,7 +156,7 @@ let informacionReproductivaSlice = createSlice({
         [loadInformacionReproductivaPersonal.fulfilled]: (state, action) => {
             state.status = 'success'
             state.data = {
-                informacione: action.payload
+                informacion: action.payload
             }
 
         }

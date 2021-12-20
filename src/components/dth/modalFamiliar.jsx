@@ -95,7 +95,7 @@ let FamiliarModalForm = ({ title, handler, children, objeto, persona }) => {
                                 <Controller
                                     control={control}
                                     name="sexo"
-                                    defaultValue={ objeto?.sexo ? objeto.sexo: ''}
+                                    defaultValue={objeto?.sexo ? objeto.sexo : ''}
                                     rules={{ required: true }}
                                     render={
                                         ({ field }) => (

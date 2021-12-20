@@ -59,10 +59,13 @@ let ModalEvaluacion = ({ title, objeto, handler, persona, children }) => {
                                 </div>
                                 <div className="column">
                                     <label className="label is-small">Calificación</label>
+                                    {errors.calificacion && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione la calificación!</span>}
+
                                     <Controller
                                         name='calificacion'
                                         defaultValue={objeto?.calificacion ? objeto.calificacion : ''}
                                         control={control}
+                                        rules={{ required: true }}
                                         render={
                                             ({ field }) => (
                                                 <RadioGroup {...field}
