@@ -30,14 +30,15 @@ let RegistrarTipoDocumento = ({ title, handler, children, objeto }) => {
                     <span className="has-text-weight-bold is-italic">{title}</span>
 
                 </header>
-                <section className="modal-card-body" style={{ display: 'flex', justifyContent: 'center' }}>
+                <section className="modal-card-body">
 
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
-                        <div className="field">
-                            <label className="label is-small">Tipo documento</label>
-                            <div className="control">
-                                <input type="text" {...register("tipoDocumento", { required: true })} className="input is-samll is-uppercase" />
-                                {errors.tipoDocumento && <span className="has-text-danger">¡Por favor, Ingrese el tipo documento!</span>}
+                        <div className="columns is-centered">
+                        <div className="column is-8">
+                            <label className="label is-small has-text-info">Tipo documento</label>
+                            
+                                <input type="text" {...register("tipoDocumento", { required: true })} className="input is-uppercase" />
+                                {errors.tipoDocumento && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el tipo documento!</span>}
                                 {
                                     error && <Alert type={'is-danger is-light'} content={error.message}>
                                         <button className="delete" onClick={event => setError(null)}></button>

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { loadTiposDocumentos, clearData, deleteTiposDocumentos, putTiposDocumentos, postTiposDocumentos } from '../../../../store/core/tiposDocumentos'
 import ConfirmDialog from '../../../ConfirmDialog'
-import Alert from '../../../Alert'
+import AlertModal from '../../../AlertModal'
 import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
 import { logOut } from '../../../../store/user'
 import { FaRegEdit } from 'react-icons/fa'
@@ -71,7 +71,7 @@ let ListadoTiposDocumentos = (props) => {
             return {
                 tipoDocumento: row.tipo_documento,
                 opciones: [
-                    <button className="button is-small is-primary mx-2" key={`${row.id}0`} onClick={() => {
+                    <button className="button is-small is-primary is-outlined mx-2" key={`${row.id}0`} onClick={() => {
                         setObjeto(row)
                         setShowModalForm(true)
                     }}>
@@ -79,7 +79,7 @@ let ListadoTiposDocumentos = (props) => {
                             <FaRegEdit />
                         </span>
                     </button>,
-                    <button className="button is-small is-danger mx-2" key={`${row.id}1`} onClick={() => {
+                    <button className="button is-small is-danger is-outlined mx-2" key={`${row.id}1`} onClick={() => {
                         deleteHandler(row.id)
                     }}>
                         <span className="icon">
@@ -100,7 +100,11 @@ let ListadoTiposDocumentos = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadTiposDocumentos())
+                    setShowModalForm(false)
+                }
             })
             .catch(
                 (err) => {
@@ -132,7 +136,12 @@ let ListadoTiposDocumentos = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadTiposDocumentos())
+                    setShowModalForm(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
@@ -167,20 +176,18 @@ let ListadoTiposDocumentos = (props) => {
                         </span>
                     </button>
 
-                    <button className="button is-success mt-4 is-outlined" onClick={()=> setShowModalForm(true)}>
+                    <button className="button is-success mt-4 is-outlined" onClick={() => setShowModalForm(true)}>
                         <span className="icon">
                             <IoIosAddCircleOutline />
                         </span>
                     </button>
                 </div>
-                {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                    <button className="delete" onClick={() => setResponse(null)}></button>
-                </Alert>}
+
             </div>
             <div className="columns is-centered">
 
 
-                <div className="column is-half">
+                <div className="column is-6">
                     <ReactDatatable style={{ justifyContent: 'center' }}
                         className="table is-bordered is-striped"
                         tHeadClassName="is-info"
@@ -194,7 +201,7 @@ let ListadoTiposDocumentos = (props) => {
                                 print: false
                             },
                             language: {
-                                length_menu: "Mostrar _MENU_ tipos documentos por página",
+                                length_menu: "Mostrar _MENU_ documentos por página",
                                 filter: "Buscar en registros ...",
                                 no_data_text: "No hay tipos documentos registrados",
                                 info: "Mostrando _START_ a _END_ de _TOTAL_ tipos documentos",
@@ -230,27 +237,22 @@ let ListadoTiposDocumentos = (props) => {
                     objeto={objeto}
                     handler={objeto !== null ? putHandler : postHandler}
                 >
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={()=> setResponse(null)}></button>
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={() => {
-                            setResponse(null)
-                            setShowModalForm(false)
-                            setObjeto(null)
-                            dispatch(
-                                loadTiposDocumentos()
-                            )
-                        }}></button>
-                    </Alert>}
-                    {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={() => setError(null)}></button>
-                    </Alert>}
+
                     <button className="button is-small is-danger mx-3" onClick={() => {
                         setShowModalForm(false)
                         setObjeto(null)
                     }}>Cancelar</button>
                 </RegistrarTipoDocumento>
+            }
+            {
+                response?.type && <AlertModal type={response.type} message={response.content}>
+                    <button className="delete" aria-label="close" onClick={() => setResponse(null)}></button>
+                </AlertModal>
+            }
+            {
+                error?.message && <AlertModal type={'danger'} message={error.message}>
+                    <button className="delete" aria-label="close" onClick={() => setError(null)}></button>
+                </AlertModal>
             }
         </>
     )

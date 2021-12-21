@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { loadRelacionesIES, clearData, deleteRelacionesIES, postRelacionesIES, putRelacionesIES } from '../../../../store/core/relacionesIES'
 import ConfirmDialog from '../../../ConfirmDialog'
-import Alert from '../../../Alert'
+import AlertModal from '../../../AlertModal'
 
 import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
 import { logOut } from '../../../../store/user'
@@ -228,28 +228,23 @@ let ListadoRelacionesIES = (props) => {
                 </ConfirmDialog>
             }
             {
-                showModalForm && <RegistrarRelacion title={objeto !== null ? 'Editar realación IES' : 'Registrar realación IES'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={event => setResponse(null)}></button>
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={event => {
-                            setResponse(null)
-                            setShowModalForm(false)
-                            setObjeto(null)
-                            dispatch(
-                                loadRelacionesIES()
-                            )
-                        }}></button>
-                    </Alert>}
-                    {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={event => setError(null)}></button>
-                    </Alert>}
+                showModalForm && <RegistrarRelacion
+                    title={objeto !== null ? 'Editar realación IES' : 'Registrar realación IES'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalForm(false)
                         setObjeto(null)
                     }}>Cancelar</button>
                 </RegistrarRelacion>
+            }
+            {
+                response?.type && <AlertModal type={response.type} message={response.content}>
+                    <button className="delete" aria-label="close" onClick={() => setResponse(null)}></button>
+                </AlertModal>
+            }
+            {
+                error?.message && <AlertModal type={'danger'} message={error.message}>
+                    <button className="delete" aria-label="close" onClick={() => setError(null)}></button>
+                </AlertModal>
             }
         </>
     )

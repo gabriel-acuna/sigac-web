@@ -40,7 +40,7 @@ let ListadoPaises = (props) => {
         <>
             <div className="columns is-centered">
                 <div className="column is-half">
-                    <button className="button is-small is-info mt-4 mx-3 is-outlined"
+                    <button className="button is-info mt-4 mx-3 is-outlined"
                         onClick={event => {
                             navigate(-1);
                             dispatch(clearData())
