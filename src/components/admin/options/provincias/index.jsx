@@ -55,7 +55,7 @@ let ListadoProvincias = (props) => {
             .then((resp) => {
                 setResponse(resp);
                 if (resp?.type === 'success') {
-                    loadProvincias()
+                    dispatch(loadProvincias())
                     setShowModalForm(false)
                 }
             })
@@ -93,7 +93,7 @@ let ListadoProvincias = (props) => {
             .then((resp) => {
                 setResponse(resp);
                 if (resp?.type === 'success') {
-                    loadProvincias()
+                    dispatch(loadProvincias())
                     setShowModalForm(false)
                     setObjeto(null)
                 }

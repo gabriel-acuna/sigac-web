@@ -101,7 +101,7 @@ let ListadoEstadosCiviles = (props) => {
             .then((resp) => {
                 setResponse(resp);
                 if (resp.type === 'success') {
-                    loadEstadosCiviles()
+                    dispatch(loadEstadosCiviles())
                     setShowModalForm(false)
                 }
             })
@@ -137,7 +137,7 @@ let ListadoEstadosCiviles = (props) => {
             .then((resp) => {
                 setResponse(resp)
                 if (resp.type === 'success') {
-                    loadEstadosCiviles()
+                    dispatch(loadEstadosCiviles())
                     setShowModalForm(false)
                     setObjeto(null)
                 }

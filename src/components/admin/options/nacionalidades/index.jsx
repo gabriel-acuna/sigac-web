@@ -102,7 +102,7 @@ let ListadoNacionalidades = (props) => {
             .then((resp) => {
                 setResponse(resp)
                 if (resp.type === 'success') {
-                    loadNacionalidades()
+                    dispatch(loadNacionalidades())
                     setShowModalForm(false)
                 }
             })
@@ -136,7 +136,7 @@ let ListadoNacionalidades = (props) => {
             .then((resp) => {
                 setResponse(resp)
                 if (resp.type === 'success') {
-                    loadNacionalidades()
+                    dispatch(loadNacionalidades())
                     setShowModalForm(false)
                     setObjeto(null)
                 }

@@ -108,7 +108,7 @@ let ListadoDiscapacidades = (props) => {
             .then((resp) => {
                 setResponse(resp)
                 if (resp.type === 'success') {
-                    loadDiscapacidades()
+                    dispatch(loadDiscapacidades())
                     setShowModalForm(false)
                 }
             })
@@ -143,7 +143,7 @@ let ListadoDiscapacidades = (props) => {
             .then((resp) => {
                 setResponse(resp)
                 if (resp.type === 'success') {
-                    loadDiscapacidades()
+                    dispatch(loadDiscapacidades())
                     setShowModalForm(false)
                     setObjeto(null)
                 }

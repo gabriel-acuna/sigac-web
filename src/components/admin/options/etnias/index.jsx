@@ -100,7 +100,7 @@ let ListadoEtnias = (props) => {
                 setResponse(resp)
                 if (resp.type === 'success') {
                     setShowModalForm(false)
-                    loadEtnias()
+                    dispatch(loadEtnias())
                 }
             })
             .catch(
@@ -136,7 +136,7 @@ let ListadoEtnias = (props) => {
                 setResponse(resp)
                 if (resp.type === 'success') {
                     setShowModalForm(false)
-                    loadEtnias()
+                    dispatch(loadEtnias())
                     setObjeto(null)
                 }
             })
@@ -177,7 +177,7 @@ let ListadoEtnias = (props) => {
                         </span>
                     </button>
                 </div>
-              
+
             </div>
             <div className="columns is-centered">
 
@@ -228,14 +228,14 @@ let ListadoEtnias = (props) => {
             }
             {
                 showModalForm && <RegistrarEtnia title={objeto !== null ? 'Editar etnia' : 'Registrar etnia'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
-                    
+
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalForm(false)
                         setObjeto(null)
                     }}>Cancelar</button>
                 </RegistrarEtnia>
             }
-             {
+            {
                 response?.type && <AlertModal type={response.type} message={response.content}>
                     <button className="delete" aria-label="close" onClick={() => setResponse(null)}></button>
                 </AlertModal>

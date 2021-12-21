@@ -94,7 +94,7 @@ let ListadoCantonesProvincias = (props) => {
             .then((resp) => {
                 setResponse(resp)
                 if (resp.type === 'success') {
-                    loadCantonesProvincia(location.state.id)
+                    dispatch(loadCantonesProvincia(location.state.id))
                     setShowModalForm(false)
                 }
             })
@@ -133,7 +133,7 @@ let ListadoCantonesProvincias = (props) => {
             .then((resp) => {
                 setResponse(resp)
                 if (resp.type === 'success') {
-                    loadCantonesProvincia(location.state.id)
+                    dispatch(loadCantonesProvincia(location.state.id))
                     setShowModalForm(false)
                     setObjeto(false)
                 }
