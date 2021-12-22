@@ -1,22 +1,11 @@
 import { useForm } from 'react-hook-form'
-import { Fragment, useEffect } from 'react'
+import { Fragment } from 'react'
 
 
 let ModalForm = ({ title, handler, children, objeto }) => {
 
 
-    const { register,reset, handleSubmit, formState: { errors } } = useForm()
-
-    useEffect(
-        ()=>{
-            if(objeto!==null){
-                reset({
-                    documentoAprobacion: objeto.documento_aprobacion,
-                    fechaAprobacion: objeto.fecha_aprobacion
-                })
-            }
-        },[objeto, reset]
-    )
+    const { register, handleSubmit, formState: { errors } } = useForm()
 
 
     return (
@@ -27,32 +16,34 @@ let ModalForm = ({ title, handler, children, objeto }) => {
                     <span className="has-text-weight-bold is-italic">{title}</span>
 
                 </header>
-                <section className="modal-card-body" style={{ display: 'flex', justifyContent: 'center' }}>
+                <section className="modal-card-body">
 
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
-                        <div className="field">
-                            <label className="label is-small">Documento aprobación</label>
-                            <div className="control">
-                                <input type="text" {...register("documentoAprobacion", { required: true })} className="input is-samll is-uppercase" />
-                              
-                               
-                                
+                        <div className="columns is-centered">
+                            <div className="column">
+                                <label className="label is-small has-text-info">Documento aprobación</label>
+                                {errors.documentoAprobacion && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el documento de aprobación!</span>}
+
+                                <input type="text" {...register("documentoAprobacion", { required: true })} className="input is-samll is-uppercase" defaultValue={objeto?.documento_aprobacion ? objeto.documento_aprobacion : ''} />
+
+
+
 
                             </div>
-                            {errors.documentoAprobacion && <span className="has-text-danger">¡Por favor, Ingrese el documento de aprobación!</span>}
-                            
-                        </div>
-                        <div className="field">
-                            <label className="label is-small">Fecha aprobación</label>
-                            <div className="control">
-                                <input type="date" {...register("fechaAprobacion", { required: true })} className="input is-samll is-uppercase" />
-                              
-                               
-                                
+
+
+                            <div className="column">
+                                <label className="label is-small has-text-info">Fecha aprobación</label>
+                                {errors.fechaAprobacion && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la fecha de aprobación!</span>}
+
+                                <input type="date" {...register("fechaAprobacion", { required: true })} className="input is-uppercase" defaultValue={objeto?.fecha_aprobacion ? objeto.fecha_aprobacion : ''} />
+
+
+
 
                             </div>
-                            {errors.fechaAprobacion && <span className="has-text-danger">¡Por favor, Ingrese la fecha de aprobación!</span>}
-                            
+
+
                         </div>
                         <div className="field is-grouped" style={{ display: 'flex', justifyContent: 'center' }}>
                             <div className="control has-text-centered">

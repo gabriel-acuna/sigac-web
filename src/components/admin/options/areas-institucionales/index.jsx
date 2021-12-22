@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { loadAreasInstitucionales, clearData, deleteArea, postArea, putArea } from '../../../../store/core/area'
 import ConfirmDialog from '../../../ConfirmDialog'
-import Alert from '../../../Alert'
+import AlertModal from '../../../AlertModal'
 import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
 import { logOut } from '../../../../store/user'
 import { FaRegEdit } from 'react-icons/fa'
@@ -22,7 +22,7 @@ let ListadoAreasInstitucionales = (props) => {
             dispatch(
                 loadAreasInstitucionales()
             ).unwrap()
-                .then(()=>setLoading(false))
+                .then(() => setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -78,7 +78,7 @@ let ListadoAreasInstitucionales = (props) => {
                             <FaRegEdit />
                         </span>
                     </button>,
-                    <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}+`}  onClick={() => {
+                    <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}+`} onClick={() => {
                         deleteHandler(row.id)
                     }}>
                         <span className="icon">
@@ -99,7 +99,11 @@ let ListadoAreasInstitucionales = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadAreasInstitucionales())
+                    setShowModalForm(false)
+                }
             })
             .catch(
                 (err) => {
@@ -124,7 +128,7 @@ let ListadoAreasInstitucionales = (props) => {
 
         dispatch(
             putArea(
-                
+
                 {
                     id: objeto.id,
                     nombre: data.nombre.toUpperCase(),
@@ -133,14 +137,19 @@ let ListadoAreasInstitucionales = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadAreasInstitucionales())
+                    setShowModalForm(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
-                    if (err.message.includes("undefined (reading 'data')")) { 
-                    console.error("No hay conexión con el backend");
-                    setError({'message':'No es posible establecer conexión, intente mas tarde.'})
-                 } else if (err.message === "Rejected") {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
                         )
@@ -166,15 +175,13 @@ let ListadoAreasInstitucionales = (props) => {
                         </span>
                     </button>
 
-                    <button className="button  is-success mt-4 is-outlined" onClick={()=> setShowModalForm(true)}>
+                    <button className="button  is-success mt-4 is-outlined" onClick={() => setShowModalForm(true)}>
                         <span className="icon">
                             <IoIosAddCircleOutline />
                         </span>
                     </button>
                 </div>
-                {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                    <button className="delete" onClick={() => setResponse(null)}></button>
-                </Alert>}
+
             </div>
             <div className="columns is-centered">
 
@@ -224,27 +231,22 @@ let ListadoAreasInstitucionales = (props) => {
             }
             {
                 showModalForm && <ModalForm title={objeto !== null ? 'Editar área institucional' : 'Registrar área institucional'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={event => setResponse(null)}></button>
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={event => {
-                            setResponse(null)
-                            setShowModalForm(false)
-                            setObjeto(null)
-                            dispatch(
-                                loadAreasInstitucionales()
-                            )
-                        }}></button>
-                    </Alert>}
-                    {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={event => setError(null)}></button>
-                    </Alert>}
+
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalForm(false)
                         setObjeto(null)
                     }}>Cancelar</button>
                 </ModalForm>
+            }
+            {
+                response?.type && <AlertModal type={response.type} message={response.content}>
+                    <button className="delete" aria-label="close" onClick={() => setResponse(null)}></button>
+                </AlertModal>
+            }
+            {
+                error?.message && <AlertModal type={'danger'} message={error.message}>
+                    <button className="delete" aria-label="close" onClick={() => setError(null)}></button>
+                </AlertModal>
             }
         </>
     )

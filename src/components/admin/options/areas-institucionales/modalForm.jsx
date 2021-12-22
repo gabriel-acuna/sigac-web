@@ -1,22 +1,13 @@
 import { useForm } from 'react-hook-form'
-import { Fragment, useEffect } from 'react'
+import { Fragment, } from 'react'
 
 
 let ModalForm = ({ title, handler, children, objeto }) => {
 
 
-    const { register,reset, handleSubmit, formState: { errors } } = useForm()
+    const { register, handleSubmit, formState: { errors } } = useForm()
 
-    useEffect(
-        ()=>{
-            if(objeto!==null){
-                reset({
-                    nombre: objeto.nombre,
-                    codigo: objeto.codigo
-                })
-            }
-        },[objeto, reset]
-    )
+
 
 
     return (
@@ -27,20 +18,21 @@ let ModalForm = ({ title, handler, children, objeto }) => {
                     <span className="has-text-weight-bold is-italic">{title}</span>
 
                 </header>
-                <section className="modal-card-body" style={{ display: 'flex', justifyContent: 'center' }}>
+                <section className="modal-card-body">
 
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
-                        <div className="field">
-                            <label className="label is-small">Nombre</label>
-                            <div className="control">
-                                <input type="text" {...register("nombre", { required: true })} className="input is-uppercase" />
-                                {errors.nombre && <span className="has-text-danger">¡Por favor, Ingrese el nombre del area institucional!</span>}
+                        <div className="columns is-centered">
+                            <div className="column">
+                                <label className="label is-small has-text-info">Nombre</label>
+                                {errors.nombre && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el nombre del area institucional!</span>}
+                                <input type="text" {...register("nombre", { required: true })} className="input is-uppercase" defaultValue={objeto?.nombre ? objeto.nombre : ''} />
+
 
                             </div>
-                        </div>
-                        <div className="field">
-                            <label className="label is-small">Código</label>
-                            <div className="control">
+
+                            <div className="column">
+                                <label className="label is-small has-text-info">Código</label>
+
                                 <input type="text" {...register("codigo")} className="input is-uppercase" />
 
                             </div>

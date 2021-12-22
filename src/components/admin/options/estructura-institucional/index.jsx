@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { loadEstructurasInstitucionales, clearData, deleteEstructura, postEstructuraInstitucional, putEstructuraInstitucional } from '../../../../store/core/estructura-institucional'
 import ConfirmDialog from '../../../ConfirmDialog'
-import Alert from '../../../Alert'
+import AlertModal from '../../../AlertModal'
 import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
 import { logOut } from '../../../../store/user'
 import { FaRegEdit } from 'react-icons/fa'
@@ -22,7 +22,7 @@ let ListadoEstructurasInstitucionales = (props) => {
             dispatch(
                 loadEstructurasInstitucionales()
             ).unwrap()
-                .then(()=>setLoading(false))
+                .then(() => setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -34,7 +34,7 @@ let ListadoEstructurasInstitucionales = (props) => {
         { key: 'fechaAprobacion', text: 'Fecha aprobación', sortable: true },
         { key: 'opciones', text: 'Opciones', sortable: false }
     ]
-    
+
     let estructurasState = useSelector(state => state.estructuraInstitucional.data.estructuras)
 
     const [response, setResponse] = useState(null)
@@ -80,7 +80,7 @@ let ListadoEstructurasInstitucionales = (props) => {
                             <FaRegEdit />
                         </span>
                     </button>,
-                    <button className="button is-small is-danger mx-2 is-outlined"  onClick={event => {
+                    <button className="button is-small is-danger mx-2 is-outlined" onClick={event => {
                         deleteHandler(row.id)
                     }} key={`${row.identificacion}+`}>
                         <span className="icon">
@@ -103,14 +103,18 @@ let ListadoEstructurasInstitucionales = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadEstructurasInstitucionales())
+                    setShowModalForm(false)
+                }
             })
             .catch(
                 (err) => {
-                    if (err.message.includes("undefined (reading 'data')")) { 
-                    console.error("No hay conexión con el backend");
-                    setError({'message':'No es posible establecer conexión, intente mas tarde.'})
-                 } else if (err.message === "Rejected") {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
                         )
@@ -136,14 +140,19 @@ let ListadoEstructurasInstitucionales = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadEstructurasInstitucionales())
+                    setShowModalForm(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
-                    if (err.message.includes("undefined (reading 'data')")) { 
-                    console.error("No hay conexión con el backend");
-                    setError({'message':'No es posible establecer conexión, intente mas tarde.'})
-                 } else if (err.message === "Rejected") {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
                         )
@@ -175,9 +184,6 @@ let ListadoEstructurasInstitucionales = (props) => {
                         </span>
                     </button>
                 </div>
-                {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                    <button className="delete" onClick={event => setResponse(null)}></button>
-                </Alert>}
             </div>
             <div className="columns is-centered">
 
@@ -227,27 +233,21 @@ let ListadoEstructurasInstitucionales = (props) => {
             }
             {
                 showModalForm && <ModalForm title={objeto !== null ? 'Editar estructura institucional' : 'Registrar estructura institucional'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={event => setResponse(null)}></button>
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={() => {
-                            setResponse(null)
-                            setShowModalForm(false)
-                            setObjeto(null)
-                            dispatch(
-                                loadEstructurasInstitucionales()
-                            )
-                        }}></button>
-                    </Alert>}
-                    {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={()=> setError(null)}></button>
-                    </Alert>}
                     <button className="button is-small is-danger mx-3" onClick={() => {
                         setShowModalForm(false)
                         setObjeto(null)
                     }}>Cancelar</button>
                 </ModalForm>
+            }
+            {
+                response?.type && <AlertModal type={response.type} message={response.content}>
+                    <button className="delete" aria-label="close" onClick={() => setResponse(null)}></button>
+                </AlertModal>
+            }
+            {
+                error?.message && <AlertModal type={'danger'} message={error.message}>
+                    <button className="delete" aria-label="close" onClick={() => setError(null)}></button>
+                </AlertModal>
             }
         </>
     )
