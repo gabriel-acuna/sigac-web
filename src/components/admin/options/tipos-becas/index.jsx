@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { loadTipoBecas, clearData, deleteTipoBecas, putTipoBecas, postTipoBecas } from '../../../../store/core/tipoBeca'
 import ConfirmDialog from '../../../ConfirmDialog'
-import Alert from '../../../Alert'
+import AlertModal from '../../../AlertModal'
 import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
 import { logOut } from '../../../../store/user'
 import { FaRegEdit } from 'react-icons/fa'
@@ -23,7 +23,7 @@ let ListadoTiposBecas = (props) => {
             dispatch(
                 loadTipoBecas()
             ).unwrap()
-                .then(()=>setLoading(false))
+                .then(() => setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -99,7 +99,11 @@ let ListadoTiposBecas = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadTipoBecas())
+                    setShowModalForm(false)
+                }
             })
             .catch(
                 (err) => {
@@ -131,7 +135,12 @@ let ListadoTiposBecas = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadTipoBecas())
+                    setShowModalForm(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
@@ -172,9 +181,7 @@ let ListadoTiposBecas = (props) => {
                         </span>
                     </button>
                 </div>
-                {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                    <button className="delete" onClick={() => setResponse(null)}></button>
-                </Alert>}
+                
             </div>
             <div className="columns is-centered">
 
@@ -229,27 +236,22 @@ let ListadoTiposBecas = (props) => {
                     objeto={objeto}
                     handler={objeto !== null ? putHandler : postHandler}
                 >
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={() => setResponse(null)}></button>
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={() => {
-                            setResponse(null)
-                            setShowModalForm(false)
-                            setObjeto(null)
-                            dispatch(
-                                loadTipoBecas()
-                            )
-                        }}></button>
-                    </Alert>}
-                    {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={() => setError(null)}></button>
-                    </Alert>}
+                  
                     <button className="button is-small is-danger mx-3" onClick={() => {
                         setShowModalForm(false)
                         setObjeto(null)
                     }}>Cancelar</button>
                 </ModalForm>
+            }
+            {
+                response?.type && <AlertModal type={response.type} message={response.content}>
+                    <button className="delete" aria-label="close" onClick={() => setResponse(null)}></button>
+                </AlertModal>
+            }
+            {
+                error?.message && <AlertModal type={'danger'} message={error.message}>
+                    <button className="delete" aria-label="close" onClick={() => setError(null)}></button>
+                </AlertModal>
             }
         </>
     )

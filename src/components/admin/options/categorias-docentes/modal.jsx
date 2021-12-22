@@ -24,9 +24,10 @@ let ModalForm = ({ title, handler, children, objeto }) => {
                         <div className="columns is-centered">
                             <div className="column is-8">
                                 <label className="label is-small has-text-info">Categoria docente</label>
+                                {errors.categoriaDocente && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la categoría docente!</span>}
 
                                 <input type="text" {...register("categoriaDocente", { required: true })} className="input is-uppercase" defaultValue={objeto?.categoria_docente ? objeto.categoria_docente : ''} />
-                                {errors.categoriaDocente && <span className="has-text-danger">¡Por favor, Ingrese la categoría docente!</span>}
+                                
 
                             </div>
                         </div>

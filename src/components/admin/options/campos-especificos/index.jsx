@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { loadCamposEspecificosPorCampoAmplio, clearData, deleteCamposEspecificos, putCamposEspecificos, postCamposEspecificos } from '../../../../store/core/campoEspecifico'
 import ConfirmDialog from '../../../ConfirmDialog'
-import Alert from '../../../Alert'
+import AlertModal from '../../../AlertModal'
 import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
-import { HiViewList} from 'react-icons/hi'
+import { HiViewList } from 'react-icons/hi'
 import { logOut } from '../../../../store/user'
 import { FaRegEdit } from 'react-icons/fa'
 import { AiOutlineDelete } from 'react-icons/ai'
@@ -24,7 +24,7 @@ let ListadoCamposEstudiosEspecificos = (props) => {
             dispatch(
                 loadCamposEspecificosPorCampoAmplio(location.state.id)
             ).unwrap()
-                .then(()=>setLoading(false))
+                .then(() => setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -83,7 +83,7 @@ let ListadoCamposEstudiosEspecificos = (props) => {
                         </span>
                     </button>,
                     <Link to="detallados" key={`${row.id}*`} className="button is-small mx-2 is-info is-outlined" state={row}><span className="icon"><HiViewList /></span></Link>,
-                    <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}+`}  onClick={() => {
+                    <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}+`} onClick={() => {
                         deleteHandler(row.id)
                     }}>
                         <span className="icon">
@@ -108,7 +108,12 @@ let ListadoCamposEstudiosEspecificos = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadCamposEspecificosPorCampoAmplio(location.state.id))
+                    setShowModalForm(false)
+
+                }
             })
             .catch(
                 (err) => {
@@ -133,7 +138,7 @@ let ListadoCamposEstudiosEspecificos = (props) => {
 
         dispatch(
             putCamposEspecificos(
-                
+
                 {
                     id: objeto.id,
                     descripcion: data.descripcion,
@@ -143,14 +148,20 @@ let ListadoCamposEstudiosEspecificos = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadCamposEspecificosPorCampoAmplio(location.state.id))
+                    setShowModalForm(false)
+                    setObjeto(null)
+                    
+                }
             })
             .catch(
                 (err) => {
-                    if (err.message.includes("undefined (reading 'data')")) { 
-                    console.error("No hay conexión con el backend");
-                    setError({'message':'No es posible establecer conexión, intente mas tarde.'})
-                 } else if (err.message === "Rejected") {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
                         )
@@ -182,15 +193,13 @@ let ListadoCamposEstudiosEspecificos = (props) => {
                         </span>
                     </button>
                 </div>
-                {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                    <button className="delete" onClick={() => setResponse(null)}></button>
-                </Alert>}
+              
             </div>
             <div className="columns is-centered">
 
 
                 <div className="column is-half mb-6">
-                <span> Campo Amplio: {location.state.descripcion}</span>
+                    <span> Campo Amplio: {location.state.descripcion}</span>
                     <ReactDatatable style={{ justifyContent: 'center' }}
                         className="table is-bordered is-striped"
                         tHeadClassName="is-info"
@@ -203,7 +212,7 @@ let ListadoCamposEstudiosEspecificos = (props) => {
                                 excel: false,
                                 print: false
                             },
-                            sort: { column:'codigo', order: 'asc'},
+                            sort: { column: 'codigo', order: 'asc' },
                             language: {
                                 length_menu: "Mostrar _MENU_ campos de estudio por página",
                                 filter: "Buscar en registros ...",
@@ -217,11 +226,11 @@ let ListadoCamposEstudiosEspecificos = (props) => {
                                 },
                                 loading_text: "cargando ..."
                             }
-                            
+
                         }}
                         records={rows}
                         columns={columns}
-                        loading ={ loading}
+                        loading={loading}
                     />
                 </div>
             </div>
@@ -236,28 +245,23 @@ let ListadoCamposEstudiosEspecificos = (props) => {
                 </ConfirmDialog>
             }
             {
-                showModalForm && <ModalForm title={objeto !== null ? 'Editar campo de estudio específico' : 'Registrar campo de estudio específico'}  objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={() => setResponse(null)}></button>
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={() => {
-                            setResponse(null)
-                            setShowModalForm(false)
-                            setObjeto(null)
-                            dispatch(
-                                loadCamposEspecificosPorCampoAmplio(location.state.id)
-                            )
-                        }}></button>
-                    </Alert>}
-                    {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={() => setError(null)}></button>
-                    </Alert>}
+                showModalForm && <ModalForm title={objeto !== null ? 'Editar campo de estudio específico' : 'Registrar campo de estudio específico'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
+                    
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalForm(false)
                         setObjeto(null)
                     }}>Cancelar</button>
                 </ModalForm>
+            }
+            {
+                response?.type && <AlertModal type={response.type} message={response.content}>
+                    <button className="delete" aria-label="close" onClick={() => setResponse(null)}></button>
+                </AlertModal>
+            }
+            {
+                error?.message && <AlertModal type={'danger'} message={error.message}>
+                    <button className="delete" aria-label="close" onClick={() => setError(null)}></button>
+                </AlertModal>
             }
         </>
     )

@@ -1,22 +1,12 @@
 import { useForm } from 'react-hook-form'
-import { Fragment, useEffect } from 'react'
+import { Fragment } from 'react'
 
 
 let ModalForm = ({ title, handler, children, objeto }) => {
 
 
-    const { register, reset, handleSubmit, formState: { errors } } = useForm()
+    const { register, handleSubmit, formState: { errors } } = useForm()
 
-    useEffect(
-        () => {
-            if (objeto !== null) {
-                reset({
-                    descripcion: objeto.descripcion,
-                    codigo: objeto.codigo
-                })
-            }
-        }, [objeto, reset]
-    )
 
 
     return (
@@ -27,22 +17,22 @@ let ModalForm = ({ title, handler, children, objeto }) => {
                     <span className="has-text-weight-bold is-italic">{title}</span>
 
                 </header>
-                <section className="modal-card-body" style={{ display: 'flex', justifyContent: 'center' }}>
+                <section className="modal-card-body">
 
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
-                        <div className="field">
-                            <label className="label is-small">Código</label>
-                            <div className="control">
-                                <input type="text" {...register("codigo", { required: true })} className="input" />
-                                {errors.codigo && <span className="has-text-danger">¡Por favor, Ingrese el código del campo de estudio amplio!</span>}
+                        <div className="columns">
+                            <div className="column">
+                                <label className="label is-small has-text-info">Código</label>
+                                {errors.codigo && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el código del campo de estudio amplio!</span>}
+                                <input type="text" {...register("codigo", { required: true })} className="input" defaultValue={objeto?.codigo ? objeto.codigo : ''} />
+
 
                             </div>
-                        </div>
-                        <div className="field">
-                            <label className="label is-small">Nombre</label>
-                            <div className="control">
-                                <textarea class="textarea"  {...register("descripcion", { required: true })}></textarea>
-                                {errors.descripcion && <span className="has-text-danger">¡Por favor, Ingrese el nombre del campo de estudio!</span>}
+                            <div className="column">
+                                <label className="label is-small has-text-info">Nombre</label>
+                                {errors.descripcion && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el nombre del campo de estudio!</span>}
+
+                                <textarea className="textarea"  {...register("descripcion", { required: true })} defaultValue={objeto?.descripcion ? objeto.descripcion : ''}></textarea>
 
                             </div>
                         </div>

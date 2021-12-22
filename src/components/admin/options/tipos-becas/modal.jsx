@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form'
-import { useEffect, useState, Fragment } from 'react'
+import { useState, Fragment } from 'react'
 import Alert from '../../../Alert'
 
 
@@ -7,18 +7,9 @@ let ModalForm = ({ title, handler, children, objeto }) => {
 
 
     const [error, setError] = useState(null)
-    const { register, reset, handleSubmit, formState: { errors } } = useForm()
+    const { register, handleSubmit, formState: { errors } } = useForm()
 
 
-    useEffect(
-        () => {
-            if (objeto !== null) {
-                reset({
-                    tipoBeca: objeto.tipo_beca
-                })
-            }
-        }, [objeto, reset]
-    )
 
 
     return (
@@ -29,19 +20,18 @@ let ModalForm = ({ title, handler, children, objeto }) => {
                     <span className="has-text-weight-bold is-italic">{title}</span>
 
                 </header>
-                <section className="modal-card-body" style={{ display: 'flex', justifyContent: 'center' }}>
+                <section className="modal-card-body">
 
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
-                        <div className="field">
-                            <label className="label is-small">Tipo beca</label>
-                            <div className="control">
-                                <input type="text" {...register("tipoBeca", { required: true })} className="input is-samll is-uppercase" />
-                                {errors.tipoBeca && <span className="has-text-danger">¡Por favor, Ingrese el tipo beca!</span>}
-                                {
-                                    error && <Alert type={'is-danger is-light'} content={error.message}>
-                                        <button className="delete" onClick={() => setError(null)}></button>
-                                    </Alert>
-                                }
+                        <div className="columns is-centered">
+                            <div className="column is-8">
+                                <label className="label is-small has-text-info">Tipo beca</label>
+
+
+                                {errors.tipoBeca && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el tipo beca!</span>}
+                                <input type="text" {...register("tipoBeca", { required: true })} className="input is-uppercase" defaultValue={objeto?.tipo_beca ? objeto.tipo_beca : ''} />
+
+
 
                             </div>
                         </div>

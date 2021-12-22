@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { loadCamposAmplios, clearData, deleteCamposAmplios, putCamposAmplios, postCamposAmplios } from '../../../../store/core/campoAmplio'
 import ConfirmDialog from '../../../ConfirmDialog'
-import Alert from '../../../Alert'
+import AlertModal from '../../../AlertModal'
 import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
 import { HiViewList} from 'react-icons/hi'
 import { logOut } from '../../../../store/user'
@@ -108,7 +108,11 @@ let ListadoCamposEstudiosAmplios = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if(resp.type ==='success'){
+                    dispatch(loadCamposAmplios())
+                    setShowModalForm(false)
+                }
             })
             .catch(
                 (err) => {
@@ -142,7 +146,12 @@ let ListadoCamposEstudiosAmplios = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if(resp.type ==='success'){
+                    dispatch(loadCamposAmplios())
+                    setShowModalForm(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
@@ -181,9 +190,6 @@ let ListadoCamposEstudiosAmplios = (props) => {
                         </span>
                     </button>
                 </div>
-                {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                    <button className="delete" onClick={() => setResponse(null)}></button>
-                </Alert>}
             </div>
             <div className="columns is-centered">
 
@@ -233,27 +239,21 @@ let ListadoCamposEstudiosAmplios = (props) => {
             }
             {
                 showModalForm && <ModalForm title={objeto !== null ? 'Editar campo de estudio amplio' : 'Registrar campo de estudio amplio'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={event => setResponse(null)}></button>
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={event => {
-                            setResponse(null)
-                            setShowModalForm(false)
-                            setObjeto(null)
-                            dispatch(
-                                loadCamposAmplios()
-                            )
-                        }}></button>
-                    </Alert>}
-                    {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={event => setError(null)}></button>
-                    </Alert>}
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalForm(false)
                         setObjeto(null)
                     }}>Cancelar</button>
                 </ModalForm>
+            }
+            {
+                response?.type && <AlertModal type={response.type} message={response.content}>
+                    <button className="delete" aria-label="close" onClick={() => setResponse(null)}></button>
+                </AlertModal>
+            }
+            {
+                error?.message && <AlertModal type={'danger'} message={error.message}>
+                    <button className="delete" aria-label="close" onClick={() => setError(null)}></button>
+                </AlertModal>
             }
         </>
     )
