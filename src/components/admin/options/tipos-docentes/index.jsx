@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { loadTiposDocentesLOES, clearData, deleteTiposDocentes, putTiposDocentes, postTiposDocentesLOES } from '../../../../store/core/tiposDocentes'
 import ConfirmDialog from '../../../ConfirmDialog'
-import Alert from '../../../Alert'
+import AlertModal from '../../../AlertModal'
 import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
 import { logOut } from '../../../../store/user'
 import { FaRegEdit } from 'react-icons/fa'
@@ -38,7 +38,6 @@ let ListadoTiposDocentes = (props) => {
     const [loading, setLoading] = useState(true)
     let tiposDocentesState = useSelector(state => state.tiposDocentesLOES.data.tiposDocentes)
 
-    const [delResponse, setDelResponse] = useState(null)
     const [response, setResponse] = useState(null)
     const [error, setError] = useState(null)
     const [showModal, setShowModal] = useState(false)
@@ -58,7 +57,7 @@ let ListadoTiposDocentes = (props) => {
 
         ).unwrap()
             .then(resp => {
-                setDelResponse(resp)
+                setResponse(resp)
                 dispatch(
                     loadTiposDocentesLOES()
                 )
@@ -100,7 +99,11 @@ let ListadoTiposDocentes = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if ( resp.type === 'success'){
+                    dispatch(loadTiposDocentesLOES())
+                    setShowModalForm(false)
+                }
             })
             .catch(
                 (err) => {
@@ -132,7 +135,12 @@ let ListadoTiposDocentes = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if ( resp.type === 'success'){
+                    dispatch(loadTiposDocentesLOES())
+                    setShowModalForm(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
@@ -172,12 +180,7 @@ let ListadoTiposDocentes = (props) => {
                         </span>
                     </button>
                 </div>
-                {delResponse && delResponse.type === 'success' && <Alert type={'is-success is-light'} content={delResponse.content}>
-                    <button className="delete" onClick={() => setDelResponse(null)}></button>
-                </Alert>}
-                {delResponse && delResponse.type === 'warning' && <Alert type={'is-success is-light'} content={delResponse.content}>
-                    <button className="delete" onClick={() => setDelResponse(null)}></button>
-                </Alert>}
+               
             </div>
             <div className="columns is-centered">
 
@@ -227,27 +230,22 @@ let ListadoTiposDocentes = (props) => {
             }
             {
                 showModalForm && <ModalForm title={objeto !== null ? 'Editar tipo docente' : 'Registrar tipo docente'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={event => setResponse(null)}></button>
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={event => {
-                            setResponse(null)
-                            setShowModalForm(false)
-                            setObjeto(null)
-                            dispatch(
-                                loadTiposDocentesLOES()
-                            )
-                        }}></button>
-                    </Alert>}
-                    {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={event => setError(null)}></button>
-                    </Alert>}
+                  
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalForm(false)
                         setObjeto(null)
                     }}>Cancelar</button>
                 </ModalForm>
+            }
+            {
+                response?.type && <AlertModal type={response.type} message={response.content}>
+                    <button className="delete" aria-label="close" onClick={() => setResponse(null)}></button>
+                </AlertModal>
+            }
+            {
+                error?.message && <AlertModal type={'danger'} message={error.message}>
+                    <button className="delete" aria-label="close" onClick={() => setError(null)}></button>
+                </AlertModal>
             }
         </>
     )

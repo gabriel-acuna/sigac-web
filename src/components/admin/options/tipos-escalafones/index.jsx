@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { loadTiposEscalafonesNombramientos, clearData, deleteTiposEscalafonesNombramientos, postTiposEscalafonesNombramientos, putTiposEscalafonesNombramientos } from '../../../../store/core/tiposEscalafones'
 import ConfirmDialog from '../../../ConfirmDialog'
-import Alert from '../../../Alert'
+import AlertModal from '../../../AlertModal'
 import { AiOutlineDelete } from 'react-icons/ai'
 import { FaRegEdit } from 'react-icons/fa'
 import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
@@ -38,7 +38,6 @@ let ListadoTiposEscalafones = (props) => {
     let tiposEscalafonesState = useSelector(state => state.tipoEscalafones.data.tipoEscalafones)
 
     const [response, setResponse] = useState(null)
-    const [delResponse, setDelResponse] = useState(null)
     const [showModalForm, setShowModalForm] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [objeto, setObjeto] = useState(null)
@@ -74,7 +73,11 @@ let ListadoTiposEscalafones = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadTiposEscalafonesNombramientos())
+                    setShowModalForm(false)
+                }
             })
             .catch(
                 (err) => {
@@ -107,7 +110,12 @@ let ListadoTiposEscalafones = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadTiposEscalafonesNombramientos())
+                    setShowModalForm(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
@@ -169,9 +177,7 @@ let ListadoTiposEscalafones = (props) => {
                         </span>
                     </button>
                 </div>
-                {delResponse && delResponse.type === 'success' && <Alert type={'is-success is-light'} content={delResponse.content}>
-                    <button className="delete" onClick={event => setDelResponse(null)}></button>
-                </Alert>}
+
             </div>
             <div className="columns is-centered">
 
@@ -222,27 +228,22 @@ let ListadoTiposEscalafones = (props) => {
             }
             {
                 showModalForm && <ModalForm title={objeto !== null ? 'Editar tipo escalafón' : 'Registrar tipo escalafón'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={event => setResponse(null)}></button>
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={event => {
-                            setResponse(null)
-                            setShowModalForm(false)
-                            setObjeto(null)
-                            dispatch(
-                                loadTiposEscalafonesNombramientos()
-                            )
-                        }}></button>
-                    </Alert>}
-                    {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={event => setError(null)}></button>
-                    </Alert>}
+
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalForm(false)
                         setObjeto(null)
                     }}>Cancelar</button>
                 </ModalForm>
+            }
+            {
+                response?.type && <AlertModal type={response.type} message={response.content}>
+                    <button className="delete" aria-label="close" onClick={() => setResponse(null)}></button>
+                </AlertModal>
+            }
+            {
+                error?.message && <AlertModal type={'danger'} message={error.message}>
+                    <button className="delete" aria-label="close" onClick={() => setError(null)}></button>
+                </AlertModal>
             }
         </>
     )

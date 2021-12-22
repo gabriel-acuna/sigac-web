@@ -1,22 +1,11 @@
 import { useForm } from 'react-hook-form'
-import { Fragment, useEffect } from 'react'
+import { Fragment } from 'react'
 
 
 let ModalForm = ({ title, handler, children, objeto }) => {
 
 
-    const { register,reset, handleSubmit, formState: { errors } } = useForm()
-
-    useEffect(
-        ()=>{
-            if(objeto!==null){
-                reset({
-                    tipoFuncionario: objeto.tipo
-                  
-                })
-            }
-        },[objeto, reset]
-    )
+    const { register, handleSubmit, formState: { errors } } = useForm()
 
 
     return (
@@ -27,18 +16,19 @@ let ModalForm = ({ title, handler, children, objeto }) => {
                     <span className="has-text-weight-bold is-italic">{title}</span>
 
                 </header>
-                <section className="modal-card-body" style={{ display: 'flex', justifyContent: 'center' }}>
+                <section className="modal-card-body">
 
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
-                        <div className="field">
-                            <label className="label is-small">Tipo funcionario</label>
-                            <div className="control">
-                                <input type="text" {...register("tipoFuncionario", { required: true })} className="input is-samll is-uppercase" />
-                                {errors.tipoFuncionario && <span className="has-text-danger">¡Por favor, Ingrese el tipo funcionario!</span>}
+                        <div className="columns is-centered">
+                            <div className="column is-8">
+                                <label className="label is-small has-text-info">Tipo funcionario</label>
+                                {errors.tipoFuncionario && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el tipo funcionario!</span>}
+                                <input type="text" {...register("tipoFuncionario", { required: true })} className="input is-uppercase" defaultValue={objeto?.tipo ? objeto.tipo : ''} />
+
 
                             </div>
                         </div>
-                      
+
                         <div className="field is-grouped" style={{ display: 'flex', justifyContent: 'center' }}>
                             <div className="control has-text-centered">
                                 <Fragment>

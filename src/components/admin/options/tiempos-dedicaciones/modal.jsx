@@ -1,22 +1,11 @@
 import { useForm } from 'react-hook-form'
-import { Fragment, useEffect } from 'react'
+import { Fragment } from 'react'
 
 
 let ModalForm = ({ title, handler, children, objeto }) => {
 
 
-    const { register,reset, handleSubmit, formState: { errors } } = useForm()
-
-    useEffect(
-        ()=>{
-            if(objeto!==null){
-                reset({
-                    dedicacion: objeto.tiempo_dedicacion
-                })
-            }
-        },[objeto, reset]
-    )
-
+    const { register, handleSubmit, formState: { errors } } = useForm()
 
     return (
         <div className="modal is-active">
@@ -26,16 +15,18 @@ let ModalForm = ({ title, handler, children, objeto }) => {
                     <span className="has-text-weight-bold is-italic">{title}</span>
 
                 </header>
-                <section className="modal-card-body" style={{ display: 'flex', justifyContent: 'center' }}>
+                <section className="modal-card-body">
 
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
-                        <div className="field">
-                            <label className="label is-small">Tiempo dedicación</label>
-                            <div className="control">
-                                <input type="text" {...register("dedicacion", { required: true })} className="input is-samll is-uppercase" />
-                                {errors.dedicacion && <span className="has-text-danger">¡Por favor, Ingrese el tiempo dedicación!</span>}
-                               
-                                
+                        <div className="columns is-centered">
+                            <div className="column is-8">
+                                <label className="label is-small has-text-info">Tiempo dedicación</label>
+
+                                {errors.dedicacion && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el tiempo dedicación!</span>}
+                                <input type="text" {...register("dedicacion", { required: true })} className="input is-uppercase" defaultValue={objeto?.tiempo_dedicacion ? objeto.tiempo_dedicacion : ''} />
+
+
+
 
                             </div>
                         </div>

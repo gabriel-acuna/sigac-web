@@ -103,7 +103,11 @@ let ListadoRelacionesIES = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if(resp.type === 'success'){
+                    dispatch(loadRelacionesIES())
+                    setShowModalForm(false)
+                }
             })
             .catch(
                 (err) => {
@@ -136,7 +140,12 @@ let ListadoRelacionesIES = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if(resp.type === 'success'){
+                    dispatch(loadRelacionesIES())
+                    setShowModalForm(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
@@ -177,9 +186,7 @@ let ListadoRelacionesIES = (props) => {
                         </span>
                     </button>
                 </div>
-                {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                    <button className="delete" onClick={event => setResponse(null)}></button>
-                </Alert>}
+               
             </div>
             <div className="columns is-centered">
 

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { loadCategoriasContratoProfesores, clearData, deleteCategoriasContratoProfesores, postCategoriasContratoProfesores, putCategoriasContratoProfesores } from '../../../../store/core/categoriasContratos'
 import ConfirmDialog from '../../../ConfirmDialog'
-import Alert from '../../../Alert'
+import AlertModal from '../../../AlertModal'
 import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
 import { logOut } from '../../../../store/user'
 import { FaRegEdit } from 'react-icons/fa'
@@ -39,7 +39,6 @@ let ListadoCategoriasContratos = (props) => {
     let categoriasContratosState = useSelector(state => state.categoriasContratos.data.categoriasContrato)
 
     const [response, setResponse] = useState(null)
-    const [delResponse, setDelResponse] = useState(null)
     const [showModal, setShowModal] = useState(false)
     const [showModalForm, setShowModalForm] = useState(false)
     const [objeto, setObjeto] = useState(null)
@@ -59,7 +58,7 @@ let ListadoCategoriasContratos = (props) => {
 
         ).unwrap()
             .then(resp => {
-                setDelResponse(resp)
+                setResponse(resp)
                 dispatch(
                     loadCategoriasContratoProfesores()
                 )
@@ -104,7 +103,11 @@ let ListadoCategoriasContratos = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadCategoriasContratoProfesores())
+                    setShowModalForm(false)
+                }
             })
             .catch(
                 (err) => {
@@ -137,7 +140,11 @@ let ListadoCategoriasContratos = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadCategoriasContratoProfesores())
+                    setShowModalForm(false)
+                }
             })
             .catch(
                 (err) => {
@@ -176,12 +183,7 @@ let ListadoCategoriasContratos = (props) => {
                         </span>
                     </button>
                 </div>
-                {delResponse && delResponse.type === 'success' && <Alert type={'is-success is-light'} content={delResponse.content}>
-                    <button className="delete" onClick={() => setDelResponse(null)}></button>
-                </Alert>}
-                {delResponse && delResponse.type === 'warning' && <Alert type={'is-success is-light'} content={delResponse.content}>
-                    <button className="delete" onClick={() => setDelResponse(null)}></button>
-                </Alert>}
+
             </div>
             <div className="columns is-centered">
 
@@ -231,27 +233,22 @@ let ListadoCategoriasContratos = (props) => {
             }
             {
                 showModalForm && <ModalForm title={objeto !== null ? 'Editar categoría contrato' : 'Registrar categoría contrato'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={() => setResponse(null)}></button>
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={() => {
-                            setResponse(null)
-                            setShowModalForm(false)
-                            setObjeto(null)
-                            dispatch(
-                                loadCategoriasContratoProfesores()
-                            )
-                        }}></button>
-                    </Alert>}
-                    {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={() => setError(null)}></button>
-                    </Alert>}
+
                     <button className="button is-small is-danger mx-3" onClick={() => {
                         setShowModalForm(false)
                         setObjeto(null)
                     }}>Cancelar</button>
                 </ModalForm>
+            }
+             {
+                response?.type && <AlertModal type={response.type} message={response.content}>
+                    <button className="delete" aria-label="close" onClick={() => setResponse(null)}></button>
+                </AlertModal>
+            }
+            {
+                error?.message && <AlertModal type={'danger'} message={error.message}>
+                    <button className="delete" aria-label="close" onClick={() => setError(null)}></button>
+                </AlertModal>
             }
         </>
     )
