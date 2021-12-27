@@ -1,12 +1,11 @@
 import { useForm } from 'react-hook-form'
-import { useState, Fragment } from 'react'
-import Alert from '../../../Alert'
+import { Fragment } from 'react'
+
 
 
 let ModalForm = ({ title, handler, children, objeto }) => {
 
 
-    const [error, setError] = useState(null)
     const { register, handleSubmit, formState: { errors } } = useForm()
 
 

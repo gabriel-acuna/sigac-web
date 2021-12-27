@@ -23,7 +23,7 @@ import TipoContratoModal from "./modalTipoContrato"
 import { Radio, RadioGroup, FormControlLabel } from '@mui/material'
 import Select from 'react-select'
 import { IoIosAdd } from 'react-icons/io'
-import Alert from '../Alert'
+import AlertModal from '../AlertModal'
 import { logOut } from '../../store/user'
 
 
@@ -52,7 +52,11 @@ let ModalForm = ({ title, children, handler, objeto, persona }) => {
         dispatch(
             postTiposContratos({ contrato: data.contrato.toUpperCase() })
         ).unwrap().then(
-            (resp) => setRespModal(resp)
+            (resp) => {
+                setRespModal(resp)
+                dispatch(loadTiposContratos())
+                setShowModalTipoContrato(false)
+            }
         ).catch(
             (err) => {
                 if (err.message.includes("undefined (reading 'data')")) {
@@ -73,7 +77,12 @@ let ModalForm = ({ title, children, handler, objeto, persona }) => {
         dispatch(
             postTiposNombramientos({ nombramiento: data.nombramiento.toUpperCase() })
         ).unwrap().then(
-            (resp) => setRespModal(resp)
+            (resp) => {
+            setRespModal(resp)
+            if(resp.type === 'success'){
+                dispatch(loadTiposNombramientos())
+                setShowModalTipoNombramiento(false)
+            }}
         ).catch(
             (err) => {
                 if (err.message.includes("undefined (reading 'data')")) {
@@ -127,7 +136,6 @@ let ModalForm = ({ title, children, handler, objeto, persona }) => {
 
 
         if (objeto !== null) {
-            console.log(objeto);
             setTipoFuncionario(objeto.tipo_personal)
             setDocType(objeto.tipo_documento)
             setActReason(objeto.motivo_accion)
@@ -573,10 +581,12 @@ let ModalForm = ({ title, children, handler, objeto, persona }) => {
                                 <div className="column">
 
                                     <label className="label is-small">Sub área</label>
+                                    {errors.area && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, Por favor seleccione la sub area institucional!</span>}
 
                                     <Controller
                                         name="subArea"
                                         control={control}
+                                        rules={{required:  tipoFuncionario === 'PROFESOR' }}
                                         render={
                                             ({ field }) => (
                                                 <Select
@@ -616,36 +626,6 @@ let ModalForm = ({ title, children, handler, objeto, persona }) => {
             </div >
             {
                 showModalTipoContrato && <TipoContratoModal title="Registrar tipo contrato" handler={postContrato}>
-                    <div className="columns is-centered">
-                        <div className="column">
-                            {
-                                respModal && respModal.type === 'warning'
-                                && <Alert type={'is-warning is-light'} content={respModal.content}>
-                                    <button className="delete" onClick={() => setRespModal(null)}></button>
-                                </Alert>
-                            }
-
-                            {
-                                respModal && respModal.type === 'success'
-                                && <Alert type={'is-success is-light'} content={respModal.content}>
-                                    <button className="delete" onClick={() => {
-                                        setRespModal(null)
-                                        setShowModalTipoContrato(false)
-                                        dispatch(loadTiposContratos())
-                                    }}></button>
-                                </Alert>
-                            }
-
-
-                            {
-                                errorModal
-                                && <Alert type={'is-danger is-light'} content={errorModal.message}>
-                                    <button className="delete" onClick={() => setErrorModal(null)}></button>
-                                </Alert>
-                            }
-
-                        </div>
-                    </div>
                     <button className="button is-small is-danger mx-3" onClick={() => {
                         setShowModalTipoContrato(false)
                     }}>Cancelar</button>
@@ -653,41 +633,22 @@ let ModalForm = ({ title, children, handler, objeto, persona }) => {
             }
             {
                 showModalTipoNombramiento && <NombramientoModalFrom title="Registrar tipo nombramiento" handler={postNombramiento}>
-                    <div className="columns is-centered">
-                        <div className="column">
-                            {
-                                respModal && respModal.type === 'warning'
-                                && <Alert type={'is-warning is-light'} content={respModal.content}>
-                                    <button className="delete" onClick={() => setRespModal(null)}></button>
-                                </Alert>
-                            }
-
-                            {
-                                respModal && respModal.type === 'success'
-                                && <Alert type={'is-success is-light'} content={respModal.content}>
-                                    <button className="delete" onClick={() => {
-                                        setRespModal(null)
-                                        setShowModalTipoNombramiento(false)
-                                        dispatch(loadTiposNombramientos())
-                                    }}></button>
-                                </Alert>
-                            }
-
-
-                            {
-                                errorModal
-                                && <Alert type={'is-danger is-light'} content={errorModal.message}>
-                                    <button className="delete" onClick={() => setErrorModal(null)}></button>
-                                </Alert>
-                            }
-
-                        </div>
-                    </div>
+                  
                     <button className="button is-small is-danger mx-3" onClick={() => {
                         setShowModalTipoNombramiento(false)
                     }}>Cancelar</button>
 
                 </NombramientoModalFrom>
+            }
+            {
+                respModal?.type && <AlertModal type={respModal.type} message={respModal.content}>
+                    <button className="delete" aria-label="close" onClick={() => setRespModal(null)}></button>
+                </AlertModal>
+            }
+            {
+                errorModal?.message && <AlertModal type={'danger'} message={errorModal.message}>
+                    <button className="delete" aria-label="close" onClick={() => setErrorModal(null)}></button>
+                </AlertModal>
             }
         </>
     )

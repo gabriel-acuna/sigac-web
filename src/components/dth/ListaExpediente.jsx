@@ -13,7 +13,7 @@ import { postInformacionReproductiva, putInformacionReproductiva, deleteInformac
 import { postRegimenes, putRegimenes, loadRegimenesDisciplinariosPorPersona, deleteRegimenes } from '../../store/dth/regimen_disciplinario'
 import { postEvaluacionesPersonal, putEvaluacionesPersonal, deleteEvaluacionesPersonal, loadEvaluacionesPersonal } from '../../store/dth/evaluacion_desempeño'
 import { logOut } from '../../store/user'
-import Alert from '../Alert'
+import AlertModal from '../AlertModal'
 import ConfirmDialog from '../ConfirmDialog'
 import TabContent from '../TabContent'
 import ModalDeclaracionPatrimonial from './modalDeclaracion'
@@ -52,7 +52,6 @@ let ListaExpediente = (props) => {
     const [showConfirmDialogReg, setShowConfirmDialogReg] = useState(false)
     const [showConfirmDialogEva, setShowConfirmDialogEva] = useState(false)
     const [response, setResponse] = useState(null)
-    const [deteteResponse, setDeleteResponse] = useState(null)
     const [error, setError] = useState(null)
     const [id, setId] = useState(null)
 
@@ -126,7 +125,13 @@ let ListaExpediente = (props) => {
                 postDetalleExpedienteProfesor(detalle)
             ).unwrap()
                 .then(
-                    resp => setResponse(resp)
+                    resp => {
+                        setResponse(resp)
+                        if (resp.type === 'success') {
+                            dispatch(loadExpedienteLaboral(persona.identificacion))
+                            setShowModalForm(false)
+                        }
+                    }
                 ).catch(
                     (err) => {
                         console.log(err);
@@ -174,7 +179,13 @@ let ListaExpediente = (props) => {
             putDetalleExpediente(detalle)
         ).unwrap()
             .then(
-                resp => setResponse(resp)
+                resp => {
+                    setResponse(resp)
+                    if (resp.type === 'success') {
+                        dispatch(loadExpedienteLaboral(persona.identificacion))
+                        setShowModalForm(false)
+                    }
+                }
             ).catch(err => console.log(err))
     }
 
@@ -184,7 +195,7 @@ let ListaExpediente = (props) => {
 
         ).unwrap()
             .then(resp => {
-                setDeleteResponse(resp)
+                setResponse(resp)
 
 
             }).catch(
@@ -198,7 +209,7 @@ let ListaExpediente = (props) => {
 
         ).unwrap()
             .then(resp => {
-                setDeleteResponse(resp)
+                setResponse(resp)
                 dispatch(
                     loadDeclaracionesPersona(persona.identificacion)
                 )
@@ -215,7 +226,7 @@ let ListaExpediente = (props) => {
 
         ).unwrap()
             .then(resp => {
-                setDeleteResponse(resp)
+                setResponse(resp)
                 dispatch(
                     loadFamiliares(persona.identificacion)
                 )
@@ -232,7 +243,7 @@ let ListaExpediente = (props) => {
 
         ).unwrap()
             .then(resp => {
-                setDeleteResponse(resp)
+                setResponse(resp)
                 dispatch(
                     loadInformacionReproductivaPersonal(persona.identificacion)
                 )
@@ -249,7 +260,7 @@ let ListaExpediente = (props) => {
 
         ).unwrap()
             .then(resp => {
-                setDeleteResponse(resp)
+                setResponse(resp)
                 dispatch(
                     loadRegimenesDisciplinariosPorPersona(persona.identificacion)
                 )
@@ -266,7 +277,7 @@ let ListaExpediente = (props) => {
 
         ).unwrap()
             .then(resp => {
-                setDeleteResponse(resp)
+                setResponse(resp)
                 dispatch(
                     loadEvaluacionesPersonal(persona.identificacion)
                 )
@@ -280,7 +291,13 @@ let ListaExpediente = (props) => {
     let postDeclaracion = (data) => {
         dispatch(postDeclaraciones({ persona: location.state.identificacion, ...data })).unwrap()
             .then(
-                (resp) => setResponse(resp)
+                (resp) => {
+                    setResponse(resp)
+                    if (resp.type === 'success') {
+                        dispatch(loadDeclaracionesPersona(persona.identificacion))
+                        setShowDecModalForm(false)
+                    }
+                }
             ).catch(
                 (err) => {
                     console.log(err);
@@ -301,7 +318,14 @@ let ListaExpediente = (props) => {
     let putDeclaracion = (data) => {
         dispatch(putDeclaraciones({ id: objeto.id, ...data })).unwrap()
             .then(
-                (resp) => setResponse(resp)
+                (resp) => {
+                    setResponse(resp)
+                    if (resp.type === 'success') {
+                        dispatch(loadDeclaracionesPersona(persona.identificacion))
+                        setShowDecModalForm(false)
+                        setObjeto(null)
+                    }
+                }
             ).catch(
                 (err) => {
                     console.log(err);
@@ -323,7 +347,13 @@ let ListaExpediente = (props) => {
         dispatch(
             postFamiliar({ idPersona: persona.identificacion, ...data })
         ).unwrap().then(
-            (resp) => setResponse(resp)
+            (resp) => {
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadFamiliares(persona.identificacion))
+                    setShowFamModalForm(false)
+                }
+            }
         ).catch(
             (err) => {
                 if (err.message.includes("undefined (reading 'data')")) {
@@ -345,7 +375,14 @@ let ListaExpediente = (props) => {
             putFamiliar({ id: objeto.id, ...data })
         ).unwrap()
             .then(
-                (resp) => setResponse(resp)
+                (resp) => {
+                    setResponse(resp)
+                    if (resp.type === 'success') {
+                        dispatch(loadFamiliares(persona.identificacion))
+                        setShowFamModalForm(false)
+                        setObjeto(null)
+                    }
+                }
             ).catch(
                 (err) => {
                     console.log(err);
@@ -367,7 +404,13 @@ let ListaExpediente = (props) => {
         dispatch(
             postInformacionReproductiva({ id_persona: persona.identificacion, ...data })
         ).unwrap().then(
-            (resp) => setResponse(resp)
+            (resp) => {
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadInformacionReproductivaPersonal(persona.identificacion))
+                    setShowInfModalForm(false)
+                }
+            }
         ).catch(
             (err) => {
                 if (err.message.includes("undefined (reading 'data')")) {
@@ -388,7 +431,14 @@ let ListaExpediente = (props) => {
         dispatch(
             putInformacionReproductiva({ id: objeto.id, id_persona: persona.identificacion, ...data })
         ).unwrap().then(
-            (resp) => setResponse(resp)
+            (resp) => {
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadInformacionReproductivaPersonal(persona.identificacion))
+                    setShowInfModalForm(false)
+                    setObjeto(null)
+                }
+            }
         ).catch(
             (err) => {
                 if (err.message.includes("undefined (reading 'data')")) {
@@ -408,7 +458,13 @@ let ListaExpediente = (props) => {
     let postRegimenHandler = (data) => {
         dispatch(postRegimenes({ persona: persona.identificacion, ...data }))
             .unwrap().then(
-                (resp) => setResponse(resp)
+                (resp) => {
+                    setResponse(resp)
+                    if (resp.type === 'success') {
+                        dispatch(loadRegimenesDisciplinariosPorPersona(persona.identificacion))
+                        setShowRegModalForm(false)
+                    }
+                }
             ).catch(
                 (err) => {
                     if (err.message.includes("undefined (reading 'data')")) {
@@ -428,7 +484,14 @@ let ListaExpediente = (props) => {
     let putRegimenHandler = (data) => {
         dispatch(putRegimenes({ id: objeto.id, persona: persona.identificacion, ...data }))
             .unwrap().then(
-                (resp) => setResponse(resp)
+                (resp) => {
+                    setResponse(resp)
+                    if (resp.type === 'success') {
+                        dispatch(loadRegimenesDisciplinariosPorPersona(persona.identificacion))
+                        setShowRegModalForm(false)
+                        setObjeto(null)
+                    }
+                }
             ).catch(
                 (err) => {
                     if (err.message.includes("undefined (reading 'data')")) {
@@ -448,7 +511,13 @@ let ListaExpediente = (props) => {
     let postEvaluacionHandler = (data) => {
         dispatch(postEvaluacionesPersonal({ id_persona: persona.identificacion, ...data }))
             .unwrap().then(
-                (resp) => setResponse(resp)
+                (resp) => {
+                    setResponse(resp)
+                    if (resp.type === 'success') {
+                        dispatch(loadEvaluacionesPersonal(persona.identificacion))
+                        setShowEvaModalForm(false)
+                    }
+                }
             ).catch(
                 (err) => {
                     if (err.message.includes("undefined (reading 'data')")) {
@@ -468,7 +537,15 @@ let ListaExpediente = (props) => {
     let putEvaluacionHandler = (data) => {
         dispatch(putEvaluacionesPersonal({ id: objeto.id, id_persona: persona.identificacion, ...data }))
             .unwrap().then(
-                (resp) => setResponse(resp)
+                (resp) => {
+                    setResponse(resp)
+                    if (resp.type === 'success') {
+                        dispatch(loadEvaluacionesPersonal(persona.identificacion))
+                        setShowEvaModalForm(false)
+                        setObjeto(null)
+
+                    }
+                }
             ).catch(
                 (err) => {
                     if (err.message.includes("undefined (reading 'data')")) {
@@ -484,6 +561,7 @@ let ListaExpediente = (props) => {
                 }
             )
     }
+    console.log(activeTab);
     return (
         <>
             <div className="container">
@@ -534,27 +612,15 @@ let ListaExpediente = (props) => {
                         variant="scrollable"
                         scrollButtons="auto" >
                         <Tab label="Registro laboral" {...a11yProps(0)} sx={{ textTransform: 'none' }} />
-                        {expedienteState?.detalle && expedienteState?.detalle.length && <Tab label="Declaraciones patrimoniales" {...a11yProps(1)} sx={{ textTransform: 'none' }} />}
-                        {expedienteState?.detalle && expedienteState?.detalle.length && <Tab label="Familiares" {...a11yProps(2)} sx={{ textTransform: 'none' }} />}
-                        {expedienteState?.detalle && expedienteState?.detalle.length && persona.sexo === 'MUJER' && <Tab label="Información reproductiva" {...a11yProps(3)} sx={{ textTransform: 'none' }} />}
-                        {expedienteState?.detalle && expedienteState?.detalle.length && <Tab label="Régimen disciplinario" {...a11yProps(4)} sx={{ textTransform: 'none' }} />}
-                        {expedienteState?.detalle && expedienteState?.detalle.length && <Tab label="Evaluaciones de desempeño" {...a11yProps(5)} sx={{ textTransform: 'none' }} />}
+                        {expedienteState?.detalle && expedienteState?.detalle.length > 0 && <Tab label="Declaraciones patrimoniales" {...a11yProps(1)} sx={{ textTransform: 'none' }} />}
+                        {expedienteState?.detalle && expedienteState?.detalle.length > 0 && <Tab label="Familiares" {...a11yProps(2)} sx={{ textTransform: 'none' }} />}
+                        {expedienteState?.detalle && expedienteState?.detalle.length > 0 && persona.sexo === 'MUJER' && <Tab label="Información reproductiva" {...a11yProps(3)} sx={{ textTransform: 'none' }} />}
+                        {expedienteState?.detalle && expedienteState?.detalle.length > 0 && <Tab label="Régimen disciplinario" {...a11yProps(4)} sx={{ textTransform: 'none' }} />}
+                        {expedienteState?.detalle && expedienteState?.detalle.length > 0 && <Tab label="Evaluaciones de desempeño" {...a11yProps(5)} sx={{ textTransform: 'none' }} />}
                     </Tabs>
 
                 </Box>
-                <div className="columns is-centered">
-                    <div className="column  is-3">
-                        {deteteResponse && deteteResponse.type === 'warning' && <Alert type={'is-warning is-light'} content={deteteResponse.content}>
-                            <button className="delete" onClick={event => setDeleteResponse(null)}></button>
-                        </Alert>}
-                        {deteteResponse && deteteResponse.type === 'success' && <Alert type={'is-success is-light'} content={deteteResponse.content}>
-                            <button className="delete" onClick={event => {
-                                setDeleteResponse(null)
-                                dispatch(loadExpedienteLaboral(location.state.identificacion))
-                            }}></button>
-                        </Alert>}
-                    </div>
-                </div>
+
                 <TabPanel value={activeTab} index={0}>
 
 
@@ -711,7 +777,7 @@ let ListaExpediente = (props) => {
 
                 </TabPanel>
 
-                <TabPanel value={activeTab} index={3}>
+                {persona?.sexo === 'MUJER' && <TabPanel value={activeTab} index={3}>
 
                     <TabContent
                         title="Información reproductiva"
@@ -756,9 +822,9 @@ let ListaExpediente = (props) => {
                             </span>
                         </button></TabContent>
 
-                </TabPanel>
+                </TabPanel>}
 
-                <TabPanel value={activeTab} index={4}>
+                <TabPanel value={activeTab} index={persona?.sexo === 'MUJER' ? 4 : 3}>
                     <TabContent
                         title="Régimen disciplicario"
                         desc="sanciones"
@@ -800,7 +866,7 @@ let ListaExpediente = (props) => {
                             </span>
                         </button></TabContent>
                 </TabPanel>
-                <TabPanel value={activeTab} index={5}>
+                <TabPanel value={activeTab} index={persona?.sexo === 'MUJER' ? 5 : 4}>
                     <TabContent
                         title="Evaluaciones de desempeño"
                         desc="evaluaciones"
@@ -855,25 +921,6 @@ let ListaExpediente = (props) => {
                     objeto={objeto} identificacion={location.state.identificacion}
                     handler={objeto === null ? postHandler : putHandler} persona={persona}>
 
-                    {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={event => setError(null)} key={atob(`A${location.state.identificacion}`)}></button>
-                    </Alert>}
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={event => setResponse(null)} key={atob(`B${location.state.identificacion}`)}></button >
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={event => {
-                            setResponse(null)
-                            setObjeto(null)
-                            setShowModalForm(false)
-                            dispatch(
-                                loadExpedienteLaboral(location.state.identificacion)
-                            )
-                        }}
-                            key={atob(`C${location.state.identificacion}`)}
-
-                        ></button>
-                    </Alert>}
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalForm(false)
                         setObjeto(null)
@@ -892,25 +939,7 @@ let ListaExpediente = (props) => {
                     objeto={objeto}
                     persona={persona}
                     handler={objeto === null ? postDeclaracion : putDeclaracion}
-                >   {error && <Alert type={'is-danger is-light'} content={error.message}>
-                    <button className="delete" onClick={event => setError(null)} key={atob(`A${location.state.identificacion}`)}></button>
-                </Alert>}
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={event => setResponse(null)} key={atob(`B${location.state.identificacion}`)}></button >
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={event => {
-                            setResponse(null)
-                            setObjeto(null)
-                            setShowDecModalForm(false)
-                            dispatch(
-                                loadDeclaracionesPersona(location.state.identificacion)
-                            )
-                        }}
-                            key={atob(`C${location.state.identificacion}`)}
-
-                        ></button>
-                    </Alert>}
+                >
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowDecModalForm(false)
                         setObjeto(null)
@@ -931,25 +960,6 @@ let ListaExpediente = (props) => {
                     persona={persona}
                     handler={objeto === null ? postFamiliarHandler : putFamiliarHandler}
                 >
-                    {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={event => setError(null)} key={atob(`A${location.state.identificacion}`)}></button>
-                    </Alert>}
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={event => setResponse(null)} key={atob(`B${location.state.identificacion}`)}></button >
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={event => {
-                            setResponse(null)
-                            setObjeto(null)
-                            setShowFamModalForm(false)
-                            dispatch(
-                                loadFamiliares(location.state.identificacion)
-                            )
-                        }}
-                            key={atob(`C${location.state.identificacion}`)}
-
-                        ></button>
-                    </Alert>}
 
                     <button className="button is-small is-danger mx-3"
                         onClick={ev => {
@@ -972,25 +982,6 @@ let ListaExpediente = (props) => {
                     persona={persona}
                     handler={objeto === null ? postInfromacionHandler : putInfromacionHandler}
                 >
-                    {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={() => setError(null)} key={atob(`L${location.state.identificacion}`)}></button>
-                    </Alert>}
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={() => setResponse(null)} key={atob(`K${location.state.identificacion}`)}></button >
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={() => {
-                            setResponse(null)
-                            setObjeto(null)
-                            setShowInfModalForm(false)
-                            dispatch(
-                                loadInformacionReproductivaPersonal(location.state.identificacion)
-                            )
-                        }}
-                            key={atob(`C${location.state.identificacion}`)}
-
-                        ></button>
-                    </Alert>}
 
                     <button className="button is-small is-danger mx-3"
                         onClick={() => {
@@ -1013,25 +1004,7 @@ let ListaExpediente = (props) => {
                     ingreso={persona.fecha_ingreso.slice(0, 4)}
                     handler={objeto === null ? postRegimenHandler : putRegimenHandler}
                 >
-                    {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={event => setError(null)} key={atob(`X${location.state.identificacion}`)}></button>
-                    </Alert>}
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={event => setResponse(null)} key={atob(`O${location.state.identificacion}`)}></button >
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={event => {
-                            setResponse(null)
-                            setObjeto(null)
-                            setShowRegModalForm(false)
-                            dispatch(
-                                loadRegimenesDisciplinariosPorPersona(location.state.identificacion)
-                            )
-                        }}
-                            key={atob(`L${location.state.identificacion}`)}
 
-                        ></button>
-                    </Alert>}
                     <button className="button is-small is-danger mx-3"
                         onClick={() => {
                             setShowRegModalForm(false)
@@ -1051,25 +1024,6 @@ let ListaExpediente = (props) => {
                     persona={persona}
                     handler={objeto === null ? postEvaluacionHandler : putEvaluacionHandler}
                 >
-                    {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={event => setError(null)} key={atob(`TT${location.state.identificacion}`)}></button>
-                    </Alert>}
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={event => setResponse(null)} key={atob(`N${location.state.identificacion}`)}></button >
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={event => {
-                            setResponse(null)
-                            setObjeto(null)
-                            setShowEvaModalForm(false)
-                            dispatch(
-                                loadEvaluacionesPersonal(location.state.identificacion)
-                            )
-                        }}
-                            key={atob(`W${location.state.identificacion}`)}
-
-                        ></button>
-                    </Alert>}
                     <button className="button is-small is-danger mx-3"
                         onClick={() => {
                             setShowEvaModalForm(false)
@@ -1142,6 +1096,17 @@ let ListaExpediente = (props) => {
                     }}>Confirmar</button>
                 </ConfirmDialog>
 
+            }
+
+            {
+                response?.type && <AlertModal type={response.type} message={response.content}>
+                    <button className="delete" aria-label="close" onClick={() => setResponse(null)}></button>
+                </AlertModal>
+            }
+            {
+                error?.message && <AlertModal type={'danger'} message={error.message}>
+                    <button className="delete" aria-label="close" onClick={() => setError(null)}></button>
+                </AlertModal>
             }
         </>
     )

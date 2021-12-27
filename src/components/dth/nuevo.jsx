@@ -210,7 +210,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
                             <div className="columns">
                                 <div className="column">
-                                    <label className="label is-small">Tipo identificación</label>
+                                    <label className="label is-small has-text-info">Tipo identificación</label>
                                     {errors.tipo_identificacion && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione el tipo de identificación!</span>}
                                     <Controller
                                         control={control}
@@ -249,7 +249,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
                                 </div>
                                 <div className="column">
-                                    <label className="label is-small">No. identificación</label>
+                                    <label className="label is-small has-text-info">No. identificación</label>
                                     {errors.identificacion?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la identificación!</span>}
                                     {errors.identificacion?.type === 'maxLength' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Máximo 10 caracteres!</span>}
                                     <div className="control">
@@ -265,7 +265,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
 
                                 <div className="column">
-                                    <label className="label is-small">primer apellido</label>
+                                    <label className="label is-small has-text-info">Primer apellido</label>
                                     {errors.primer_apellido && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el primer apellido!</span>}
                                     <div className="control">
                                         <input type="text" {...register("primer_apellido", { required: true })} className="input is-uppercase" />
@@ -275,7 +275,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                 </div>
 
                                 <div className="column">
-                                    <label className="label is-small">segundo apellido</label>
+                                    <label className="label is-small has-text-info">Segundo apellido</label>
                                     {errors.segundo_apellido && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese segundo apellido!</span>}
                                     <div className="control">
                                         <input type="text" {...register("segundo_apellido", { required: true })} className="input is-uppercase" />
@@ -287,7 +287,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                             </div>
                             <div className="columns">
                                 <div className="column">
-                                    <label className="label is-small">Primer nombre</label>
+                                    <label className="label is-small has-text-info">Primer nombre</label>
                                     {errors.primer_nombre && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el primer nombre!</span>}
                                     <div className="control">
                                         <input type="text" {...register("primer_nombre", { required: true })} className="input is-uppercase" />
@@ -297,7 +297,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
                                 </div>
                                 <div className="column">
-                                    <label className="label is-small">Segundo nombre</label>
+                                    <label className="label is-small has-text-info">Segundo nombre</label>
                                     {errors.segundo_nombre && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el segundo nombre!</span>}
                                     <div className="control">
                                         <input type="text" {...register("segundo_nombre", { required: true })} className="input is-uppercase" />
@@ -310,7 +310,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
 
                                 <div className="column">
-                                    <label className="label is-small">Sexo</label>
+                                    <label className="label is-small has-text-info">Sexo</label>
                                     {errors.sexo && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, seleccione el sexo!</span>}
                                     <Controller
                                         control={control}
@@ -352,7 +352,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
                                 </div>
                                 <div className="column">
-                                    <label className="label is-small">Fecha nacimiento</label>
+                                    <label className="label is-small has-text-info">Fecha nacimiento</label>
                                     {errors.fecha_nacimiento?.type === "required" && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la fecha de nacimiento!</span>}
                                     {errors.fecha_nacimiento?.type === "max" && <span className="has-text-danger is-size-7 has-background-danger-light">¡La persona debe tener mínimo 18 años!</span>}
                                     <div className="control">
@@ -380,7 +380,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                             </div>
                             <div className="columns">
                                 <div className="column">
-                                    <label className="label is-small">Estado civil</label>
+                                    <label className="label is-small has-text-info">Estado civil</label>
                                     {errors.estado_civil && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el estado civil!</span>}
                                     <Controller
                                         control={control}
@@ -416,7 +416,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
                                 <div className="column">
 
-                                    <label className="label is-small">País orígen</label>
+                                    <label className="label is-small has-text-info">País orígen</label>
                                     {errors.pais_origen && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el país de origen!</span>}
 
                                     <Controller
@@ -454,7 +454,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
 
                                 <div className="column">
-                                    <label className="label is-small">Discapacidad</label>
+                                    <label className="label is-small has-text-info">Discapacidad</label>
                                     {errors.discapacidad && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione una discapacidad!</span>}
                                     <Controller
                                         name="discapacidad"
@@ -490,7 +490,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
                                 </div>
                                 <div className="column">
-                                    <label className="label is-small">Número carnet CONAIDIS</label>
+                                    <label className="label is-small has-text-info">Número carnet CONAIDIS</label>
                                     {errors.numero_conadis && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el numero de carnet del CONADIS!</span>}
                                     <div className="control">
                                         <input type="text" {...register("numero_conadis")} className="input is-uppercase" />
@@ -503,7 +503,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
                             <div className="columns">
                                 <div className="column">
-                                    <label className="label is-small">Porcentaje discapacidad</label>
+                                    <label className="label is-small has-text-info">Porcentaje discapacidad</label>
                                     {errors.porcentaje_discapacidad && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el porcentaje de discapacidad!</span>}
                                     <div className="control">
                                         <input type="number" min="0" {...register("porcentaje_discapacidad", { required: true, max: 100 })} className="input" />
@@ -513,7 +513,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
                                 </div>
                                 <div className="column">
-                                    <label className="label is-small">Étnia</label>
+                                    <label className="label is-small has-text-info">Étnia</label>
                                     {errors.etnia && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione la autoidentificación étnica!</span>}
 
 
@@ -553,7 +553,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
                                 <div className="column">
 
-                                    <label className="label is-small">Nacionalidad</label>
+                                    <label className="label is-small has-text-info">Nacionalidad</label>
 
 
 
@@ -595,7 +595,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
 
                                 <div className="column">
-                                    <label className="label is-small">Tipo de sangre</label>
+                                    <label className="label is-small has-text-info">Tipo de sangre</label>
                                     {errors.tipo_sangre && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el tipo de sangre!</span>}
                                     <div className="control">
                                         <input type="text" {...register("tipo_sangre", { required: true })} className="input is-uppercase" />
@@ -607,7 +607,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                             </div>
                             <div className="columns">
                                 <div className="column">
-                                    <label className="label is-small">Licencia de conducción</label>
+                                    <label className="label is-small has-text-info">Licencia de conducción</label>
                                     {errors.licencia_conduccion && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Escoga una opción!</span>}
 
                                     <Controller
@@ -643,7 +643,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                     />
                                 </div>
                                 {getValues('licencia_conduccion') === 'SI' && <div className="column">
-                                    <label className="label is-small">Tipo licencia</label>
+                                    <label className="label is-small has-text-info">Tipo licencia</label>
                                     {errors.tipo_licencia && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Escoga el tipo de licencia!</span>}
 
                                     <Controller
@@ -683,7 +683,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                 <div className="column">
 
 
-                                    <label className="label is-small">
+                                    <label className="label is-small has-text-info">
                                         Provincia
                                     </label>
 
@@ -729,7 +729,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                 </div>
 
                                 <div className="column">
-                                    <label className="label is-small">
+                                    <label className="label is-small has-text-info">
                                         Cantón
                                     </label>
                                     {errors.id_canton && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione un cantón!</span>}
@@ -770,7 +770,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
                                 </div>
                                 <div className="column">
-                                    <label className="label is-small">Parroquia</label>
+                                    <label className="label is-small has-text-info">Parroquia</label>
                                     {errors.parroquia && <span className="has-text-danger is-size-7 has-background-danger-light"> ¡Por favor, ingrese la parroquia!</span>}
                                     <div className="control">
                                         <input type="text"  {...register("parroquia", { required: true })} className="input is-uppercase" />
@@ -778,7 +778,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
                                 </div>
                                 <div className="column">
-                                    <label className="label is-small">Calle 1</label>
+                                    <label className="label is-small has-text-info">Calle 1</label>
                                     {errors.calle1 && <span className="has-text-danger is-size-7 has-background-danger-light"> ¡Por favor, ingrese la calle principal!</span>}
                                     <div className="control">
                                         <input type="text"  {...register("calle1", { required: true })} className="input is-uppercase" />
@@ -788,13 +788,13 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                             </div>
                             <div className="columns">
                                 <div className="column">
-                                    <label className="label is-small">Calle 2</label>
+                                    <label className="label is-small has-text-info">Calle 2</label>
                                     <div className="control">
                                         <input type="text"  {...register("calle2",)} className="input is-uppercase" />
                                     </div>
                                 </div>
                                 <div className="column">
-                                    <label className="label is-small">Referencia</label>
+                                    <label className="label is-small has-text-info">Referencia</label>
                                     <div className="control">
                                         <input type="text"  {...register("referencia")} className="input is-uppercase" />
                                     </div>
@@ -807,7 +807,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                             <legend className="has-text-weight-bold is-size-6 has-text-grey-dark">CONTACTOS</legend>
                             <div className="columns">
                                 <div className="column">
-                                    <label className="label is-small">Teléfono móvil</label>
+                                    <label className="label is-small has-text-info">Teléfono móvil</label>
                                     {errors.telefono_movil && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el teléfono movil!</span>}
                                     <div className="control">
                                         <input type="tel" {...register("telefono_movil", { required: true })} className="input" />
@@ -816,14 +816,14 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
                                 </div>
                                 <div className="column">
-                                    <label className="label is-small">Teléfono domicilio</label>
+                                    <label className="label is-small has-text-info">Teléfono domicilio</label>
                                     <div className="control">
                                         <input type="tel" {...register("telefono_domicilio")} className="input" />
 
                                     </div>
                                 </div>
                                 <div className="column">
-                                    <label className="label is-small">Email personal</label>
+                                    <label className="label is-small has-text-info">Email personal</label>
                                     {errors.email_personal && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el email personal!</span>}
                                     <div className="control">
                                         <input type="email" {...register("email_personal", { required: true })} className="input" placeholder="example@email.com" />
@@ -831,7 +831,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                     </div>
                                 </div>
                                 <div className="column">
-                                    <label className="label is-small">Email institucional</label>
+                                    <label className="label is-small has-text-info">Email institucional</label>
                                     {errors.email_institucional && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el email institucional!</span>}
                                     <div className="control">
                                         <input type="email" {...register("email_institucional", { required: true })} className="input" placeholder="example@unesum.edu.ec" />
@@ -847,13 +847,13 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                             <legend className="has-text-weight-bold is-size-6 has-text-grey-dark">CONTACTO DE EMERGENCIA</legend>
                             <div className="columns">
                                 <div className="column">
-                                    <label className="label is-small">Apellidos</label>
+                                    <label className="label is-small has-text-info">Apellidos</label>
                                     {errors.apellidosContacto && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese los apellidos!</span>}
 
                                     <input type="text" {...register("apellidosContacto", { required: true })} className="input is-uppercase" />
                                 </div>
                                 <div className="column">
-                                    <label className="label is-small">Nombres</label>
+                                    <label className="label is-small has-text-info">Nombres</label>
                                     {errors.nombresContacto && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese los nombres!</span>}
 
                                     <input type="text" {...register("nombresContacto", { required: true })} className="input is-uppercase" />
@@ -861,7 +861,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                             </div>
                             <div className="columns">
                                 <div className="column">
-                                    <label className="label is-small">Dirección</label>
+                                    <label className="label is-small has-text-info">Dirección</label>
                                     {errors.direccionContacto && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la direccion!</span>}
 
                                     <input type="text" {...register("direccionContacto", { required: true })} className="input is-uppercase" />
@@ -869,13 +869,13 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                             </div>
                             <div className="columns">
                                 <div className="column">
-                                    <label className="label is-small">Teléfono domocilio</label>
+                                    <label className="label is-small has-text-info">Teléfono domocilio</label>
 
 
                                     <input type="text" {...register("telefonoContacto")} className="input" />
                                 </div>
                                 <div className="column">
-                                    <label className="label is-small">Teléfono móvil</label>
+                                    <label className="label is-small has-text-info">Teléfono móvil</label>
                                     {errors.movilContacto && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese teléfono movil!</span>}
 
                                     <input type="text" {...register("movilContacto", { required: true })} className="input" />
@@ -888,14 +888,14 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                             <legend className="has-text-weight-bold is-size-6 has-text-grey-dark">INFORMACION BANCARIA</legend>
                             <div className="columns">
                                 <div className="column">
-                                    <label className="label is-small">Institución financiera</label>
+                                    <label className="label is-small has-text-info">Institución financiera</label>
                                     {errors.institucion && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la institución financiera!</span>}
                                     <input type="text" {...register('institucion', { required: true })} className="input is-uppercase" />
                                 </div>
 
 
                                 <div className="column">
-                                    <label className="label is-small">Tipo cuenta</label>
+                                    <label className="label is-small has-text-info">Tipo cuenta</label>
                                     {errors.institucion && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Escoja el tipo de cuenta!</span>}
                                     <Controller
                                         control={control}
@@ -931,7 +931,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
                                 </div>
                                 <div className="column">
-                                    <label className="label is-small"> No. cuenta</label>
+                                    <label className="label is-small has-text-info"> No. cuenta</label>
                                     {errors.institucion && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el número de cuenta!</span>}
                                     <input type="text" className="input"  {...register("numeroCuenta")} />
                                 </div>
@@ -947,7 +947,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
                             <div className="columns">
                                 <div className="column is-3">
-                                    <label className="label is-small">Fecha ingreso IES</label>
+                                    <label className="label is-small has-text-info">Fecha ingreso IES</label>
                                     {errors.fecha_ingreso_ies?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la fecha de ingreso a la institución!</span>}
                                     {errors.fecha_ingreso_ies?.type === 'max' && <span className="has-text-danger is-size-7 has-background-danger-light">¡La fecha de ingreso no puede ser mayor a la fecha actual!</span>}
 

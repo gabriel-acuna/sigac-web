@@ -13,12 +13,12 @@ let TipoNombramientoModal = ({ title, handler, children, objeto }) => {
                 </header>
                 <section className="modal-card-body">
                     <form className="field" onSubmit={handleSubmit(handler)}>
-                        <label className="label is-small">Tipo nombramiento </label>
+                        <label className="label is-small has-text-info">Tipo nombramiento </label>
                         {errors.nombramiento && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione el tipo de nombramiento!</span>}
 
                         <input type="text" className="input is-uppercase" {...register('nombramiento', { required: true })} defaultValue={objeto?.nombramiento ? objeto.nombramiento : ''} />
 
-                        <div className="field is-grouped" style={{ display: 'flex', justifyContent: 'center' }}>
+                        <div className="field is-grouped mt-4" style={{ display: 'flex', justifyContent: 'center' }}>
                             <div className="control has-text-centered">
                                 <Fragment>
                                     {children}

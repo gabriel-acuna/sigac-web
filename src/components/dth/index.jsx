@@ -6,7 +6,7 @@ import { IoPersonAddOutline } from 'react-icons/io5'
 import { FaRegEdit } from 'react-icons/fa'
 import { VscFileSubmodule } from 'react-icons/vsc'
 import RegistarPersona from './nuevo'
-import Alert from '../Alert';
+import AlertModal from '../AlertModal';
 import { logOut } from '../../store/user'
 import { Link } from 'react-router-dom';
 import { AiOutlineDelete } from 'react-icons/ai'
@@ -21,7 +21,6 @@ let DTH = (props) => {
     const [showRegistarPersona, setShowRegistrarPersona] = useState(false)
     const [response, setResponse] = useState(null)
     const [error, setError] = useState(null)
-    const [respShowConfirmDialog, setRespShowConfirmDialog] = useState(null)
     const [showConfirmDialog, setShowConfirmDialog] = useState(false)
     const [id, setId] = useState(null)
 
@@ -47,7 +46,7 @@ let DTH = (props) => {
             )
         ).unwrap()
             .then(
-                (resp) => setRespShowConfirmDialog(resp)
+                (resp) => setResponse(resp)
             ).catch(
                 (err) => console.error(err)
             )
@@ -108,6 +107,10 @@ let DTH = (props) => {
             .then(
                 resp => {
                     setResponse(resp)
+                    if (resp.type === 'success') {
+                        dispatch(loadInformacionPersonal())
+                        setShowRegistrarPersona(false)
+                    }
                 }
             ).catch(
                 (err) => {
@@ -137,6 +140,11 @@ let DTH = (props) => {
             .then(
                 resp => {
                     setResponse(resp)
+                    if (resp.type === 'success') {
+                        dispatch(loadInformacionPersonal())
+                        setShowRegistrarPersona(false)
+                        setPersona(null)
+                    }
                 }
             ).catch(
                 (err) => {
@@ -160,19 +168,6 @@ let DTH = (props) => {
     return (
         <>
             <div className="container">
-                <div className="columns is-centered">
-                    <div className="column  is-3">
-                        {respShowConfirmDialog && respShowConfirmDialog.type === 'warning' && <Alert type={'is-warning is-light'} content={respShowConfirmDialog.content}>
-                            <button className="delete" onClick={event => setRespShowConfirmDialog(null)}></button>
-                        </Alert>}
-                        {respShowConfirmDialog && respShowConfirmDialog.type === 'success' && <Alert type={'is-success is-light'} content={respShowConfirmDialog.content}>
-                            <button className="delete" onClick={event => {
-                                setRespShowConfirmDialog(null)
-                                dispatch(loadInformacionPersonal())
-                            }}></button>
-                        </Alert>}
-                    </div>
-                </div>
 
                 <div className="columns is-centered">
                     <div className="column is-half mt-4">
@@ -185,7 +180,7 @@ let DTH = (props) => {
                 </div>
                 <div className="columns is-centered">
                     <div className="column mt-4">
-                        <ReactDatatable style={{ justifyContent: 'center', overFlowX:'auto' }}
+                        <ReactDatatable style={{ justifyContent: 'center', overFlowX: 'auto' }}
                             className="table is-bordered is-striped"
                             tHeadClassName="is-info"
                             config={{
@@ -218,21 +213,6 @@ let DTH = (props) => {
             </div>
             {showRegistarPersona &&
                 <RegistarPersona title={persona !== null ? "Editando datos personales de: " : "Registrar personal"} handler={persona !== null ? putHandler : postHandler} person={persona}>
-                    {error && <Alert type={'is-danger is-light'} content={error.message}>
-                        <button className="delete" onClick={event => setError(null)}></button>
-                    </Alert>}
-                    {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                        <button className="delete" onClick={event => setResponse(null)}></button>
-                    </Alert>}
-                    {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                        <button className="delete" onClick={event => {
-                            setResponse(null)
-                            setShowRegistrarPersona(false)
-                            dispatch(
-                                loadInformacionPersonal()
-                            )
-                        }}></button>
-                    </Alert>}
 
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowRegistrarPersona(false)
@@ -249,6 +229,16 @@ let DTH = (props) => {
                         setShowConfirmDialog(false); doDelete();
                     }}>Confirmar</button>
                 </ConfirmDialog>
+            }
+            {
+                response?.type && <AlertModal type={response.type} message={response.content}>
+                    <button className="delete" aria-label="close" onClick={() => setResponse(null)}></button>
+                </AlertModal>
+            }
+            {
+                error?.message && <AlertModal type={'danger'} message={error.message}>
+                    <button className="delete" aria-label="close" onClick={() => setError(null)}></button>
+                </AlertModal>
             }
         </>
     )

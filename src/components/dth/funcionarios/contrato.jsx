@@ -66,7 +66,7 @@ let ContratoFuncionario = ({ objeto, register, errors, control, setValue }) => {
             <div className="columns">
                 <div className="column">
                     <label className="label is-small">Tipo funcionario</label>
-                    {errors.tipoFuncionario && <span className="has-text-danger is-size-7">¡Por favor, Seleccione el tipo de funcionario!</span>}
+                    {errors.tipoFuncionario && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el tipo de funcionario!</span>}
 
                     <Controller
                         name="tipoFuncionario"
@@ -105,7 +105,7 @@ let ContratoFuncionario = ({ objeto, register, errors, control, setValue }) => {
                     <label className="label is-small">
                         Cargo
                     </label>
-                    {errors.cargo && <span className="has-text-danger is-size-7">¡Por favor, Ingrese el cargo del funcionario!</span>}
+                    {errors.cargo && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el cargo del funcionario!</span>}
                     <div className="control"><input type="text" {...register("cargo", { required: true })} className="input" />
 
                     </div>
@@ -113,7 +113,7 @@ let ContratoFuncionario = ({ objeto, register, errors, control, setValue }) => {
                 </div>
                 <div className="column">
                     <label className="label is-small">Tipo docente LOES</label>
-                    {errors.tipoDocente && <span className="has-text-danger is-size-7">¡Por favor, Seleccione el tipo de docente!</span>}
+                    {errors.tipoDocente && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el tipo de docente!</span>}
                     <Controller
                         name="tipoDocente"
                         control={control}
@@ -140,7 +140,7 @@ let ContratoFuncionario = ({ objeto, register, errors, control, setValue }) => {
 
                 <div className="column">
                     <label className="label is-small">Categoría docente</label>
-                    {errors.categoriaDocente && <span className="has-text-danger is-size-7">¡Por favor, Seleccione la categoria de docente!</span>}
+                    {errors.categoriaDocente && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione la categoria de docente!</span>}
 
                     <Controller
                         name="categoriaDocente"
@@ -169,7 +169,7 @@ let ContratoFuncionario = ({ objeto, register, errors, control, setValue }) => {
 
                 <div className="column">
                     <label className="label is-small">Puesto jerárquico superior</label>
-                    {errors.puestoJerarquico && <span className="has-text-danger is-size-7">¡Por favor, Seleccione una opción!</span>}
+                    {errors.puestoJerarquico && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione una opción!</span>}
                     <Controller
                         name="puestoJerarquico"
                         control={control}
@@ -219,7 +219,7 @@ let ContratoFuncionario = ({ objeto, register, errors, control, setValue }) => {
                     <label htmlFor="" className="label is-small">
                         Horas laborables semanales
                     </label>
-                    {errors.horasLaborablesSemanales && <span className="has-text-danger is-size-7">¡Por favor, Ingrese las horas laborables por semana!</span>}
+                    {errors.horasLaborablesSemanales && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese las horas laborables por semana!</span>}
                     <div className="control">
                         <input type="text" {...register("horasLaborablesSemanales", { required: true })} className="input" />
 
