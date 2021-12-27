@@ -1,23 +1,11 @@
 import { useForm } from 'react-hook-form'
-import { Fragment, useEffect } from 'react'
+import { Fragment } from 'react'
 
 
 let ModalForm = ({ title, handler, children, objeto }) => {
 
 
-    const { register, reset, handleSubmit, formState: { errors } } = useForm()
-
-    useEffect(
-        () => {
-            if (objeto !== null) {
-                reset({
-                    institucion: objeto.institucion,
-                    codigo: objeto.codigo
-                })
-            }
-        }, [objeto, reset]
-    )
-
+    const { register, handleSubmit, formState: { errors } } = useForm()
 
     return (
         <div className="modal is-active">
@@ -31,18 +19,22 @@ let ModalForm = ({ title, handler, children, objeto }) => {
 
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
                         <div className="field">
-                            <label className="label is-small">Código</label>
                             <div className="control">
-                                <input type="text" {...register("codigo", { required: true })} className="input is-uppercase" />
-                                {errors.codigo && <span className="has-text-danger">¡Por favor, Ingrese el código de la IES!</span>}
+                                <label className="label is-small has-text-info">Código</label>
+                                {errors.codigo && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el código de la IES!</span>}
+
+                                <input type="text" {...register("codigo", { required: true })} className="input is-uppercase" defaultValue={objeto?.codigo ? objeto.codigo : ''} />
+
 
                             </div>
                         </div>
                         <div className="field">
-                            <label className="label is-small">Nombre</label>
+                            <label className="label is-small has-text-info">Nombre</label>
+                            {errors.institucion && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el nombre de la IES!</span>}
+
                             <div className="control">
-                                <input type="text" {...register("institucion", { required: true })} className="input is-uppercase" />
-                                {errors.institucion && <span className="has-text-danger">¡Por favor, Ingrese el nombre de la IES!</span>}
+                                <input type="text" {...register("institucion", { required: true })} className="input is-uppercase" defaultValue={objeto?.institucion ? objeto.institucion : ''} />
+
 
                             </div>
                         </div>

@@ -1,24 +1,14 @@
 import { useForm } from 'react-hook-form'
-import { useEffect, useState, Fragment } from 'react'
-import Alert from '../../../Alert'
-
+import { useState, Fragment } from 'react'
 
 let ModalForm = ({ title, handler, children, objeto }) => {
 
 
     const [error, setError] = useState(null)
-    const { register, reset, handleSubmit, formState: { errors } } = useForm()
+    const { register, handleSubmit, formState: { errors } } = useForm()
 
 
-    useEffect(
-        () => {
-            if (objeto !== null) {
-                reset({
-                    financiamiento: objeto.financiamiento
-                })
-            }
-        }, [objeto, reset]
-    )
+
 
 
     return (
@@ -29,20 +19,18 @@ let ModalForm = ({ title, handler, children, objeto }) => {
                     <span className="has-text-weight-bold is-italic">{title}</span>
 
                 </header>
-                <section className="modal-card-body" style={{ display: 'flex', justifyContent: 'center' }}>
+                <section className="modal-card-body">
 
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
-                        <div className="field">
-                            <label className="label is-small">Financiamiento</label>
-                            <div className="control">
-                                <input type="text" {...register("financiamiento", { required: true })} className="input is-samll is-uppercase" />
-                                {errors.financiamiento && <span className="has-text-danger">¡Por favor, Ingrese el tipo de financiamiento!</span>}
-                                {
-                                    error && <Alert type={'is-danger is-light'} content={error.message}>
-                                        <button className="delete" onClick={() => setError(null)}></button>
-                                    </Alert>
-                                }
-                               
+                        <div className="columns is-centered">
+                            <div className="column  is-8">
+                                <label className="label is-small has-text-info">Financiamiento</label>
+                                {errors.financiamiento && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el tipo de financiamiento!</span>}
+
+
+                                <input type="text" {...register("financiamiento", { required: true })} className="input is-uppercase" defaultValue={objeto?.financiamiento ? objeto.financiamiento : ''} />
+
+
 
                             </div>
                         </div>

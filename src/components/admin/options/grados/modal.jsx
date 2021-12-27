@@ -21,11 +21,12 @@ let ModalForm = ({ title, handler, children, objeto }) => {
                 <section className="modal-card-body">
 
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
-                        <div className="field">
-                            <label className="label is-small">Grado</label>
-                            <div className="control">
+                        <div className="columns is-centered">
+                            <div className="column is-8">
+                                <label className="label is-small">Grado</label>
+                                {errors.grado && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la grado!</span>}
                                 <input type="text" {...register("grado", { required: true })} className="input" defaultValue={objeto?.grado} />
-                                {errors.grado && <span className="has-text-danger">¡Por favor, Ingrese la grado!</span>}
+
 
 
 
