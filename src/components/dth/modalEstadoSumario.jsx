@@ -12,7 +12,7 @@ let ModalEstadoSumario = ({ title, handler, children, objeto })=>{
                 </header>
                 <section className="modal-card-body">
                     <form className="field" onSubmit={handleSubmit(handler)}>
-                        <label className="label is-small">Estado sumario</label>
+                        <label className="label is-small has-text-info">Estado sumario</label>
                         {errors.estado && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, ingrese el estado!</span>}
 
                         <input type="text" className="input is-uppercase" {...register('estado', { required: true })} defaultValue={objeto?.estado ? objeto.estado : ''} />

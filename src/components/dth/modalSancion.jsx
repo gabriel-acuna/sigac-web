@@ -12,7 +12,7 @@ let ModalSancion =  ({ title, handler, children, objeto })=>{
                 </header>
                 <section className="modal-card-body">
                     <form className="field" onSubmit={handleSubmit(handler)}>
-                        <label className="label is-small">Sanción</label>
+                        <label className="label is-small has-text-info">Sanción</label>
                         {errors.sancion && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, ingrese la sanción!</span>}
 
                         <input type="text" className="input is-uppercase" {...register('sancion', { required: true })} defaultValue={objeto?.sancion ? objeto.sancion : ''} />

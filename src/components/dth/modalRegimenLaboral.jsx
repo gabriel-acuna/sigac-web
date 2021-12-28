@@ -12,7 +12,7 @@ let ModalRegimenLaboral = ({ title, handler, children, objeto })=>{
                 </header>
                 <section className="modal-card-body">
                     <form className="field" onSubmit={handleSubmit(handler)}>
-                        <label className="label is-small">Régimen laboral </label>
+                        <label className="label is-small has-text-info">Régimen laboral </label>
                         {errors.regimen && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, ingrese el régimen laboral!</span>}
 
                         <input type="text" className="input is-uppercase" {...register('regimen', { required: true })} defaultValue={objeto?.regimen ? objeto.regimen : ''} />

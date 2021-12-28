@@ -18,7 +18,7 @@ let DeclaracionPatrimonialModal = ({ title, handler, children, objeto, persona }
                     <form className="field" onSubmit={handleSubmit(handler)}>
                         <div className="columns">
                             <div className="column">
-                                <label className="label is-small">Tipo declaración </label>
+                                <label className="label is-small has-text-info">Tipo declaración </label>
                                 {errors.tipoDeclaracion && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione el tipo de declaración!</span>}
 
                                 <Controller
@@ -54,7 +54,7 @@ let DeclaracionPatrimonialModal = ({ title, handler, children, objeto, persona }
                                 />
                             </div>
                             <div className="column">
-                                <label className="label is-small">Número de declaración</label>
+                                <label className="label is-small has-text-info">Número de declaración</label>
                                 {errors.numeroDeclaracion?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, ingrese el número de declaración!</span>}
                                 {errors.numeroDeclaracion?.type === 'pattern' && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Formato incorrecto este campo debe ser númerico y debe contener entre 5 a 10 dígitos!</span>}
                                 <input type="text" {...register("numeroDeclaracion", { required: true })} className="input" defaultValue={objeto?.numero_declaracion ? objeto.numero_declaracion : ''}
@@ -71,7 +71,7 @@ let DeclaracionPatrimonialModal = ({ title, handler, children, objeto, persona }
                                 />
                             </div>
                             <div className="column">
-                                <label className="label is-small">Fecha presentación</label>
+                                <label className="label is-small has-text-info">Fecha presentación</label>
                                 {errors.fechaPresentacion && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione la fecha de presentación!</span>}
 
                                 <input type="date" {...register("fechaPresentacion", { required: true })} className="input" defaultValue={objeto?.fecha_presentacion ? objeto.fecha_presentacion : ''} />

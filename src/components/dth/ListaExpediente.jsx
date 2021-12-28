@@ -152,7 +152,13 @@ let ListaExpediente = (props) => {
                 postDetalleExpedienteFuncionario(detalle))
                 .unwrap()
                 .then(
-                    (resp) => setResponse(resp)
+                    (resp) => {
+                        setResponse(resp)
+                        if (resp.type === 'success') {
+                            dispatch(loadExpedienteLaboral(persona.identificacion))
+                            setShowModalForm(false)
+                        }
+                    }
                 ).catch(
                     (err) => {
                         console.log(err);
@@ -184,6 +190,7 @@ let ListaExpediente = (props) => {
                     if (resp.type === 'success') {
                         dispatch(loadExpedienteLaboral(persona.identificacion))
                         setShowModalForm(false)
+                        setObjeto(null)
                     }
                 }
             ).catch(err => console.log(err))

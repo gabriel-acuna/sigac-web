@@ -75,7 +75,7 @@ let ContratoProfesor = ({ objeto, register, errors, relacion, control, setValue 
 
             <div className="columns">
                 <div className="column">
-                    <label className="label is-small">Contrato relacionado</label>
+                    <label className="label is-small has-text-info">Contrato relacionado</label>
                     <div className="control">
                         <input  {...register("contratoRelacionado")} className="input" />
 
@@ -84,7 +84,7 @@ let ContratoProfesor = ({ objeto, register, errors, relacion, control, setValue 
                 </div>
                 <div className="column">
 
-                    <label className="label is-small">Tipo escalafón</label>
+                    <label className="label is-small has-text-info">Tipo escalafón</label>
                     {errors.escalafonNombramiento && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el tipo de escalafón!</span>}
 
                     <Controller
@@ -113,7 +113,7 @@ let ContratoProfesor = ({ objeto, register, errors, relacion, control, setValue 
 
                 <div className="column">
 
-                    <label className="label is-small">Categoría</label>
+                    <label className="label is-small has-text-info">Categoría</label>
                     {errors.categoriaContrato && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione la categoria contrato!</span>}
 
                     <Controller
@@ -147,7 +147,7 @@ let ContratoProfesor = ({ objeto, register, errors, relacion, control, setValue 
             <div className="columns">
                 <div className="column">
                     <div className="control">
-                        <label className="label is-small">Nivel</label>
+                        <label className="label is-small has-text-info">Nivel</label>
                         {errors.nivel && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el nivel educativo en el que dicta clase el profesor!</span>}
                     </div>
 
@@ -190,7 +190,7 @@ let ContratoProfesor = ({ objeto, register, errors, relacion, control, setValue 
                 </div>
                 <div className="column">
                     <div className="control">
-                        <label className="label is-small">Tiempo dedicación</label>
+                        <label className="label is-small has-text-info">Tiempo dedicación</label>
                         {errors.tiempoDedicacion && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el timepo de decicación!</span>}
                     </div>
                     <Controller
@@ -231,7 +231,7 @@ let ContratoProfesor = ({ objeto, register, errors, relacion, control, setValue 
                 </div>
                 <div className="column">
 
-                    <label className="label is-small">
+                    <label className="label is-small has-text-info">
                         Remuneración hora
                     </label>
                     {errors.remuneracionHora && <span>¡Por favor, Ingrese la remuneración por hora!</span>}

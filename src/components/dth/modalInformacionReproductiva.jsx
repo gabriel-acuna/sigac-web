@@ -18,7 +18,7 @@ let ModalInformacionReproductiva = ({ title, handler, children, objeto, persona 
                     <form className="field" onSubmit={handleSubmit(handler)}>
                         <div className="columns">
                             <div className="column">
-                                <label className="label is-small">Estado</label>
+                                <label className="label is-small has-text-info">Estado</label>
                                 {errors.estado && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione el estado!</span>}
 
                                 <Controller
@@ -60,13 +60,13 @@ let ModalInformacionReproductiva = ({ title, handler, children, objeto, persona 
                                 />
                             </div>
                             <div className="column">
-                                <label className="label is-small">Inicio</label>
+                                <label className="label is-small has-text-info">Inicio</label>
                                 {errors.inicio && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione la fecha de inicio!</span>}
 
                                 <input type="date" className="input" {...register("inicio", { required: true })} defaultValue={objeto?.inicio ? objeto.inicio : ''} />
                             </div>
                             <div className="column">
-                                <label className="label is-small">Fin</label>
+                                <label className="label is-small has-text-info">Fin</label>
                                 {errors.fin && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione la fecha de fin!</span>}
 
                                 <input type="date" className="input" {...register("fin", { required: true })} defaultValue={objeto?.inicio ? objeto.inicio : ''} />

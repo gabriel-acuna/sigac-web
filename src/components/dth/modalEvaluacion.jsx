@@ -20,13 +20,13 @@ let ModalEvaluacion = ({ title, objeto, handler, persona, children }) => {
                             <legend className="has-text-weight-bold is-size-6 has-text-grey-dark is-uppercase">Periodo de evaluación</legend>
                             <div className="columns">
                                 <div className="column">
-                                    <label className="label is-small">Desde</label>
+                                    <label className="label is-small has-text-info">Desde</label>
                                     {errors.desde?.type === "required" && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, selecione fecha de inicio del perido de eveluación</span>}
 
                                     <input type="date" className='input' {...register("desde", { required: true })} defaultValue={objeto?.desde ? objeto.desde : ''} />
                                 </div>
                                 <div className="column">
-                                    <label className="label is-small">Hasta</label>
+                                    <label className="label is-small has-text-info">Hasta</label>
                                     {errors.desde?.type === "required" && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, selecione fecha de fin del perido de eveluación!</span>}
 
                                     <input type="date" className='input'{...register("hasta", { required: true })} defaultValue={objeto?.hasta ? objeto.hasta : ''} />
@@ -37,7 +37,7 @@ let ModalEvaluacion = ({ title, objeto, handler, persona, children }) => {
                             <legend className="has-text-weight-bold is-size-6 has-text-grey-dark is-uppercase">Calificación obtenida</legend>
                             <div className="columns">
                                 <div className="column">
-                                    <label className="label is-small">Puntaje</label>
+                                    <label className="label is-small has-text-info">Puntaje</label>
                                     {errors.puntaje?.type === "required" && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, ingrese el puntaje obtenido!</span>}
                                     {errors.puntaje?.type === "min" && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡El puntaje obtenido no puede ser menor a 0!</span>}
                                     {errors.puntaje?.type === "max" && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡El puntaje obtenido no puede ser mayor a 10!</span>}
@@ -58,7 +58,7 @@ let ModalEvaluacion = ({ title, objeto, handler, persona, children }) => {
                                     />
                                 </div>
                                 <div className="column">
-                                    <label className="label is-small">Calificación</label>
+                                    <label className="label is-small has-text-info">Calificación</label>
                                     {errors.calificacion && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione la calificación!</span>}
 
                                     <Controller

@@ -65,7 +65,7 @@ let ContratoFuncionario = ({ objeto, register, errors, control, setValue }) => {
 
             <div className="columns">
                 <div className="column">
-                    <label className="label is-small">Tipo funcionario</label>
+                    <label className="label is-small has-text-info">Tipo funcionario</label>
                     {errors.tipoFuncionario && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el tipo de funcionario!</span>}
 
                     <Controller
@@ -102,7 +102,7 @@ let ContratoFuncionario = ({ objeto, register, errors, control, setValue }) => {
 
 
                 <div className="column">
-                    <label className="label is-small">
+                    <label className="label is-small has-text-info">
                         Cargo
                     </label>
                     {errors.cargo && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el cargo del funcionario!</span>}
@@ -112,7 +112,7 @@ let ContratoFuncionario = ({ objeto, register, errors, control, setValue }) => {
                     
                 </div>
                 <div className="column">
-                    <label className="label is-small">Tipo docente LOES</label>
+                    <label className="label is-small has-text-info">Tipo docente LOES</label>
                     {errors.tipoDocente && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el tipo de docente!</span>}
                     <Controller
                         name="tipoDocente"
@@ -139,7 +139,7 @@ let ContratoFuncionario = ({ objeto, register, errors, control, setValue }) => {
             <div className="columns">
 
                 <div className="column">
-                    <label className="label is-small">Categoría docente</label>
+                    <label className="label is-small has-text-info">Categoría docente</label>
                     {errors.categoriaDocente && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione la categoria de docente!</span>}
 
                     <Controller
@@ -168,7 +168,7 @@ let ContratoFuncionario = ({ objeto, register, errors, control, setValue }) => {
 
 
                 <div className="column">
-                    <label className="label is-small">Puesto jerárquico superior</label>
+                    <label className="label is-small has-text-info">Puesto jerárquico superior</label>
                     {errors.puestoJerarquico && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione una opción!</span>}
                     <Controller
                         name="puestoJerarquico"
@@ -216,7 +216,7 @@ let ContratoFuncionario = ({ objeto, register, errors, control, setValue }) => {
 
                 </div>
                 <div className="column">
-                    <label htmlFor="" className="label is-small">
+                    <label htmlFor="" className="label is-small has-text-info">
                         Horas laborables semanales
                     </label>
                     {errors.horasLaborablesSemanales && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese las horas laborables por semana!</span>}

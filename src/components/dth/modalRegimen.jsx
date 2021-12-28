@@ -13,7 +13,7 @@ import ModalRegimen from './modalRegimenLaboral'
 import ModalModalidadContractual from './modalModalidadContractual'
 import ModalSancion from './modalSancion'
 import ModalEstado from './modalEstadoSumario'
-import Alert from '../Alert'
+import AlertModal from '../AlertModal'
 import { logOut } from '../../store/user'
 
 let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) => {
@@ -50,7 +50,13 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
                 }
             )
         ).unwrap().then(
-            (resp) => setRespModal(resp)
+            (resp) => {
+                setRespModal(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadRegimenes())
+                    setShowModalRegimen(false)
+                }
+            }
         ).catch(
             (err) => {
                 if (err.message.includes("undefined (reading 'data')")) {
@@ -72,7 +78,13 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
         dispatch(postModalidadesContractuales({
             modalidad: data.modalidad.toUpperCase()
         })).unwrap().then(
-            (resp) => setRespModal(resp)
+            (resp) => {
+                setRespModal(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadModalidadesContractuales())
+                    setShowModalModalidad(false)
+                }
+            }
         ).catch(
             (err) => {
                 if (err.message.includes("undefined (reading 'data')")) {
@@ -95,7 +107,13 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
                 sancion: data.sancion.toUpperCase()
             })
         ).unwrap().then(
-            (resp) => setRespModal(resp)
+            (resp) => {
+                setRespModal(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadSanciones())
+                    setShowModalSancion(false)
+                }
+            }
         ).catch(
             (err) => {
                 if (err.message.includes("undefined (reading 'data')")) {
@@ -118,7 +136,13 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
                 estado: data.estado.toUpperCase()
             })
         ).unwrap().then(
-            (resp) => setRespModal(resp)
+            (resp) => {
+                setRespModal(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadEstadosSumarios())
+                    setShowModalEstado(false)
+                }
+            }
         ).catch(
             (err) => {
                 if (err.message.includes("undefined (reading 'data')")) {
@@ -149,7 +173,7 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
                             <div className="columns">
 
                                 <div className="column">
-                                    <label className="label is-small">Año</label>
+                                    <label className="label is-small has-text-info">Año</label>
                                     {errors.año?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, ingrese el año!</span>}
                                     {errors.año?.type === 'min' && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡El año no puede ser menor al año que ingresó a la institución!</span>}
                                     {errors.año?.type === 'max' && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡El año no puede ser mayor al año actual!</span>}
@@ -172,7 +196,7 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
 
                                 </div>
                                 <div className="column">
-                                    <label className="label is-small">Mes</label>
+                                    <label className="label is-small has-text-info">Mes</label>
                                     {errors.mesSancion && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione el mes!</span>}
                                     <Controller
                                         name="mesSancion"
@@ -199,7 +223,7 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
 
 
                                 <div className="column">
-                                    <label className="label is-small">Régimen laboral <span className="has-text-success has-text-weight-bold" style={{ cursor: 'pointer' }} onClick={() => setShowModalRegimen(true)}><IoIosAdd /></span></label>
+                                    <label className="label is-small has-text-info">Régimen laboral <span className="has-text-success has-text-weight-bold" style={{ cursor: 'pointer' }} onClick={() => setShowModalRegimen(true)}><IoIosAdd /></span></label>
                                     {errors.modalidadContractual && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione el régimen laboral!</span>}
                                     <Controller
                                         name="regimenLaboral"
@@ -225,7 +249,7 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
                             </div>
                             <div className="columns">
                                 <div className="column">
-                                    <label className="label is-small">Modalidad contractual <span className="has-text-success has-text-weight-bold" style={{ cursor: 'pointer' }} onClick={() => setShowModalModalidad(true)}><IoIosAdd /></span></label>
+                                    <label className="label is-small has-text-info">Modalidad contractual <span className="has-text-success has-text-weight-bold" style={{ cursor: 'pointer' }} onClick={() => setShowModalModalidad(true)}><IoIosAdd /></span></label>
                                     {errors.modalidadContractual && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione la modalidad contractual!</span>}
                                     <Controller
                                         name="modalidadContractual"
@@ -249,7 +273,7 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
 
                                 </div>
                                 <div className="column">
-                                    <label className="label is-small">Tipo falta </label>
+                                    <label className="label is-small has-text-info">Tipo falta </label>
                                     {errors.tipoFalta && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione el tipo de falta!</span>}
 
                                     <Controller
@@ -286,7 +310,7 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
                                 </div>
 
                                 <div className="column">
-                                    <label className="label is-small">Sanción <span className="has-text-success has-text-weight-bold" style={{ cursor: 'pointer' }} onClick={() => setShowModalSancion(true)}><IoIosAdd /></span></label>
+                                    <label className="label is-small has-text-info">Sanción <span className="has-text-success has-text-weight-bold" style={{ cursor: 'pointer' }} onClick={() => setShowModalSancion(true)}><IoIosAdd /></span></label>
                                     {errors.sancion && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione la sanción!</span>}
                                     <Controller
                                         name="sancion"
@@ -316,7 +340,7 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
                             </div>
                             <div className="columns">
                                 <div className="column">
-                                    <label className="label is-small">Aplica sumario</label>
+                                    <label className="label is-small has-text-info">Aplica sumario</label>
                                     {errors.tipoFalta && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione el tipo de falta!</span>}
 
                                     <Controller
@@ -362,7 +386,7 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
                                     />
                                 </div>
                                 <div className="column">
-                                    <label className="label is-small">Estado sumario <span className="has-text-success has-text-weight-bold" style={{ cursor: 'pointer' }} onClick={() => setShowModalEstado(true)}><IoIosAdd /></span></label>
+                                    <label className="label is-small has-text-info">Estado sumario <span className="has-text-success has-text-weight-bold" style={{ cursor: 'pointer' }} onClick={() => setShowModalEstado(true)}><IoIosAdd /></span></label>
                                     {errors.estadoSumario && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione la sanción!</span>}
                                     <Controller
                                         name="estadoSumario"
@@ -387,7 +411,7 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
                                 </div>
 
                                 {santion?.label === 'DESTITUCIÓN' && <div className="column">
-                                    <label className="label is-small">Número de sentencia</label>
+                                    <label className="label is-small has-text-info">Número de sentencia</label>
                                     {errors.numeroSentencia && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione la sanción!</span>}
                                     <input type="text" className="input" {...register("numeroSentencia", { required: true })} />
 
@@ -412,36 +436,6 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
                 showModalRegimen && <ModalRegimen
                     title="Registrar régimen laboral"
                     handler={postRegimenlaboral} >
-                    <div className="columns is-centered">
-                        <div className="column">
-                            {
-                                respModal && respModal.type === 'warning'
-                                && <Alert type={'is-warning is-light'} content={respModal.content}>
-                                    <button className="delete" onClick={() => setRespModal(null)}></button>
-                                </Alert>
-                            }
-
-                            {
-                                respModal && respModal.type === 'success'
-                                && <Alert type={'is-success is-light'} content={respModal.content}>
-                                    <button className="delete" onClick={() => {
-                                        setRespModal(null)
-                                        setShowModalRegimen(false)
-                                        dispatch(loadRegimenes())
-                                    }}></button>
-                                </Alert>
-                            }
-
-
-                            {
-                                errorModal
-                                && <Alert type={'is-danger is-light'} content={errorModal.message}>
-                                    <button className="delete" onClick={() => setErrorModal(null)}></button>
-                                </Alert>
-                            }
-
-                        </div>
-                    </div>
                     <button className="button is-small is-danger mx-3" onClick={() => {
                         setShowModalRegimen(false)
                     }}>Cancelar</button>
@@ -450,36 +444,6 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
             }
             {
                 showModalModalidad && <ModalModalidadContractual title="Registar modalidad contractual" handler={postModalidad}>
-                    <div className="columns is-centered">
-                        <div className="column">
-                            {
-                                respModal && respModal.type === 'warning'
-                                && <Alert type={'is-warning is-light'} content={respModal.content}>
-                                    <button className="delete" onClick={() => setRespModal(null)}></button>
-                                </Alert>
-                            }
-
-                            {
-                                respModal && respModal.type === 'success'
-                                && <Alert type={'is-success is-light'} content={respModal.content}>
-                                    <button className="delete" onClick={() => {
-                                        setRespModal(null)
-                                        setShowModalModalidad(false)
-                                        dispatch(loadModalidadesContractuales())
-                                    }}></button>
-                                </Alert>
-                            }
-
-
-                            {
-                                errorModal
-                                && <Alert type={'is-danger is-light'} content={errorModal.message}>
-                                    <button className="delete" onClick={() => setErrorModal(null)}></button>
-                                </Alert>
-                            }
-
-                        </div>
-                    </div>
                     <button className="button is-small is-danger mx-3" onClick={() => {
                         setShowModalModalidad(false)
                     }}>Cancelar</button>
@@ -489,36 +453,6 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
 
             {
                 showModalSancion && <ModalSancion title="Registrar sanción" handler={postSancion}>
-                    <div className="columns is-centered">
-                        <div className="column">
-                            {
-                                respModal && respModal.type === 'warning'
-                                && <Alert type={'is-warning is-light'} content={respModal.content}>
-                                    <button className="delete" onClick={() => setRespModal(null)}></button>
-                                </Alert>
-                            }
-
-                            {
-                                respModal && respModal.type === 'success'
-                                && <Alert type={'is-success is-light'} content={respModal.content}>
-                                    <button className="delete" onClick={() => {
-                                        setRespModal(null)
-                                        setShowModalSancion(false)
-                                        dispatch(loadSanciones())
-                                    }}></button>
-                                </Alert>
-                            }
-
-
-                            {
-                                errorModal
-                                && <Alert type={'is-danger is-light'} content={errorModal.message}>
-                                    <button className="delete" onClick={() => setErrorModal(null)}></button>
-                                </Alert>
-                            }
-
-                        </div>
-                    </div>
                     <button className="button is-small is-danger mx-3" onClick={() => {
                         setShowModalSancion(false)
                     }}>Cancelar</button>
@@ -528,40 +462,20 @@ let RegimenModalForm = ({ title, handler, children, objeto, ingreso, persona }) 
 
             {
                 showModalEstado && <ModalEstado title="Registrar estado sumario" handler={postEstado}>
-                    <div className="columns is-centered">
-                        <div className="column">
-                            {
-                                respModal && respModal.type === 'warning'
-                                && <Alert type={'is-warning is-light'} content={respModal.content}>
-                                    <button className="delete" onClick={() => setRespModal(null)}></button>
-                                </Alert>
-                            }
-
-                            {
-                                respModal && respModal.type === 'success'
-                                && <Alert type={'is-success is-light'} content={respModal.content}>
-                                    <button className="delete" onClick={() => {
-                                        setRespModal(null)
-                                        setShowModalEstado(false)
-                                        dispatch(loadEstadosSumarios())
-                                    }}></button>
-                                </Alert>
-                            }
-
-
-                            {
-                                errorModal
-                                && <Alert type={'is-danger is-light'} content={errorModal.message}>
-                                    <button className="delete" onClick={() => setErrorModal(null)}></button>
-                                </Alert>
-                            }
-
-                        </div>
-                    </div>
                     <button className="button is-small is-danger mx-3" onClick={() => {
                         setShowModalEstado(false)
                     }}>Cancelar</button>
                 </ModalEstado>
+            }
+            {
+                respModal?.type && <AlertModal type={respModal.type} message={respModal.content}>
+                    <button className="delete" aria-label="close" onClick={() => setRespModal(null)}></button>
+                </AlertModal>
+            }
+            {
+                errorModal?.message && <AlertModal type={'danger'} message={errorModal.message}>
+                    <button className="delete" aria-label="close" onClick={() => setErrorModal(null)}></button>
+                </AlertModal>
             }
         </>
     )

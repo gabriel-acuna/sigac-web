@@ -18,7 +18,7 @@ let FamiliarModalForm = ({ title, handler, children, objeto, persona }) => {
                     <form className="field" onSubmit={handleSubmit(handler)}>
                         <div className="columns">
                             <div className="column">
-                                <label className="label is-small">Parentesco </label>
+                                <label className="label is-small has-text-info">Parentesco </label>
                                 {errors.parentesco && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione el parentesco!</span>}
 
                                 <Controller
@@ -55,7 +55,7 @@ let FamiliarModalForm = ({ title, handler, children, objeto, persona }) => {
                             </div>
 
                             <div className="column">
-                                <label className="label is-small">Identificación</label>
+                                <label className="label is-small has-text-info">Identificación</label>
                                 {errors.identificacion?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, ingrese el número de identificación!</span>}
                                 {errors.identificacion?.type === 'maxLength' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Máximo 10 caracteres!</span>}
                                 <input type="text" {...register("identificacion", { required: true })} className="input" onChange={
@@ -76,7 +76,7 @@ let FamiliarModalForm = ({ title, handler, children, objeto, persona }) => {
 
                             </div>
                             <div className="column">
-                                <label className="label is-small">Nombres</label>
+                                <label className="label is-small has-text-info">Nombres</label>
                                 {errors.nombres && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, ingrese los nombres!</span>}
                                 <input type="text" {...register("nombres", { required: true })} className="input is-uppercase" defaultValue={objeto?.nombres ? objeto.nombres : ''} />
 
@@ -84,13 +84,13 @@ let FamiliarModalForm = ({ title, handler, children, objeto, persona }) => {
                         </div>
                         <div className="columns">
                             <div className="column">
-                                <label className="label is-small">Apellidos</label>
+                                <label className="label is-small has-text-info">Apellidos</label>
                                 {errors.apellidos && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, ingrese los apellidos!</span>}
                                 <input type="text" {...register("apellidos", { required: true })} className="input is-uppercase" defaultValue={objeto?.apellidos ? objeto?.apellidos : ''} />
 
                             </div>
                             <div className="column">
-                                <label className="label is-small">Sexo</label>
+                                <label className="label is-small has-text-info">Sexo</label>
                                 {errors.sexo && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, seleccione el sexo!</span>}
                                 <Controller
                                     control={control}
@@ -134,7 +134,7 @@ let FamiliarModalForm = ({ title, handler, children, objeto, persona }) => {
                             <div className="column">
                                 {errors.fechaNacimiento && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, seleccione la fecha de nacimiento!</span>}
 
-                                <label className="label is-small">Fecha de nacimiento</label>
+                                <label className="label is-small has-text-info">Fecha de nacimiento</label>
                                 {errors.fecha_nacimiento?.type === "required" && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la fecha de nacimiento!</span>}
                                 {errors.fecha_nacimiento?.type === "max" && <span className="has-text-danger is-size-7 has-background-danger-light">¡La fecha de nacimiento no puede ser mayor a la fecha actual!</span>}
                                 <input type="date" {...register("fechaNacimiento", { required: true })} className="input" defaultValue={objeto?.fecha_nacimiento ? objeto.fecha_nacimiento : ''}
