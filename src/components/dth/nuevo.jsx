@@ -76,6 +76,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                     referencia: person.direccion_domicilio.referencia,
                     etnia: { label: person?.etnia.etnia, value: person?.etnia.id },
                     discapacidad: { label: person?.discapacidad.discapacidad, value: person?.discapacidad.id },
+                    sustituto: person?.sustituto ? person.sustituto : '',
                     pais_origen: { label: person.pais_origen.pais, value: person.pais_origen.id },
                     id_provincia: { label: person.direccion_domicilio.provincia.provincia, value: person.direccion_domicilio.provincia.id },
                     id_canton: { label: person.direccion_domicilio.canton.canton, value: person.direccion_domicilio.canton.id },
@@ -179,15 +180,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                 )
         }
     }
-    // useEffect(() => {
-    //     person && paisesState && setPaises([person.pais_origen])
-    //     person && provinciasState && setProvincias([person.direccion_domicilio.provincia])
-    //     person && cantones && setCantones([person.direccion_domicilio.canton])
-    //     person && nacionalidadesState && setNacionalidades([person.nacionalidad])
-    // }
-
-
-    //     , [])
+   
     return (
 
         <div className="modal is-active">
@@ -493,7 +486,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                     <label className="label is-small has-text-info">Número carnet CONAIDIS</label>
                                     {errors.numero_conadis && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el numero de carnet del CONADIS!</span>}
                                     <div className="control">
-                                        <input type="text" {...register("numero_conadis")} className="input is-uppercase" />
+                                        <input type="text" {...register("numero_conadis", {required: getValues('discapacidad')?.label !== '' && getValues('discapacidad')?.label !== 'NINGUNA'})} className="input is-uppercase" />
 
                                     </div>
 
@@ -501,7 +494,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
                             </div>
 
-                            <div className="columns">
+                            <div className="columns is-multiline">
                                 <div className="column">
                                     <label className="label is-small has-text-info">Porcentaje discapacidad</label>
                                     {errors.porcentaje_discapacidad && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el porcentaje de discapacidad!</span>}
@@ -512,7 +505,45 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                     </div>
 
                                 </div>
-                                <div className="column">
+                                {
+                                   getValues('discapacidad')?.label !== '' && getValues('discapacidad')?.label !== 'NINGUNA' &&  <div className="column">
+                                     <label className="label is-small has-text-info">Sustituto</label>
+                                     {errors.sustituto && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Escoga una opción!</span>}
+ 
+                                     <Controller
+                                         control={control}
+                                         name="sustituto"
+                                         defaultValue={person?.sustituto ? person.sustituto : ''}
+                                         rules={{ required: true }}
+                                         render={
+                                             ({ field }) => (
+                                                 <RadioGroup
+                                                     row
+                                                     aria-label="sustituto"
+                                                     {...field}
+                                                     onChange={(ev) => {
+                                                         setValue('sustituto', ev.target.value, { shouldValidate: true })
+                                                     }}
+                                                 >
+                                                     <FormControlLabel value="SI" label="SI" key="has-sus-0001" control={<Radio size="small" />} sx={{
+                                                         '& .MuiFormControlLabel-label': {
+                                                             fontSize: 14,
+                                                             fontWeight: 500
+                                                         },
+                                                     }} />
+                                                     <FormControlLabel value="NO" label="NO" key="has-sus-0002" control={<Radio size="small" />} sx={{
+                                                         '& .MuiFormControlLabel-label': {
+                                                             fontSize: 14,
+                                                             fontWeight: 500
+                                                         },
+                                                     }} />
+                                                 </RadioGroup>
+                                             )
+                                         }
+                                     />
+                                 </div>
+                                }
+                                <div className="column is-4">
                                     <label className="label is-small has-text-info">Étnia</label>
                                     {errors.etnia && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione la autoidentificación étnica!</span>}
 
@@ -551,7 +582,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
 
                                 </div>
 
-                                <div className="column">
+                                <div className="column is-4">
 
                                     <label className="label is-small has-text-info">Nacionalidad</label>
 

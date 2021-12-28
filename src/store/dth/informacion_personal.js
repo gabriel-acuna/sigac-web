@@ -109,6 +109,7 @@ export const postInformacionPersonal = createAsyncThunk(
                 discapacidad: datosPersonales.discapacidad.value,
                 carnet_conadis: datosPersonales.numero_conadis !== null ? datosPersonales.numero_conadis.toUpperCase() : datosPersonales.numero_conadis,
                 porcentaje_discapacidad: datosPersonales.porcentaje_discapacidad,
+                sustituto: datosPersonales?.sustituto ? datosPersonales.sustituto: null,
                 etnia: datosPersonales.etnia.value,
                 nacionalidad: datosPersonales.nacionalidad.value,
                 correo_institucional: datosPersonales.email_institucional,
@@ -167,6 +168,7 @@ export const postInformacionPersonal = createAsyncThunk(
 export const putInformacionPersonal = createAsyncThunk(
     'informacion-personal/put',
     async ({ id, datosPersonales }, { getState }) => {
+        console.log(datosPersonales);
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -191,6 +193,7 @@ export const putInformacionPersonal = createAsyncThunk(
                 discapacidad: datosPersonales.discapacidad.value,
                 carnet_conadis: datosPersonales.numero_conadis !== null ? datosPersonales.numero_conadis.toUpperCase() : datosPersonales.numero_conadis,
                 porcentaje_discapacidad: datosPersonales.porcentaje_discapacidad,
+                sustituto: datosPersonales?.sustituto ? datosPersonales.sustituto: null,
                 etnia: datosPersonales.etnia.value,
                 nacionalidad: datosPersonales.nacionalidad.value,
                 correo_institucional: datosPersonales.email_institucional,
