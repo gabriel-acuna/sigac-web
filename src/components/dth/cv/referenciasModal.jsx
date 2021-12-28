@@ -41,7 +41,7 @@ let ReferenciaModalForm = ({ title, handler, children, objeto, persona }) => {
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
                         <div className="columns">
                             <div className="column">
-                                <label className="label is-small">Tipo referencia</label>
+                                <label className="label is-small has-text-info">Tipo referencia</label>
                                 {errors.tipoReferencia && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, seleccione el tipo de referencia!</span>}
 
                                 <Controller name="tipoReferencia" control={control} rules={{ required: true }}
@@ -86,7 +86,7 @@ let ReferenciaModalForm = ({ title, handler, children, objeto, persona }) => {
                             </div>
 
                             <div className="column">
-                                <label className="label is-small">Apellidos</label>
+                                <label className="label is-small has-text-info">Apellidos</label>
                                 {errors.apellidos && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese los apellidos!</span>}
                                 <div className="control">
                                     <input type="text" className="input is-uppercase" {...register('apellidos', { required: true })} />
@@ -95,7 +95,7 @@ let ReferenciaModalForm = ({ title, handler, children, objeto, persona }) => {
                             </div>
 
                             <div className="column">
-                                <label className="label is-small">Nombres</label>
+                                <label className="label is-small has-text-info">Nombres</label>
                                 {errors.nombres && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese los nombres!</span>}
 
                                 <div className="control">
@@ -105,7 +105,7 @@ let ReferenciaModalForm = ({ title, handler, children, objeto, persona }) => {
                         </div>
                         <div className="columns">
                             <div className="column">
-                                <label className="label is-small">Dirección</label>
+                                <label className="label is-small has-text-info">Dirección</label>
                                 {errors.direccion && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la dirección!</span>}
                                 <div className="control">
                                     <input type="text" className="input is-uppercase" {...register('direccion', { required: true })} />
@@ -115,7 +115,7 @@ let ReferenciaModalForm = ({ title, handler, children, objeto, persona }) => {
                         </div>
                         <div className="columns">
                             <div className="column">
-                                <label className="label is-small">Correo electrónico</label>
+                                <label className="label is-small has-text-info">Correo electrónico</label>
                                 {errors.correo_electronico && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese los apellidos!</span>}
                                 <div className="control">
                                     <input type="email" className="input" {...register('correo_electronico', { required: true })} />
@@ -124,7 +124,7 @@ let ReferenciaModalForm = ({ title, handler, children, objeto, persona }) => {
                             </div>
 
                             <div className="column">
-                                <label className="label is-small">Teléfono domicilio</label>
+                                <label className="label is-small has-text-info">Teléfono domicilio</label>
                                 {errors.telefono_domicilio && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el telefono domicilio!</span>}
                                 <div className="control">
                                     <input type="tel" className="input" {...register('telefono_domicilio')} />
@@ -133,7 +133,7 @@ let ReferenciaModalForm = ({ title, handler, children, objeto, persona }) => {
                             </div>
 
                             <div className="column">
-                                <label className="label is-small">Teléfono movil</label>
+                                <label className="label is-small has-text-info">Teléfono movil</label>
                                 {errors.telefono_movil && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el telefono movil!</span>}
                                 <div className="control">
                                     <input type="tel" className="input" {...register('telefono_movil', { required: true })} />

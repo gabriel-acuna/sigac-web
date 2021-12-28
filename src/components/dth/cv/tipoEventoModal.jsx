@@ -13,12 +13,12 @@ let TipoEventoModal = ({ title, handler, children, objeto }) => {
                 </header>
                 <section className="modal-card-body">
                     <form className="field" onSubmit={handleSubmit(handler)}>
-                        <label className="label is-small">Tipo evento </label>
+                        <label className="label is-small has-text-info">Tipo evento </label>
                         {errors.evento && <span className="has-text-danger is-size-7 has-background-danger-light p3">¡Por favor, ingrese el tipo de evento!</span>}
 
                         <input type="text" className="input is-uppercase" {...register('evento', { required: true })} defaultValue={objeto?.evento ? objeto.evento : ''} />
 
-                        <div className="field is-grouped" style={{ display: 'flex', justifyContent: 'center' }}>
+                        <div className="field is-grouped mt-4" style={{ display: 'flex', justifyContent: 'center' }}>
                             <div className="control has-text-centered">
                                 <Fragment>
                                     {children}

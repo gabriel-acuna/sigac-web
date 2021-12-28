@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { IoIosArrowBack, IoIosAddCircleOutline } from 'react-icons/io'
 import { FaRegEdit } from 'react-icons/fa'
 
-import { AiOutlineMinus, AiOutlinePlus, AiOutlineDelete } from 'react-icons/ai'
+import { AiOutlineDelete } from 'react-icons/ai'
 import { useDispatch } from 'react-redux'
 import ReferenciaModalForm from './referenciasModal'
 
@@ -35,7 +35,7 @@ import {
     loadIdiomas, postIdiomas, putIdiomas, deleteIdiomas
 } from '../../../store/cv/compresion_idioma'
 
-import Alert from '../../Alert'
+import AlertModal from '../../AlertModal'
 import { useSelector } from 'react-redux'
 import { logOut } from '../../../store/user'
 import ConfirmDialog from '../../ConfirmDialog'
@@ -62,9 +62,7 @@ const CV = (props) => {
         };
     }
 
-    const [expandirReferencias, setExpandirReferencia] = useState(true)
 
-    const [expandirIdiomas, setExpandirIdiomas] = useState(true)
     const [activeTab, setActiveTab] = useState(0)
 
 
@@ -91,7 +89,7 @@ const CV = (props) => {
     const [showModalDelFor, setShowModalDelFor] = useState(false)
     const [showModalDelMer, setShowModalDelMer] = useState(false)
     const [showModalDelIdi, setShowModalDelIdi] = useState(false)
-    const [respConfirmRef, setRespConfirmRef] = useState(null)
+    
 
 
     let referenciasState = useSelector(state => state.referencias.data.referencias)
@@ -169,7 +167,7 @@ const CV = (props) => {
 
         ).unwrap()
             .then(resp => {
-                setRespConfirmRef(resp)
+                setResponse(resp)
                 dispatch(
                     loadFormacionAcademica(persona.identificacion)
                 )
@@ -185,7 +183,7 @@ const CV = (props) => {
 
         ).unwrap()
             .then(resp => {
-                setRespConfirmRef(resp)
+                setResponse(resp)
                 dispatch(
                     loadReferencias(persona.identificacion)
                 )
@@ -201,7 +199,7 @@ const CV = (props) => {
 
         ).unwrap()
             .then(resp => {
-                setRespConfirmRef(resp)
+                setResponse(resp)
 
                 dispatch(
                     loadCapacitaciones(persona.identificacion)
@@ -218,7 +216,7 @@ const CV = (props) => {
 
         ).unwrap()
             .then(resp => {
-                setRespConfirmRef(resp)
+                setResponse(resp)
                 dispatch(loadCapacitacionesFacilitador(persona.identificacion))
 
             }).catch(
@@ -233,7 +231,7 @@ const CV = (props) => {
 
         ).unwrap()
             .then(resp => {
-                setRespConfirmRef(resp)
+                setResponse(resp)
                 dispatch(loadPonencias(persona.identificacion))
 
             }).catch(
@@ -247,7 +245,7 @@ const CV = (props) => {
 
         ).unwrap()
             .then(resp => {
-                setRespConfirmRef(resp)
+                setResponse(resp)
 
                 dispatch(
                     loadExperienciaLaboral(persona.identificacion)
@@ -265,7 +263,7 @@ const CV = (props) => {
 
         ).unwrap()
             .then(resp => {
-                setRespConfirmRef(resp)
+                setResponse(resp)
                 dispatch(loadMeritos(persona.identificacion))
 
             }).catch(
@@ -279,7 +277,7 @@ const CV = (props) => {
 
         ).unwrap()
             .then(resp => {
-                setRespConfirmRef(resp)
+                setResponse(resp)
                 dispatch(
                     loadIdiomas(persona.identificacion)
                 )
@@ -299,7 +297,11 @@ const CV = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if(resp.type === 'success'){
+                    dispatch(loadFormacionAcademica(persona.identificacion))
+                    setShowModalFormacionAcademica(false)
+                }
             })
             .catch(
                 (err) => {
@@ -327,7 +329,12 @@ const CV = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if(resp.type === 'success'){
+                    dispatch(loadFormacionAcademica(persona.identificacion))
+                    setShowModalFormacionAcademica(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
@@ -363,7 +370,11 @@ const CV = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if(resp.type === 'success'){
+                    dispatch(loadReferencias(persona.identificacion))
+                    setShowModalReferencia(false)
+                }
             })
             .catch(
                 (err) => {
@@ -401,7 +412,12 @@ const CV = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if(resp.type === 'success'){
+                    dispatch(loadReferencias(persona.identificacion))
+                    setShowModalReferencia(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
@@ -441,7 +457,11 @@ const CV = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if(resp.type === 'success'){
+                    dispatch(loadCapacitaciones(persona.identificacion))
+                    setShowModalCapacitacion(false)
+                }
             })
             .catch(
                 (err) => {
@@ -486,7 +506,12 @@ const CV = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if(resp.type === 'success'){
+                    dispatch(loadCapacitaciones(persona.identificacion))
+                    setShowModalCapacitacion(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
@@ -591,7 +616,11 @@ const CV = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if(resp.type === 'success'){
+                    dispatch(loadPonencias(persona.identificacion))
+                    setShowModalPonencia(false)
+                }
             })
             .catch(
                 (err) => {
@@ -623,7 +652,12 @@ const CV = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if(resp.type === 'success'){
+                    dispatch(loadPonencias(persona.identificacion))
+                    setShowModalPonencia(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
@@ -653,7 +687,11 @@ const CV = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if(resp.type === 'success'){
+                    dispatch(loadExperienciaLaboral(persona.identificacion))
+                    setShowModalExperienciaLaboral(false)
+                }
             })
             .catch(
                 (err) => {
@@ -685,7 +723,12 @@ const CV = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if(resp.type === 'success'){
+                    dispatch(loadExperienciaLaboral(persona.identificacion))
+                    setShowModalExperienciaLaboral(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
@@ -715,7 +758,11 @@ const CV = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if(resp.type === 'success'){
+                    dispatch(loadMeritos(persona.identificacion))
+                    setShowModalMerito(false)
+                }
             })
             .catch(
                 (err) => {
@@ -745,7 +792,12 @@ const CV = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if(resp.type === 'success'){
+                    dispatch(loadMeritos(persona.identificacion))
+                    setShowModalMerito(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
@@ -775,7 +827,11 @@ const CV = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if(resp.type === 'success'){
+                    dispatch(loadIdiomas(persona.identificacion))
+                    setShowModalIdioma(false)
+                }
             })
             .catch(
                 (err) => {
@@ -805,7 +861,12 @@ const CV = (props) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if(resp.type === 'success'){
+                    dispatch(loadIdiomas(persona.identificacion))
+                    setShowModalIdioma(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
@@ -882,25 +943,6 @@ const CV = (props) => {
                     </Tabs>
 
                 </Box>
-                {
-                    respConfirmRef && <div className="columns is-centered is-multiline">
-                        <div className="column is-4">
-                            {respConfirmRef && respConfirmRef.type === 'warning' && <Alert type={'is-warning is-light'} content={respConfirmRef.content}>
-                                <button className="delete" onClick={event => setRespConfirmRef(null)}></button>
-                            </Alert>}
-                            {respConfirmRef && respConfirmRef.type === 'success' && <Alert type={'is-success is-light'} content={respConfirmRef.content}>
-                                <button className="delete" onClick={event => {
-                                    setRespConfirmRef(null)
-
-
-
-                                }}></button>
-                            </Alert>}
-
-                        </div>
-                    </div>
-                }
-
 
                 {/*Formación Profesional */}
                 <TabPanel value={activeTab} index={0}>
@@ -1463,26 +1505,7 @@ const CV = (props) => {
                     handler={objeto !== null ? putHandlerFormacionAcademica : postHandlerFormacionAcademica}
                     persona={persona}
                 >
-                    <div className="columns is-centered">
-                        <div className="column">
-                            {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                                <button className="delete" onClick={() => setResponse(null)}></button>
-                            </Alert>}
-                            {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                                <button className="delete" onClick={() => {
-                                    setResponse(null)
-                                    setShowModalFormacionAcademica(false)
-                                    setObjeto(null)
-                                    dispatch(
-                                        loadFormacionAcademica(persona.identificacion)
-                                    )
-                                }}></button>
-                            </Alert>}
-                            {error && <Alert type={'is-danger is-light'} content={error.message}>
-                                <button className="delete" onClick={() => setError(null)}></button>
-                            </Alert>}
-                        </div>
-                    </div>
+                   
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalFormacionAcademica(false)
                         setObjeto(null)
@@ -1497,26 +1520,7 @@ const CV = (props) => {
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerCap : postHandlerCap}
                     persona={persona}>
-                    <div className="columns is-centered">
-                        <div className="column">
-                            {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                                <button className="delete" onClick={() => setResponse(null)}></button>
-                            </Alert>}
-                            {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                                <button className="delete" onClick={() => {
-                                    setResponse(null)
-                                    setShowModalCapacitacion(false)
-                                    setObjeto(null)
-                                    dispatch(
-                                        loadCapacitaciones(persona.identificacion)
-                                    )
-                                }}></button>
-                            </Alert>}
-                            {error && <Alert type={'is-danger is-light'} content={error.message}>
-                                <button className="delete" onClick={() => setError(null)}></button>
-                            </Alert>}
-                        </div>
-                    </div>
+                   
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalCapacitacion(false)
                         setObjeto(null)
@@ -1530,26 +1534,7 @@ const CV = (props) => {
                     title={objeto !== null ? 'Editando capacitación (facilitador)' : 'Registrando capacitación (facilitador)'}
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerCapFac : postHandlerCapFac}>
-                    <div className="columns is-centered">
-                        <div className="column">
-                            {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                                <button className="delete" onClick={event => setResponse(null)}></button>
-                            </Alert>}
-                            {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                                <button className="delete" onClick={event => {
-                                    setResponse(null)
-                                    setShowModalCapacitacionFac(false)
-                                    setObjeto(null)
-                                    dispatch(
-                                        loadCapacitacionesFacilitador(persona.identificacion)
-                                    )
-                                }}></button>
-                            </Alert>}
-                            {error && <Alert type={'is-danger is-light'} content={error.message}>
-                                <button className="delete" onClick={event => setError(null)}></button>
-                            </Alert>}
-                        </div>
-                    </div>
+                    
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalCapacitacionFac(false)
                         setObjeto(null)
@@ -1564,27 +1549,7 @@ const CV = (props) => {
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerPonencia : postHandlerPonencia}
                     persona={persona}>
-                    <div className="columns is-centered">
-                        <div className="column">
-                            {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                                <button className="delete" onClick={event => setResponse(null)}></button>
-
-                            </Alert>}
-                            {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                                <button className="delete" onClick={event => {
-                                    setResponse(null)
-                                    setShowModalPonencia(false)
-                                    setObjeto(null)
-                                    dispatch(
-                                        loadPonencias(persona.identificacion)
-                                    )
-                                }}></button>
-                            </Alert>}
-                            {error && <Alert type={'is-danger is-light'} content={error.message}>
-                                <button className="delete" onClick={event => setError(null)}></button>
-                            </Alert>}
-                        </div>
-                    </div>
+                   
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalPonencia(false)
                         setObjeto(null)
@@ -1598,26 +1563,7 @@ const CV = (props) => {
                 objeto={objeto}
                 handler={objeto !== null ? putHandlerExperienciaLaboral : postHandlerExperienciaLaboral}
                 persona={persona}>
-                <div className="columns is-centered">
-                    <div className="column">
-                        {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                            <button className="delete" onClick={() => setResponse(null)}></button>
-                        </Alert>}
-                        {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                            <button className="delete" onClick={() => {
-                                setResponse(null)
-                                setShowModalExperienciaLaboral(false)
-                                setObjeto(null)
-                                dispatch(
-                                    loadExperienciaLaboral(persona.identificacion)
-                                )
-                            }}></button>
-                        </Alert>}
-                        {error && <Alert type={'is-danger is-light'} content={error.message}>
-                            <button className="delete" onClick={() => setError(null)}></button>
-                        </Alert>}
-                    </div>
-                </div>
+               
                 <button className="button is-small is-danger mx-3" onClick={ev => {
                     setShowModalExperienciaLaboral(false)
                     setObjeto(null)
@@ -1634,26 +1580,7 @@ const CV = (props) => {
                     handler={objeto !== null ? putHandlerMerito : postHandlerMerito}
                     persona={persona}
                 >
-                    <div className="columns is-centered">
-                        <div className="column">
-                            {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                                <button className="delete" onClick={event => setResponse(null)}></button>
-                            </Alert>}
-                            {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                                <button className="delete" onClick={event => {
-                                    setResponse(null)
-                                    setShowModalMerito(false)
-                                    setObjeto(null)
-                                    dispatch(
-                                        loadMeritos(persona.identificacion)
-                                    )
-                                }}></button>
-                            </Alert>}
-                            {error && <Alert type={'is-danger is-light'} content={error.message}>
-                                <button className="delete" onClick={() => setError(null)}></button>
-                            </Alert>}
-                        </div>
-                    </div>
+                    
                     <button className="button is-small is-danger mx-3" onClick={() => {
                         setShowModalMerito(false)
                         setObjeto(null)
@@ -1667,26 +1594,7 @@ const CV = (props) => {
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerIdioma : postHandlerIdioma}
                     persona={persona}>
-                    <div className="columns is-centered">
-                        <div className="column">
-                            {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                                <button className="delete" onClick={event => setResponse(null)}></button>
-                            </Alert>}
-                            {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                                <button className="delete" onClick={event => {
-                                    setResponse(null)
-                                    setShowModalIdioma(false)
-                                    setObjeto(null)
-                                    dispatch(
-                                        loadIdiomas(persona.identificacion)
-                                    )
-                                }}></button>
-                            </Alert>}
-                            {error && <Alert type={'is-danger is-light'} content={error.message}>
-                                <button className="delete" onClick={() => setError(null)}></button>
-                            </Alert>}
-                        </div>
-                    </div>
+                   
                     <button className="button is-small is-danger mx-3" onClick={() => {
                         setShowModalIdioma(false)
                         setObjeto(null)
@@ -1701,33 +1609,23 @@ const CV = (props) => {
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerRef : postHandlerRef}
                     persona={persona}>
-                    <div className="columns is-centered">
-                        <div className="column">
-                            {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                                <button className="delete" onClick={() => setResponse(null)}></button>
-                            </Alert>}
-                            {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                                <button className="delete" onClick={() => {
-                                    setResponse(null)
-                                    setShowModalReferencia(false)
-                                    setObjeto(null)
-                                    dispatch(
-                                        loadReferencias(persona.identificacion)
-                                    )
-                                }}></button>
-                            </Alert>}
-                            {error && <Alert type={'is-danger is-light'} content={error.message}>
-                                <button className="delete" onClick={event => setError(null)}></button>
-                            </Alert>}
-                        </div>
-                    </div>
+                    
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalReferencia(false)
                         setObjeto(null)
                     }}>Cancelar</button>
                 </ReferenciaModalForm>
             }
-
+             {
+                response?.type && <AlertModal type={response.type} message={response.content}>
+                    <button className="delete" aria-label="close" onClick={() => setResponse(null)}></button>
+                </AlertModal>
+            }
+            {
+                error?.message && <AlertModal type={'danger'} message={error.message}>
+                    <button className="delete" aria-label="close" onClick={() => setError(null)}></button>
+                </AlertModal>
+            }
 
         </>
     )

@@ -8,7 +8,7 @@ import { API } from '../../services/api'
 
 export const loadEventos = createAsyncThunk(
     'eventos/load',
-    async ( id_persona, { getState }) => {
+    async ( _, { getState }) => {
         let token;
         try {
             token = getState().user.user.jwt.token;
