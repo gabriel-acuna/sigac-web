@@ -392,7 +392,7 @@ let FormacionAcademicaModalForm = ({ title, handler, children, objeto }) => {
                             <div className="column">
                                 <label className="label is-small is-uppercase">Fecha inicio</label>
                                 {errors.fechaInicio && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la fecha de inicio del evento!</span>}
-                                {errors.fecha_ingreso_ies?.type === 'max' && <span className="has-text-danger is-size-7 has-background-danger-light">¡La fecha de inicio no puede ser mayor a la fecha actual!</span>}
+                                {errors.fechaInicio?.type === 'max' && <span className="has-text-danger is-size-7 has-background-danger-light">¡La fecha de inicio no puede ser mayor a la fecha actual!</span>}
                                 <div className="control">
                                     <input type="date" className="input" {...register('fechaInicio', { required: true })}
 

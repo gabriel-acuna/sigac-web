@@ -46,7 +46,10 @@ let DTH = (props) => {
             )
         ).unwrap()
             .then(
-                (resp) => setResponse(resp)
+                (resp) => {
+                    setResponse(resp)
+                    dispatch(loadInformacionPersonal())
+                }
             ).catch(
                 (err) => console.error(err)
             )

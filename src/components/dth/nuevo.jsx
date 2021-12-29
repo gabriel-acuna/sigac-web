@@ -746,7 +746,7 @@ let RegistrarPersona = ({ title, handler, children, person }) => {
                                                 onChange={(ev) => {
                                                     cargarCantones(ev?.value)
                                                     setValue('id_provincia', ev, { shouldValidate: true })
-                                                    setValue('id_canton', { label: '', value: '' }, { shouldValidate: true })
+                                                    setValue('id_canton', null, { shouldValidate: true })
 
                                                 }}
 

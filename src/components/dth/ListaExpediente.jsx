@@ -22,6 +22,7 @@ import RegimenModalForm from './modalRegimen'
 import FamiliarModalForm from './modalFamiliar'
 import InformacionModal from './modalInformacionReproductiva'
 import EvaluacionModalForm from './modalEvaluacion'
+import SustitutoModalForm from './modalSustituto'
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
@@ -85,6 +86,9 @@ let ListaExpediente = (props) => {
             )
             location.state?.identificacion && dispatch(
                 loadEvaluacionesPersonal(location.state.identificacion)
+            )
+            location.state?.identificacion &&  location.state?.sustituto === 'SI' && dispatch(
+                loadSustitutosPersonal(location.state.identificacion)
             )
         }, [dispatch, location.state?.identificacion, location.state?.sexo]
     )
@@ -597,7 +601,7 @@ let ListaExpediente = (props) => {
     }
 
     let postSustitutoHandler = (data) => {
-        dispatch(postSutitutos({ id_persona: persona.identificacion, ...data }))
+        dispatch(postSutitutos({ idPersona: persona.identificacion, ...data }))
             .unwrap().then(
                 (resp) => {
                     setResponse(resp)
@@ -649,7 +653,7 @@ let ListaExpediente = (props) => {
                 }
             )
     }
-    
+
     return (
         <>
             <div className="container">
@@ -1000,47 +1004,47 @@ let ListaExpediente = (props) => {
                 </TabPanel>
                 {
                     persona.sustituto === 'SI' && <TabPanel value={activeTab} index={persona?.sexo === 'MUJER' ? 6 : 5}>
-                         <TabContent
-                        title="Sustitutos"
-                        desc="sustitutos"
-                        noData="No hay sustitutos registrados"
-                        columns={[{ key: "nombres", text: "Nombres" },
-                        { key: "apellidos", text: "Apellidos" },
-                        { key: "numeroCarnet", text: "No. Carnet" },
-                        { key: "opciones", text: "Opciones" }]}
-                        rows={
-                            sustitutosState.map(
-                                row => {
-                                    return {
-                                        id: row.id,
-                                        nombres: row.nombres,
-                                        apellidos: row.hasta,
-                                        numeroCarnet: row.numero_carnet,
-                                        opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
-                                            setObjeto(row)
-                                            setShowSusModalForm(true)
+                        <TabContent
+                            title="Sustitutos"
+                            desc="sustitutos"
+                            noData="No hay sustitutos registrados"
+                            columns={[{ key: "nombres", text: "Nombres" },
+                            { key: "apellidos", text: "Apellidos" },
+                            { key: "numeroCarnet", text: "No. Carnet" },
+                            { key: "opciones", text: "Opciones" }]}
+                            rows={
+                                sustitutosState.map(
+                                    row => {
+                                        return {
+                                            id: row.id,
+                                            nombres: row.nombres,
+                                            apellidos: row.apellidos,
+                                            numeroCarnet: row.numero_carnet,
+                                            opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
+                                                setObjeto(row)
+                                                setShowSusModalForm(true)
 
-                                        }}>
-                                            <span className="icon">
-                                                <FaRegEdit />
-                                            </span>
-                                        </button>,
-                                        <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={() => {
-                                            deleteSusHandler(row.id)
-                                        }}>
-                                            <span className="icon">
-                                                <AiOutlineDelete />
-                                            </span>
-                                        </button>]
+                                            }}>
+                                                <span className="icon">
+                                                    <FaRegEdit />
+                                                </span>
+                                            </button>,
+                                            <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={() => {
+                                                deleteSusHandler(row.id)
+                                            }}>
+                                                <span className="icon">
+                                                    <AiOutlineDelete />
+                                                </span>
+                                            </button>]
+                                        }
                                     }
-                                }
-                            )
-                        }>
-                        <button className="button  is-success mx-3 is-outlined" onClick={() => { setShowSusModalForm(true) }}>
-                            <span className="icon">
-                                <IoIosAddCircleOutline />
-                            </span>
-                        </button></TabContent>
+                                )
+                            }>
+                            <button className="button  is-success mx-3 is-outlined" onClick={() => { setShowSusModalForm(true) }}>
+                                <span className="icon">
+                                    <IoIosAddCircleOutline />
+                                </span>
+                            </button></TabContent>
 
                     </TabPanel>
                 }
@@ -1166,6 +1170,25 @@ let ListaExpediente = (props) => {
                         }}>Cancelar</button>
                 </EvaluacionModalForm>
             }
+            {/*Sustituto Personal*/}
+            {
+                showSusModalForm &&
+                <SustitutoModalForm title={
+                    objeto === null ?
+                        `Registrando sustituto de: `
+                        : `Editando sustituto de : `
+                }
+                    objeto={objeto}
+                    persona={persona}
+                    handler={objeto === null ? postSustitutoHandler : putSustitutoHandler}
+                >
+                    <button className="button is-small is-danger mx-3"
+                        onClick={() => {
+                            setShowSusModalForm(false)
+                            setObjeto(null)
+                        }}>Cancelar</button>
+                </SustitutoModalForm>
+            }
             {
                 showConfirmDialog &&
                 <ConfirmDialog info="el registro" title="Eliminar registro">
@@ -1232,7 +1255,7 @@ let ListaExpediente = (props) => {
                 </ConfirmDialog>
 
             }
-             {
+            {
                 showConfirmDialogSus &&
                 <ConfirmDialog info="el sustituto" title="Eliminar sustituto">
 
