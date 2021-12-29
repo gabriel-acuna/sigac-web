@@ -51,6 +51,7 @@ import modalidadContractualReducer from './dth/modalidad_contractual'
 import regimenDisciplinarioReducer from './dth/regimen_disciplinario'
 import evaluacionReducer from './dth/evaluacion_desempeño'
 import informacionReproductivaReducer from './dth/informacion_reproductiva'
+import sustitutoPersonalReducer from './dth/sustituto_personal'
 
 import {
     persistStore,
@@ -114,7 +115,8 @@ const reducer = combineReducers({
     sanciones: sancionReducer,
     regimenesDisciplinarios: regimenDisciplinarioReducer,
     evaluacionesPersonal: evaluacionReducer,
-    informacionReproductiva: informacionReproductivaReducer
+    informacionReproductiva: informacionReproductivaReducer,
+    sustitutosPersonal: sustitutoPersonalReducer
 
 
 });

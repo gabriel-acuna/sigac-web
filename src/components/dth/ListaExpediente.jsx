@@ -12,6 +12,7 @@ import { postFamiliar, putFamiliar, deleteFamiliar, loadFamiliares } from '../..
 import { postInformacionReproductiva, putInformacionReproductiva, deleteInformacionReproductiva, loadInformacionReproductivaPersonal } from '../../store/dth/informacion_reproductiva'
 import { postRegimenes, putRegimenes, loadRegimenesDisciplinariosPorPersona, deleteRegimenes } from '../../store/dth/regimen_disciplinario'
 import { postEvaluacionesPersonal, putEvaluacionesPersonal, deleteEvaluacionesPersonal, loadEvaluacionesPersonal } from '../../store/dth/evaluacion_desempeño'
+import { postSutitutos, putSutitutos, deleteSustitutos, loadSustitutosPersonal } from '../../store/dth/sustituto_personal'
 import { logOut } from '../../store/user'
 import AlertModal from '../AlertModal'
 import ConfirmDialog from '../ConfirmDialog'
@@ -34,6 +35,7 @@ let ListaExpediente = (props) => {
     let informacionReproductivaState = useSelector(state => state.informacionReproductiva.data.informacion)
     let regimenDisciplinarioState = useSelector(state => state.regimenesDisciplinarios.data.regimenes)
     let evaluacionesState = useSelector(state => state.evaluacionesPersonal.data.evaluaciones)
+    let sustitutosState = useSelector(state => state.sustitutosPersonal.data.sustitutos)
     const navigate = useNavigate()
     const [persona] = useState(location.state)
     const dispatch = useDispatch()
@@ -45,12 +47,14 @@ let ListaExpediente = (props) => {
     const [showInfModalForm, setShowInfModalForm] = useState(false)
     const [showRegModalForm, setShowRegModalForm] = useState(false)
     const [showEvaModalForm, setShowEvaModalForm] = useState(false)
+    const [showSusModalForm, setShowSusModalForm] = useState(false)
     const [showConfirmDialog, setShowConfirmDialog] = useState(false)
     const [showConfirmDialogDec, setShowConfirmDialogDec] = useState(false)
     const [showConfirmDialogFam, setShowConfirmDialogFam] = useState(false)
     const [showConfirmDialogInf, setShowConfirmDialogInf] = useState(false)
     const [showConfirmDialogReg, setShowConfirmDialogReg] = useState(false)
     const [showConfirmDialogEva, setShowConfirmDialogEva] = useState(false)
+    const [showConfirmDialogSus, setShowConfirmDialogSus] = useState(false)
     const [response, setResponse] = useState(null)
     const [error, setError] = useState(null)
     const [id, setId] = useState(null)
@@ -113,9 +117,15 @@ let ListaExpediente = (props) => {
         setId(id)
         setShowConfirmDialogReg(true)
     }
+
     const deleteEvaHandler = (id) => {
         setId(id)
         setShowConfirmDialogEva(true)
+    }
+
+    const deleteSusHandler = (id) => {
+        setId(id)
+        setShowConfirmDialogSus(true)
     }
 
     let postHandler = (data) => {
@@ -287,6 +297,23 @@ let ListaExpediente = (props) => {
                 setResponse(resp)
                 dispatch(
                     loadEvaluacionesPersonal(persona.identificacion)
+                )
+
+
+            }).catch(
+                (err) => console.error(err)
+            )
+    }
+
+    let doDeleteSus = () => {
+        dispatch(
+            deleteSustitutos(id)
+
+        ).unwrap()
+            .then(resp => {
+                setResponse(resp)
+                dispatch(
+                    loadSustitutosPersonal(persona.identificacion)
                 )
 
 
@@ -568,7 +595,61 @@ let ListaExpediente = (props) => {
                 }
             )
     }
-    console.log(activeTab);
+
+    let postSustitutoHandler = (data) => {
+        dispatch(postSutitutos({ id_persona: persona.identificacion, ...data }))
+            .unwrap().then(
+                (resp) => {
+                    setResponse(resp)
+                    if (resp.type === 'success') {
+                        dispatch(loadSustitutosPersonal(persona.identificacion))
+                        setShowSusModalForm(false)
+                    }
+                }
+            ).catch(
+                (err) => {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+    }
+
+    let putSustitutoHandler = (data) => {
+        dispatch(putSutitutos({ id: objeto.id, ...data }))
+            .unwrap().then(
+                (resp) => {
+                    setResponse(resp)
+                    if (resp.type === 'success') {
+                        dispatch(loadSustitutosPersonal(persona.identificacion))
+                        setShowSusModalForm(false)
+                        setObjeto(null)
+
+                    }
+                }
+            ).catch(
+                (err) => {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
+                        dispatch(
+                            logOut()
+                        )
+                    }
+
+                    else { setError(err) }
+                }
+            )
+    }
+    
     return (
         <>
             <div className="container">
@@ -624,6 +705,7 @@ let ListaExpediente = (props) => {
                         {expedienteState?.detalle && expedienteState?.detalle.length > 0 && persona.sexo === 'MUJER' && <Tab label="Información reproductiva" {...a11yProps(3)} sx={{ textTransform: 'none' }} />}
                         {expedienteState?.detalle && expedienteState?.detalle.length > 0 && <Tab label="Régimen disciplinario" {...a11yProps(4)} sx={{ textTransform: 'none' }} />}
                         {expedienteState?.detalle && expedienteState?.detalle.length > 0 && <Tab label="Evaluaciones de desempeño" {...a11yProps(5)} sx={{ textTransform: 'none' }} />}
+                        {expedienteState?.detalle && expedienteState?.detalle.length > 0 && persona.sustituto === 'SI' && <Tab label="Sustituto" {...a11yProps(6)} sx={{ textTransform: 'none' }} />}
                     </Tabs>
 
                 </Box>
@@ -916,6 +998,52 @@ let ListaExpediente = (props) => {
                             </span>
                         </button></TabContent>
                 </TabPanel>
+                {
+                    persona.sustituto === 'SI' && <TabPanel value={activeTab} index={persona?.sexo === 'MUJER' ? 6 : 5}>
+                         <TabContent
+                        title="Sustitutos"
+                        desc="sustitutos"
+                        noData="No hay sustitutos registrados"
+                        columns={[{ key: "nombres", text: "Nombres" },
+                        { key: "apellidos", text: "Apellidos" },
+                        { key: "numeroCarnet", text: "No. Carnet" },
+                        { key: "opciones", text: "Opciones" }]}
+                        rows={
+                            sustitutosState.map(
+                                row => {
+                                    return {
+                                        id: row.id,
+                                        nombres: row.nombres,
+                                        apellidos: row.hasta,
+                                        numeroCarnet: row.numero_carnet,
+                                        opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
+                                            setObjeto(row)
+                                            setShowSusModalForm(true)
+
+                                        }}>
+                                            <span className="icon">
+                                                <FaRegEdit />
+                                            </span>
+                                        </button>,
+                                        <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={() => {
+                                            deleteSusHandler(row.id)
+                                        }}>
+                                            <span className="icon">
+                                                <AiOutlineDelete />
+                                            </span>
+                                        </button>]
+                                    }
+                                }
+                            )
+                        }>
+                        <button className="button  is-success mx-3 is-outlined" onClick={() => { setShowSusModalForm(true) }}>
+                            <span className="icon">
+                                <IoIosAddCircleOutline />
+                            </span>
+                        </button></TabContent>
+
+                    </TabPanel>
+                }
 
             </div>
             {/*modal registro laboral */}
@@ -1100,6 +1228,17 @@ let ListaExpediente = (props) => {
                     <button className="button is-small is-danger is-pulled-left" onClick={() => setShowConfirmDialogEva(false)}> Cancelar</button>
                     <button className="button is-small is-success is-pulled-rigth" onClick={() => {
                         setShowConfirmDialogEva(false); doDeleteEva();
+                    }}>Confirmar</button>
+                </ConfirmDialog>
+
+            }
+             {
+                showConfirmDialogSus &&
+                <ConfirmDialog info="el sustituto" title="Eliminar sustituto">
+
+                    <button className="button is-small is-danger is-pulled-left" onClick={() => setShowConfirmDialogSus(false)}> Cancelar</button>
+                    <button className="button is-small is-success is-pulled-rigth" onClick={() => {
+                        setShowConfirmDialogSus(false); doDeleteSus();
                     }}>Confirmar</button>
                 </ConfirmDialog>
 
