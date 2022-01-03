@@ -28,10 +28,10 @@ let NavBar = (props) => {
                     Inicio
                 </Link>
                 <p className="nav-item mt-4 is-size-7 mx-4">
-                        <span className='has-text-weight-medium'>Fecha: </span>
-                        {today.getDay()}-{today.getMonth() < 10 ? `0${today.getMonth()}` : today.getMonth()}-{today.getFullYear()}
-                    </p>
-                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
+                    <span className='has-text-weight-medium'>Fecha: </span>
+                    {today.getDate()}-{today.getMonth() < 10 && today.getMonth() > 0 ? `0${today.getMonth()}` : today.getMonth() === 0 ? '01' : today.getMonth()}-{today.getFullYear()}
+                </p>
+                <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false"
                     data-target="navbarBasicExample" onClick={() => {
                         setisActive(!isActive);
                     }}>
@@ -44,12 +44,12 @@ let NavBar = (props) => {
 
 
             <div className={`navbar-menu ${isActive ? "is-active" : ""}`} id="navbarBasicExample">
-                
+
                 <div className="navbar-end">
 
                     <div className="navbar-item has-dropdown is-hoverable is-pulled-rig">
                         <span className="navbar-link has-text-weight-bold">
-                        <CgProfile/> Hola, {user.nombre} {user.apellido}
+                            <CgProfile /> Hola, {user.nombre} {user.apellido}
                         </span>
                         <div className="navbar-dropdown is-boxed">
                             <Link className="navbar-item" to="/change-password" >

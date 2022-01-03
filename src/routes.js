@@ -35,6 +35,7 @@ import ListadoIESNacionales from "./components/admin/options/ies-nacionales";
 import DAC from './components/dac/index'
 import ReportesPeriodo from './components/dac/reportesPeriodo'
 import CV_DTH from './components/dth/cv'
+import ChangePassword from './components/auth/ChangePassword'
 
 const routes = (user) => [
     {
@@ -298,7 +299,7 @@ const routes = (user) => [
     },
     {
         path: '/change-password',
-        element: <NotImplemented />
+        element: user && isValid(user.jwt) ?<ChangePassword />: <Navigate to="/login" />
     }, {
         path: '/cv',
         element: <Outlet />,

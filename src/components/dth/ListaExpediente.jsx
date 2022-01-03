@@ -90,7 +90,7 @@ let ListaExpediente = (props) => {
             location.state?.identificacion &&  location.state?.sustituto === 'SI' && dispatch(
                 loadSustitutosPersonal(location.state.identificacion)
             )
-        }, [dispatch, location.state?.identificacion, location.state?.sexo]
+        }, [dispatch, location.state?.identificacion, location.state?.sexo, location.state?.sustituto]
     )
 
 
