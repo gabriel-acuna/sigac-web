@@ -31,14 +31,14 @@ let NavBar = (props) => {
                     <span className='has-text-weight-medium'>Fecha: </span>
                     {today.getDate()}-{today.getMonth() < 10 && today.getMonth() > 0 ? `0${today.getMonth()}` : today.getMonth() === 0 ? '01' : today.getMonth()}-{today.getFullYear()}
                 </p>
-                <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false"
+                <div role="button" className="navbar-burger" aria-label="menu" aria-expanded="false"
                     data-target="navbarBasicExample" onClick={() => {
                         setisActive(!isActive);
                     }}>
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
-                </a>
+                </div>
             </div>
 
 
@@ -47,7 +47,7 @@ let NavBar = (props) => {
 
                 <div className="navbar-end">
 
-                    <div className="navbar-item has-dropdown is-hoverable is-pulled-rig">
+                    <div className="navbar-item has-dropdown is-hoverable">
                         <span className="navbar-link has-text-weight-bold">
                             <CgProfile /> Hola, {user.nombre} {user.apellido}
                         </span>
@@ -63,10 +63,12 @@ let NavBar = (props) => {
                                     <ImProfile />
                                 </span>
                                 CV</Link>
-                            <a className="navbar-item" onClick={() => doLogOut()}>
+
+                            <a className="navbar-item" onClick={() => doLogOut()} >
                                 <span className="mr-2"> <FcRight /></span>
                                 Cerrar sesión
                             </a>
+
 
                         </div>
 

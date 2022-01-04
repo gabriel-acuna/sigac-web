@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { IoIosArrowBack, IoIosAddCircleOutline } from 'react-icons/io'
 import { FaRegEdit } from 'react-icons/fa'
 
-import { AiOutlineMinus, AiOutlinePlus, AiOutlineDelete } from 'react-icons/ai'
+import { AiOutlineDelete } from 'react-icons/ai'
 import { useDispatch } from 'react-redux'
 import { loadPersonaEmail } from '../../store/dth/informacion_personal'
 import ReferenciaModalForm from './referenciasModal'
@@ -34,7 +34,6 @@ import {
     loadIdiomas, postIdiomas, putIdiomas, deleteIdiomas
 } from '../../store/cv/compresion_idioma'
 
-import Alert from '../Alert'
 import { useSelector } from 'react-redux'
 import { logOut } from '../../store/user'
 import ConfirmDialog from '../ConfirmDialog'
@@ -44,23 +43,27 @@ import CapacitacionFacModalForm from './capacitacionesFacModal'
 import PonenciaModalForm from './ponenciasModal'
 import ExperienciaLaboralModalForm from './experienciaLaboralModal'
 import MeritoModalForm from './meritoModal'
-import IdiomaModalForm from './idiomaModal';
+import IdiomaModalForm from './idiomaModal'
+import TabPanel from '../TabPanel'
+import TabContent from '../TabContent'
+import AlertModal from '../AlertModal'
+import Tabs from '@mui/material/Tabs'
+import Tab from '@mui/material/Tab'
+import Box from '@mui/material/Box'
 
 const CV = ({ email }) => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    const [expandirReferencias, setExpandirReferencia] = useState(false)
-    const [expandirCapacitaciones, setExpandirCapacitaciones] = useState(false)
-    //const [expandirCapacitacionesFac, setExpandirCapacitacionesFac] = useState(false)
-    const [expandirFormacion, setExpandirFormacion] = useState(false)
-    const [expandirPonencias, setExpandirPonencias] = useState(false)
-    const [expandirExperienciaLaboral, setExpandirExperienciaLaboral] = useState(false)
-    const [expandirMeritos, setExpandirMeritos] = useState(false)
-    const [expandirIdiomas, setExpandirIdiomas] = useState(false)
+    let a11yProps = (index) => {
+        return {
+            id: `simple-tab-${index}`,
+            'aria-controls': `simple-tabpanel-${index}`,
+        };
+    }
 
-
+    const [activeTab, setActiveTab] = useState(0)
     const [showModalReferencia, setShowModalReferencia] = useState(false)
     const [showModalCapacitacion, setShowModalCapacitacion] = useState(false)
     const [showModalCapacitacionFac, setShowModalCapacitacionFac] = useState(false)
@@ -84,9 +87,7 @@ const CV = ({ email }) => {
     const [showModalDelFor, setShowModalDelFor] = useState(false)
     const [showModalDelMer, setShowModalDelMer] = useState(false)
     const [showModalDelIdi, setShowModalDelIdi] = useState(false)
-    const [respConfirmRef, setRespConfirmRef] = useState(null)
-
-
+   
     let referenciasState = useSelector(state => state.referencias.data.referencias)
     let capacitacionesState = useSelector(state => state.capacitaciones.data.capacitaciones)
     //let capacitacionFacState = useSelector(state => state.capacitacionesFacilitador.data.capacitaciones)
@@ -173,7 +174,7 @@ const CV = ({ email }) => {
 
         ).unwrap()
             .then(resp => {
-                setRespConfirmRef(resp)
+                setResponse(resp)
                 dispatch(
                     loadPersonaEmail(email))
                     .unwrap()
@@ -198,7 +199,7 @@ const CV = ({ email }) => {
 
         ).unwrap()
             .then(resp => {
-                setRespConfirmRef(resp)
+                setResponse(resp)
                 dispatch(
                     loadPersonaEmail(email))
                     .unwrap()
@@ -224,7 +225,7 @@ const CV = ({ email }) => {
 
         ).unwrap()
             .then(resp => {
-                setRespConfirmRef(resp)
+                setResponse(resp)
                 dispatch(
                     loadPersonaEmail(email))
                     .unwrap()
@@ -250,7 +251,7 @@ const CV = ({ email }) => {
 
         ).unwrap()
             .then(resp => {
-                setRespConfirmRef(resp)
+                setResponse(resp)
                 dispatch(
                     loadPersonaEmail(email))
                     .unwrap()
@@ -277,7 +278,7 @@ const CV = ({ email }) => {
 
         ).unwrap()
             .then(resp => {
-                setRespConfirmRef(resp)
+                setResponse(resp)
                 dispatch(
                     loadPersonaEmail(email))
                     .unwrap()
@@ -303,7 +304,7 @@ const CV = ({ email }) => {
 
         ).unwrap()
             .then(resp => {
-                setRespConfirmRef(resp)
+                setResponse(resp)
                 dispatch(
                     loadPersonaEmail(email))
                     .unwrap()
@@ -329,7 +330,7 @@ const CV = ({ email }) => {
 
         ).unwrap()
             .then(resp => {
-                setRespConfirmRef(resp)
+                setResponse(resp)
                 dispatch(
                     loadPersonaEmail(email))
                     .unwrap()
@@ -355,7 +356,7 @@ const CV = ({ email }) => {
 
         ).unwrap()
             .then(resp => {
-                setRespConfirmRef(resp)
+                setResponse(resp)
                 dispatch(
                     loadPersonaEmail(email))
                     .unwrap()
@@ -385,7 +386,11 @@ const CV = ({ email }) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadFormacionAcademica(persona.identificacion))
+                    setShowModalFormacionAcademica(false)
+                }
             })
             .catch(
                 (err) => {
@@ -413,7 +418,12 @@ const CV = ({ email }) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadFormacionAcademica(persona.identificacion))
+                    setShowModalFormacionAcademica(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
@@ -449,7 +459,11 @@ const CV = ({ email }) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadReferencias(persona.identificacion))
+                    setShowModalReferencia(false)
+                }
             })
             .catch(
                 (err) => {
@@ -487,7 +501,12 @@ const CV = ({ email }) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadReferencias(persona.identificacion))
+                    setShowModalReferencia(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
@@ -527,7 +546,11 @@ const CV = ({ email }) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadCapacitaciones(persona.identificacion))
+                    setShowModalCapacitacion(false)
+                }
             })
             .catch(
                 (err) => {
@@ -570,7 +593,12 @@ const CV = ({ email }) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadCapacitaciones(persona.identificacion))
+                    setShowModalCapacitacion(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
@@ -675,7 +703,11 @@ const CV = ({ email }) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadPonencias(persona.identificacion))
+                    setShowModalPonencia(false)
+                }
             })
             .catch(
                 (err) => {
@@ -707,7 +739,12 @@ const CV = ({ email }) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadPonencias(persona.identificacion))
+                    setShowModalPonencia(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
@@ -737,7 +774,11 @@ const CV = ({ email }) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadExperienciaLaboral(persona.identificacion))
+                    setShowModalExperienciaLaboral(false)
+                }
             })
             .catch(
                 (err) => {
@@ -769,7 +810,12 @@ const CV = ({ email }) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadExperienciaLaboral(persona.identificacion))
+                    setShowModalExperienciaLaboral(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
@@ -799,7 +845,11 @@ const CV = ({ email }) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadMeritos(persona.identificacion))
+                    setShowModalMerito(false)
+                }
             })
             .catch(
                 (err) => {
@@ -829,7 +879,12 @@ const CV = ({ email }) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadMeritos(persona.identificacion))
+                    setShowModalMerito(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
@@ -859,7 +914,11 @@ const CV = ({ email }) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadIdiomas(persona.identificacion))
+                    setShowModalIdioma(false)
+                }
             })
             .catch(
                 (err) => {
@@ -889,7 +948,12 @@ const CV = ({ email }) => {
             )
         ).unwrap()
             .then((resp) => {
-                setResponse(resp);
+                setResponse(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadIdiomas(persona.identificacion))
+                    setShowModalIdioma(false)
+                    setObjeto(null)
+                }
             })
             .catch(
                 (err) => {
@@ -909,190 +973,175 @@ const CV = ({ email }) => {
     return (
         <>
             <div className="container">
-                <div className="columns is-centered is-multiline">
-                    <div className="column is-half">
-                        <button className="button is-info mt-4 mx-3 is-outlined"
-                            onClick={event => {
-                                navigate(-1);
 
-                            }}>
+                <div className="columns is-centered is-multiline">
+                    <div className="column is-half mt-3">
+                        <div className=" panel is-info">
+                            <p className="panel-heading is-size-6">
+                                <span className="icon" style={{ cursor: 'pointer' }}
+                                    onClick={event => {
+
+                                        navigate(-1)
+
+                                    }}>
+
+                                    <IoIosArrowBack />
+
+
+                                </span>
+                                Datos personales </p>
+                            <div className="panel-block has-background-info-light">
+                                {persona &&
+                                    <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr', padding: '20px' }}>
+
+                                        <div>
+                                            <span className="has-text-weight-medium">Nombres: </span> {persona.primer_nombre} {persona.segundo_nombre}
+                                        </div>
+                                        <div >
+                                            <span className="has-text-weight-medium">Apellidos: </span> {persona.primer_apellido} {persona.segundo_apellido}
+                                        </div>
+
+                                        <div><span className="has-text-weight-medium">Edad: </span> {persona?.edad.años}  años </div>
+                                        <div><span className="has-text-weight-medium">Estado civil: </span> {persona.estado_civil.estado_civil}</div>
+                                        <div><span className="has-text-weight-medium">Teléfono movil: </span> {persona.telefono_movil}</div>
+                                        <div><span className="has-text-weight-medium">Correo: </span> {persona.correo_personal}</div>
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <hr style={{ backgroundColor: "#b3e6cc" }} />
+                <Box sx={{ width: '100%' }}>
+
+                    <Tabs aria-label="basic tabs example"
+                        value={activeTab} onChange={(ev, newVal) => setActiveTab(newVal)}
+                        variant="scrollable"
+                        scrollButtons="auto" >
+                        <Tab label="Formación Académica" {...a11yProps(0)} sx={{ textTransform: 'none' }} />
+                        <Tab label="Capacitaciones" {...a11yProps(1)} sx={{ textTransform: 'none' }} />
+                        <Tab label="Ponencias" {...a11yProps(2)} sx={{ textTransform: 'none' }} />
+                        <Tab label="Experiencia Laboral" {...a11yProps(3)} sx={{ textTransform: 'none' }} />
+                        <Tab label="Méritos y distinciones" {...a11yProps(4)} sx={{ textTransform: 'none' }} />
+                        <Tab label="Compresión de idiomas" {...a11yProps(5)} sx={{ textTransform: 'none' }} />
+                        <Tab label="Referencias" {...a11yProps(6)} sx={{ textTransform: 'none' }} />
+                    </Tabs>
+
+                </Box>
+
+                {/*Formación Profesional */}
+                <TabPanel value={activeTab} index={0}>
+
+                    <TabContent
+                        title="Formación Académica"
+                        desc="formación académica"
+                        noData="No registra fomación academica"
+                        columns={[
+                            { key: 'nombre_titulo', text: 'Título' },
+                            { key: 'estado', text: 'Estado' },
+                            { key: 'opciones', text: 'Opciones' }
+                        ]}
+                        rows={
+                            formacionState.map(
+                                (estudio) => {
+                                    return {
+                                        id: estudio.id,
+                                        nombre_titulo: estudio.nombre_titulo,
+                                        estado: estudio.estado,
+
+                                        opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${estudio.id}0`} onClick={() => {
+                                            setObjeto(estudio)
+                                            setShowModalFormacionAcademica(true)
+                                        }}>
+                                            <span className="icon">
+                                                <FaRegEdit />
+                                            </span>
+                                        </button>,
+                                        <button className="button is-small is-danger mx-2 is-outlined" key={`${estudio.id}1`} onClick={() => {
+                                            deleteHandlerFor(estudio.id)
+                                        }}>
+                                            <span className="icon">
+                                                <AiOutlineDelete />
+                                            </span>
+                                        </button>]
+
+                                    }
+                                }
+                            )
+                        }
+                    >
+                        <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalFormacionAcademica(true)}>
                             <span className="icon">
-                                <IoIosArrowBack />
+                                <IoIosAddCircleOutline />
+                            </span>
+                        </button>
+                    </TabContent>
+                </ TabPanel>
+
+                {/*Capacitaciones*/}
+                <TabPanel value={activeTab} index={1}>
+
+
+                    <TabContent
+                        title="Capacitaciones"
+                        desc="capacitaciones"
+                        noData="No hay capacitaciones registradas"
+                        columns={
+                            [
+                                { key: 'tipo_evento', text: 'Tipo evento' },
+                                { key: 'horas', text: 'Horas' },
+                                { key: 'opciones', text: 'Opciones' }
+                            ]
+                        }
+                        rows=
+
+                        {
+                            capacitacionesState.map(
+                                (capacitacion) => {
+                                    return {
+                                        id: capacitacion.id,
+                                        tipo_evento: `${capacitacion.tipo_evento.evento} - ${capacitacion.institucion_organizadora}`,
+                                        horas: capacitacion.horas,
+
+                                        opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${capacitacion.id}0`} onClick={ev => {
+                                            setObjeto(capacitacion)
+                                            setShowModalCapacitacion(true)
+                                        }}>
+                                            <span className="icon">
+                                                <FaRegEdit />
+                                            </span>
+                                        </button>,
+
+                                        <button className="button is-small is-danger mx-2 is-outlined" key={`${capacitacion.id}1`} onClick={event => {
+                                            deleteHandlerCap(capacitacion.id)
+                                        }}>
+                                            <span className="icon">
+                                                <AiOutlineDelete />
+                                            </span>
+                                        </button>]
+
+
+                                    }
+                                }
+
+
+                            )
+                        }>
+                        <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalCapacitacion(true)}>
+                            <span className="icon">
+                                <IoIosAddCircleOutline />
                             </span>
                         </button>
 
-                    </div>
-                    {respConfirmRef && respConfirmRef.type === 'warning' && <Alert type={'is-warning is-light'} content={respConfirmRef.content}>
-                        <button className="delete" onClick={event => setRespConfirmRef(null)}></button>
-                    </Alert>}
-                    {respConfirmRef && respConfirmRef.type === 'success' && <Alert type={'is-success is-light'} content={respConfirmRef.content}>
-                        <button className="delete" onClick={event => {
-                            setRespConfirmRef(null)
+                    </TabContent>
+                </TabPanel>
 
-
-
-                        }}></button>
-                    </Alert>}
-                </div>
-                <div className="columns is-centered is-multiline">
-
-                    {/*Formación Profesional */}
-                    <div className="column is-half">
-                        <div className="card">
-                            <header className="card-header" onClick={() => setExpandirFormacion(!expandirFormacion)}>
-                                <p className="card-header-title">
-                                    Formación Académica
-                                </p>
-                                <button className="card-header-icon" aria-label="more options">
-                                    <span className="icon">
-                                        {expandirFormacion ? <AiOutlineMinus /> : <AiOutlinePlus />}
-                                    </span>
-                                </button>
-
-                            </header>
-
-                            {
-                                expandirFormacion && <div className="card-content">
-                                    <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalFormacionAcademica(true)}>
-                                        <span className="icon">
-                                            <IoIosAddCircleOutline />
-                                        </span>
-                                    </button>
-                                    <div className="table-container">
-                                        <table className="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        Titulo
-                                                    </th>
-                                                    <th>
-                                                        Estado
-                                                    </th>
-                                                    <th>
-                                                        Opciones
-                                                    </th>
-                                                </tr>
-                                            </thead>
-
-                                            <tbody>
-                                                {
-                                                    formacionState.map(
-                                                        (estudio) => (
-                                                            <tr key={estudio.id}>
-                                                                <td>{estudio.nombre_titulo}</td>
-                                                                <td>{estudio.estado}</td>
-                                                                <td>
-                                                                    <button className="button is-small is-primary mx-2 is-outlined" key={`${estudio.id}0`} onClick={() => {
-                                                                        setObjeto(estudio)
-                                                                        setShowModalFormacionAcademica(true)
-                                                                    }}>
-                                                                        <span className="icon">
-                                                                            <FaRegEdit />
-                                                                        </span>
-                                                                    </button>
-                                                                    <button className="button is-small is-danger mx-2 is-outlined" onClick={() => {
-                                                                        deleteHandlerFor(estudio.id)
-                                                                    }}>
-                                                                        <span className="icon">
-                                                                            <AiOutlineDelete />
-                                                                        </span>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        )
-                                                    )
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                </div>
-                            }
-                        </div>
-                    </div>
-
-                    {/*Capacitaciones*/}
-                    <div className="column is-half">
-                        <div className="card">
-                            <header className="card-header" onClick={() => setExpandirCapacitaciones(!expandirCapacitaciones)}>
-                                <p className="card-header-title">
-                                    Capacitaciones
-
-                                </p>
-                                <button className="card-header-icon" aria-label="more options">
-                                    <span className="icon">
-                                        {expandirCapacitaciones ? <AiOutlineMinus /> : <AiOutlinePlus />}
-                                    </span>
-                                </button>
-                            </header>
-                            {
-                                expandirCapacitaciones && <div className="card-content">
-                                    <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalCapacitacion(true)}>
-                                        <span className="icon">
-                                            <IoIosAddCircleOutline />
-                                        </span>
-                                    </button>
-
-                                    <div className="table-container">
-                                        <table className="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        Tipo Evento
-                                                    </th>
-                                                    <th>
-                                                        Horas
-                                                    </th>
-                                                    <th>
-                                                        Opciones
-                                                    </th>
-                                                </tr>
-                                            </thead>
-
-                                            <tbody>
-                                                {
-                                                    capacitacionesState.map(
-                                                        (capacitacion) => (
-                                                            <tr key={capacitacion.id}>
-                                                                <td>{capacitacion.tipo_evento.evento} - {capacitacion.institucion_organizadora}</td>
-                                                                <td>{capacitacion.horas}</td>
-                                                                <td>
-                                                                    <button className="button is-small is-primary mx-2 is-outlined" key={`${capacitacion.id}0`} onClick={ev => {
-                                                                        setObjeto(capacitacion)
-                                                                        setShowModalCapacitacion(true)
-                                                                    }}>
-                                                                        <span className="icon">
-                                                                            <FaRegEdit />
-                                                                        </span>
-                                                                    </button>
-
-                                                                    <button className="button is-small is-danger mx-2 is-outlined" onClick={event => {
-                                                                        deleteHandlerCap(capacitacion.id)
-                                                                    }}>
-                                                                        <span className="icon">
-                                                                            <AiOutlineDelete />
-                                                                        </span>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        )
-                                                    )
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                </div>
-
-
-
-
-                            }
-                        </div>
-                    </div>
-
-                    {/*Capacitaciones Facilitadores*/}
-                    {/* <div className="column is-half">
+                {/*Capacitaciones Facilitadores*/}
+                {/* <div className="column is-half">
                         <div className="card">
                             <header className="card-header" onClick={() => {
                                 setExpandirCapacitacionesFac(!expandirCapacitacionesFac)
@@ -1168,397 +1217,288 @@ const CV = ({ email }) => {
                         </div>
                     </div> */}
 
-                    {/*Ponencias */}
-                    <div className="column is-half">
-                        <div className="card">
-                            <header className="card-header" onClick={() => setExpandirPonencias(!expandirPonencias)}>
-                                <p className="card-header-title">
-                                    Ponencias
-                                </p>
-                                <button className="card-header-icon" aria-label="more options">
-                                    <span className="icon">
-                                        {expandirPonencias ? <AiOutlineMinus /> : <AiOutlinePlus />}
-                                    </span>
-                                </button>
+                {/*Ponencias */}
+                <TabPanel value={activeTab} index={2}>
 
-                            </header>
+                    <TabContent
+                        title="Ponencias"
+                        desc="ponencias"
+                        noData="No hay ponencias registradas"
+                        columns={
+                            [
+                                { key: 'tema', text: 'Tema' },
+                                { key: 'institucion_organizadora', text: 'Institución' },
+                                { key: 'fecha', text: 'Fecha' },
+                                { key: 'opciones', text: 'opciones' }
+                            ]
+                        }
+                        rows={
+                            ponenciasState.map(
+                                (ponencia) => {
+                                    return {
+                                        id: ponencia.id,
+                                        tema: ponencia.tema,
+                                        institucion_organizadora: ponencia.institucion_organizadora,
+                                        fecha: ponencia.fecha,
+                                        opciones: [
+                                            <button className="button is-small is-primary mx-2 is-outlined" key={`${ponencia.id}0`} onClick={ev => {
+                                                setObjeto(ponencia)
+                                                setShowModalPonencia(true)
+                                            }}>
+                                                <span className="icon">
+                                                    <FaRegEdit />
+                                                </span>
+                                            </button>,
+                                            <button className="button is-small is-danger mx-2 is-outlined" key={`${ponencia.id}1`} onClick={event => {
+                                                deleteHandlerPon(ponencia.id)
+                                            }}>
+                                                <span className="icon">
+                                                    <AiOutlineDelete />
+                                                </span>
+                                            </button>
+                                        ]
 
-                            {
-                                expandirPonencias && <div className="card-content">
-                                    <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalPonencia(true)}>
-                                        <span className="icon">
-                                            <IoIosAddCircleOutline />
-                                        </span>
-                                    </button>
-                                    <div className="table-container">
-                                        <table className="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        Tema
-                                                    </th>
-                                                    <th>
-                                                        Institución
-                                                    </th>
-                                                    <th>
-                                                        Opciones
-                                                    </th>
-                                                </tr>
-                                            </thead>
-
-                                            <tbody>
-                                                {
-                                                    ponenciasState.map(
-                                                        (ponencia) => (
-                                                            <tr key={ponencia.id}>
-                                                                <td>{ponencia.tema}</td>
-                                                                <td>{ponencia.institucion_organizadora}</td>
-                                                                <td>
-                                                                    <button className="button is-small is-primary mx-2 is-outlined" key={`${ponencia.id}0`} onClick={ev => {
-                                                                        setObjeto(ponencia)
-                                                                        setShowModalPonencia(true)
-                                                                    }}>
-                                                                        <span className="icon">
-                                                                            <FaRegEdit />
-                                                                        </span>
-                                                                    </button>
-                                                                    <button className="button is-small is-danger mx-2 is-outlined" onClick={event => {
-                                                                        deleteHandlerPon(ponencia.id)
-                                                                    }}>
-                                                                        <span className="icon">
-                                                                            <AiOutlineDelete />
-                                                                        </span>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        )
-                                                    )
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                </div>
-                            }
-                        </div>
-                    </div>
-
-                    {/*Experiencia Loboral*/}
-                    <div className="column is-half">
-                        <div className="card">
-                            <header className="card-header" onClick={() => setExpandirExperienciaLaboral(!expandirExperienciaLaboral)}>
-                                <p className="card-header-title">
-                                    Experiencia Laboral
-                                </p>
-                                <button className="card-header-icon" aria-label="more options">
-                                    <span className="icon">
-                                        {expandirExperienciaLaboral ? <AiOutlineMinus /> : <AiOutlinePlus />}
-                                    </span>
-                                </button>
-                            </header>
-                            {
-                                expandirExperienciaLaboral && <div className="card-content">
-                                    <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalExperienciaLaboral(true)}>
-                                        <span className="icon">
-                                            <IoIosAddCircleOutline />
-                                        </span>
-                                    </button>
-                                    <div className="table-container">
-                                        <table className="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        Cargo
-                                                    </th>
-                                                    <th>
-                                                        Empresa
-                                                    </th>
-
-                                                    <th>
-                                                        Opciones
-                                                    </th>
-                                                </tr>
-                                            </thead>
-
-                                            <tbody>
-                                                {
-                                                    experienciasState.map(
-                                                        (experiencia) => (
-                                                            <tr key={experiencia.id}>
-                                                                <td>{experiencia.cargo} </td>
-                                                                <td> <p className="has-text-centered"> {experiencia.empresa} </p>
-                                                                    <p className="is-7">
-                                                                        {experiencia.inicio} - {experiencia.fin !== null && experiencia.fin !== '' ? experiencia.fin : 'Actualidad'}
-                                                                    </p>
-                                                                </td>
-                                                                <td>
-                                                                    <button className="button is-small is-primary mx-2 is-outlined" key={`${experiencia.id}0`} onClick={() => {
-                                                                        setObjeto(experiencia)
-                                                                        setShowModalExperienciaLaboral(true)
-                                                                    }}>
-                                                                        <span className="icon">
-                                                                            <FaRegEdit />
-                                                                        </span>
-                                                                    </button>
-                                                                    <button className="button is-small is-danger mx-2 is-outlined" onClick={() => {
-                                                                        deleteHandlerExp(experiencia.id)
-                                                                    }}>
-                                                                        <span className="icon">
-                                                                            <AiOutlineDelete />
-                                                                        </span>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        )
-                                                    )
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-
-                                </div>
-                            }
-                        </div>
-                    </div>
-
-                    {/*Meritos y Distinciones*/}
-                    <div className="column is-half">
-                        <div className="card">
-                            <header className="card-header" onClick={() => setExpandirMeritos(!expandirMeritos)}>
-                                <p className="card-header-title">
-                                    Méritos y distinciones
-
-                                </p>
-                                <button className="card-header-icon" aria-label="more options">
-                                    <span className="icon">
-                                        {expandirMeritos ? <AiOutlineMinus /> : <AiOutlinePlus />}
-                                    </span>
-                                </button>
-                            </header>
-                            {
-                                expandirMeritos && <div className="card-content">
-                                    <button className="button  is-success mx-3 is-outlined" onClick={() => setShowModalMerito(true)}>
-                                        <span className="icon">
-                                            <IoIosAddCircleOutline />
-                                        </span>
-                                    </button>
-
-                                    <div className="table-container">
-                                        <table className="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        Título
-                                                    </th>
-                                                    <th>
-                                                        Institución asuspiciante
-                                                    </th>
-                                                    <th>
-                                                        Opciones
-                                                    </th>
-                                                </tr>
-                                            </thead>
-
-                                            <tbody>
-                                                {
-                                                    meritosState.map(
-                                                        (merito) => (
-                                                            <tr key={merito.id}>
-                                                                <td>{merito.titulo}</td>
-                                                                <td>{merito.institucion_auspiciante}</td>
-                                                                <td>
-                                                                    <button className="button is-small is-primary mx-2 is-outlined" key={`${merito.id}0`} onClick={() => {
-                                                                        setObjeto(merito)
-                                                                        setShowModalMerito(true)
-                                                                    }}>
-                                                                        <span className="icon">
-                                                                            <FaRegEdit />
-                                                                        </span>
-                                                                    </button>
-
-                                                                    <button className="button is-small is-danger mx-2 is-outlined" onClick={() => {
-                                                                        deleteHandlerMer(merito.id)
-                                                                    }}>
-                                                                        <span className="icon">
-                                                                            <AiOutlineDelete />
-                                                                        </span>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        )
-                                                    )
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                </div>
+                                    }
+                                }
+                            )
+                        }
+                    >
+                        <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalPonencia(true)}>
+                            <span className="icon">
+                                <IoIosAddCircleOutline />
+                            </span>
+                        </button>
+                    </TabContent>
 
 
 
 
-                            }
-                        </div>
-                    </div>
 
-                    {/*Compresioón idiomas*/}
-                    <div className="column is-half">
-                        <div className="card">
-                            <header className="card-header" onClick={() => setExpandirIdiomas(!expandirIdiomas)}>
-                                <p className="card-header-title">
-                                    Compresión de idiomas
+                </TabPanel>
 
-                                </p>
-                                <button className="card-header-icon" aria-label="more options">
-                                    <span className="icon">
-                                        {expandirIdiomas ? <AiOutlineMinus /> : <AiOutlinePlus />}
-                                    </span>
-                                </button>
-                            </header>
-                            {
-                                expandirIdiomas && <div className="card-content">
-                                    <button className="button  is-success mx-3 is-outlined" onClick={() => setShowModalIdioma(true)}>
-                                        <span className="icon">
-                                            <IoIosAddCircleOutline />
-                                        </span>
-                                    </button>
+                {/*Experiencia Loboral*/}
+                <TabPanel value={activeTab} index={3}>
 
-                                    <div className="table-container">
-                                        <table className="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        idioma
-                                                    </th>
-                                                    <th>
-                                                        Nivel
-                                                    </th>
-                                                    <th>
-                                                        Opciones
-                                                    </th>
-                                                </tr>
-                                            </thead>
+                    <TabContent
+                        title="Experiencia Laboral"
+                        desc="experiencia laboral"
+                        noData="No registra experiencia laboral"
+                        columns={
+                            [
+                                { key: 'cargo', text: 'Cargo' },
+                                { key: 'empresa', text: 'Empresa' },
+                                { key: 'periodo', text: 'Desde - Hasta' },
+                                { key: 'opciones', text: 'Opciones' }
+                            ]
+                        }
+                        rows={
+                            experienciasState.map(
+                                (experiencia) => {
+                                    return {
+                                        id: experiencia.id,
+                                        cargo: experiencia.cargo,
+                                        empresa: experiencia.empresa,
 
-                                            <tbody>
-                                                {
-                                                    idiomasState.map(
-                                                        (idioma) => (
-                                                            <tr key={idioma.id}>
-                                                                <td>{idioma.idioma}</td>
-                                                                <td>{idioma.nivel_comprension}</td>
-                                                                <td>
-                                                                    <button className="button is-small is-primary mx-2 is-outlined" key={`${idioma.id}0`} onClick={() => {
-                                                                        setObjeto(idioma)
-                                                                        setShowModalIdioma(true)
-                                                                    }}>
-                                                                        <span className="icon">
-                                                                            <FaRegEdit />
-                                                                        </span>
-                                                                    </button>
+                                        periodo: `${experiencia.inicio} - ${experiencia.fin !== null && experiencia.fin !== '' ? experiencia.fin : 'Actualidad'}`,
 
-                                                                    <button className="button is-small is-danger mx-2 is-outlined" onClick={() => {
-                                                                        deleteHandlerIdi(idioma.id)
-                                                                    }}>
-                                                                        <span className="icon">
-                                                                            <AiOutlineDelete />
-                                                                        </span>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        )
-                                                    )
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
 
-                                </div>
+                                        opciones: [
+                                            <button className="button is-small is-primary mx-2 is-outlined" key={`${experiencia.id}0`} onClick={() => {
+                                                setObjeto(experiencia)
+                                                setShowModalExperienciaLaboral(true)
+                                            }}>
+                                                <span className="icon">
+                                                    <FaRegEdit />
+                                                </span>
+                                            </button>,
+                                            <button className="button is-small is-danger mx-2 is-outlined" key={`${experiencia.id}1`} onClick={() => {
+                                                deleteHandlerExp(experiencia.id)
+                                            }}>
+                                                <span className="icon">
+                                                    <AiOutlineDelete />
+                                                </span>
+                                            </button>
+
+                                        ]
+                                    }
+                                })
+                        }
+
+                    >
+                        <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalExperienciaLaboral(true)}>
+                            <span className="icon">
+                                <IoIosAddCircleOutline />
+                            </span>
+                        </button>
+                    </TabContent>
 
 
 
+                </TabPanel>
 
-                            }
-                        </div>
-                    </div>
+                {/*Meritos y Distinciones*/}
+                <TabPanel value={activeTab} index={4}>
 
-                    {/*Referencias*/}
-                    <div className="column is-half">
-                        <div className="card mb-6">
-                            <header className="card-header" onClick={() => {
-                                setExpandirReferencia(!expandirReferencias)
-                            }}>
-                                <p className="card-header-title">
-                                    Referencias
+                    <TabContent
+                        title="Meritos y Distinciones"
+                        desc="méritos"
+                        noData="No registra méritos"
+                        columns={
+                            [
+                                { key: 'titulo', text: 'Título' },
+                                { key: 'institucion', text: 'Institución' },
+                                { key: 'opciones', text: 'Opciones' }
+                            ]
+                        }
+                        rows={
+                            meritosState.map(
+                                (merito) => {
+                                    return {
+                                        id: merito.id,
+                                        titulo: merito.titulo,
+                                        institucion: merito.institucion_auspiciante,
+                                        opciones: [
+                                            <button className="button is-small is-primary mx-2 is-outlined" key={`${merito.id}0`} onClick={() => {
+                                                setObjeto(merito)
+                                                setShowModalMerito(true)
+                                            }}>
+                                                <span className="icon">
+                                                    <FaRegEdit />
+                                                </span>
+                                            </button>,
+
+                                            <button className="button is-small is-danger mx-2 is-outlined" key={`${merito.id}1`} onClick={() => {
+                                                deleteHandlerMer(merito.id)
+                                            }}>
+                                                <span className="icon">
+                                                    <AiOutlineDelete />
+                                                </span>
+                                            </button>
+                                        ]
+
+                                    }
+                                })
+                        }
+
+                    >
+                        <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalMerito(true)}>
+                            <span className="icon">
+                                <IoIosAddCircleOutline />
+                            </span>
+                        </button>
+                    </TabContent>
 
 
-                                </p>
-                                <button className="card-header-icon" aria-label="more options">
-                                    <span className="icon">
-                                        {expandirReferencias ? <AiOutlineMinus /> : <AiOutlinePlus />}
-                                    </span>
-                                </button>
-                            </header>
-                            {
-                                expandirReferencias && <div className="card-content">
-                                    <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalReferencia(true)}>
-                                        <span className="icon">
-                                            <IoIosAddCircleOutline />
-                                        </span>
-                                    </button>
-                                    <div className="table-container">
-                                        <table className="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        Referencia
-                                                    </th>
-                                                    <th>
-                                                        Tipo
-                                                    </th>
-                                                    <th>
-                                                        Opciones
-                                                    </th>
-                                                </tr>
-                                            </thead>
 
-                                            <tbody>
-                                                {
-                                                    referenciasState.map(
-                                                        (referencia) => (
-                                                            <tr key={referencia.id}>
-                                                                <td>{referencia.nombres} {referencia.apellidos}</td>
-                                                                <td>{referencia.referencia}</td>
-                                                                <td>
-                                                                    <button className="button is-small is-primary mx-2 is-outlined" key={`${referencia.id}0`} onClick={ev => {
-                                                                        setObjeto(referencia)
-                                                                        setShowModalReferencia(true)
-                                                                    }}>
-                                                                        <span className="icon">
-                                                                            <FaRegEdit />
-                                                                        </span>
-                                                                    </button>
-                                                                    <button className="button is-small is-danger mx-2 is-outlined" onClick={event => {
-                                                                        deleteHandler(referencia.id)
-                                                                    }}>
-                                                                        <span className="icon">
-                                                                            <AiOutlineDelete />
-                                                                        </span>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        )
-                                                    )
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
+                </TabPanel>
 
-                                </div>
-                            }
-                        </div>
-                    </div>
-                </div>
+
+                {/*Compresión idiomas*/}
+                <TabPanel value={activeTab} index={5}>
+                    <TabContent
+                        title="Compresión de idiomas"
+                        desc="idiomas comprendidos"
+                        noData="No hay registros de compresión de idiomas"
+                        columns={
+                            [
+                                { key: 'idioma', text: 'Idioma' },
+                                { key: 'nivel', text: 'Compresión' },
+                                { key: 'opciones', text: 'Opciones' }
+
+                            ]
+                        }
+                        rows={
+                            idiomasState.map(
+                                (idioma) => {
+                                    return {
+                                        id: idioma.id,
+                                        idioma: idioma.idioma,
+                                        nivel: idioma.nivel_comprension,
+                                        opciones:
+                                            [<button className="button is-small is-primary mx-2 is-outlined" key={`${idioma.id}0`} onClick={() => {
+                                                setObjeto(idioma)
+                                                setShowModalIdioma(true)
+                                            }}>
+                                                <span className="icon">
+                                                    <FaRegEdit />
+                                                </span>
+                                            </button>,
+
+                                            <button className="button is-small is-danger mx-2 is-outlined" key={`${idioma.id}`} onClick={() => {
+                                                deleteHandlerIdi(idioma.id)
+                                            }}>
+                                                <span className="icon">
+                                                    <AiOutlineDelete />
+                                                </span>
+                                            </button>]
+
+                                    }
+                                }
+                            )
+                        }
+                    >
+                        <button className="button  is-success mx-3 is-outlined" onClick={() => setShowModalIdioma(true)}>
+                            <span className="icon">
+                                <IoIosAddCircleOutline />
+                            </span>
+                        </button>
+                    </TabContent>
+
+                </TabPanel>
+
+
+                {/*Referencias*/}
+                <TabPanel value={activeTab} index={6}>
+                    <TabContent
+                        title="Referencias"
+                        desc="referencias"
+                        noData="No hay referencias registradas"
+                        columns={
+                            [
+                                { key: 'referencia', text: "Referencia" },
+                                { key: 'tipo', text: 'Tipo' },
+                                { key: 'opciones', text: 'Opciones' }
+                            ]
+                        }
+                        rows={
+                            referenciasState.map(
+                                (referencia) => {
+                                    return {
+                                        id: referencia.id,
+                                        referencia: `${referencia.nombres} ${referencia.apellidos}`,
+                                        tipo: referencia.referencia,
+
+                                        opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${referencia.id}0`} onClick={ev => {
+                                            setObjeto(referencia)
+                                            setShowModalReferencia(true)
+                                        }}>
+                                            <span className="icon">
+                                                <FaRegEdit />
+                                            </span>
+                                        </button>,
+                                        <button className="button is-small is-danger mx-2 is-outlined" key={`${referencia.id}1`} onClick={event => {
+                                            deleteHandler(referencia.id)
+                                        }}>
+                                            <span className="icon">
+                                                <AiOutlineDelete />
+                                            </span>
+                                        </button>]
+
+
+                                    }
+                                }
+                            )
+                        }
+                    >
+                        <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalReferencia(true)}>
+                            <span className="icon">
+                                <IoIosAddCircleOutline />
+                            </span>
+                        </button>
+                    </TabContent>
+                </TabPanel>
+
+
             </div>
             {
                 showModalDelFor &&
@@ -1653,26 +1593,6 @@ const CV = ({ email }) => {
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerFormacionAcademica : postHandlerFormacionAcademica}
                 >
-                    <div className="columns is-centered">
-                        <div className="column">
-                            {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                                <button className="delete" onClick={() => setResponse(null)}></button>
-                            </Alert>}
-                            {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                                <button className="delete" onClick={() => {
-                                    setResponse(null)
-                                    setShowModalFormacionAcademica(false)
-                                    setObjeto(null)
-                                    dispatch(
-                                        loadFormacionAcademica(persona.identificacion)
-                                    )
-                                }}></button>
-                            </Alert>}
-                            {error && <Alert type={'is-danger is-light'} content={error.message}>
-                                <button className="delete" onClick={() => setError(null)}></button>
-                            </Alert>}
-                        </div>
-                    </div>
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalFormacionAcademica(false)
                         setObjeto(null)
@@ -1686,26 +1606,7 @@ const CV = ({ email }) => {
                     title={objeto !== null ? 'Editando mi capacitación' : 'Registrando mi capacitación'}
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerCap : postHandlerCap}>
-                    <div className="columns is-centered">
-                        <div className="column">
-                            {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                                <button className="delete" onClick={() => setResponse(null)}></button>
-                            </Alert>}
-                            {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                                <button className="delete" onClick={() => {
-                                    setResponse(null)
-                                    setShowModalCapacitacion(false)
-                                    setObjeto(null)
-                                    dispatch(
-                                        loadCapacitaciones(persona.identificacion)
-                                    )
-                                }}></button>
-                            </Alert>}
-                            {error && <Alert type={'is-danger is-light'} content={error.message}>
-                                <button className="delete" onClick={() => setError(null)}></button>
-                            </Alert>}
-                        </div>
-                    </div>
+
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalCapacitacion(false)
                         setObjeto(null)
@@ -1719,26 +1620,7 @@ const CV = ({ email }) => {
                     title={objeto !== null ? 'Editando mi capacitación (facilitador)' : 'Registrando mi capacitación (facilitador)'}
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerCapFac : postHandlerCapFac}>
-                    <div className="columns is-centered">
-                        <div className="column">
-                            {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                                <button className="delete" onClick={event => setResponse(null)}></button>
-                            </Alert>}
-                            {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                                <button className="delete" onClick={event => {
-                                    setResponse(null)
-                                    setShowModalCapacitacionFac(false)
-                                    setObjeto(null)
-                                    dispatch(
-                                        loadCapacitacionesFacilitador(persona.identificacion)
-                                    )
-                                }}></button>
-                            </Alert>}
-                            {error && <Alert type={'is-danger is-light'} content={error.message}>
-                                <button className="delete" onClick={event => setError(null)}></button>
-                            </Alert>}
-                        </div>
-                    </div>
+
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalCapacitacionFac(false)
                         setObjeto(null)
@@ -1752,27 +1634,7 @@ const CV = ({ email }) => {
                     title={objeto !== null ? 'Editando mi ponencia' : 'Registrando mi ponencia'}
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerPonencia : postHandlerPonencia}>
-                    <div className="columns is-centered">
-                        <div className="column">
-                            {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                                <button className="delete" onClick={event => setResponse(null)}></button>
 
-                            </Alert>}
-                            {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                                <button className="delete" onClick={event => {
-                                    setResponse(null)
-                                    setShowModalPonencia(false)
-                                    setObjeto(null)
-                                    dispatch(
-                                        loadPonencias(persona.identificacion)
-                                    )
-                                }}></button>
-                            </Alert>}
-                            {error && <Alert type={'is-danger is-light'} content={error.message}>
-                                <button className="delete" onClick={event => setError(null)}></button>
-                            </Alert>}
-                        </div>
-                    </div>
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalPonencia(false)
                         setObjeto(null)
@@ -1781,35 +1643,17 @@ const CV = ({ email }) => {
             }
 
             {/*Modal Experiencia Laboral*/}
-            {showModalExperienciaLaboral && <ExperienciaLaboralModalForm
-                title={objeto !== null ? 'Editando mi experiencia laboral' : 'Registrando mi experiencia laboral'}
-                objeto={objeto}
-                handler={objeto !== null ? putHandlerExperienciaLaboral : postHandlerExperienciaLaboral}>
-                <div className="columns is-centered">
-                    <div className="column">
-                        {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                            <button className="delete" onClick={() => setResponse(null)}></button>
-                        </Alert>}
-                        {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                            <button className="delete" onClick={() => {
-                                setResponse(null)
-                                setShowModalExperienciaLaboral(false)
-                                setObjeto(null)
-                                dispatch(
-                                    loadExperienciaLaboral(persona.identificacion)
-                                )
-                            }}></button>
-                        </Alert>}
-                        {error && <Alert type={'is-danger is-light'} content={error.message}>
-                            <button className="delete" onClick={() => setError(null)}></button>
-                        </Alert>}
-                    </div>
-                </div>
-                <button className="button is-small is-danger mx-3" onClick={ev => {
-                    setShowModalExperienciaLaboral(false)
-                    setObjeto(null)
-                }}>Cancelar</button>
-            </ExperienciaLaboralModalForm>
+            {
+                showModalExperienciaLaboral && <ExperienciaLaboralModalForm
+                    title={objeto !== null ? 'Editando mi experiencia laboral' : 'Registrando mi experiencia laboral'}
+                    objeto={objeto}
+                    handler={objeto !== null ? putHandlerExperienciaLaboral : postHandlerExperienciaLaboral}>
+
+                    <button className="button is-small is-danger mx-3" onClick={ev => {
+                        setShowModalExperienciaLaboral(false)
+                        setObjeto(null)
+                    }}>Cancelar</button>
+                </ExperienciaLaboralModalForm>
             }
 
             {/*Modal meritos y distinciones*/}
@@ -1819,26 +1663,7 @@ const CV = ({ email }) => {
                     title={objeto !== null ? 'Editando mi mérito' : 'Registrando mi mérito'}
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerMerito : postHandlerMerito}>
-                    <div className="columns is-centered">
-                        <div className="column">
-                            {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                                <button className="delete" onClick={event => setResponse(null)}></button>
-                            </Alert>}
-                            {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                                <button className="delete" onClick={event => {
-                                    setResponse(null)
-                                    setShowModalMerito(false)
-                                    setObjeto(null)
-                                    dispatch(
-                                        loadMeritos(persona.identificacion)
-                                    )
-                                }}></button>
-                            </Alert>}
-                            {error && <Alert type={'is-danger is-light'} content={error.message}>
-                                <button className="delete" onClick={() => setError(null)}></button>
-                            </Alert>}
-                        </div>
-                    </div>
+
                     <button className="button is-small is-danger mx-3" onClick={() => {
                         setShowModalMerito(false)
                         setObjeto(null)
@@ -1851,26 +1676,7 @@ const CV = ({ email }) => {
                     title={objeto !== null ? 'Editando mi idioma' : 'Registrando mi idioma'}
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerIdioma : postHandlerIdioma}>
-                    <div className="columns is-centered">
-                        <div className="column">
-                            {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                                <button className="delete" onClick={event => setResponse(null)}></button>
-                            </Alert>}
-                            {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                                <button className="delete" onClick={event => {
-                                    setResponse(null)
-                                    setShowModalIdioma(false)
-                                    setObjeto(null)
-                                    dispatch(
-                                        loadIdiomas(persona.identificacion)
-                                    )
-                                }}></button>
-                            </Alert>}
-                            {error && <Alert type={'is-danger is-light'} content={error.message}>
-                                <button className="delete" onClick={() => setError(null)}></button>
-                            </Alert>}
-                        </div>
-                    </div>
+
                     <button className="button is-small is-danger mx-3" onClick={() => {
                         setShowModalIdioma(false)
                         setObjeto(null)
@@ -1884,31 +1690,23 @@ const CV = ({ email }) => {
                     title={objeto !== null ? 'Editando mi referencia' : 'Registrando mi referencia'}
                     objeto={objeto}
                     handler={objeto !== null ? putHandlerRef : postHandlerRef}>
-                    <div className="columns is-centered">
-                        <div className="column">
-                            {response && response.type === 'warning' && <Alert type={'is-warning is-light'} content={response.content}>
-                                <button className="delete" onClick={() => setResponse(null)}></button>
-                            </Alert>}
-                            {response && response.type === 'success' && <Alert type={'is-success is-light'} content={response.content}>
-                                <button className="delete" onClick={() => {
-                                    setResponse(null)
-                                    setShowModalReferencia(false)
-                                    setObjeto(null)
-                                    dispatch(
-                                        loadReferencias(persona.identificacion)
-                                    )
-                                }}></button>
-                            </Alert>}
-                            {error && <Alert type={'is-danger is-light'} content={error.message}>
-                                <button className="delete" onClick={event => setError(null)}></button>
-                            </Alert>}
-                        </div>
-                    </div>
+
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalReferencia(false)
                         setObjeto(null)
                     }}>Cancelar</button>
                 </ReferenciaModalForm>
+            }
+
+            {
+                response?.type && <AlertModal type={response.type} message={response.content}>
+                    <button className="delete" aria-label="close" onClick={() => setResponse(null)}></button>
+                </AlertModal>
+            }
+            {
+                error?.message && <AlertModal type={'danger'} message={error.message}>
+                    <button className="delete" aria-label="close" onClick={() => setError(null)}></button>
+                </AlertModal>
             }
 
 

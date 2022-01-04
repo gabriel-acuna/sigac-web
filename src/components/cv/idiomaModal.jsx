@@ -33,7 +33,7 @@ let IdiomaModalForm = ({ title, handler, children, objeto }) => {
                     <form className="mt-4" onSubmit={handleSubmit(handler)}>
                         <div className="columns">
                             <div className="column">
-                                <label className="label is-small is-uppercase">Idioma</label>
+                                <label className="label is-small has-text-info">Idioma</label>
                                 {errors.idioma && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese la función desempeñada en el nivel!</span>}
                                 <div className="control">
                                     <input type="text" className="input is-uppercase" {...register('idioma', { required: true })} />
@@ -44,7 +44,7 @@ let IdiomaModalForm = ({ title, handler, children, objeto }) => {
 
 
                             <div className="column">
-                                <label className="label is-small is-uppercase">Lugar estudio</label>
+                                <label className="label is-small has-text-info">Lugar estudio</label>
                                 {errors.lugarEstudio && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese el lugar de estudio!</span>}
                                 <div className="control">
                                     <input type="text" className="input input is-uppercase" {...register('lugarEstudio', { required: true })} />
@@ -53,7 +53,7 @@ let IdiomaModalForm = ({ title, handler, children, objeto }) => {
                             </div>
 
                             <div className="column">
-                                <label className="label is-small is-uppercase">Nivel de comprensión</label>
+                                <label className="label is-small has-text-info">Nivel de comprensión</label>
                                 {errors.nivel && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Seleccione el nivel de comprensión!</span>}
 
                                 <Controller
