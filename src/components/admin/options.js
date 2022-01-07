@@ -1,4 +1,4 @@
-import { FaCity, FaBlind, FaUniversity, FaBookReader } from 'react-icons/fa';
+import { FaCity, FaBlind, FaUniversity, FaBookReader, FaUsersCog, FaUsers } from 'react-icons/fa';
 import { IoIosPeople } from 'react-icons/io'
 import { IoDocumentTextOutline } from 'react-icons/io5'
 import { GiSouthAmerica, GiFarmer, GiPlayerTime, GiOrganigram, GiTeamUpgrade, GiTeacher, GiReceiveMoney, GiDiploma, GiMoneyStack } from 'react-icons/gi'
@@ -11,12 +11,23 @@ import { AiOutlineTags } from 'react-icons/ai'
 
 
 export const options = [
-    /*{
+    {
         title: 'Usuarios y Roles',
-        icon: <FaUsersCog />,
-        content: 'Administre cuentas de usuarios del sistema y asigne roles a usuarios.',
-        url: '/admin/usuarios-roles'
-    },*/
+        options:[
+            {title: 'Roles',
+            icon: <FaUsersCog />,
+            content: 'Gestione el listado de roles.',
+            url: '/'
+
+        },
+        {title: 'Usuarios',
+            icon: <FaUsers />,
+            content: 'Gestione el listado de usuarios.',
+            url: '/'
+
+        }
+        ]
+    },
     {
         title: 'Información demográfica',
         options: [{
