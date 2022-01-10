@@ -52,6 +52,7 @@ import regimenDisciplinarioReducer from './dth/regimen_disciplinario'
 import evaluacionReducer from './dth/evaluacion_desempeño'
 import informacionReproductivaReducer from './dth/informacion_reproductiva'
 import sustitutoPersonalReducer from './dth/sustituto_personal'
+import roleReducer from './roles';
 
 import {
     persistStore,
@@ -69,6 +70,7 @@ import storage from 'redux-persist/lib/storage'
 
 const reducer = combineReducers({
     user: userReducer,
+    roles: roleReducer,
     paises: paisesReducer,
     provincias: provinciasReducer,
     discapacidades: discapacidadesReducer,

@@ -17,7 +17,7 @@ export const options = [
             {title: 'Roles',
             icon: <FaUsersCog />,
             content: 'Gestione el listado de roles.',
-            url: '/'
+            url: '/admin/roles'
 
         },
         {title: 'Usuarios',

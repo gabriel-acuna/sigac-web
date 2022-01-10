@@ -56,18 +56,114 @@ export const loadRol = createAsyncThunk(
     }
 )
 
+export const postRoles = createAsyncThunk(
+    'roles/post',
+    async ( data, { getState }) => {
+        let token;
+        try {
+            token = getState().user.user.jwt.token;
+
+        } catch (e) {
+            throw e;
+        }
+        if (!token) return Promise.reject('There is not token')
+        try {
+        
+            let response = await Axios.post(`${API}/roles`, data,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+            return response.data
+
+        } catch (error) {
+            let err;
+            if (error.response.data.detail[0].msg)
+                err = error.response.data.detail[0].msg
+            if (error.response.data.type)
+                err = `${error.response.data.type}, ${error.response.data.type.content}`
+            throw err
+        }
+
+    }
+
+)
+
+export const putRoles = createAsyncThunk(
+    'roles/put',
+    async (data, { getState }) => {
+        let token;
+        try {
+            token = getState().user.user.jwt.token;
+
+        } catch (e) {
+            throw e;
+        }
+        if (!token) return Promise.reject('There is not token')
+        try {
+            let response = await Axios.put(`${API}/roles/`, data,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+            return response.data
+
+        } catch (error) {
+            let err;
+            if (error.response.data.detail[0].msg)
+                err = error.response.data.detail[0].msg
+            if (error.response.data.type)
+                err = `${error.response.data.type}, ${error.response.data.type.content}`
+            throw err
+        }
+
+    }
+)
+
+export const deleteRoles = createAsyncThunk(
+    'roles/delete',
+    async (id, { getState }) => {
+        let token;
+        try {
+            token = getState().user.user.jwt.token;
+
+        } catch (e) {
+            throw e;
+        }
+        if (!token) return Promise.reject('There is not token')
+        try {
+            let response = await Axios.delete(`${API}/roles/${id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+            return response.data
+
+        } catch (error) {
+            throw error.response
+        }
+
+    }
+)
+
 
 let rolSlice = createSlice({
     name: 'rol',
     initialState: {
-        roles: null,
+        data: {
+            roles: []
+
+        },
         status: ''
 
     },
     reducers: {
 
-        cleaeData: (state) => {
-            state.roles = null
+        clearData: (state) => {
+            state.data.roles = []
         }
 
     },
@@ -76,7 +172,7 @@ let rolSlice = createSlice({
             state.status = 'loading'
         },
         [loadRoles.fulfilled]: (state, action) => {
-            state.user = action.payload
+            state.data.roles = action.payload
             state.status = 'success'
         },
         [loadRoles.rejected]: (state, action) => {
@@ -86,5 +182,5 @@ let rolSlice = createSlice({
     }
 })
 
-export const { logOut } = rolSlice.actions;
+export const { clearData } = rolSlice.actions;
 export default rolSlice.reducer;

@@ -36,6 +36,7 @@ import DAC from './components/dac/index'
 import ReportesPeriodo from './components/dac/reportesPeriodo'
 import CV_DTH from './components/dth/cv'
 import ChangePassword from './components/auth/ChangePassword'
+import ListadoRoles from "./components/admin/options/roles";
 
 const routes = (user) => [
     {
@@ -57,8 +58,8 @@ const routes = (user) => [
                 element: <Admin />
             },
             {
-                path: '/usuarios-roles',
-                element: <NotImplemented />
+                path: '/roles',
+                element: <ListadoRoles />
             },
             {
                 path: '/paises',
