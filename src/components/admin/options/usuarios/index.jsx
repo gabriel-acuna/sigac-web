@@ -47,7 +47,7 @@ let ListadoUsuarios = (props) => {
     const [showModalForm, setShowModalForm] = useState(false)
     const [id, setId] = useState(null)
 
-   
+
 
     let rows = accountsState.map(
         (row) => {
@@ -56,21 +56,22 @@ let ListadoUsuarios = (props) => {
                 apellidos: `${row.primer_apellido} ${row.segundo_apellido}`,
                 nombres: `${row.primer_nombre} ${row.segundo_nombre}`,
                 opciones: [
-                   row.id !== null  ? <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}.`} onClick={() => {
+                    row.id !== null ? <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}.`} onClick={() => {
                         setObjeto(row)
                         setShowModalForm(true)
                     }}>
                         <span className="icon">
                             <FaRegEdit />
                         </span>
-                    </button>:
-                    <button className="button is-small is-success mx-2 is-outlined" key={`${row.id}+`} onClick={() => {
-                        setShowModalForm(true)
-                    }}>
-                        <span className="icon">
-                            <IoIosAddCircleOutline />
-                        </span>
-                    </button>
+                    </button> :
+                        <button className="button is-small is-success mx-2 is-outlined" key={`${row.id}+`} onClick={() => {
+                            setObjeto(row)
+                            setShowModalForm(true)
+                        }}>
+                            <span className="icon">
+                                <IoIosAddCircleOutline />
+                            </span>
+                        </button>
                 ]
             }
         }
@@ -79,7 +80,15 @@ let ListadoUsuarios = (props) => {
     let postHandler = (data) => {
 
         dispatch(
-            createAccount(data)
+            createAccount({
+                primer_nombre: objeto.primer_nombre,
+                segundo_nombre: objeto.segundo_nombre,
+                primer_apellido: objeto.primer_apellido,
+                segundo_apellido: objeto.segundo_apellido,
+                email_personal: objeto.email_personal,
+                email_institucional: objeto.email_institucional,
+                ...data
+            })
         ).unwrap()
             .then((resp) => {
                 setResponse(resp)
@@ -199,7 +208,7 @@ let ListadoUsuarios = (props) => {
                 </div>
             </div>
             {
-                showModalForm && <ModalForm title={objeto !== null ? 'Editar cuenta de usuario' : 'Crear cuenta de usuario'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
+                showModalForm && <ModalForm title={objeto?.id !== null ? 'Editar cuenta de usuario' : 'Crear cuenta de usuario'} objeto={objeto} handler={objeto.id !== null ? putHandler : postHandler}>
 
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalForm(false)

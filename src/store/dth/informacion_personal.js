@@ -109,7 +109,7 @@ export const postInformacionPersonal = createAsyncThunk(
                 discapacidad: datosPersonales.discapacidad.value,
                 carnet_conadis: datosPersonales.numero_conadis !== null ? datosPersonales.numero_conadis.toUpperCase() : datosPersonales.numero_conadis,
                 porcentaje_discapacidad: datosPersonales.porcentaje_discapacidad,
-                sustituto: datosPersonales?.sustituto && datosPersonales.discapacidad.label !== 'NINGUNA' ? datosPersonales.sustituto: null,
+                sustituto: datosPersonales?.sustituto && datosPersonales.discapacidad.label !== 'NINGUNA' ? datosPersonales.sustituto : null,
                 etnia: datosPersonales.etnia.value,
                 nacionalidad: datosPersonales.nacionalidad.value,
                 correo_institucional: datosPersonales.email_institucional,
@@ -168,7 +168,6 @@ export const postInformacionPersonal = createAsyncThunk(
 export const putInformacionPersonal = createAsyncThunk(
     'informacion-personal/put',
     async ({ id, datosPersonales }, { getState }) => {
-        console.log(datosPersonales);
         let token;
         try {
             token = getState().user.user.jwt.token;
@@ -193,7 +192,7 @@ export const putInformacionPersonal = createAsyncThunk(
                 discapacidad: datosPersonales.discapacidad.value,
                 carnet_conadis: datosPersonales.numero_conadis !== null ? datosPersonales.numero_conadis.toUpperCase() : datosPersonales.numero_conadis,
                 porcentaje_discapacidad: datosPersonales.porcentaje_discapacidad,
-                sustituto: datosPersonales?.sustituto && datosPersonales.discapacidad.label !== 'NINGUNA' ? datosPersonales.sustituto: null,
+                sustituto: datosPersonales?.sustituto && datosPersonales.discapacidad.label !== 'NINGUNA' ? datosPersonales.sustituto : null,
                 etnia: datosPersonales.etnia.value,
                 nacionalidad: datosPersonales.nacionalidad.value,
                 correo_institucional: datosPersonales.email_institucional,
@@ -235,12 +234,9 @@ export const putInformacionPersonal = createAsyncThunk(
             return response.data
 
         } catch (error) {
-            console.log(error);
-            let err;
-            if (error.response.data.detail[0].msg)
-                err = error.response.data.detail[0].msg
-            if (error.response.data.type)
-                err = `${error.response.data.type}, ${error.response.data.type.content}`
+            let err = null;
+           // if (error.response.data?.detail[0]?.msg) { err = error.response.data.detail[0].msg }
+            if (error.response.data?.type) { err = `${error.response.data.type.toUpperCase()}, ${error.response.data.content}` }
             throw err
         }
 
