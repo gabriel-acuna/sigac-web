@@ -9,7 +9,7 @@ import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
 import { logOut } from '../../../../store/user'
 import { FaRegEdit } from 'react-icons/fa'
 import { AiOutlineDelete } from 'react-icons/ai'
-//import ModalForm from './modal'
+import ModalForm from './modal'
 
 
 
@@ -107,8 +107,6 @@ let ListadoUsuarios = (props) => {
 
 
     let putHandler = (data) => {
-
-
         dispatch(
             updateAccount(
                 {
@@ -201,13 +199,13 @@ let ListadoUsuarios = (props) => {
                 </div>
             </div>
             {
-                // showModalForm && <ModalForm title={objeto !== null ? 'Editar rol' : 'Registrar rol'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
+                showModalForm && <ModalForm title={objeto !== null ? 'Editar cuenta de usuario' : 'Crear cuenta de usuario'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
 
-                //     <button className="button is-small is-danger mx-3" onClick={ev => {
-                //         setShowModalForm(false)
-                //         setObjeto(null)
-                //     }}>Cancelar</button>
-                // </ModalForm>
+                    <button className="button is-small is-danger mx-3" onClick={ev => {
+                        setShowModalForm(false)
+                        setObjeto(null)
+                    }}>Cancelar</button>
+                </ModalForm>
             }
             {
                 response?.type && <AlertModal type={response.type} message={response.content}>

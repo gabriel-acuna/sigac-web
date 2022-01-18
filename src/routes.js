@@ -7,7 +7,7 @@ import { Outlet, Navigate } from "react-router"
 import ListadoPaises from "./components/admin/options/paises"
 import ListadoProvincias from "./components/admin/options/provincias"
 import ListadoCantonesProvincias from "./components/admin/options/provincias/ListadoCantones"
-import isValid from "./services/auth"
+import { isAdmin, isValid } from "./services/auth"
 import ListadoDiscapacidades from "./components/admin/options/discapacidades"
 import ListadoEtnias from "./components/admin/options/etnias"
 import ListadoNacionalidades from "./components/admin/options/nacionalidades"
@@ -52,7 +52,7 @@ const routes = (user) => [
         element: <NotImplemented />
     }, {
         path: "/admin",
-        element: user && user && isValid ? <Outlet /> : <Navigate to="/login"></Navigate>,
+        element: user && isValid(user.jwt) && isAdmin(user.userInfo.roles) ? <Outlet /> : <Navigate to="/login"></Navigate>,
         children: [
             {
                 path: '/',
@@ -62,10 +62,10 @@ const routes = (user) => [
                 path: '/roles',
                 element: <ListadoRoles />
             },
-        {
-            path: '/usuarios',
-            element: <ListadoUsuarios/>
-        },
+            {
+                path: '/usuarios',
+                element: <ListadoUsuarios />
+            },
             {
                 path: '/paises',
                 element: <Outlet />,
@@ -305,7 +305,7 @@ const routes = (user) => [
     },
     {
         path: '/change-password',
-        element: user && isValid(user.jwt) ?<ChangePassword />: <Navigate to="/login" />
+        element: user && isValid(user.jwt) ? <ChangePassword /> : <Navigate to="/login" />
     }, {
         path: '/cv',
         element: <Outlet />,
@@ -326,9 +326,9 @@ const routes = (user) => [
                 element: <DTH />
             }, {
                 path: '/expediente',
-                element:<Outlet/>,
+                element: <Outlet />,
                 children: [
-                    { path:'/', element:  <ListaExpediente />},
+                    { path: '/', element: <ListaExpediente /> },
                     {
                         path: '/cv',
                         element: <Outlet />,

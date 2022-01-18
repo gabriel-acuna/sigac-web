@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { signIn, logOut } from '../../store/user';
 import { useState } from "react";
 import Alert from "../Alert";
-import isValid from "../../services/auth";
+import { isValid } from "../../services/auth";
 import { useEffect } from "react"
 import { HiOutlineMail, HiOutlineKey } from "react-icons/hi"
 
@@ -49,10 +49,10 @@ let Login = () => {
             })
         ).unwrap()
             .catch((err) => {
-                if (err.message.includes("undefined (reading 'data')")) { 
+                if (err.message.includes("undefined (reading 'data')")) {
                     console.error("No hay conexión con el backend");
-                    setError({'message':'No es posible establecer conexión, intente mas tarde.'})
-                 }
+                    setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                }
                 else { setError(err) }
 
 
@@ -67,11 +67,11 @@ let Login = () => {
         <div className="columns">
 
             <div className="column" style={{
-            backgroundImage:`url(${fondo})`,
-            backgroundPosition:'center',
-            backgroundSize:'cover',
-            backgroundRpeat: 'no-repeat',
-           }}>
+                backgroundImage: `url(${fondo})`,
+                backgroundPosition: 'center',
+                backgroundSize: 'cover',
+                backgroundRpeat: 'no-repeat',
+            }}>
                 <div className="box" style={estilos}>
                     <div className="has-text-centered">
                         <figure>
@@ -90,7 +90,7 @@ let Login = () => {
                         <label className="label">Contraseña</label>
                         <div className="control has-icons-left">
                             <span className="icon is-left">
-                                <HiOutlineKey/>
+                                <HiOutlineKey />
                             </span>
                             <input type="password" {...register("password", { required: true })} className="input" />
 
