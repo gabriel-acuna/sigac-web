@@ -1,42 +1,43 @@
-import Login from "./components/auth/Login";
-import Home from "./components/Home";
-import NotImplemented from "./components/NotImplemted";
-import Admin from "./components/admin";
-import DTH from "./components/dth";
-import { Outlet, Navigate } from "react-router";
-import ListadoPaises from "./components/admin/options/paises";
-import ListadoProvincias from "./components/admin/options/provincias";
-import ListadoCantonesProvincias from "./components/admin/options/provincias/ListadoCantones";
-import isValid from "./services/auth";
-import ListadoDiscapacidades from "./components/admin/options/discapacidades";
-import ListadoEtnias from "./components/admin/options/etnias";
-import ListadoNacionalidades from "./components/admin/options/nacionalidades";
-import ListadoTiposDocumentos from "./components/admin/options/tipos-documentos";
-import ListadoRelacionesIES from "./components/admin/options/relaciones-ies";
-import ListadoTiposEscalafones from './components/admin/options/tipos-escalafones/index';
-import ListadoCategoriasContratos from "./components/admin/options/categorias-contratos";
+import Login from "./components/auth/Login"
+import Home from "./components/Home"
+import NotImplemented from "./components/NotImplemted"
+import Admin from "./components/admin"
+import DTH from "./components/dth"
+import { Outlet, Navigate } from "react-router"
+import ListadoPaises from "./components/admin/options/paises"
+import ListadoProvincias from "./components/admin/options/provincias"
+import ListadoCantonesProvincias from "./components/admin/options/provincias/ListadoCantones"
+import isValid from "./services/auth"
+import ListadoDiscapacidades from "./components/admin/options/discapacidades"
+import ListadoEtnias from "./components/admin/options/etnias"
+import ListadoNacionalidades from "./components/admin/options/nacionalidades"
+import ListadoTiposDocumentos from "./components/admin/options/tipos-documentos"
+import ListadoRelacionesIES from "./components/admin/options/relaciones-ies"
+import ListadoTiposEscalafones from './components/admin/options/tipos-escalafones/index'
+import ListadoCategoriasContratos from "./components/admin/options/categorias-contratos"
 import ListadoTiemposDedicaciones from './components/admin/options/tiempos-dedicaciones/index'
 import ListadoNivelesEducativos from './components/admin/options/niveles-educativos/index'
-import ListadoTiposFuncionarios from "./components/admin/options/tipos-funcionarios";
-import ListadoTiposDocentes from "./components/admin/options/tipos-docentes";
-import ListadoCategoriasDocentes from "./components/admin/options/categorias-docentes";
-import ListadoEstadosCiviles from "./components/admin/options/estados-civiles";
-import ListadoEstructurasInstitucionales from "./components/admin/options/estructura-institucional";
-import ListadoAreasInstitucionales from "./components/admin/options/areas-institucionales";
+import ListadoTiposFuncionarios from "./components/admin/options/tipos-funcionarios"
+import ListadoTiposDocentes from "./components/admin/options/tipos-docentes"
+import ListadoCategoriasDocentes from "./components/admin/options/categorias-docentes"
+import ListadoEstadosCiviles from "./components/admin/options/estados-civiles"
+import ListadoEstructurasInstitucionales from "./components/admin/options/estructura-institucional"
+import ListadoAreasInstitucionales from "./components/admin/options/areas-institucionales"
 import CV from './components/cv/index'
-import ListaExpediente from "./components/dth/ListaExpediente";
-import ListadoCamposEstudiosAmplios from "./components/admin/options/campos-amplios";
-import ListadoCamposEstudiosEspecificos from "./components/admin/options/campos-especificos";
-import ListadoCamposEstudiosDetallados from "./components/admin/options/campos-detallados";
-import ListadoTiposBecas from "./components/admin/options/tipos-becas";
-import ListadoTiposFinanciamientos from "./components/admin/options/tipos-financiamientos";
-import ListadoGrados from "./components/admin/options/grados";
-import ListadoIESNacionales from "./components/admin/options/ies-nacionales";
+import ListaExpediente from "./components/dth/ListaExpediente"
+import ListadoCamposEstudiosAmplios from "./components/admin/options/campos-amplios"
+import ListadoCamposEstudiosEspecificos from "./components/admin/options/campos-especificos"
+import ListadoCamposEstudiosDetallados from "./components/admin/options/campos-detallados"
+import ListadoTiposBecas from "./components/admin/options/tipos-becas"
+import ListadoTiposFinanciamientos from "./components/admin/options/tipos-financiamientos"
+import ListadoGrados from "./components/admin/options/grados"
+import ListadoIESNacionales from "./components/admin/options/ies-nacionales"
 import DAC from './components/dac/index'
 import ReportesPeriodo from './components/dac/reportesPeriodo'
 import CV_DTH from './components/dth/cv'
 import ChangePassword from './components/auth/ChangePassword'
-import ListadoRoles from "./components/admin/options/roles";
+import ListadoRoles from "./components/admin/options/roles"
+import ListadoUsuarios from "./components/admin/options/usuarios"
 
 const routes = (user) => [
     {
@@ -61,6 +62,10 @@ const routes = (user) => [
                 path: '/roles',
                 element: <ListadoRoles />
             },
+        {
+            path: '/usuarios',
+            element: <ListadoUsuarios/>
+        },
             {
                 path: '/paises',
                 element: <Outlet />,
@@ -359,5 +364,5 @@ const routes = (user) => [
             }]
 
     }
-];
-export default routes;
+]
+export default routes

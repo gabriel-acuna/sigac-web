@@ -23,7 +23,7 @@ export const options = [
         {title: 'Usuarios',
             icon: <FaUsers />,
             content: 'Gestione el listado de usuarios.',
-            url: '/'
+            url: '/admin/usuarios'
 
         }
         ]
