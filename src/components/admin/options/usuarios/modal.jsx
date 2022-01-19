@@ -20,7 +20,7 @@ let ModalForm = ({ title, handler, children, objeto }) => {
     }, [])
 
     let rolesState = useSelector(state => state.roles.data.roles)
-
+    console.log(objeto);
     return (
         <div className="modal is-active">
             <div className="modal-background"></div>
@@ -60,7 +60,7 @@ let ModalForm = ({ title, handler, children, objeto }) => {
 
 
                             </div>
-                            {objeto?.estado && objeto?.estado !== null && <div className="column">
+                            { objeto?.estado !== null && <div className="column">
                                 <label className="label is-small has-text-info">Activo</label>
                                 <Controller
                                     control={control}

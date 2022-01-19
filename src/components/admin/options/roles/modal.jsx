@@ -30,7 +30,7 @@ let ModalForm = ({ title, handler, children, objeto }) => {
                         <div className="columns is-centered">
                             <div className="column is-8">
                                 <label className="label is-small has-text-info">Descripción</label>
-                                <textarea  className="textarea" {...register("descripcion", { required: true })} defaultValue={objeto?.descripcion ? objeto.descripcion : ''} >
+                                <textarea  className="textarea" {...register("descripcion")} defaultValue={objeto?.descripcion ? objeto.descripcion : ''} >
                                 </textarea>
                             </div>
                         </div>
