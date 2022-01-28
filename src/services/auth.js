@@ -9,4 +9,22 @@ function isAdmin(roles) {
     return resp
 }
 
-export { isValid, isAdmin }
+function isQA(roles) {
+    let resp = false
+    for (let rol of roles) {
+        if (rol.toLowerCase().includes('calidad'))
+            resp = true
+    }
+    return resp
+}
+
+function isHR(roles) {
+    let resp = false
+    for (let rol of roles) {
+        if (rol.toLowerCase().includes('humano'))
+            resp = true
+    }
+    return resp
+}
+
+export { isValid, isAdmin, isQA, isHR }

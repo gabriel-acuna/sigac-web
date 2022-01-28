@@ -2,18 +2,24 @@ import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom'
 import { loadPersonaEmail } from '../store/dth/informacion_personal'
 import { useDispatch } from 'react-redux'
+import Tabs from '@mui/material/Tabs'
+import Tab from '@mui/material/Tab'
+import Box from '@mui/material/Box'
+import { isAdmin, isHR, isQA } from "../services/auth";
 
 let Home = ({ email, roles, child }) => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [currentUser, setCurrentUser] = useState(null)
+    const a11yProps = (index) => ({ id: `simple-tab-${index}`, 'aria-controls': `simple-tabpanel-${index}`, })
+    const [activeTab, setActiveTab] = useState(0)
 
     useEffect(() => {
         dispatch(loadPersonaEmail(email)).unwrap()
-        .then(
-            resp=>setCurrentUser(resp)
-        )
+            .then(
+                resp => setCurrentUser(resp)
+            )
     }, [currentUser])
     let redirigir = (rol) => {
         if (rol)
@@ -29,19 +35,7 @@ let Home = ({ email, roles, child }) => {
                 <div className="columns is-centered is-multiline">
                     <div className="column is-half mt-3">
                         <div className=" panel is-info">
-                            <p className="panel-heading is-size-6">
-                                {/* <span className="icon" style={{ cursor: 'pointer' }}
-                                    onClick={event => {
-
-                                        navigate(-1)
-
-                                    }}>
-
-                                    <IoIosArrowBack />
-
-
-                                </span> */}
-                                Datos personales </p>
+                            <p className="panel-heading is-size-6">Datos personales </p>
                             <div className="panel-block has-background-info-light">
                                 {currentUser &&
                                     <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr', padding: '20px' }}>
@@ -66,28 +60,22 @@ let Home = ({ email, roles, child }) => {
                     </div>
 
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
 
+                <hr style={{ backgroundColor: "#b3e6cc" }} />
+                <Box>
 
-                    <div className="field mt-4">
-                        <label className="label">Roles asignados</label>
-                        <div className="select" onChange={event => redirigir(event.target.value)}>
-                            <select>
-                                <option></option>
-                                {
-                                    roles && roles.map(
-                                        (rol, index) =>
-                                        (
-                                            <option value={rol} key={index + 1}>{rol}</option>
-                                        )
+                    <Tabs aria-label="basic tabs example"
+                        value={activeTab} onChange={(ev, newVal) => setActiveTab(newVal)}
+                        variant="scrollable"
+                        scrollButtons="auto" >
+                        {currentUser &&  <Tab label="Mi hoja de vida" {...a11yProps(1)} sx={{ textTransform: 'none' }} />}
+                        {isAdmin(roles) && <Tab label="Administración del sistema" {...a11yProps(2)} sx={{ textTransform: 'none' }} />}
+                        {isHR(roles) && <Tab label="Talento Humano" {...a11yProps(2)} sx={{ textTransform: 'none' }} />}
+                        {isQA(roles) && <Tab label="Aseguramiento de la Calidad" {...a11yProps(2)} sx={{ textTransform: 'none' }} />}
+                        
+                    </Tabs>
 
-                                    )
-                                }
-                            </select>
-                        </div>
-                        <p className="help">Seleccione el rol con el que desea interactuar</p>
-                    </div>
-                </div>
+                </Box>
 
             </div>
         </Fragment>
