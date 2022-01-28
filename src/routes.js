@@ -46,7 +46,7 @@ const routes = (user) => [
     },
     {
         path: "/",
-        element: user && isValid(user.jwt) ? <Home roles={user.userInfo.roles} /> : <Navigate to="/login" ></Navigate>
+        element: user && isValid(user.jwt) ? <Home roles={user.userInfo.roles} email={user.userInfo.email} /> : <Navigate to="/login" ></Navigate>
     }, {
         path: "/reset-password",
         element: <NotImplemented />
