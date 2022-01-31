@@ -23,7 +23,6 @@ import ListadoCategoriasDocentes from "./components/admin/options/categorias-doc
 import ListadoEstadosCiviles from "./components/admin/options/estados-civiles"
 import ListadoEstructurasInstitucionales from "./components/admin/options/estructura-institucional"
 import ListadoAreasInstitucionales from "./components/admin/options/areas-institucionales"
-import CV from './components/cv/index'
 import ListaExpediente from "./components/dth/ListaExpediente"
 import ListadoCamposEstudiosAmplios from "./components/admin/options/campos-amplios"
 import ListadoCamposEstudiosEspecificos from "./components/admin/options/campos-especificos"
@@ -306,15 +305,6 @@ const routes = (user) => [
     {
         path: '/change-password',
         element: user && isValid(user.jwt) ? <ChangePassword /> : <Navigate to="/login" />
-    }, {
-        path: '/cv',
-        element: <Outlet />,
-        children: [
-            {
-                path: '/',
-                element: user && isValid(user.jwt) ? <CV email={user.userInfo.email} /> : <Navigate to="/login" />
-            }
-        ]
     },
 
     {

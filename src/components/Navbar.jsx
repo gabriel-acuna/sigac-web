@@ -58,11 +58,6 @@ let NavBar = (props) => {
                                 </span>
                                 Cambiar contraseña
                             </Link>
-                            <Link className="navbar-item" to="/cv">
-                                <span className="mr-2">
-                                    <ImProfile />
-                                </span>
-                                CV</Link>
 
                             <a className="navbar-item" onClick={() => doLogOut()} >
                                 <span className="mr-2"> <FcRight /></span>

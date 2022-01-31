@@ -5,7 +5,9 @@ import { useDispatch } from 'react-redux'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import Box from '@mui/material/Box'
-import { isAdmin, isHR, isQA } from "../services/auth";
+import { isAdmin, isHR, isQA } from "../services/auth"
+import CV from "./cv/index"
+import TabPanel from './TabPanel'
 
 let Home = ({ email, roles, child }) => {
 
@@ -68,7 +70,7 @@ let Home = ({ email, roles, child }) => {
                         value={activeTab} onChange={(ev, newVal) => setActiveTab(newVal)}
                         variant="scrollable"
                         scrollButtons="auto" >
-                        {currentUser &&  <Tab label="Mi hoja de vida" {...a11yProps(1)} sx={{ textTransform: 'none' }} />}
+                        <Tab label="Mi hoja de vida" {...a11yProps(1)} sx={{ textTransform: 'none' }} />
                         {isAdmin(roles) && <Tab label="Administración del sistema" {...a11yProps(2)} sx={{ textTransform: 'none' }} />}
                         {isHR(roles) && <Tab label="Talento Humano" {...a11yProps(2)} sx={{ textTransform: 'none' }} />}
                         {isQA(roles) && <Tab label="Aseguramiento de la Calidad" {...a11yProps(2)} sx={{ textTransform: 'none' }} />}
@@ -76,6 +78,11 @@ let Home = ({ email, roles, child }) => {
                     </Tabs>
 
                 </Box>
+                <TabPanel value={activeTab} index={0}>
+                        {
+                            currentUser && <CV email={currentUser.correo_institucional}/>
+                        }        
+                </TabPanel>
 
             </div>
         </Fragment>

@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'
-import { IoIosArrowBack, IoIosAddCircleOutline } from 'react-icons/io'
+import { useEffect, useState } from 'react'
+import { IoIosAddCircleOutline } from 'react-icons/io'
 import { FaRegEdit } from 'react-icons/fa'
 
 import { AiOutlineDelete } from 'react-icons/ai'
@@ -53,7 +52,6 @@ import Box from '@mui/material/Box'
 
 const CV = ({ email }) => {
 
-    const navigate = useNavigate()
     const dispatch = useDispatch()
 
     let a11yProps = (index) => {
@@ -974,48 +972,6 @@ const CV = ({ email }) => {
         <>
             <div className="container">
 
-                <div className="columns is-centered is-multiline">
-                    <div className="column is-half mt-3">
-                        <div className=" panel is-info">
-                            <p className="panel-heading is-size-6">
-                                <span className="icon" style={{ cursor: 'pointer' }}
-                                    onClick={event => {
-
-                                        navigate(-1)
-
-                                    }}>
-
-                                    <IoIosArrowBack />
-
-
-                                </span>
-                                Datos personales </p>
-                            <div className="panel-block has-background-info-light">
-                                {persona &&
-                                    <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr', padding: '20px' }}>
-
-                                        <div>
-                                            <span className="has-text-weight-medium">Nombres: </span> {persona.primer_nombre} {persona.segundo_nombre}
-                                        </div>
-                                        <div >
-                                            <span className="has-text-weight-medium">Apellidos: </span> {persona.primer_apellido} {persona.segundo_apellido}
-                                        </div>
-
-                                        <div><span className="has-text-weight-medium">Edad: </span> {persona?.edad.años}  años </div>
-                                        <div><span className="has-text-weight-medium">Estado civil: </span> {persona.estado_civil.estado_civil}</div>
-                                        <div><span className="has-text-weight-medium">Teléfono movil: </span> {persona.telefono_movil}</div>
-                                        <div><span className="has-text-weight-medium">Correo: </span> {persona.correo_personal}</div>
-                                    </div>
-                                }
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <hr style={{ backgroundColor: "#b3e6cc" }} />
                 <Box sx={{ width: '100%' }}>
 
                     <Tabs aria-label="basic tabs example"
