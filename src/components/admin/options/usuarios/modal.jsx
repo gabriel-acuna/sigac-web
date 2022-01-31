@@ -10,14 +10,14 @@ import { loadRoles } from '../../../../store/roles'
 let ModalForm = ({ title, handler, children, objeto }) => {
 
 
-    const { register, handleSubmit, formState: { errors }, control } = useForm()
+    const { handleSubmit, formState: { errors }, control } = useForm()
     const animatedComponents = makeAnimated()
     const dispatch = useDispatch()
 
 
     useEffect(() => {
         dispatch(loadRoles())
-    }, [])
+    }, [dispatch])
 
     let rolesState = useSelector(state => state.roles.data.roles)
     console.log(objeto);

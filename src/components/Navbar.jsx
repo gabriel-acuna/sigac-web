@@ -1,6 +1,5 @@
 import { FcSettings, FcHome, FcRight } from 'react-icons/fc'
 import { CgProfile } from 'react-icons/cg'
-import { ImProfile } from 'react-icons/im'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { logOut } from '../store/user'

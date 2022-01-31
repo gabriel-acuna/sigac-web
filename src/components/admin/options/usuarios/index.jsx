@@ -3,12 +3,10 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { loadAccounts, createAccount, updateAccount, clearData } from '../../../../store/accounts'
-import ConfirmDialog from '../../../ConfirmDialog'
 import AlertModal from '../../../AlertModal'
 import { IoIosAddCircleOutline, IoIosArrowBack } from 'react-icons/io'
 import { logOut } from '../../../../store/user'
 import { FaRegEdit } from 'react-icons/fa'
-import { AiOutlineDelete } from 'react-icons/ai'
 import ModalForm from './modal'
 
 
@@ -42,10 +40,8 @@ let ListadoUsuarios = (props) => {
 
     const [response, setResponse] = useState(null)
     const [error, setError] = useState(null)
-    const [showModal, setShowModal] = useState(false)
     const [objeto, setObjeto] = useState(null)
     const [showModalForm, setShowModalForm] = useState(false)
-    const [id, setId] = useState(null)
 
 
 
