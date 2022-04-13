@@ -1201,7 +1201,7 @@ const CV = ({ email }) => {
                                         { key: 'tema', text: 'Tema' },
                                         { key: 'institucion_organizadora', text: 'Institución' },
                                         { key: 'fecha', text: 'Fecha' },
-                                        { key: 'opciones', text: 'opciones' }
+                                        { key: 'opciones', text: 'Opciones' }
                                     ]
                                 }
                                 rows={
@@ -1262,8 +1262,8 @@ const CV = ({ email }) => {
                                     [
                                         { key: 'cargo', text: 'Cargo' },
                                         { key: 'empresa', text: 'Empresa' },
-                                        { key: 'inicio', text: 'Inicio' },
-                                        { key: 'fin', text: 'Fin' },
+                                        { key: 'inicio', text: 'Desde' },
+                                        { key: 'fin', text: 'Hasta' },
                                         { key: 'opciones', text: 'Opciones' }
                                     ]
                                 }
