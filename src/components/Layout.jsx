@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import { Link,useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { loadPersonaEmail } from '../store/dth/informacion_personal'
 import Footer from "./Footer";
@@ -28,7 +28,7 @@ let Layout = (props) => {
 
 
     useEffect(() => {
-        user && dispatch(loadPersonaEmail(user.userInfo.email)).unwrap()
+        user && currentUser == null && dispatch(loadPersonaEmail(user.userInfo.email)).unwrap()
             .then(
                 resp => setCurrentUser(resp)
             )
