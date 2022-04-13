@@ -979,21 +979,21 @@ const CV = ({ email }) => {
                         <AsideMenu background='#99ccff'>
                             {
                                 ['Formación Académica',
-                                'Capacitaciones',
-                                'Ponencias',
-                                'Experiencia Laboral',
-                                'Méritos y distinciones',
-                                'Compresión de idiomas',
-                                'Referencias'
+                                    'Capacitaciones',
+                                    'Ponencias',
+                                    'Experiencia Laboral',
+                                    'Méritos y distinciones',
+                                    'Compresión de idiomas',
+                                    'Referencias'
 
-                            ].map(
-                                (item, index) =>(
-                                    <MenuItem label={`${item}`} {...a11yProps(index)} onClick={(ev)=>{ setActiveTab(index)}} isActive ={ index ==activeTab}/>
+                                ].map(
+                                    (item, index) => (
+                                        <MenuItem label={`${item}`} {...a11yProps(index)} onClick={(ev) => { setActiveTab(index) }} isActive={index == activeTab} />
+                                    )
                                 )
-                            )
                             }
-                            
-                            
+
+
 
 
                         </AsideMenu>
@@ -1043,7 +1043,7 @@ const CV = ({ email }) => {
                                 <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalFormacionAcademica(true)}>
                                     <span className="icon">
                                         <IoIosAddCircleOutline />
-                                    </span> 
+                                    </span>
                                     <span>
                                         Registrar
                                     </span>
@@ -1103,7 +1103,7 @@ const CV = ({ email }) => {
                                 <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalCapacitacion(true)}>
                                     <span className="icon">
                                         <IoIosAddCircleOutline />
-                                    </span> 
+                                    </span>
                                     <span>
                                         Registrar
                                     </span>
@@ -1211,7 +1211,7 @@ const CV = ({ email }) => {
                                                 id: ponencia.id,
                                                 tema: ponencia.tema,
                                                 institucion_organizadora: ponencia.institucion_organizadora,
-                                                fecha: ponencia.fecha,
+                                                fecha: `${ponencia.fecha.slice(5,7)}-${ponencia.fecha.slice(0,4)}`,
                                                 opciones: [
                                                     <button className="button is-small is-primary mx-2 is-outlined" key={`${ponencia.id}0`} onClick={ev => {
                                                         setObjeto(ponencia)
@@ -1238,7 +1238,7 @@ const CV = ({ email }) => {
                                 <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalPonencia(true)}>
                                     <span className="icon">
                                         <IoIosAddCircleOutline />
-                                    </span> 
+                                    </span>
                                     <span>
                                         Registrar
                                     </span>
@@ -1262,7 +1262,8 @@ const CV = ({ email }) => {
                                     [
                                         { key: 'cargo', text: 'Cargo' },
                                         { key: 'empresa', text: 'Empresa' },
-                                        { key: 'periodo', text: 'Desde - Hasta' },
+                                        { key: 'inicio', text: 'Inicio' },
+                                        { key: 'fin', text: 'Fin' },
                                         { key: 'opciones', text: 'Opciones' }
                                     ]
                                 }
@@ -1273,10 +1274,8 @@ const CV = ({ email }) => {
                                                 id: experiencia.id,
                                                 cargo: experiencia.cargo,
                                                 empresa: experiencia.empresa,
-
-                                                periodo: `${experiencia.inicio} - ${experiencia.fin !== null && experiencia.fin !== '' ? experiencia.fin : 'Actualidad'}`,
-
-
+                                                inicio: experiencia.inicio,
+                                                fin: experiencia.fin !== null && experiencia.fin !== '' ? experiencia.fin : 'Actualidad',
                                                 opciones: [
                                                     <button className="button is-small is-primary mx-2 is-outlined" key={`${experiencia.id}0`} onClick={() => {
                                                         setObjeto(experiencia)
@@ -1303,7 +1302,7 @@ const CV = ({ email }) => {
                                 <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalExperienciaLaboral(true)}>
                                     <span className="icon">
                                         <IoIosAddCircleOutline />
-                                    </span> 
+                                    </span>
                                     <span>
                                         Registrar
                                     </span>
@@ -1362,7 +1361,7 @@ const CV = ({ email }) => {
                                 <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalMerito(true)}>
                                     <span className="icon">
                                         <IoIosAddCircleOutline />
-                                    </span> 
+                                    </span>
                                     <span>
                                         Registrar
                                     </span>
@@ -1421,7 +1420,7 @@ const CV = ({ email }) => {
                                 <button className="button  is-success mx-3 is-outlined" onClick={() => setShowModalIdioma(true)}>
                                     <span className="icon">
                                         <IoIosAddCircleOutline />
-                                    </span> 
+                                    </span>
                                     <span>
                                         Registrar
                                     </span>
@@ -1477,7 +1476,7 @@ const CV = ({ email }) => {
                                 <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalReferencia(true)}>
                                     <span className="icon">
                                         <IoIosAddCircleOutline />
-                                    </span> 
+                                    </span>
                                     <span>
                                         Registrar
                                     </span>

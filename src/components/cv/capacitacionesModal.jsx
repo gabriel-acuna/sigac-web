@@ -109,7 +109,13 @@ let CapacitacionModalForm = ({ title, handler, children, objeto }) => {
                             <div className="columns">
                                 <div className="column">
 
-                                    <label className="label is-small has-text-info">Tipo evento: <span className="has-text-success has-text-weight-bold" style={{ cursor: 'pointer' }} onClick={() => setShowModal(true)}><IoIosAdd /></span></label>
+
+                                    <label className="label is-small has-text-info">Tipo evento:  
+                                        <button type='button' className='button is-small ml-4 is-success is-outlined' style={{ cursor: 'pointer' }} onClick={() => setShowModal(true)}>
+                                            <span className="has-text-success has-text-weight-bold"><IoIosAdd /></span> <span>Añadir evento</span>
+                                        </button>
+                                    </label>
+
 
 
 
@@ -262,7 +268,7 @@ let CapacitacionModalForm = ({ title, handler, children, objeto }) => {
                                 </div>
 
 
-                                <div className="column">
+                                <div className="column is-2">
                                     <label className="label is-small has-text-info">Horas</label>
                                     {errors.horas && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, Ingrese las horas de capacitación!</span>}
                                     <div className="control">
