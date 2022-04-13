@@ -998,21 +998,6 @@ const CV = ({ email }) => {
 
                         </AsideMenu>
                     </section>
-
-                    {/* <Tabs aria-label="basic tabs example" 
-                            orientation="vertical"
-                            value={activeTab} onChange={(ev, newVal) => setActiveTab(newVal)}
-                            variant="scrollable"
-                            scrollButtons="auto" >
-                            <Tab label="Formación Académica" {...a11yProps(0)} sx={{ textTransform: 'none', textAlign: 'left' }} />
-                            <Tab label="Capacitaciones" {...a11yProps(1)} sx={{ textTransform: 'none', textAlign: 'left' }} />
-                            <Tab label="Ponencias" {...a11yProps(2)} sx={{ textTransform: 'none', textAlign: 'left' }} />
-                            <Tab label="Experiencia Laboral" {...a11yProps(3)} sx={{ textTransform: 'none' }} />
-                            <Tab label="Méritos y distinciones" {...a11yProps(4)} sx={{ textTransform: 'none' }} />
-                            <Tab label="Compresión de idiomas" {...a11yProps(5)} sx={{ textTransform: 'none' }} />
-                            <Tab label="Referencias" {...a11yProps(6)} sx={{ textTransform: 'none' }} />
-                        </Tabs> */}
-
                     <div className="is-10">
                         {/*Formación Profesional */}
                         <TabPanel value={activeTab} index={0}>
@@ -1058,6 +1043,9 @@ const CV = ({ email }) => {
                                 <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalFormacionAcademica(true)}>
                                     <span className="icon">
                                         <IoIosAddCircleOutline />
+                                    </span> 
+                                    <span>
+                                        Registrar
                                     </span>
                                 </button>
                             </TabContent>
@@ -1115,6 +1103,9 @@ const CV = ({ email }) => {
                                 <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalCapacitacion(true)}>
                                     <span className="icon">
                                         <IoIosAddCircleOutline />
+                                    </span> 
+                                    <span>
+                                        Registrar
                                     </span>
                                 </button>
 
@@ -1247,6 +1238,9 @@ const CV = ({ email }) => {
                                 <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalPonencia(true)}>
                                     <span className="icon">
                                         <IoIosAddCircleOutline />
+                                    </span> 
+                                    <span>
+                                        Registrar
                                     </span>
                                 </button>
                             </TabContent>
@@ -1309,6 +1303,9 @@ const CV = ({ email }) => {
                                 <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalExperienciaLaboral(true)}>
                                     <span className="icon">
                                         <IoIosAddCircleOutline />
+                                    </span> 
+                                    <span>
+                                        Registrar
                                     </span>
                                 </button>
                             </TabContent>
@@ -1353,7 +1350,7 @@ const CV = ({ email }) => {
                                                     }}>
                                                         <span className="icon">
                                                             <AiOutlineDelete />
-                                                        </span>
+                                                        </span> Nuevo
                                                     </button>
                                                 ]
 
@@ -1365,6 +1362,9 @@ const CV = ({ email }) => {
                                 <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalMerito(true)}>
                                     <span className="icon">
                                         <IoIosAddCircleOutline />
+                                    </span> 
+                                    <span>
+                                        Registrar
                                     </span>
                                 </button>
                             </TabContent>
@@ -1421,6 +1421,9 @@ const CV = ({ email }) => {
                                 <button className="button  is-success mx-3 is-outlined" onClick={() => setShowModalIdioma(true)}>
                                     <span className="icon">
                                         <IoIosAddCircleOutline />
+                                    </span> 
+                                    <span>
+                                        Registrar
                                     </span>
                                 </button>
                             </TabContent>
@@ -1474,6 +1477,9 @@ const CV = ({ email }) => {
                                 <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalReferencia(true)}>
                                     <span className="icon">
                                         <IoIosAddCircleOutline />
+                                    </span> 
+                                    <span>
+                                        Registrar
                                     </span>
                                 </button>
                             </TabContent>
