@@ -950,118 +950,118 @@ const CV = (props) => {
 
                         </AsideMenu>
                     </section>
+                    <div className="column is-10">
+                        {/*Formación Profesional */}
+                        <TabPanel value={activeTab} index={0}>
 
-                    {/*Formación Profesional */}
-                    <TabPanel value={activeTab} index={0}>
-
-                        <TabContent
-                            title="Formación Académica"
-                            desc="formación académica"
-                            noData="No registra fomación academica"
-                            columns={[
-                                { key: 'nombre_titulo', text: 'Título' },
-                                { key: 'estado', text: 'Estado' },
-                                { key: 'opciones', text: 'Opciones' }
-                            ]}
-                            rows={
-                                formacionState.map(
-                                    (estudio) => {
-                                        return {
-                                            id: estudio.id,
-                                            nombre_titulo: estudio.nombre_titulo,
-                                            estado: estudio.estado,
-
-                                            opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${estudio.id}0`} onClick={() => {
-                                                setObjeto(estudio)
-                                                setShowModalFormacionAcademica(true)
-                                            }}>
-                                                <span className="icon">
-                                                    <FaRegEdit />
-                                                </span>
-                                            </button>,
-                                            <button className="button is-small is-danger mx-2 is-outlined" key={`${estudio.id}1`} onClick={() => {
-                                                deleteHandlerFor(estudio.id)
-                                            }}>
-                                                <span className="icon">
-                                                    <AiOutlineDelete />
-                                                </span>
-                                            </button>]
-
-                                        }
-                                    }
-                                )
-                            }
-                        >
-                            <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalFormacionAcademica(true)}>
-                                <span className="icon">
-                                    <IoIosAddCircleOutline />
-                                </span>
-                                <span>Registrar</span>
-                            </button>
-                        </TabContent>
-                    </ TabPanel>
-
-                    {/*Capacitaciones*/}
-                    <TabPanel value={activeTab} index={1}>
-
-
-                        <TabContent
-                            title="Capacitaciones"
-                            desc="capacitaciones"
-                            noData="No hay capacitaciones registradas"
-                            columns={
-                                [
-                                    { key: 'tipo_evento', text: 'Tipo evento' },
-                                    { key: 'horas', text: 'Horas' },
+                            <TabContent
+                                title="Formación Académica"
+                                desc="formación académica"
+                                noData="No registra fomación academica"
+                                columns={[
+                                    { key: 'nombre_titulo', text: 'Título' },
+                                    { key: 'estado', text: 'Estado' },
                                     { key: 'opciones', text: 'Opciones' }
-                                ]
-                            }
-                            rows=
+                                ]}
+                                rows={
+                                    formacionState.map(
+                                        (estudio) => {
+                                            return {
+                                                id: estudio.id,
+                                                nombre_titulo: estudio.nombre_titulo,
+                                                estado: estudio.estado,
 
-                            {
-                                capacitacionesState.map(
-                                    (capacitacion) => {
-                                        return {
-                                            id: capacitacion.id,
-                                            tipo_evento: `${capacitacion.tipo_evento.evento} - ${capacitacion.institucion_organizadora}`,
-                                            horas: capacitacion.horas,
+                                                opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${estudio.id}0`} onClick={() => {
+                                                    setObjeto(estudio)
+                                                    setShowModalFormacionAcademica(true)
+                                                }}>
+                                                    <span className="icon">
+                                                        <FaRegEdit />
+                                                    </span>
+                                                </button>,
+                                                <button className="button is-small is-danger mx-2 is-outlined" key={`${estudio.id}1`} onClick={() => {
+                                                    deleteHandlerFor(estudio.id)
+                                                }}>
+                                                    <span className="icon">
+                                                        <AiOutlineDelete />
+                                                    </span>
+                                                </button>]
 
-                                            opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${capacitacion.id}0`} onClick={ev => {
-                                                setObjeto(capacitacion)
-                                                setShowModalCapacitacion(true)
-                                            }}>
-                                                <span className="icon">
-                                                    <FaRegEdit />
-                                                </span>
-                                            </button>,
-
-                                            <button className="button is-small is-danger mx-2 is-outlined" key={`${capacitacion.id}1`} onClick={event => {
-                                                deleteHandlerCap(capacitacion.id)
-                                            }}>
-                                                <span className="icon">
-                                                    <AiOutlineDelete />
-                                                </span>
-                                            </button>]
-
-
+                                            }
                                         }
-                                    }
+                                    )
+                                }
+                            >
+                                <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalFormacionAcademica(true)}>
+                                    <span className="icon">
+                                        <IoIosAddCircleOutline />
+                                    </span>
+                                    <span>Registrar</span>
+                                </button>
+                            </TabContent>
+                        </ TabPanel>
+
+                        {/*Capacitaciones*/}
+                        <TabPanel value={activeTab} index={1}>
 
 
-                                )
-                            }>
-                            <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalCapacitacion(true)}>
-                                <span className="icon">
-                                    <IoIosAddCircleOutline />
-                                </span>
-                                <span>Registrar</span>
-                            </button>
+                            <TabContent
+                                title="Capacitaciones"
+                                desc="capacitaciones"
+                                noData="No hay capacitaciones registradas"
+                                columns={
+                                    [
+                                        { key: 'tipo_evento', text: 'Tipo evento' },
+                                        { key: 'horas', text: 'Horas' },
+                                        { key: 'opciones', text: 'Opciones' }
+                                    ]
+                                }
+                                rows=
 
-                        </TabContent>
-                    </TabPanel>
+                                {
+                                    capacitacionesState.map(
+                                        (capacitacion) => {
+                                            return {
+                                                id: capacitacion.id,
+                                                tipo_evento: `${capacitacion.tipo_evento.evento} - ${capacitacion.institucion_organizadora}`,
+                                                horas: capacitacion.horas,
 
-                    {/*Capacitaciones Facilitadores*/}
-                    {/* <div className="column is-half">
+                                                opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${capacitacion.id}0`} onClick={ev => {
+                                                    setObjeto(capacitacion)
+                                                    setShowModalCapacitacion(true)
+                                                }}>
+                                                    <span className="icon">
+                                                        <FaRegEdit />
+                                                    </span>
+                                                </button>,
+
+                                                <button className="button is-small is-danger mx-2 is-outlined" key={`${capacitacion.id}1`} onClick={event => {
+                                                    deleteHandlerCap(capacitacion.id)
+                                                }}>
+                                                    <span className="icon">
+                                                        <AiOutlineDelete />
+                                                    </span>
+                                                </button>]
+
+
+                                            }
+                                        }
+
+
+                                    )
+                                }>
+                                <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalCapacitacion(true)}>
+                                    <span className="icon">
+                                        <IoIosAddCircleOutline />
+                                    </span>
+                                    <span>Registrar</span>
+                                </button>
+
+                            </TabContent>
+                        </TabPanel>
+
+                        {/*Capacitaciones Facilitadores*/}
+                        {/* <div className="column is-half">
                         <div className="card">
                             <header className="card-header" onClick={() => {
                                 setExpandirCapacitacionesFac(!expandirCapacitacionesFac)
@@ -1137,294 +1137,295 @@ const CV = (props) => {
                         </div>
                     </div> */}
 
-                    {/*Ponencias */}
-                    <TabPanel value={activeTab} index={2}>
+                        {/*Ponencias */}
+                        <TabPanel value={activeTab} index={2}>
 
-                        <TabContent
-                            title="Ponencias"
-                            desc="ponencias"
-                            noData="No hay ponencias registradas"
-                            columns={
-                                [
-                                    { key: 'tema', text: 'Tema' },
-                                    { key: 'institucion_organizadora', text: 'Institución' },
-                                    { key: 'fecha', text: 'Fecha' },
-                                    { key: 'opciones', text: 'Opciones' }
-                                ]
-                            }
-                            rows={
-                                ponenciasState.map(
-                                    (ponencia) => {
-                                        return {
-                                            id: ponencia.id,
-                                            tema: ponencia.tema,
-                                            institucion_organizadora: ponencia.institucion_organizadora,
-                                            fecha: `${ponencia.fecha.slice(5, 7)}-${ponencia.fecha.slice(0, 4)}`,
-                                            opciones: [
-                                                <button className="button is-small is-primary mx-2 is-outlined" key={`${ponencia.id}0`} onClick={ev => {
-                                                    setObjeto(ponencia)
-                                                    setShowModalPonencia(true)
-                                                }}>
-                                                    <span className="icon">
-                                                        <FaRegEdit />
-                                                    </span>
-                                                </button>,
-                                                <button className="button is-small is-danger mx-2 is-outlined" key={`${ponencia.id}1`} onClick={event => {
-                                                    deleteHandlerPon(ponencia.id)
-                                                }}>
-                                                    <span className="icon">
-                                                        <AiOutlineDelete />
-                                                    </span>
-                                                </button>
-                                            ]
+                            <TabContent
+                                title="Ponencias"
+                                desc="ponencias"
+                                noData="No hay ponencias registradas"
+                                columns={
+                                    [
+                                        { key: 'tema', text: 'Tema' },
+                                        { key: 'institucion_organizadora', text: 'Institución' },
+                                        { key: 'fecha', text: 'Fecha' },
+                                        { key: 'opciones', text: 'Opciones' }
+                                    ]
+                                }
+                                rows={
+                                    ponenciasState.map(
+                                        (ponencia) => {
+                                            return {
+                                                id: ponencia.id,
+                                                tema: ponencia.tema,
+                                                institucion_organizadora: ponencia.institucion_organizadora,
+                                                fecha: `${ponencia.fecha.slice(5, 7)}-${ponencia.fecha.slice(0, 4)}`,
+                                                opciones: [
+                                                    <button className="button is-small is-primary mx-2 is-outlined" key={`${ponencia.id}0`} onClick={ev => {
+                                                        setObjeto(ponencia)
+                                                        setShowModalPonencia(true)
+                                                    }}>
+                                                        <span className="icon">
+                                                            <FaRegEdit />
+                                                        </span>
+                                                    </button>,
+                                                    <button className="button is-small is-danger mx-2 is-outlined" key={`${ponencia.id}1`} onClick={event => {
+                                                        deleteHandlerPon(ponencia.id)
+                                                    }}>
+                                                        <span className="icon">
+                                                            <AiOutlineDelete />
+                                                        </span>
+                                                    </button>
+                                                ]
 
+                                            }
                                         }
-                                    }
-                                )
-                            }
-                        >
-                            <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalPonencia(true)}>
-                                <span className="icon">
-                                    <IoIosAddCircleOutline />
-                                </span>
-                                <span>Registrar</span>
-                            </button>
-                        </TabContent>
+                                    )
+                                }
+                            >
+                                <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalPonencia(true)}>
+                                    <span className="icon">
+                                        <IoIosAddCircleOutline />
+                                    </span>
+                                    <span>Registrar</span>
+                                </button>
+                            </TabContent>
 
 
 
 
 
-                    </TabPanel>
+                        </TabPanel>
 
-                    {/*Experiencia Loboral*/}
-                    <TabPanel value={activeTab} index={3}>
+                        {/*Experiencia Loboral*/}
+                        <TabPanel value={activeTab} index={3}>
 
-                        <TabContent
-                            title="Experiencia Laboral"
-                            desc="experiencia laboral"
-                            noData="No registra experiencia laboral"
-                            columns={
-                                [
-                                    { key: 'cargo', text: 'Cargo' },
-                                    { key: 'empresa', text: 'Empresa' },
-                                    { key: 'inicio', text: 'Desde' },
-                                    { key: 'fin', text: 'Hasta' },
-                                    { key: 'opciones', text: 'Opciones' }
-                                ]
-                            }
-                            rows={
-                                experienciasState.map(
-                                    (experiencia) => {
-                                        return {
-                                            id: experiencia.id,
-                                            cargo: experiencia.cargo,
-                                            empresa: experiencia.empresa,
-                                            inicio: experiencia.inicio,
-                                            fin: experiencia.fin !== null && experiencia.fin !== '' ? experiencia.fin : 'Actualidad',
+                            <TabContent
+                                title="Experiencia Laboral"
+                                desc="experiencia laboral"
+                                noData="No registra experiencia laboral"
+                                columns={
+                                    [
+                                        { key: 'cargo', text: 'Cargo' },
+                                        { key: 'empresa', text: 'Empresa' },
+                                        { key: 'inicio', text: 'Desde' },
+                                        { key: 'fin', text: 'Hasta' },
+                                        { key: 'opciones', text: 'Opciones' }
+                                    ]
+                                }
+                                rows={
+                                    experienciasState.map(
+                                        (experiencia) => {
+                                            return {
+                                                id: experiencia.id,
+                                                cargo: experiencia.cargo,
+                                                empresa: experiencia.empresa,
+                                                inicio: experiencia.inicio,
+                                                fin: experiencia.fin !== null && experiencia.fin !== '' ? experiencia.fin : 'Actualidad',
 
 
-                                            opciones: [
-                                                <button className="button is-small is-primary mx-2 is-outlined" key={`${experiencia.id}0`} onClick={() => {
-                                                    setObjeto(experiencia)
-                                                    setShowModalExperienciaLaboral(true)
-                                                }}>
-                                                    <span className="icon">
-                                                        <FaRegEdit />
-                                                    </span>
-                                                </button>,
-                                                <button className="button is-small is-danger mx-2 is-outlined" key={`${experiencia.id}1`} onClick={() => {
-                                                    deleteHandlerExp(experiencia.id)
-                                                }}>
-                                                    <span className="icon">
-                                                        <AiOutlineDelete />
-                                                    </span>
-                                                </button>
+                                                opciones: [
+                                                    <button className="button is-small is-primary mx-2 is-outlined" key={`${experiencia.id}0`} onClick={() => {
+                                                        setObjeto(experiencia)
+                                                        setShowModalExperienciaLaboral(true)
+                                                    }}>
+                                                        <span className="icon">
+                                                            <FaRegEdit />
+                                                        </span>
+                                                    </button>,
+                                                    <button className="button is-small is-danger mx-2 is-outlined" key={`${experiencia.id}1`} onClick={() => {
+                                                        deleteHandlerExp(experiencia.id)
+                                                    }}>
+                                                        <span className="icon">
+                                                            <AiOutlineDelete />
+                                                        </span>
+                                                    </button>
 
-                                            ]
+                                                ]
+                                            }
+                                        })
+                                }
+
+                            >
+                                <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalExperienciaLaboral(true)}>
+                                    <span className="icon">
+                                        <IoIosAddCircleOutline />
+                                    </span>
+                                    <span>Registrar</span>
+                                </button>
+                            </TabContent>
+
+
+
+                        </TabPanel>
+
+                        {/*Meritos y Distinciones*/}
+                        <TabPanel value={activeTab} index={4}>
+
+                            <TabContent
+                                title="Meritos y Distinciones"
+                                desc="méritos"
+                                noData="No registra méritos"
+                                columns={
+                                    [
+                                        { key: 'titulo', text: 'Título' },
+                                        { key: 'institucion', text: 'Institución' },
+                                        { key: 'opciones', text: 'Opciones' }
+                                    ]
+                                }
+                                rows={
+                                    meritosState.map(
+                                        (merito) => {
+                                            return {
+                                                id: merito.id,
+                                                titulo: merito.titulo,
+                                                institucion: merito.institucion_auspiciante,
+                                                opciones: [
+                                                    <button className="button is-small is-primary mx-2 is-outlined" key={`${merito.id}0`} onClick={() => {
+                                                        setObjeto(merito)
+                                                        setShowModalMerito(true)
+                                                    }}>
+                                                        <span className="icon">
+                                                            <FaRegEdit />
+                                                        </span>
+                                                    </button>,
+
+                                                    <button className="button is-small is-danger mx-2 is-outlined" key={`${merito.id}1`} onClick={() => {
+                                                        deleteHandlerMer(merito.id)
+                                                    }}>
+                                                        <span className="icon">
+                                                            <AiOutlineDelete />
+                                                        </span>
+                                                    </button>
+                                                ]
+
+                                            }
+                                        })
+                                }
+
+                            >
+                                <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalMerito(true)}>
+                                    <span className="icon">
+                                        <IoIosAddCircleOutline />
+                                    </span>
+                                    <span>Registrar</span>
+                                </button>
+                            </TabContent>
+
+
+
+                        </TabPanel>
+
+
+                        {/*Compresión idiomas*/}
+                        <TabPanel value={activeTab} index={5}>
+                            <TabContent
+                                title="Compresión de idiomas"
+                                desc="idiomas comprendidos"
+                                noData="No hay registros de compresión de idiomas"
+                                columns={
+                                    [
+                                        { key: 'idioma', text: 'Idioma' },
+                                        { key: 'nivel', text: 'Compresión' },
+                                        { key: 'opciones', text: 'Opciones' }
+
+                                    ]
+                                }
+                                rows={
+                                    idiomasState.map(
+                                        (idioma) => {
+                                            return {
+                                                id: idioma.id,
+                                                idioma: idioma.idioma,
+                                                nivel: idioma.nivel_comprension,
+                                                opciones:
+                                                    [<button className="button is-small is-primary mx-2 is-outlined" key={`${idioma.id}0`} onClick={() => {
+                                                        setObjeto(idioma)
+                                                        setShowModalIdioma(true)
+                                                    }}>
+                                                        <span className="icon">
+                                                            <FaRegEdit />
+                                                        </span>
+                                                    </button>,
+
+                                                    <button className="button is-small is-danger mx-2 is-outlined" key={`${idioma.id}`} onClick={() => {
+                                                        deleteHandlerIdi(idioma.id)
+                                                    }}>
+                                                        <span className="icon">
+                                                            <AiOutlineDelete />
+                                                        </span>
+                                                    </button>]
+
+                                            }
                                         }
-                                    })
-                            }
+                                    )
+                                }
+                            >
+                                <button className="button  is-success mx-3 is-outlined" onClick={() => setShowModalIdioma(true)}>
+                                    <span className="icon">
+                                        <IoIosAddCircleOutline />
+                                    </span>
+                                    <span>Registrar</span>
+                                </button>
+                            </TabContent>
 
-                        >
-                            <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalExperienciaLaboral(true)}>
-                                <span className="icon">
-                                    <IoIosAddCircleOutline />
-                                </span>
-                                <span>Registrar</span>
-                            </button>
-                        </TabContent>
+                        </TabPanel>
 
 
+                        {/*Referencias*/}
+                        <TabPanel value={activeTab} index={6}>
+                            <TabContent
+                                title="Referencias"
+                                desc="referencias"
+                                noData="No hay referencias registradas"
+                                columns={
+                                    [
+                                        { key: 'referencia', text: "Referencia" },
+                                        { key: 'tipo', text: 'Tipo' },
+                                        { key: 'opciones', text: 'Opciones' }
+                                    ]
+                                }
+                                rows={
+                                    referenciasState.map(
+                                        (referencia) => {
+                                            return {
+                                                id: referencia.id,
+                                                referencia: `${referencia.nombres} ${referencia.apellidos}`,
+                                                tipo: referencia.referencia,
 
-                    </TabPanel>
-
-                    {/*Meritos y Distinciones*/}
-                    <TabPanel value={activeTab} index={4}>
-
-                        <TabContent
-                            title="Meritos y Distinciones"
-                            desc="méritos"
-                            noData="No registra méritos"
-                            columns={
-                                [
-                                    { key: 'titulo', text: 'Título' },
-                                    { key: 'institucion', text: 'Institución' },
-                                    { key: 'opciones', text: 'Opciones' }
-                                ]
-                            }
-                            rows={
-                                meritosState.map(
-                                    (merito) => {
-                                        return {
-                                            id: merito.id,
-                                            titulo: merito.titulo,
-                                            institucion: merito.institucion_auspiciante,
-                                            opciones: [
-                                                <button className="button is-small is-primary mx-2 is-outlined" key={`${merito.id}0`} onClick={() => {
-                                                    setObjeto(merito)
-                                                    setShowModalMerito(true)
+                                                opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${referencia.id}0`} onClick={ev => {
+                                                    setObjeto(referencia)
+                                                    setShowModalReferencia(true)
                                                 }}>
                                                     <span className="icon">
                                                         <FaRegEdit />
                                                     </span>
                                                 </button>,
-
-                                                <button className="button is-small is-danger mx-2 is-outlined" key={`${merito.id}1`} onClick={() => {
-                                                    deleteHandlerMer(merito.id)
-                                                }}>
-                                                    <span className="icon">
-                                                        <AiOutlineDelete />
-                                                    </span>
-                                                </button>
-                                            ]
-
-                                        }
-                                    })
-                            }
-
-                        >
-                            <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalMerito(true)}>
-                                <span className="icon">
-                                    <IoIosAddCircleOutline />
-                                </span>
-                                <span>Registrar</span>
-                            </button>
-                        </TabContent>
-
-
-
-                    </TabPanel>
-
-
-                    {/*Compresión idiomas*/}
-                    <TabPanel value={activeTab} index={5}>
-                        <TabContent
-                            title="Compresión de idiomas"
-                            desc="idiomas comprendidos"
-                            noData="No hay registros de compresión de idiomas"
-                            columns={
-                                [
-                                    { key: 'idioma', text: 'Idioma' },
-                                    { key: 'nivel', text: 'Compresión' },
-                                    { key: 'opciones', text: 'Opciones' }
-
-                                ]
-                            }
-                            rows={
-                                idiomasState.map(
-                                    (idioma) => {
-                                        return {
-                                            id: idioma.id,
-                                            idioma: idioma.idioma,
-                                            nivel: idioma.nivel_comprension,
-                                            opciones:
-                                                [<button className="button is-small is-primary mx-2 is-outlined" key={`${idioma.id}0`} onClick={() => {
-                                                    setObjeto(idioma)
-                                                    setShowModalIdioma(true)
-                                                }}>
-                                                    <span className="icon">
-                                                        <FaRegEdit />
-                                                    </span>
-                                                </button>,
-
-                                                <button className="button is-small is-danger mx-2 is-outlined" key={`${idioma.id}`} onClick={() => {
-                                                    deleteHandlerIdi(idioma.id)
+                                                <button className="button is-small is-danger mx-2 is-outlined" key={`${referencia.id}1`} onClick={event => {
+                                                    deleteHandler(referencia.id)
                                                 }}>
                                                     <span className="icon">
                                                         <AiOutlineDelete />
                                                     </span>
                                                 </button>]
 
+
+                                            }
                                         }
-                                    }
-                                )
-                            }
-                        >
-                            <button className="button  is-success mx-3 is-outlined" onClick={() => setShowModalIdioma(true)}>
-                                <span className="icon">
-                                    <IoIosAddCircleOutline />
-                                </span>
-                                <span>Registrar</span>
-                            </button>
-                        </TabContent>
+                                    )
+                                }
+                            >
+                                <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalReferencia(true)}>
+                                    <span className="icon">
+                                        <IoIosAddCircleOutline />
+                                    </span>
+                                    <span>Registrar</span>
+                                </button>
+                            </TabContent>
+                        </TabPanel>
+                    </div>
 
-                    </TabPanel>
-
-
-                    {/*Referencias*/}
-                    <TabPanel value={activeTab} index={6}>
-                        <TabContent
-                            title="Referencias"
-                            desc="referencias"
-                            noData="No hay referencias registradas"
-                            columns={
-                                [
-                                    { key: 'referencia', text: "Referencia" },
-                                    { key: 'tipo', text: 'Tipo' },
-                                    { key: 'opciones', text: 'Opciones' }
-                                ]
-                            }
-                            rows={
-                                referenciasState.map(
-                                    (referencia) => {
-                                        return {
-                                            id: referencia.id,
-                                            referencia: `${referencia.nombres} ${referencia.apellidos}`,
-                                            tipo: referencia.referencia,
-
-                                            opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${referencia.id}0`} onClick={ev => {
-                                                setObjeto(referencia)
-                                                setShowModalReferencia(true)
-                                            }}>
-                                                <span className="icon">
-                                                    <FaRegEdit />
-                                                </span>
-                                            </button>,
-                                            <button className="button is-small is-danger mx-2 is-outlined" key={`${referencia.id}1`} onClick={event => {
-                                                deleteHandler(referencia.id)
-                                            }}>
-                                                <span className="icon">
-                                                    <AiOutlineDelete />
-                                                </span>
-                                            </button>]
-
-
-                                        }
-                                    }
-                                )
-                            }
-                        >
-                            <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalReferencia(true)}>
-                                <span className="icon">
-                                    <IoIosAddCircleOutline />
-                                </span>
-                                <span>Registrar</span>
-                            </button>
-                        </TabContent>
-                    </TabPanel>
                 </div>
-
             </div>
             {
                 showModalDelFor &&

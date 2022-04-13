@@ -88,7 +88,7 @@ let DTH = (props) => {
                             <FaRegEdit />
                         </span>
                     </button>,
-                    <Link className="button is-info is-outlined mx-2" key={`${row.identificacion}1`} to='/dth/expediente' state={row}>
+                    <Link className="button is-info is-outlined mx-2" key={`${row.identificacion}1`} to='/dth/expediente' state={row} title="Ver expediente">
                         <span className="icon is-small">
                             <VscFileSubmodule />
                         </span>
@@ -175,7 +175,7 @@ let DTH = (props) => {
 
                 <div className="columns is-centered">
                     <div className="column is-half mt-4">
-                        <button className="button is-primary is-outlined mx-3" onClick={ev => setShowRegistrarPersona(true)}>
+                        <button className="button is-primary is-outlined mx-3" onClick={ev => setShowRegistrarPersona(true)} title="Registar personal">
                             <span className="icon is-small">
                                 <IoPersonAddOutline />
                             </span>

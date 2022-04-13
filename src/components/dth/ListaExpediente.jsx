@@ -27,6 +27,8 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import TabPanel from '../TabPanel';
+import AsideMenu from '../AsideMenu'
+import MenuItem from '../MenuItem'
 
 let ListaExpediente = (props) => {
     const location = useLocation()
@@ -87,7 +89,7 @@ let ListaExpediente = (props) => {
             location.state?.identificacion && dispatch(
                 loadEvaluacionesPersonal(location.state.identificacion)
             )
-            location.state?.identificacion &&  location.state?.sustituto === 'SI' && dispatch(
+            location.state?.identificacion && location.state?.sustituto === 'SI' && dispatch(
                 loadSustitutosPersonal(location.state.identificacion)
             )
         }, [dispatch, location.state?.identificacion, location.state?.sexo, location.state?.sustituto]
@@ -697,7 +699,7 @@ let ListaExpediente = (props) => {
 
                 </div>
                 <hr style={{ backgroundColor: "#b3e6cc" }} />
-                <Box>
+                {/* <Box>
 
                     <Tabs aria-label="basic tabs example"
                         value={activeTab} onChange={(ev, newVal) => setActiveTab(newVal)}
@@ -712,343 +714,369 @@ let ListaExpediente = (props) => {
                         {expedienteState?.detalle && expedienteState?.detalle.length > 0 && persona.sustituto === 'SI' && <Tab label="Sustituto" {...a11yProps(6)} sx={{ textTransform: 'none' }} />}
                     </Tabs>
 
-                </Box>
-
-                <TabPanel value={activeTab} index={0}>
-
-
-                    <TabContent
-                        title="Registro laboral"
-                        desc="registros laborales"
-                        noData="No hay registros laborales"
-                        columns={[
-                            { key: 'numero_documento', text: 'No. Doc.' },
-                            { key: 'fecha_inicio', text: 'Inicio', sortable: true },
-                            { key: 'fecha_fin', text: 'Fin' },
-                            { key: 'opciones', text: 'Opciones' }
-
-                        ]}
-
-                        expandir={false}
-                        rows={
-                            expedienteState?.detalle.map(
+                </Box> */}
+                <div className="columns">
+                    <section className='column is-2'>
+                        <AsideMenu background='#99ccff'>
+                            <MenuItem label={"Registro laboral"} {...a11yProps(0)} onClick={(ev) => { setActiveTab(0) }} isActive={0 == activeTab} />
+                            {expedienteState?.detalle && expedienteState?.detalle.length > 0
+                                && <MenuItem label={"Declaraciones patrimoniales"} {...a11yProps(1)} onClick={(ev) => { setActiveTab(1) }} isActive={1 == activeTab} />}
+                            {expedienteState?.detalle && expedienteState?.detalle.length > 0
+                                && <MenuItem label={"Familiares"} {...a11yProps(2)} onClick={(ev) => { setActiveTab(2) }} isActive={2 == activeTab} />}
+                            {expedienteState?.detalle && expedienteState?.detalle.length > 0 && persona.sexo === 'MUJER'
+                                && <MenuItem label={"Información reproductiva"} {...a11yProps(3)} onClick={(ev) => { setActiveTab(3) }} isActive={3 == activeTab} />}
+                            {expedienteState?.detalle && expedienteState?.detalle.length > 0
+                                && <MenuItem label={"Régimen disciplinario"} {...a11yProps(4)} onClick={(ev) => { setActiveTab(4) }} isActive={4 == activeTab} />}
+                            {expedienteState?.detalle && expedienteState?.detalle.length > 0
+                                && <MenuItem label={"Evaluaciones de desempeño"} {...a11yProps(5)} onClick={(ev) => { setActiveTab(5) }} isActive={5 == activeTab} />}
+                            {expedienteState?.detalle && expedienteState?.detalle.length > 0 && persona.sustituto
+                                && <MenuItem label={"Sustituto"} {...a11yProps(6)} onClick={(ev) => { setActiveTab(6) }} isActive={6 == activeTab} />}
 
 
-
-                                (row, index) => {
-                                    return {
-                                        id: row.id,
-                                        numero_documento: row.numero_documento,
-                                        fecha_inicio: row.fecha_inicio,
-                                        fecha_fin: row.fecha_fin,
-                                        opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
-                                            setObjeto(row)
-                                            setShowModalForm(true)
-                                        }}>
-                                            <span className="icon">
-                                                <FaRegEdit />
-                                            </span>
-                                        </button>,
-                                        <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
-                                            deleteHandler(row.id)
-                                        }}>
-                                            <span className="icon">
-                                                <AiOutlineDelete />
-                                            </span>
-                                        </button>]
-
-                                    }
-                                }
-
-                            )
-                        }
-                    >
-                        <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalForm(true)}>
-                            <span className="icon">
-                                <IoIosAddCircleOutline />
-                            </span>
-                        </button>
-
-                    </TabContent>
+                        </AsideMenu>
+                    </section>
+                    <div className='column is-10'>
+                        <TabPanel value={activeTab} index={0}>
 
 
-                </TabPanel>
-                <TabPanel value={activeTab} index={1}>
+                            <TabContent
+                                title="Registro laboral"
+                                desc="registros laborales"
+                                noData="No hay registros laborales"
+                                columns={[
+                                    { key: 'numero_documento', text: 'No. Doc.' },
+                                    { key: 'fecha_inicio', text: 'Inicio', sortable: true },
+                                    { key: 'fecha_fin', text: 'Fin' },
+                                    { key: 'opciones', text: 'Opciones' }
 
-                    <TabContent title="Declaraciones patrimoniales"
-                        columns={[
-                            { key: 'tipo_declaracion', text: 'Tipo' },
-                            { key: 'fecha_presentacion', text: 'Fecha presentación' },
-                            { key: 'opciones', text: 'Opciones' }]}
-                        desc="declaraciones"
-                        noData="No hay declaraciones patrimoniales registradas"
-                        rows={
-                            declaracionesState.map(
+                                ]}
 
-                                (row) => {
-                                    return {
-                                        id: row.id,
-                                        tipo_declaracion: row.tipo_declaracion,
-                                        fecha_presentacion: row.fecha_presentacion,
-                                        opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
-                                            setObjeto(row)
-                                            setShowDecModalForm(true)
-                                        }}>
-                                            <span className="icon">
-                                                <FaRegEdit />
-                                            </span>
-                                        </button>,
-                                        <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
-                                            deleteDecHandler(row.id)
-                                        }}>
-                                            <span className="icon">
-                                                <AiOutlineDelete />
-                                            </span>
-                                        </button>]
-
-                                    }
-                                }
-
-                            )
-                        }
-                    >
-
-                        <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowDecModalForm(true)}>
-                            <span className="icon">
-                                <IoIosAddCircleOutline />
-                            </span>
-                        </button>
-                    </TabContent>
-
-                </TabPanel>
+                                expandir={false}
+                                rows={
+                                    expedienteState?.detalle.map(
 
 
-                <TabPanel value={activeTab} index={2}>
 
-                    <TabContent
-                        title="Familiares"
-                        desc="familiares"
-                        noData="No hay familiares registrados"
-                        columns={[{ key: "parentesco", text: "Parentesco" },
-                        { key: "apellidos", text: "Apellidos" },
-                        { key: "nombres", text: "Nombres" },
-                        { key: "opciones", text: "Opciones" }]}
-                        rows={
-                            familiaresState.map(
-                                row => {
-                                    return {
-                                        id: row.id,
-                                        parentesco: row.parentesco,
-                                        apellidos: row.apellidos,
-                                        nombres: row.nombres,
-                                        opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
-                                            setObjeto(row)
-                                            setShowFamModalForm(true)
-                                        }}>
-                                            <span className="icon">
-                                                <FaRegEdit />
-                                            </span>
-                                        </button>,
-                                        <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
-                                            deleteFamHandler(row.id)
-                                        }}>
-                                            <span className="icon">
-                                                <AiOutlineDelete />
-                                            </span>
-                                        </button>]
-                                    }
-                                }
-                            )
-                        }
-                    >
+                                        (row, index) => {
+                                            return {
+                                                id: row.id,
+                                                numero_documento: row.numero_documento,
+                                                fecha_inicio: row.fecha_inicio,
+                                                fecha_fin: row.fecha_fin,
+                                                opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
+                                                    setObjeto(row)
+                                                    setShowModalForm(true)
+                                                }}>
+                                                    <span className="icon">
+                                                        <FaRegEdit />
+                                                    </span>
+                                                </button>,
+                                                <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
+                                                    deleteHandler(row.id)
+                                                }}>
+                                                    <span className="icon">
+                                                        <AiOutlineDelete />
+                                                    </span>
+                                                </button>]
 
-                        <button className="button  is-success mx-3 is-outlined" onClick={() => setShowFamModalForm(true)}>
-                            <span className="icon">
-                                <IoIosAddCircleOutline />
-                            </span>
-                        </button></TabContent>
-
-                </TabPanel>
-
-                {persona?.sexo === 'MUJER' && <TabPanel value={activeTab} index={3}>
-
-                    <TabContent
-                        title="Información reproductiva"
-                        desc="información"
-                        noData="No hay información reproductiva"
-                        columns={[{ key: "estado", text: "Estado" },
-                        { key: "inicio", text: "Inicio" },
-                        { key: "fin", text: "Fin" },
-                        { key: "opciones", text: "Opciones" }]}
-                        rows={
-                            informacionReproductivaState.map(
-                                row => {
-                                    return {
-                                        id: row.id,
-                                        estado: row.estado,
-                                        inicio: row.inicio,
-                                        fin: row.fin,
-                                        opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
-                                            setObjeto(row)
-                                            setShowInfModalForm(true)
-                                        }}>
-                                            <span className="icon">
-                                                <FaRegEdit />
-                                            </span>
-                                        </button>,
-                                        <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
-                                            deleteInfHandler(row.id)
-                                        }}>
-                                            <span className="icon">
-                                                <AiOutlineDelete />
-                                            </span>
-                                        </button>]
-                                    }
-                                }
-                            )
-                        }
-                    >
-
-                        <button className="button  is-success mx-3 is-outlined" onClick={() => setShowInfModalForm(true)}>
-                            <span className="icon">
-                                <IoIosAddCircleOutline />
-                            </span>
-                        </button></TabContent>
-
-                </TabPanel>}
-
-                <TabPanel value={activeTab} index={persona?.sexo === 'MUJER' ? 4 : 3}>
-                    <TabContent
-                        title="Régimen disciplicario"
-                        desc="sanciones"
-                        noData="No hay sanciones registradas"
-                        columns={[{ key: "anio_sancion", text: "Año" },
-                        { key: "mes_sancion", text: "Mes" },
-                        { key: "sancion", text: "Sanción" },
-                        { key: "opciones", text: "Opciones" }]}
-                        rows={
-                            regimenDisciplinarioState.map(
-                                row => {
-                                    return {
-                                        id: row.id,
-                                        anio_sancion: row.anio_sancion,
-                                        mes_sancion: row.mes_sancion,
-                                        sancion: row.sancion.sancion,
-                                        opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
-                                            setObjeto(row)
-                                            setShowRegModalForm(true)
-                                        }}>
-                                            <span className="icon">
-                                                <FaRegEdit />
-                                            </span>
-                                        </button>,
-                                        <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
-                                            deleteRegHandler(row.id)
-                                        }}>
-                                            <span className="icon">
-                                                <AiOutlineDelete />
-                                            </span>
-                                        </button>]
-                                    }
-                                }
-                            )
-                        }>
-                        <button className="button  is-success mx-3 is-outlined" onClick={() => setShowRegModalForm(true)}>
-                            <span className="icon">
-                                <IoIosAddCircleOutline />
-                            </span>
-                        </button></TabContent>
-                </TabPanel>
-                <TabPanel value={activeTab} index={persona?.sexo === 'MUJER' ? 5 : 4}>
-                    <TabContent
-                        title="Evaluaciones de desempeño"
-                        desc="evaluaciones"
-                        noData="No hay evaluaciones registradas"
-                        columns={[{ key: "desde", text: "Desde" },
-                        { key: "hasta", text: "Hasta" },
-                        { key: "puntaje", text: "Puntaje" },
-                        { key: "opciones", text: "Opciones" }]}
-                        rows={
-                            evaluacionesState.map(
-                                row => {
-                                    return {
-                                        id: row.id,
-                                        desde: row.desde,
-                                        hasta: row.hasta,
-                                        puntaje: row.puntaje,
-                                        opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
-                                            setObjeto(row)
-                                            setShowEvaModalForm(true)
-
-                                        }}>
-                                            <span className="icon">
-                                                <FaRegEdit />
-                                            </span>
-                                        </button>,
-                                        <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={() => {
-                                            deleteEvaHandler(row.id)
-                                        }}>
-                                            <span className="icon">
-                                                <AiOutlineDelete />
-                                            </span>
-                                        </button>]
-                                    }
-                                }
-                            )
-                        }>
-                        <button className="button  is-success mx-3 is-outlined" onClick={() => { setShowEvaModalForm(true) }}>
-                            <span className="icon">
-                                <IoIosAddCircleOutline />
-                            </span>
-                        </button></TabContent>
-                </TabPanel>
-                {
-                    persona.sustituto === 'SI' && <TabPanel value={activeTab} index={persona?.sexo === 'MUJER' ? 6 : 5}>
-                        <TabContent
-                            title="Sustitutos"
-                            desc="sustitutos"
-                            noData="No hay sustitutos registrados"
-                            columns={[{ key: "nombres", text: "Nombres" },
-                            { key: "apellidos", text: "Apellidos" },
-                            { key: "numeroCarnet", text: "No. Carnet" },
-                            { key: "opciones", text: "Opciones" }]}
-                            rows={
-                                sustitutosState.map(
-                                    row => {
-                                        return {
-                                            id: row.id,
-                                            nombres: row.nombres,
-                                            apellidos: row.apellidos,
-                                            numeroCarnet: row.numero_carnet,
-                                            opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
-                                                setObjeto(row)
-                                                setShowSusModalForm(true)
-
-                                            }}>
-                                                <span className="icon">
-                                                    <FaRegEdit />
-                                                </span>
-                                            </button>,
-                                            <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={() => {
-                                                deleteSusHandler(row.id)
-                                            }}>
-                                                <span className="icon">
-                                                    <AiOutlineDelete />
-                                                </span>
-                                            </button>]
+                                            }
                                         }
-                                    }
-                                )
-                            }>
-                            <button className="button  is-success mx-3 is-outlined" onClick={() => { setShowSusModalForm(true) }}>
-                                <span className="icon">
-                                    <IoIosAddCircleOutline />
-                                </span>
-                            </button></TabContent>
 
-                    </TabPanel>
-                }
+                                    )
+                                }
+                            >
+                                <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowModalForm(true)}>
+                                    <span className="icon">
+                                        <IoIosAddCircleOutline />
+                                    </span>
+                                    <span>Registrar</span>
+                                </button>
 
+                            </TabContent>
+
+
+                        </TabPanel>
+                        <TabPanel value={activeTab} index={1}>
+
+                            <TabContent title="Declaraciones patrimoniales"
+                                columns={[
+                                    { key: 'tipo_declaracion', text: 'Tipo' },
+                                    { key: 'fecha_presentacion', text: 'Fecha presentación' },
+                                    { key: 'opciones', text: 'Opciones' }]}
+                                desc="declaraciones"
+                                noData="No hay declaraciones patrimoniales registradas"
+                                rows={
+                                    declaracionesState.map(
+
+                                        (row) => {
+                                            return {
+                                                id: row.id,
+                                                tipo_declaracion: row.tipo_declaracion,
+                                                fecha_presentacion: row.fecha_presentacion,
+                                                opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
+                                                    setObjeto(row)
+                                                    setShowDecModalForm(true)
+                                                }}>
+                                                    <span className="icon">
+                                                        <FaRegEdit />
+                                                    </span>
+                                                </button>,
+                                                <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
+                                                    deleteDecHandler(row.id)
+                                                }}>
+                                                    <span className="icon">
+                                                        <AiOutlineDelete />
+                                                    </span>
+                                                </button>]
+
+                                            }
+                                        }
+
+                                    )
+                                }
+                            >
+
+                                <button className="button  is-success mx-3 is-outlined" onClick={ev => setShowDecModalForm(true)}>
+                                    <span className="icon">
+                                        <IoIosAddCircleOutline />
+                                    </span>
+                                    <span>Registrar</span>
+                                </button>
+                            </TabContent>
+
+                        </TabPanel>
+
+
+                        <TabPanel value={activeTab} index={2}>
+
+                            <TabContent
+                                title="Familiares"
+                                desc="familiares"
+                                noData="No hay familiares registrados"
+                                columns={[{ key: "parentesco", text: "Parentesco" },
+                                { key: "apellidos", text: "Apellidos" },
+                                { key: "nombres", text: "Nombres" },
+                                { key: "opciones", text: "Opciones" }]}
+                                rows={
+                                    familiaresState.map(
+                                        row => {
+                                            return {
+                                                id: row.id,
+                                                parentesco: row.parentesco,
+                                                apellidos: row.apellidos,
+                                                nombres: row.nombres,
+                                                opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
+                                                    setObjeto(row)
+                                                    setShowFamModalForm(true)
+                                                }}>
+                                                    <span className="icon">
+                                                        <FaRegEdit />
+                                                    </span>
+                                                </button>,
+                                                <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
+                                                    deleteFamHandler(row.id)
+                                                }}>
+                                                    <span className="icon">
+                                                        <AiOutlineDelete />
+                                                    </span>
+                                                </button>]
+                                            }
+                                        }
+                                    )
+                                }
+                            >
+
+                                <button className="button  is-success mx-3 is-outlined" onClick={() => setShowFamModalForm(true)}>
+                                    <span className="icon">
+                                        <IoIosAddCircleOutline />
+                                    </span>
+                                    <span>Registrar</span>
+                                </button></TabContent>
+
+                        </TabPanel>
+
+                        <TabPanel value={activeTab} index={3}>
+
+                            <TabContent
+                                title="Información reproductiva"
+                                desc="información"
+                                noData="No hay información reproductiva"
+                                columns={[{ key: "estado", text: "Estado" },
+                                { key: "inicio", text: "Inicio" },
+                                { key: "fin", text: "Fin" },
+                                { key: "opciones", text: "Opciones" }]}
+                                rows={
+                                    informacionReproductivaState.map(
+                                        row => {
+                                            return {
+                                                id: row.id,
+                                                estado: row.estado,
+                                                inicio: row.inicio,
+                                                fin: row.fin,
+                                                opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
+                                                    setObjeto(row)
+                                                    setShowInfModalForm(true)
+                                                }}>
+                                                    <span className="icon">
+                                                        <FaRegEdit />
+                                                    </span>
+                                                </button>,
+                                                <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
+                                                    deleteInfHandler(row.id)
+                                                }}>
+                                                    <span className="icon">
+                                                        <AiOutlineDelete />
+                                                    </span>
+                                                </button>]
+                                            }
+                                        }
+                                    )
+                                }
+                            >
+
+                                <button className="button  is-success mx-3 is-outlined" onClick={() => setShowInfModalForm(true)}>
+                                    <span className="icon">
+                                        <IoIosAddCircleOutline />
+                                    </span>
+                                    <span>Registrar</span>
+                                </button></TabContent>
+
+                        </TabPanel>
+
+                        <TabPanel value={activeTab} index={4}>
+                            <TabContent
+                                title="Régimen disciplicario"
+                                desc="sanciones"
+                                noData="No hay sanciones registradas"
+                                columns={[{ key: "anio_sancion", text: "Año" },
+                                { key: "mes_sancion", text: "Mes" },
+                                { key: "sancion", text: "Sanción" },
+                                { key: "opciones", text: "Opciones" }]}
+                                rows={
+                                    regimenDisciplinarioState.map(
+                                        row => {
+                                            return {
+                                                id: row.id,
+                                                anio_sancion: row.anio_sancion,
+                                                mes_sancion: row.mes_sancion,
+                                                sancion: row.sancion.sancion,
+                                                opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
+                                                    setObjeto(row)
+                                                    setShowRegModalForm(true)
+                                                }}>
+                                                    <span className="icon">
+                                                        <FaRegEdit />
+                                                    </span>
+                                                </button>,
+                                                <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
+                                                    deleteRegHandler(row.id)
+                                                }}>
+                                                    <span className="icon">
+                                                        <AiOutlineDelete />
+                                                    </span>
+                                                </button>]
+                                            }
+                                        }
+                                    )
+                                }>
+                                <button className="button  is-success mx-3 is-outlined" onClick={() => setShowRegModalForm(true)}>
+                                    <span className="icon">
+                                        <IoIosAddCircleOutline />
+                                    </span>
+                                    <span>Registrar</span>
+                                </button></TabContent>
+                        </TabPanel>
+                        <TabPanel value={activeTab} index={5}>
+                            <TabContent
+                                title="Evaluaciones de desempeño"
+                                desc="evaluaciones"
+                                noData="No hay evaluaciones registradas"
+                                columns={[{ key: "desde", text: "Desde" },
+                                { key: "hasta", text: "Hasta" },
+                                { key: "puntaje", text: "Puntaje" },
+                                { key: "opciones", text: "Opciones" }]}
+                                rows={
+                                    evaluacionesState.map(
+                                        row => {
+                                            return {
+                                                id: row.id,
+                                                desde: row.desde,
+                                                hasta: row.hasta,
+                                                puntaje: row.puntaje,
+                                                opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
+                                                    setObjeto(row)
+                                                    setShowEvaModalForm(true)
+
+                                                }}>
+                                                    <span className="icon">
+                                                        <FaRegEdit />
+                                                    </span>
+                                                </button>,
+                                                <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={() => {
+                                                    deleteEvaHandler(row.id)
+                                                }}>
+                                                    <span className="icon">
+                                                        <AiOutlineDelete />
+                                                    </span>
+                                                </button>]
+                                            }
+                                        }
+                                    )
+                                }>
+                                <button className="button  is-success mx-3 is-outlined" onClick={() => { setShowEvaModalForm(true) }}>
+                                    <span className="icon">
+                                        <IoIosAddCircleOutline />
+                                    </span>
+                                    <span>Registrar</span>
+                                </button></TabContent>
+                        </TabPanel>
+                        <TabPanel value={activeTab} index={6}>
+                            <TabContent
+                                title="Sustitutos"
+                                desc="sustitutos"
+                                noData="No hay sustitutos registrados"
+                                columns={[{ key: "nombres", text: "Nombres" },
+                                { key: "apellidos", text: "Apellidos" },
+                                { key: "numeroCarnet", text: "No. Carnet" },
+                                { key: "opciones", text: "Opciones" }]}
+                                rows={
+                                    sustitutosState.map(
+                                        row => {
+                                            return {
+                                                id: row.id,
+                                                nombres: row.nombres,
+                                                apellidos: row.apellidos,
+                                                numeroCarnet: row.numero_carnet,
+                                                opciones: [<button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={ev => {
+                                                    setObjeto(row)
+                                                    setShowSusModalForm(true)
+
+                                                }}>
+                                                    <span className="icon">
+                                                        <FaRegEdit />
+                                                    </span>
+                                                </button>,
+                                                <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={() => {
+                                                    deleteSusHandler(row.id)
+                                                }}>
+                                                    <span className="icon">
+                                                        <AiOutlineDelete />
+                                                    </span>
+                                                </button>]
+                                            }
+                                        }
+                                    )
+                                }>
+                                <button className="button  is-success mx-3 is-outlined" onClick={() => { setShowSusModalForm(true) }}>
+                                    <span className="icon">
+                                        <IoIosAddCircleOutline />
+                                    </span>
+                                </button></TabContent>
+
+                        </TabPanel>
+
+                    </div>
+                </div>
             </div>
             {/*modal registro laboral */}
             {
