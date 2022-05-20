@@ -55,7 +55,8 @@ let ListadoUsuarios = (props) => {
                     row.id !== null ? <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}.`} onClick={() => {
                         setObjeto(row)
                         setShowModalForm(true)
-                    }}>
+                    }}
+                    title="Editar">
                         <span className="icon">
                             <FaRegEdit />
                         </span>
@@ -63,7 +64,8 @@ let ListadoUsuarios = (props) => {
                         <button className="button is-small is-success mx-2 is-outlined" key={`${row.id}+`} onClick={() => {
                             setObjeto(row)
                             setShowModalForm(true)
-                        }}>
+                        }}
+                        title="Crear cuenta">
                             <span className="icon">
                                 <IoIosAddCircleOutline />
                             </span>
@@ -160,11 +162,6 @@ let ListadoUsuarios = (props) => {
                         </span>
                     </button>
 
-                    <button className="button  is-success mt-4 is-outlined" onClick={() => setShowModalForm(true)}>
-                        <span className="icon">
-                            <IoIosAddCircleOutline />
-                        </span>
-                    </button>
                 </div>
             </div>
             <div className="columns is-centered">

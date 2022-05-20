@@ -121,11 +121,13 @@ let ListadoProvincias = (props) => {
                 id: prov.id,
                 provincia: prov.provincia,
                 opciones: [
-                    <Link to="cantones" key={prov.id} className="button is-small mx-2 is-info is-outlined" state={prov}><span className="icon"><HiViewList /></span></Link>,
+                    <Link to="cantones" key={prov.id} className="button is-small mx-2 is-info is-outlined" state={prov} title="Ver cantones">
+                        <span className="icon"><HiViewList /></span></Link>,
                     <button className="button is-small is-primary mx-2 is-outlined" key={`${prov.id}.`} onClick={() => {
                         setObjeto(prov)
                         setShowModalForm(true)
-                    }}>
+                    }}
+                        title="Editar">
                         <span className="icon">
                             <FaRegEdit />
                         </span>
@@ -153,6 +155,7 @@ let ListadoProvincias = (props) => {
                             <span className="icon">
                                 <IoIosAddCircleOutline />
                             </span>
+                            <span>Registrar</span>
                         </button>
                     </div>
                 </div>

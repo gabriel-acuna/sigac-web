@@ -74,14 +74,16 @@ let ListadoTiposDocumentos = (props) => {
                     <button className="button is-small is-primary is-outlined mx-2" key={`${row.id}0`} onClick={() => {
                         setObjeto(row)
                         setShowModalForm(true)
-                    }}>
+                    }}
+                        title="Editar">
                         <span className="icon">
                             <FaRegEdit />
                         </span>
                     </button>,
                     <button className="button is-small is-danger is-outlined mx-2" key={`${row.id}1`} onClick={() => {
                         deleteHandler(row.id)
-                    }}>
+                    }}
+                        title="Eliminar">
                         <span className="icon">
                             <AiOutlineDelete />
                         </span>
@@ -180,6 +182,7 @@ let ListadoTiposDocumentos = (props) => {
                         <span className="icon">
                             <IoIosAddCircleOutline />
                         </span>
+                        <span>Registrar</span>
                     </button>
                 </div>
 

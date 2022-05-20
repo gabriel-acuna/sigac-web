@@ -940,7 +940,7 @@ const CV = (props) => {
 
                                 ].map(
                                     (item, index) => (
-                                        <MenuItem label={`${item}`} {...a11yProps(index)} onClick={(ev) => { setActiveTab(index) }} isActive={index == activeTab} />
+                                        <MenuItem label={`${item}`} {...a11yProps(index)} onClick={(ev) => { setActiveTab(index) }} isActive={index === activeTab} key={`m-item-000${index}`} />
                                     )
                                 )
                             }
@@ -975,14 +975,14 @@ const CV = (props) => {
                                                     setObjeto(estudio)
                                                     setShowModalFormacionAcademica(true)
                                                 }}>
-                                                    <span className="icon">
+                                                    <span className="icon" title="Editar">
                                                         <FaRegEdit />
                                                     </span>
                                                 </button>,
                                                 <button className="button is-small is-danger mx-2 is-outlined" key={`${estudio.id}1`} onClick={() => {
                                                     deleteHandlerFor(estudio.id)
                                                 }}>
-                                                    <span className="icon">
+                                                                 <span className="icon" title="Eliminar">
                                                         <AiOutlineDelete />
                                                     </span>
                                                 </button>]
@@ -1030,7 +1030,7 @@ const CV = (props) => {
                                                     setObjeto(capacitacion)
                                                     setShowModalCapacitacion(true)
                                                 }}>
-                                                    <span className="icon">
+                                                    <span className="icon" title="Editar">
                                                         <FaRegEdit />
                                                     </span>
                                                 </button>,
@@ -1038,7 +1038,7 @@ const CV = (props) => {
                                                 <button className="button is-small is-danger mx-2 is-outlined" key={`${capacitacion.id}1`} onClick={event => {
                                                     deleteHandlerCap(capacitacion.id)
                                                 }}>
-                                                    <span className="icon">
+                                                                 <span className="icon" title="Eliminar">
                                                         <AiOutlineDelete />
                                                     </span>
                                                 </button>]
@@ -1397,14 +1397,14 @@ const CV = (props) => {
                                                     setObjeto(referencia)
                                                     setShowModalReferencia(true)
                                                 }}>
-                                                    <span className="icon">
+                                                    <span className="icon" title="Editar">
                                                         <FaRegEdit />
                                                     </span>
                                                 </button>,
                                                 <button className="button is-small is-danger mx-2 is-outlined" key={`${referencia.id}1`} onClick={event => {
                                                     deleteHandler(referencia.id)
                                                 }}>
-                                                    <span className="icon">
+                                                                 <span className="icon" title="Eliminar">
                                                         <AiOutlineDelete />
                                                     </span>
                                                 </button>]

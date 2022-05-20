@@ -46,9 +46,6 @@ import IdiomaModalForm from './idiomaModal'
 import TabPanel from '../TabPanel'
 import TabContent from '../TabContent'
 import AlertModal from '../AlertModal'
-import Tabs from '@mui/material/Tabs'
-import Tab from '@mui/material/Tab'
-import Box from '@mui/material/Box'
 import AsideMenu from '../AsideMenu'
 import MenuItem from '../MenuItem'
 
@@ -988,7 +985,7 @@ const CV = ({ email }) => {
 
                                 ].map(
                                     (item, index) => (
-                                        <MenuItem label={`${item}`} {...a11yProps(index)} onClick={(ev) => { setActiveTab(index) }} isActive={index == activeTab} />
+                                        <MenuItem label={`${item}`} {...a11yProps(index)} onClick={(ev) => { setActiveTab(index) }} isActive={index === activeTab} key={`_menu-item-000${index}`}/>
                                     )
                                 )
                             }
@@ -998,7 +995,7 @@ const CV = ({ email }) => {
 
                         </AsideMenu>
                     </section>
-                    <div className="is-10">
+                    <div className="column is-10">
                         {/*Formación Profesional */}
                         <TabPanel value={activeTab} index={0}>
 
@@ -1023,14 +1020,14 @@ const CV = ({ email }) => {
                                                     setObjeto(estudio)
                                                     setShowModalFormacionAcademica(true)
                                                 }}>
-                                                    <span className="icon">
+                                                    <span className="icon" title="Editar">
                                                         <FaRegEdit />
                                                     </span>
                                                 </button>,
                                                 <button className="button is-small is-danger mx-2 is-outlined" key={`${estudio.id}1`} onClick={() => {
                                                     deleteHandlerFor(estudio.id)
                                                 }}>
-                                                    <span className="icon">
+                                                                 <span className="icon" title="Eliminar">
                                                         <AiOutlineDelete />
                                                     </span>
                                                 </button>]
@@ -1080,7 +1077,7 @@ const CV = ({ email }) => {
                                                     setObjeto(capacitacion)
                                                     setShowModalCapacitacion(true)
                                                 }}>
-                                                    <span className="icon">
+                                                    <span className="icon" title="Editar">
                                                         <FaRegEdit />
                                                     </span>
                                                 </button>,
@@ -1088,7 +1085,7 @@ const CV = ({ email }) => {
                                                 <button className="button is-small is-danger mx-2 is-outlined" key={`${capacitacion.id}1`} onClick={event => {
                                                     deleteHandlerCap(capacitacion.id)
                                                 }}>
-                                                    <span className="icon">
+                                                                 <span className="icon" title="Eliminar">
                                                         <AiOutlineDelete />
                                                     </span>
                                                 </button>]
@@ -1455,14 +1452,14 @@ const CV = ({ email }) => {
                                                     setObjeto(referencia)
                                                     setShowModalReferencia(true)
                                                 }}>
-                                                    <span className="icon">
+                                                    <span className="icon" title="Editar">
                                                         <FaRegEdit />
                                                     </span>
                                                 </button>,
                                                 <button className="button is-small is-danger mx-2 is-outlined" key={`${referencia.id}1`} onClick={event => {
                                                     deleteHandler(referencia.id)
                                                 }}>
-                                                    <span className="icon">
+                                                                 <span className="icon" title="Eliminar">
                                                         <AiOutlineDelete />
                                                     </span>
                                                 </button>]

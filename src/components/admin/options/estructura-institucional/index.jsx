@@ -75,14 +75,16 @@ let ListadoEstructurasInstitucionales = (props) => {
                     <button className="button is-small is-primary mx-2 is-outlined" onClick={ev => {
                         setObjeto(row)
                         setShowModalForm(true)
-                    }} key={`${row.id}.`}>
+                    }} key={`${row.id}.`}
+                        title="Editar">
                         <span className="icon">
                             <FaRegEdit />
                         </span>
                     </button>,
                     <button className="button is-small is-danger mx-2 is-outlined" onClick={event => {
                         deleteHandler(row.id)
-                    }} key={`${row.identificacion}+`}>
+                    }} key={`${row.identificacion}+`}
+                        title="Eliminar">
                         <span className="icon">
                             <AiOutlineDelete />
                         </span>
@@ -182,6 +184,7 @@ let ListadoEstructurasInstitucionales = (props) => {
                         <span className="icon">
                             <IoIosAddCircleOutline />
                         </span>
+                        <span>Registrar</span>
                     </button>
                 </div>
             </div>

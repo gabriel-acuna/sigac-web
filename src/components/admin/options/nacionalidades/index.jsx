@@ -74,14 +74,16 @@ let ListadoNacionalidades = (props) => {
                     <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={() => {
                         setObjeto(row)
                         setShowModalForm(true)
-                    }}>
+                    }}
+                        title="Editar">
                         <span className="icon">
                             <FaRegEdit />
                         </span>
                     </button>,
                     <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}i`} onClick={() => {
                         deleteHandler(row.id)
-                    }}>
+                    }}
+                        title="Eliminar">
                         <span className="icon">
                             <AiOutlineDelete />
                         </span>

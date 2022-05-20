@@ -81,14 +81,14 @@ let ListadoDiscapacidades = (props) => {
                     <button className="button is-small is-primary is-outlined mx-2" onClick={ev => {
                         setObjeto(row)
                         setShowModalForm(true)
-                    }} key={`${row.id}0`}>
+                    }} key={`${row.id}0`} title="Editar">
                         <span className="icon">
                             <FaRegEdit />
                         </span>
                     </button>,
                     <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
                         deleteHandler(row.id)
-                    }}>
+                    }} title="Eliminar">
                         <span className="icon">
                             <AiOutlineDelete />
                         </span>
@@ -184,6 +184,7 @@ let ListadoDiscapacidades = (props) => {
                             <span className="icon">
                                 <IoIosAddCircleOutline />
                             </span>
+                            <span>Registrar</span>
                         </button>
                     </div>
 

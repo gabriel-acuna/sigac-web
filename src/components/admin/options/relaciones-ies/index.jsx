@@ -77,14 +77,16 @@ let ListadoRelacionesIES = (props) => {
                     <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={() => {
                         setObjeto(row)
                         setShowModalForm(true)
-                    }}>
+                    }}
+                        title="Editar">
                         <span className="icon">
                             <FaRegEdit />
                         </span>
                     </button>,
                     <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={() => {
                         deleteHandler(row.id)
-                    }}>
+                    }}
+                        title="Eliminar">
                         <span className="icon">
                             <AiOutlineDelete />
                         </span>
@@ -104,7 +106,7 @@ let ListadoRelacionesIES = (props) => {
         ).unwrap()
             .then((resp) => {
                 setResponse(resp)
-                if(resp.type === 'success'){
+                if (resp.type === 'success') {
                     dispatch(loadRelacionesIES())
                     setShowModalForm(false)
                 }
@@ -141,7 +143,7 @@ let ListadoRelacionesIES = (props) => {
         ).unwrap()
             .then((resp) => {
                 setResponse(resp)
-                if(resp.type === 'success'){
+                if (resp.type === 'success') {
                     dispatch(loadRelacionesIES())
                     setShowModalForm(false)
                     setObjeto(null)
@@ -184,9 +186,10 @@ let ListadoRelacionesIES = (props) => {
                         <span className="icon">
                             <IoIosAddCircleOutline />
                         </span>
+                        <span>Registrar</span>
                     </button>
                 </div>
-               
+
             </div>
             <div className="columns is-centered">
 

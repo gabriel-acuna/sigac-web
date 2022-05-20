@@ -78,15 +78,15 @@ let ListadoCamposEstudiosAmplios = (props) => {
                     <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}.`} onClick={ev => {
                         setObjeto(row)
                         setShowModalForm(true)
-                    }}>
+                    }} title="Editar">
                         <span className="icon">
                             <FaRegEdit />
                         </span>
                     </button>,
-                    <Link to="especificos" key={`${row.id}*`} className="button is-small mx-2 is-info is-outlined" state={row}><span className="icon"><HiViewList /></span></Link>,
+                    <Link to="especificos" key={`${row.id}*`} className="button is-small mx-2 is-info is-outlined" state={row} title="Ver campos específicos"><span className="icon"><HiViewList /></span></Link>,
                     <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}+`}  onClick={event => {
                         deleteHandler(row.id)
-                    }}>
+                    }} title="Eliminar">
                         <span className="icon">
                             <AiOutlineDelete />
                         </span>
@@ -188,6 +188,7 @@ let ListadoCamposEstudiosAmplios = (props) => {
                         <span className="icon">
                             <IoIosAddCircleOutline />
                         </span>
+                        <span>Registrar</span>
                     </button>
                 </div>
             </div>

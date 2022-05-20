@@ -141,12 +141,14 @@ let ListadoTiposEscalafones = (props) => {
                     <button className="button is-small is-primary mx-2 is-outlined" onClick={() => {
                         setShowModalForm(true)
                         setObjeto(row)
-                    }} key={`${row.id}0`}>
+                    }} key={`${row.id}0`}
+                        title="Editar">
                         <span className="icon"><FaRegEdit /></span>
                     </button>,
                     <button className="button is-small is-danger mx-2 is-outlined" onClick={event => {
                         deleteHandler(row.id)
-                    }}>
+                    }}
+                        title="Eliminar">
                         <span className="icon"><AiOutlineDelete /></span>
                     </button>
                 ]
@@ -174,6 +176,9 @@ let ListadoTiposEscalafones = (props) => {
                         onClick={() => setShowModalForm(true)}>
                         <span className="icon">
                             <IoIosAddCircleOutline />
+                        </span>
+                        <span>
+                            Registrar
                         </span>
                     </button>
                 </div>

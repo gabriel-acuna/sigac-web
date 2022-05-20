@@ -77,15 +77,16 @@ let ListadoCamposEstudiosEspecificos = (props) => {
                     <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}.`} onClick={() => {
                         setObjeto(row)
                         setShowModalForm(true)
-                    }}>
+                    }} title="Editar">
                         <span className="icon">
                             <FaRegEdit />
                         </span>
                     </button>,
-                    <Link to="detallados" key={`${row.id}*`} className="button is-small mx-2 is-info is-outlined" state={row}><span className="icon"><HiViewList /></span></Link>,
+                    <Link to="detallados" key={`${row.id}*`} className="button is-small mx-2 is-info is-outlined" state={row} title="Ver campos detallados">
+                        <span className="icon"><HiViewList /></span></Link>,
                     <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}+`} onClick={() => {
                         deleteHandler(row.id)
-                    }}>
+                    }} title="Eliminar">
                         <span className="icon">
                             <AiOutlineDelete />
                         </span>
@@ -153,7 +154,7 @@ let ListadoCamposEstudiosEspecificos = (props) => {
                     dispatch(loadCamposEspecificosPorCampoAmplio(location.state.id))
                     setShowModalForm(false)
                     setObjeto(null)
-                    
+
                 }
             })
             .catch(
@@ -191,9 +192,10 @@ let ListadoCamposEstudiosEspecificos = (props) => {
                         <span className="icon">
                             <IoIosAddCircleOutline />
                         </span>
+                        <span>Registrar</span>
                     </button>
                 </div>
-              
+
             </div>
             <div className="columns is-centered">
 
@@ -246,7 +248,7 @@ let ListadoCamposEstudiosEspecificos = (props) => {
             }
             {
                 showModalForm && <ModalForm title={objeto !== null ? 'Editar campo de estudio específico' : 'Registrar campo de estudio específico'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
-                    
+
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalForm(false)
                         setObjeto(null)

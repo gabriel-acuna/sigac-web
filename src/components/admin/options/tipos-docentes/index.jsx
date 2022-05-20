@@ -23,7 +23,7 @@ let ListadoTiposDocentes = (props) => {
             dispatch(
                 loadTiposDocentesLOES()
             ).unwrap()
-                .then(()=>setLoading(false))
+                .then(() => setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -74,14 +74,16 @@ let ListadoTiposDocentes = (props) => {
                     <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}.`} onClick={() => {
                         setObjeto(row)
                         setShowModalForm(true)
-                    }}>
+                    }}
+                        title="Editar">
                         <span className="icon">
                             <FaRegEdit />
                         </span>
                     </button>,
                     <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}+`} onClick={() => {
                         deleteHandler(row.id)
-                    }}>
+                    }}
+                        title="Eliminar">
                         <span className="icon">
                             <AiOutlineDelete />
                         </span>
@@ -100,17 +102,17 @@ let ListadoTiposDocentes = (props) => {
         ).unwrap()
             .then((resp) => {
                 setResponse(resp)
-                if ( resp.type === 'success'){
+                if (resp.type === 'success') {
                     dispatch(loadTiposDocentesLOES())
                     setShowModalForm(false)
                 }
             })
             .catch(
                 (err) => {
-                    if (err.message.includes("undefined (reading 'data')")) { 
-                    console.error("No hay conexión con el backend");
-                    setError({'message':'No es posible establecer conexión, intente mas tarde.'})
-                 } else if (err.message === "Rejected") {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
                         )
@@ -136,7 +138,7 @@ let ListadoTiposDocentes = (props) => {
         ).unwrap()
             .then((resp) => {
                 setResponse(resp)
-                if ( resp.type === 'success'){
+                if (resp.type === 'success') {
                     dispatch(loadTiposDocentesLOES())
                     setShowModalForm(false)
                     setObjeto(null)
@@ -144,10 +146,10 @@ let ListadoTiposDocentes = (props) => {
             })
             .catch(
                 (err) => {
-                    if (err.message.includes("undefined (reading 'data')")) { 
-                    console.error("No hay conexión con el backend");
-                    setError({'message':'No es posible establecer conexión, intente mas tarde.'})
-                 } else if (err.message === "Rejected") {
+                    if (err.message.includes("undefined (reading 'data')")) {
+                        console.error("No hay conexión con el backend");
+                        setError({ 'message': 'No es posible establecer conexión, intente mas tarde.' })
+                    } else if (err.message === "Rejected") {
                         dispatch(
                             logOut()
                         )
@@ -178,9 +180,10 @@ let ListadoTiposDocentes = (props) => {
                         <span className="icon">
                             <IoIosAddCircleOutline />
                         </span>
+                        <span>Registrar</span>
                     </button>
                 </div>
-               
+
             </div>
             <div className="columns is-centered">
 
@@ -230,7 +233,7 @@ let ListadoTiposDocentes = (props) => {
             }
             {
                 showModalForm && <ModalForm title={objeto !== null ? 'Editar tipo docente' : 'Registrar tipo docente'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
-                  
+
                     <button className="button is-small is-danger mx-3" onClick={ev => {
                         setShowModalForm(false)
                         setObjeto(null)

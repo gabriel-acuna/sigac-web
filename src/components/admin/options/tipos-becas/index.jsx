@@ -73,14 +73,16 @@ let ListadoTiposBecas = (props) => {
                     <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={() => {
                         setObjeto(row)
                         setShowModalForm(true)
-                    }}>
+                    }}
+                        title="Editar">
                         <span className="icon">
                             <FaRegEdit />
                         </span>
                     </button>,
                     <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={() => {
                         deleteHandler(row.id)
-                    }}>
+                    }}
+                        title="Eliminar">
                         <span className="icon">
                             <AiOutlineDelete />
                         </span>
@@ -179,9 +181,10 @@ let ListadoTiposBecas = (props) => {
                         <span className="icon">
                             <IoIosAddCircleOutline />
                         </span>
+                        <span>Registrar</span>
                     </button>
                 </div>
-                
+
             </div>
             <div className="columns is-centered">
 
@@ -236,7 +239,7 @@ let ListadoTiposBecas = (props) => {
                     objeto={objeto}
                     handler={objeto !== null ? putHandler : postHandler}
                 >
-                  
+
                     <button className="button is-small is-danger mx-3" onClick={() => {
                         setShowModalForm(false)
                         setObjeto(null)

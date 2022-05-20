@@ -77,14 +77,14 @@ let ListadoCategoriasContratos = (props) => {
                     <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}.`} onClick={ev => {
                         setObjeto(row)
                         setShowModalForm(true)
-                    }}>
+                    }} title="Editar">
                         <span className="icon">
                             <FaRegEdit />
                         </span>
                     </button>,
                     <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}+`} onClick={event => {
                         deleteHandler(row.id)
-                    }}>
+                    }} title="Eliminar">
                         <span className="icon">
                             <AiOutlineDelete />
                         </span>
@@ -181,6 +181,7 @@ let ListadoCategoriasContratos = (props) => {
                         <span className="icon">
                             <IoIosAddCircleOutline />
                         </span>
+                        <span>Registrar</span>
                     </button>
                 </div>
 

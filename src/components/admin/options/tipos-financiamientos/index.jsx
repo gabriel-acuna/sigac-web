@@ -16,14 +16,14 @@ let ListadoTiposFinanciamientos = (props) => {
 
     let navigate = useNavigate()
     let dispatch = useDispatch()
-    const [loading, setLoading] =useState(true)
+    const [loading, setLoading] = useState(true)
 
     useEffect(
         () => {
             dispatch(
                 loadTiposFinanciamientos()
             ).unwrap()
-                .then(()=>setLoading(false))
+                .then(() => setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -74,14 +74,16 @@ let ListadoTiposFinanciamientos = (props) => {
                     <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}0`} onClick={() => {
                         setObjeto(row)
                         setShowModalForm(true)
-                    }}>
+                    }}
+                        title="Editar">
                         <span className="icon">
                             <FaRegEdit />
                         </span>
                     </button>,
                     <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={() => {
                         deleteHandler(row.id)
-                    }}>
+                    }}
+                        title="Eliminar">
                         <span className="icon">
                             <AiOutlineDelete />
                         </span>
@@ -101,7 +103,7 @@ let ListadoTiposFinanciamientos = (props) => {
         ).unwrap()
             .then((resp) => {
                 setResponse(resp)
-                if(resp.type === 'success'){
+                if (resp.type === 'success') {
                     dispatch(loadTiposFinanciamientos())
                     setShowModalForm(false)
                 }
@@ -137,7 +139,7 @@ let ListadoTiposFinanciamientos = (props) => {
         ).unwrap()
             .then((resp) => {
                 setResponse(resp)
-                if(resp.type === 'success'){
+                if (resp.type === 'success') {
                     dispatch(loadTiposFinanciamientos())
                     setShowModalForm(false)
                     setObjeto(null)
@@ -180,6 +182,7 @@ let ListadoTiposFinanciamientos = (props) => {
                         <span className="icon">
                             <IoIosAddCircleOutline />
                         </span>
+                        <span>Registrar</span>
                     </button>
                 </div>
             </div>
@@ -210,7 +213,7 @@ let ListadoTiposFinanciamientos = (props) => {
                                     next: "Siguiente",
                                     last: "Ultima"
                                 },
-                                loading_text:"cargando ..."
+                                loading_text: "cargando ..."
                             }
                         }}
                         records={rows}
@@ -236,14 +239,14 @@ let ListadoTiposFinanciamientos = (props) => {
                     objeto={objeto}
                     handler={objeto !== null ? putHandler : postHandler}
                 >
-                   
+
                     <button className="button is-small is-danger mx-3" onClick={() => {
                         setShowModalForm(false)
                         setObjeto(null)
                     }}>Cancelar</button>
                 </ModalForm>
             }
-             {
+            {
                 response?.type && <AlertModal type={response.type} message={response.content}>
                     <button className="delete" aria-label="close" onClick={() => setResponse(null)}></button>
                 </AlertModal>

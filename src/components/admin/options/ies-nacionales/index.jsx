@@ -22,7 +22,7 @@ let ListadoIESNacionales = (props) => {
             dispatch(
                 loadIESNacionales()
             ).unwrap()
-                .then(()=>setLoading(false))
+                .then(() => setLoading(false))
                 .catch(
                     (err) => console.log(err)
                 )
@@ -75,14 +75,16 @@ let ListadoIESNacionales = (props) => {
                     <button className="button is-small is-primary mx-2 is-outlined" key={`${row.id}.`} onClick={ev => {
                         setObjeto(row)
                         setShowModalForm(true)
-                    }}>
+                    }}
+                        title="Editar">
                         <span className="icon">
                             <FaRegEdit />
                         </span>
                     </button>,
                     <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}+`} onClick={event => {
                         deleteIESteHandler(row.id)
-                    }}>
+                    }}
+                        title="Eliminar">
                         <span className="icon">
                             <AiOutlineDelete />
                         </span>
@@ -106,7 +108,7 @@ let ListadoIESNacionales = (props) => {
         ).unwrap()
             .then((resp) => {
                 setResponse(resp)
-                if(resp.type === 'success'){
+                if (resp.type === 'success') {
                     dispatch(loadIESNacionales())
                     setShowModalForm(false)
                 }
@@ -145,7 +147,7 @@ let ListadoIESNacionales = (props) => {
         ).unwrap()
             .then((resp) => {
                 setResponse(resp)
-                if(resp.type === 'success'){
+                if (resp.type === 'success') {
                     dispatch(loadIESNacionales())
                     setShowModalForm(false)
                     setObjeto(null)
@@ -186,9 +188,10 @@ let ListadoIESNacionales = (props) => {
                         <span className="icon">
                             <IoIosAddCircleOutline />
                         </span>
+                        <span>Registrar</span>
                     </button>
                 </div>
-                
+
             </div>
             <div className="columns is-centered">
 
@@ -239,14 +242,14 @@ let ListadoIESNacionales = (props) => {
             }
             {
                 showModalForm && <ModalForm title={objeto !== null ? 'Editar IES' : 'Registrar IES'} objeto={objeto} handler={objeto !== null ? putHandler : postHandler}>
-                    
+
                     <button className="button is-small is-danger mx-3" onClick={() => {
                         setShowModalForm(false)
                         setObjeto(null)
                     }}>Cancelar</button>
                 </ModalForm>
             }
-             {
+            {
                 response?.type && <AlertModal type={response.type} message={response.content}>
                     <button className="delete" aria-label="close" onClick={() => setResponse(null)}></button>
                 </AlertModal>

@@ -83,7 +83,7 @@ let DTH = (props) => {
                     <button className="button is-primary is-outlined  mx-2" key={`${row.identificacion}0`} onClick={ev => {
                         setPersona(row)
                         setShowRegistrarPersona(true)
-                    }}>
+                    }} title="Editar">
                         <span className="icon is-small">
                             <FaRegEdit />
                         </span>
@@ -93,7 +93,7 @@ let DTH = (props) => {
                             <VscFileSubmodule />
                         </span>
                     </Link>,
-                    <button className="button is-danger is-outlined mx-2" key={`${row.identificacion}2`} onClick={ev => deleteHandler(row)} >
+                    <button className="button is-danger is-outlined mx-2" key={`${row.identificacion}2`} onClick={ev => deleteHandler(row)}  title="Elminar">
                         <span className="icon is-small">
                             <AiOutlineDelete />
                         </span>

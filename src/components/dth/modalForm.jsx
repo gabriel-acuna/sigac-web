@@ -78,11 +78,12 @@ let ModalForm = ({ title, children, handler, objeto, persona }) => {
             postTiposNombramientos({ nombramiento: data.nombramiento.toUpperCase() })
         ).unwrap().then(
             (resp) => {
-            setRespModal(resp)
-            if(resp.type === 'success'){
-                dispatch(loadTiposNombramientos())
-                setShowModalTipoNombramiento(false)
-            }}
+                setRespModal(resp)
+                if (resp.type === 'success') {
+                    dispatch(loadTiposNombramientos())
+                    setShowModalTipoNombramiento(false)
+                }
+            }
         ).catch(
             (err) => {
                 if (err.message.includes("undefined (reading 'data')")) {
@@ -338,7 +339,10 @@ let ModalForm = ({ title, children, handler, objeto, persona }) => {
 
                                 {docType?.tipo_documento === 'CONTRATO' && <div className="column">
                                     <label className="label is-small has-text-info">Tipo contrato
-                                        <span className="has-text-success has-text-weight-bold" style={{ cursor: 'pointer' }} onClick={() => setShowModalTipoContrato(true)}><IoIosAdd /></span></label>
+                                        <button type='button' className='button is-small ml-4 is-success is-outlined' style={{ cursor: 'pointer' }} onClick={() => setShowModalTipoContrato(true)}>
+                                            <span className="has-text-success has-text-weight-bold"><IoIosAdd /></span> <span>Añadir</span>
+                                        </button>
+                                    </label>
                                     {errors.tipoContrato?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, seleccione el tipo de contrato!</span>}
                                     <Controller
                                         name="tipoContrato"
@@ -364,7 +368,10 @@ let ModalForm = ({ title, children, handler, objeto, persona }) => {
                                 {
                                     (actReason === 'NOMBRAMIENTO' || relType === 'NOMBRAMIENTO') && <div className="column">
                                         <label className="label is-small has-text-info">Tipo nombramiento
-                                            <span className="has-text-success has-text-weight-bold" style={{ cursor: 'pointer' }} onClick={() => setShowModalTipoNombramiento(true)}><IoIosAdd /></span>
+                                            <button type='button' className='button is-small ml-4 is-success is-outlined' style={{ cursor: 'pointer' }} onClick={() => setShowModalTipoNombramiento(true)}>
+                                                <span className="has-text-success has-text-weight-bold"><IoIosAdd /></span> <span>Añadir</span>
+                                            </button>
+
                                         </label>
                                         {errors.tipoNombramiento?.type === 'required' && <span className="has-text-danger is-size-7 has-background-danger-light">¡Por favor, seleccione el tipo de contrato!</span>}
                                         <Controller
@@ -586,7 +593,7 @@ let ModalForm = ({ title, children, handler, objeto, persona }) => {
                                     <Controller
                                         name="subArea"
                                         control={control}
-                                        rules={{required:  tipoFuncionario === 'PROFESOR' }}
+                                        rules={{ required: tipoFuncionario === 'PROFESOR' }}
                                         render={
                                             ({ field }) => (
                                                 <Select
@@ -633,7 +640,7 @@ let ModalForm = ({ title, children, handler, objeto, persona }) => {
             }
             {
                 showModalTipoNombramiento && <NombramientoModalFrom title="Registrar tipo nombramiento" handler={postNombramiento}>
-                  
+
                     <button className="button is-small is-danger mx-3" onClick={() => {
                         setShowModalTipoNombramiento(false)
                     }}>Cancelar</button>

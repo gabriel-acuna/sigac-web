@@ -23,9 +23,6 @@ import FamiliarModalForm from './modalFamiliar'
 import InformacionModal from './modalInformacionReproductiva'
 import EvaluacionModalForm from './modalEvaluacion'
 import SustitutoModalForm from './modalSustituto'
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
 import TabPanel from '../TabPanel';
 import AsideMenu from '../AsideMenu'
 import MenuItem from '../MenuItem'
@@ -674,7 +671,7 @@ let ListaExpediente = (props) => {
 
 
                                 </span>
-                                Datos personales <span style={{ cursor: 'pointer' }}><Link to="cv" state={location.state}><span className="icon"><ImProfile /></span></Link></span></p>
+                                Datos personales  | <span style={{ cursor: 'pointer' }}><Link to="cv" state={location.state}><span className="icon"><ImProfile /></span> <span className='has-text-white' >Ver hoja de vida</span></Link></span></p>
                             <div className="panel-block has-background-info-light">
                                 {persona &&
                                     <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr', padding: '20px', columnGap: '50px' }}>
@@ -718,19 +715,19 @@ let ListaExpediente = (props) => {
                 <div className="columns">
                     <section className='column is-2'>
                         <AsideMenu background='#99ccff'>
-                            <MenuItem label={"Registro laboral"} {...a11yProps(0)} onClick={(ev) => { setActiveTab(0) }} isActive={0 == activeTab} />
+                            <MenuItem label={"Registro laboral"} {...a11yProps(0)} onClick={(ev) => { setActiveTab(0) }} isActive={0 === activeTab} />
                             {expedienteState?.detalle && expedienteState?.detalle.length > 0
-                                && <MenuItem label={"Declaraciones patrimoniales"} {...a11yProps(1)} onClick={(ev) => { setActiveTab(1) }} isActive={1 == activeTab} />}
+                                && <MenuItem label={"Declaraciones patrimoniales"} {...a11yProps(1)} onClick={(ev) => { setActiveTab(1) }} isActive={1 === activeTab} />}
                             {expedienteState?.detalle && expedienteState?.detalle.length > 0
-                                && <MenuItem label={"Familiares"} {...a11yProps(2)} onClick={(ev) => { setActiveTab(2) }} isActive={2 == activeTab} />}
+                                && <MenuItem label={"Familiares"} {...a11yProps(2)} onClick={(ev) => { setActiveTab(2) }} isActive={2 === activeTab} />}
                             {expedienteState?.detalle && expedienteState?.detalle.length > 0 && persona.sexo === 'MUJER'
-                                && <MenuItem label={"Información reproductiva"} {...a11yProps(3)} onClick={(ev) => { setActiveTab(3) }} isActive={3 == activeTab} />}
+                                && <MenuItem label={"Información reproductiva"} {...a11yProps(3)} onClick={(ev) => { setActiveTab(3) }} isActive={3 === activeTab} />}
                             {expedienteState?.detalle && expedienteState?.detalle.length > 0
-                                && <MenuItem label={"Régimen disciplinario"} {...a11yProps(4)} onClick={(ev) => { setActiveTab(4) }} isActive={4 == activeTab} />}
+                                && <MenuItem label={"Régimen disciplinario"} {...a11yProps(4)} onClick={(ev) => { setActiveTab(4) }} isActive={4 === activeTab} />}
                             {expedienteState?.detalle && expedienteState?.detalle.length > 0
-                                && <MenuItem label={"Evaluaciones de desempeño"} {...a11yProps(5)} onClick={(ev) => { setActiveTab(5) }} isActive={5 == activeTab} />}
+                                && <MenuItem label={"Evaluaciones de desempeño"} {...a11yProps(5)} onClick={(ev) => { setActiveTab(5) }} isActive={5 === activeTab} />}
                             {expedienteState?.detalle && expedienteState?.detalle.length > 0 && persona.sustituto
-                                && <MenuItem label={"Sustituto"} {...a11yProps(6)} onClick={(ev) => { setActiveTab(6) }} isActive={6 == activeTab} />}
+                                && <MenuItem label={"Sustituto"} {...a11yProps(6)} onClick={(ev) => { setActiveTab(6) }} isActive={6 === activeTab} />}
 
 
                         </AsideMenu>
@@ -767,14 +764,14 @@ let ListaExpediente = (props) => {
                                                     setObjeto(row)
                                                     setShowModalForm(true)
                                                 }}>
-                                                    <span className="icon">
+                                                    <span className="icon" title="Editar">
                                                         <FaRegEdit />
                                                     </span>
                                                 </button>,
                                                 <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
                                                     deleteHandler(row.id)
                                                 }}>
-                                                    <span className="icon">
+                                                                 <span className="icon" title="Eliminar">
                                                         <AiOutlineDelete />
                                                     </span>
                                                 </button>]
@@ -817,14 +814,14 @@ let ListaExpediente = (props) => {
                                                     setObjeto(row)
                                                     setShowDecModalForm(true)
                                                 }}>
-                                                    <span className="icon">
+                                                    <span className="icon" title="Editar">
                                                         <FaRegEdit />
                                                     </span>
                                                 </button>,
                                                 <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
                                                     deleteDecHandler(row.id)
                                                 }}>
-                                                    <span className="icon">
+                                                                 <span className="icon" title="Eliminar">
                                                         <AiOutlineDelete />
                                                     </span>
                                                 </button>]
@@ -869,14 +866,14 @@ let ListaExpediente = (props) => {
                                                     setObjeto(row)
                                                     setShowFamModalForm(true)
                                                 }}>
-                                                    <span className="icon">
+                                                    <span className="icon" title="Editar">
                                                         <FaRegEdit />
                                                     </span>
                                                 </button>,
                                                 <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
                                                     deleteFamHandler(row.id)
                                                 }}>
-                                                    <span className="icon">
+                                                                 <span className="icon" title="Eliminar">
                                                         <AiOutlineDelete />
                                                     </span>
                                                 </button>]
@@ -917,14 +914,14 @@ let ListaExpediente = (props) => {
                                                     setObjeto(row)
                                                     setShowInfModalForm(true)
                                                 }}>
-                                                    <span className="icon">
+                                                    <span className="icon" title="Editar">
                                                         <FaRegEdit />
                                                     </span>
                                                 </button>,
                                                 <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
                                                     deleteInfHandler(row.id)
                                                 }}>
-                                                    <span className="icon">
+                                                                 <span className="icon" title="Eliminar">
                                                         <AiOutlineDelete />
                                                     </span>
                                                 </button>]
@@ -964,14 +961,14 @@ let ListaExpediente = (props) => {
                                                     setObjeto(row)
                                                     setShowRegModalForm(true)
                                                 }}>
-                                                    <span className="icon">
+                                                    <span className="icon" title="Editar">
                                                         <FaRegEdit />
                                                     </span>
                                                 </button>,
                                                 <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={event => {
                                                     deleteRegHandler(row.id)
                                                 }}>
-                                                    <span className="icon">
+                                                                 <span className="icon" title="Eliminar">
                                                         <AiOutlineDelete />
                                                     </span>
                                                 </button>]
@@ -1008,14 +1005,14 @@ let ListaExpediente = (props) => {
                                                     setShowEvaModalForm(true)
 
                                                 }}>
-                                                    <span className="icon">
+                                                    <span className="icon" title="Editar">
                                                         <FaRegEdit />
                                                     </span>
                                                 </button>,
                                                 <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={() => {
                                                     deleteEvaHandler(row.id)
                                                 }}>
-                                                    <span className="icon">
+                                                                 <span className="icon" title="Eliminar">
                                                         <AiOutlineDelete />
                                                     </span>
                                                 </button>]
@@ -1052,14 +1049,14 @@ let ListaExpediente = (props) => {
                                                     setShowSusModalForm(true)
 
                                                 }}>
-                                                    <span className="icon">
+                                                    <span className="icon" title="Editar">
                                                         <FaRegEdit />
                                                     </span>
                                                 </button>,
                                                 <button className="button is-small is-danger mx-2 is-outlined" key={`${row.id}1`} onClick={() => {
                                                     deleteSusHandler(row.id)
                                                 }}>
-                                                    <span className="icon">
+                                                                 <span className="icon" title="Eliminar">
                                                         <AiOutlineDelete />
                                                     </span>
                                                 </button>]
