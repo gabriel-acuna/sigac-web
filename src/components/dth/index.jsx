@@ -179,6 +179,7 @@ let DTH = (props) => {
                             <span className="icon is-small">
                                 <IoPersonAddOutline />
                             </span>
+                            <span>Registar personal</span>
                         </button>
                     </div>
                 </div>
